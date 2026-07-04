@@ -1,2 +1,21 @@
 # autosuite
-I architected and built a white-label dealership operating system that can be customized and deployed for multiple automotive businesses.
+
+White-label dealership operating system featuring inventory management, CRM, financing, inspections, AI workflows, analytics, and dealer websites.
+
+Topics:
+
+Topics:
+
+nextjs
+react
+typescript
+tailwindcss
+prisma
+postgres
+automotive
+dealership
+crm
+saas
+inventory-management
+shadcn-ui
+vercel
