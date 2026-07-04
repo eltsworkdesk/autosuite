@@ -1,2 +1,2 @@
-# skyewiseautosuite
-Modern dealership operating system built with Next.js. Inventory management, lead generation, CRM, financing, inspections, analytics, and AI-powered workflows.
+# autosuite
+I architected and built a white-label dealership operating system that can be customized and deployed for multiple automotive businesses.
