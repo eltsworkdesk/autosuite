@@ -28,4 +28,13 @@ Improve
 
 ## Status
 
-In Progress
+Done
+
+
+## Completed
+
+- Redesigned hero
+- Sticky navigation
+- Improved cards
+- Footer redesign
+- Better mobile layout
