@@ -13,3 +13,8 @@ Vehicle information is currently served from static JSON to simulate future API 
 ## Why Modular Pages?
 
 The current structure makes it easier to migrate to a backend-rendered or API-driven architecture without redesigning the frontend.
+
+
+## Why AutoSuite?
+
+The platform is designed as a scalable foundation for dealership operations rather than a single dealership website.
