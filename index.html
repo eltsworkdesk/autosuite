@@ -53,9 +53,9 @@
       <a href="#about">About</a>
       <a href="#roadmap">Platform</a>
       <a href="#contact">Contact</a>
-      <button class="btn small" onclick="openTestDriveModal()">Book a Test Drive</button>
+      <button type="button" class="btn small" onclick="openTestDriveModal()">Book a Test Drive</button>
     </nav>
-    <button class="burger" onclick="toggleMenu()" aria-label="Toggle menu" aria-expanded="false" aria-controls="primaryNav">☰</button>
+    <button type="button" class="burger" onclick="toggleMenu()" aria-label="Toggle menu" aria-expanded="false" aria-controls="primaryNav">☰</button>
   </header>
 
   <main id="main-content">
@@ -68,7 +68,7 @@
       <p>Verified premium vehicles, transparent pricing, and a faster path to your next test drive.</p>
       <div class="hero-ctas">
         <a href="pages/cars.html" class="btn">Explore Inventory</a>
-        <button class="btn outline" onclick="openTestDriveModal()">Book a Test Drive</button>
+        <button type="button" class="btn outline" onclick="openTestDriveModal()">Book a Test Drive</button>
       </div>
     </div>
     <div class="hero-media">
@@ -181,7 +181,7 @@
         </div>
         <div class="roadmap-card">
           <span class="data-chip"><span class="dot"></span>CRM</span>
-          <h3>Lead & CRM Pipeline</h3>
+          <h3>Lead &amp; CRM Pipeline</h3>
           <p>Qualify buyers, track follow-ups, and route referrals without losing anyone in a spreadsheet.</p>
         </div>
         <div class="roadmap-card">
@@ -215,7 +215,7 @@
   <!-- Shared Test Drive Modal -->
   <div id="testDriveModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="testDriveTitle">
     <div class="modal-content">
-      <button class="close" onclick="closeTestDriveModal()" aria-label="Close">&times;</button>
+      <button type="button" class="close" onclick="closeTestDriveModal()" aria-label="Close">&times;</button>
       <h2 id="testDriveTitle">Book a Test Drive</h2>
       <p class="modal-sub">Tell us a bit about you and we'll confirm a time.</p>
       <form id="testDriveForm" novalidate>
