@@ -20,7 +20,7 @@
   --navy-800: #171f3a;
   --ink: #0b1220;
   --ink-soft: #4b5568;
-  --ink-faint: #8892a6;
+  --ink-faint: #5c6478; /* AA-compliant at small sizes — was too light for 12px labels */
   --line: #e6e8f0;
 
   /* Surfaces */
