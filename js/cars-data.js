@@ -22,6 +22,13 @@ function imageUrl(fileName) {
 }
 
 async function fetchCars() {
+  // Preferred path: data/cars-data.js sets window.AUTOSUITE_CARS before this
+  // script runs. This works when the site is opened directly as a local file
+  // (file://), where fetch() is blocked by the browser for local JSON.
+  if (window.AUTOSUITE_CARS) return window.AUTOSUITE_CARS;
+
+  // Fallback: if the site is served over http(s) and cars-data.js wasn't
+  // included for some reason, fetch the JSON directly.
   const res = await fetch(CARS_JSON_PATH);
   if (!res.ok) throw new Error('Could not load inventory data');
   return res.json();
@@ -68,20 +75,49 @@ async function renderFeatured(selector) {
 }
 
 /* ---------- Listing page: search + filters ---------- */
+function debounce(fn, delay) {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+}
+
+function emptyStateHTML(hasActiveFilters) {
+  return `
+    <div class="empty-state">
+      <div class="empty-state-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="M21 21l-4.3-4.3"></path>
+        </svg>
+      </div>
+      <span class="eyebrow">No matches</span>
+      <h3>No cars fit those filters</h3>
+      <p>${hasActiveFilters ? 'Try widening your price range, clearing the search, or resetting filters.' : 'Please check back shortly.'}</p>
+      ${hasActiveFilters ? '<button type="button" class="btn ghost small" id="emptyStateReset">Reset Filters</button>' : ''}
+    </div>
+  `;
+}
+
 async function initListingPage() {
   const grid = document.getElementById('carsGrid');
   if (!grid) return;
 
   const searchInput = document.getElementById('searchBar');
+  const searchClear = document.getElementById('searchClear');
   const brandSelect = document.getElementById('brandFilter');
+  const sortSelect = document.getElementById('sortBy');
   const priceRange = document.getElementById('priceRange');
   const priceValue = document.getElementById('priceValue');
   const resultCount = document.getElementById('resultCount');
+  const resetBtn = document.getElementById('resetFilters');
 
   let cars = [];
   try {
     cars = await fetchCars();
   } catch (err) {
+    grid.setAttribute('aria-busy', 'false');
     grid.innerHTML = `<p class="empty-state">Inventory is temporarily unavailable. Please try again shortly.</p>`;
     console.error(err);
     return;
@@ -95,39 +131,83 @@ async function initListingPage() {
 
   // Set the price slider range to match actual inventory
   const maxPrice = Math.max(...cars.map((c) => c.price));
+  const sliderMax = Math.ceil(maxPrice / 1000000) * 1000000;
   priceRange.min = 0;
-  priceRange.max = Math.ceil(maxPrice / 1000000) * 1000000;
+  priceRange.max = sliderMax;
   priceRange.step = 1000000;
-  priceRange.value = priceRange.max;
-  priceValue.textContent = formatNaira(priceRange.max);
+  priceRange.value = sliderMax;
+  priceValue.textContent = formatNaira(sliderMax);
+
+  function sortResults(results) {
+    const sorted = [...results];
+    switch (sortSelect.value) {
+      case 'price-asc':
+        return sorted.sort((a, b) => a.price - b.price);
+      case 'price-desc':
+        return sorted.sort((a, b) => b.price - a.price);
+      case 'year-desc':
+        return sorted.sort((a, b) => b.year - a.year);
+      default:
+        return sorted.sort((a, b) => (b.featured === a.featured ? 0 : b.featured ? 1 : -1));
+    }
+  }
+
+  function hasActiveFilters() {
+    return Boolean(searchInput.value.trim()) || Boolean(brandSelect.value) || Number(priceRange.value) < sliderMax;
+  }
 
   function applyFilters() {
     const query = searchInput.value.trim().toLowerCase();
     const brand = brandSelect.value;
     const maxAllowed = Number(priceRange.value);
 
-    const results = cars.filter((car) => {
-      const matchesQuery = !query || car.name.toLowerCase().includes(query) || car.brand.toLowerCase().includes(query);
-      const matchesBrand = !brand || car.brand === brand;
-      const matchesPrice = car.price <= maxAllowed;
-      return matchesQuery && matchesBrand && matchesPrice;
-    });
+    searchClear.hidden = query.length === 0;
 
-    grid.innerHTML = results.length
-      ? results.map(carCardHTML).join('')
-      : `<div class="empty-state"><span class="eyebrow">No matches</span>Try widening your price range or clearing the search.</div>`;
+    const results = sortResults(
+      cars.filter((car) => {
+        const matchesQuery = !query || car.name.toLowerCase().includes(query) || car.brand.toLowerCase().includes(query);
+        const matchesBrand = !brand || car.brand === brand;
+        const matchesPrice = car.price <= maxAllowed;
+        return matchesQuery && matchesBrand && matchesPrice;
+      })
+    );
+
+    grid.setAttribute('aria-busy', 'false');
+    grid.innerHTML = results.length ? results.map(carCardHTML).join('') : emptyStateHTML(hasActiveFilters());
+
+    const emptyReset = document.getElementById('emptyStateReset');
+    if (emptyReset) emptyReset.addEventListener('click', resetFilters);
 
     if (resultCount) {
       resultCount.textContent = `${results.length} car${results.length === 1 ? '' : 's'}`;
     }
   }
 
-  searchInput.addEventListener('input', applyFilters);
+  function resetFilters() {
+    searchInput.value = '';
+    brandSelect.value = '';
+    sortSelect.value = 'default';
+    priceRange.value = sliderMax;
+    priceValue.textContent = formatNaira(sliderMax);
+    applyFilters();
+    searchInput.focus();
+  }
+
+  const debouncedApply = debounce(applyFilters, 200);
+
+  searchInput.addEventListener('input', debouncedApply);
+  searchClear.addEventListener('click', () => {
+    searchInput.value = '';
+    applyFilters();
+    searchInput.focus();
+  });
   brandSelect.addEventListener('change', applyFilters);
+  sortSelect.addEventListener('change', applyFilters);
   priceRange.addEventListener('input', () => {
     priceValue.textContent = formatNaira(priceRange.value);
-    applyFilters();
+    debouncedApply();
   });
+  resetBtn.addEventListener('click', resetFilters);
 
   applyFilters();
 }

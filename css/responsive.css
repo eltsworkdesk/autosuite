@@ -80,6 +80,12 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .filters .result-count {
+    flex: 0 0 auto;
+    text-align: left;
+    margin-left: auto;
+  }
+
   .footer-grid {
     grid-template-columns: repeat(3, 1fr);
     text-align: left;
