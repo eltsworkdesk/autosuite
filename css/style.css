@@ -5,7 +5,11 @@
    Breakpoints live in responsive.css (loaded last).
 ========================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
+/* Font loading moved to <link rel="preconnect"> + <link rel="stylesheet">
+   in each page's <head> — see index.html etc. An @import here would block
+   the browser from discovering the font request until this stylesheet is
+   parsed; a <link> in <head> is discoverable immediately by the preload
+   scanner, which loads noticeably faster. */
 
 :root {
   /* Brand gradient, sampled from the AutoSuite mark */
@@ -150,12 +154,6 @@ button {
 }
 
 /* ---------- Layout helpers ---------- */
-.container {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 0 1.25rem;
-}
-
 .eyebrow {
   font-family: var(--font-mono);
   font-size: 0.72rem;
