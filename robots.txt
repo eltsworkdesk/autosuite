@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /pages/test-drive.html
+
+Sitemap: https://autosuite.ng/sitemap.xml
