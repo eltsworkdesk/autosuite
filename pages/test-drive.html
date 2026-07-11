@@ -3,159 +3,133 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Book a Test Drive Demo | AutoSuite</title>
+  <title>Book a Test Drive | AutoSuite</title>
+  <meta name="description" content="Preview AutoSuite's test drive booking flow in isolation.">
+  <link rel="icon" type="image/png" href="../assets/web/favicon-32.png">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/responsive.css">
   <style>
-    /* Basic page styling
-       Note: this page is a standalone demo of the booking flow and isn't
-       linked from the main nav anymore — index.html, cars.html, and
-       car-page.html now each embed this same modal directly. Kept here
-       for reference / isolated testing. */
-    body {
-      font-family: 'Inter', Arial, sans-serif;
-      background-color: #f6f7fb;
+    /* This page exists to preview the booking flow in isolation — it reuses
+       the same shared modal, tokens, and JS as every other page rather than
+       keeping its own copy. See js/script.js for the actual behavior. */
+    .preview-wrap {
+      min-height: calc(100vh - 64px);
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .back-link {
-      color: #4b5568;
-      text-decoration: none;
-      font-size: 14px;
-    }
-
-    .back-link:hover {
-      color: #2e7cf6;
-    }
-
-    /* Button styling */
-    .test-drive-btn {
-      padding: 12px 24px;
-      background: linear-gradient(135deg, #0ea5ff, #6c4cee);
-      color: white;
-      border: none;
-      border-radius: 999px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-
-    .test-drive-btn:hover {
-      transform: translateY(-2px);
-    }
-
-    /* Modal styling */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      background-color: rgba(0,0,0,0.5);
-    }
-
-    .modal-content {
-      background-color: #fff;
-      margin: 10% auto;
-      padding: 20px;
-      border-radius: 8px;
-      width: 90%;
-      max-width: 400px;
+      justify-content: center;
+      gap: var(--space-5);
       text-align: center;
-      position: relative;
+      padding: var(--space-6) var(--space-4);
     }
 
-    .close {
-      position: absolute;
-      right: 15px;
-      top: 10px;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
+    .preview-wrap h1 {
+      font-size: var(--text-xl);
+      color: var(--ink);
     }
 
-    /* Form styling */
-    #testDriveForm input {
-      display: block;
-      width: 90%;
-      margin: 10px auto;
-      padding: 10px;
-      font-size: 14px;
-      border-radius: 5px;
-      border: 1px solid #ccc;
-    }
-
-    #testDriveForm button {
-      padding: 12px 20px;
-      background: linear-gradient(135deg, #0ea5ff, #6c4cee);
-      color: white;
-      border: none;
-      border-radius: 999px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-
-    #testDriveForm button:hover {
-      transform: translateY(-2px);
+    .preview-wrap p {
+      color: var(--ink-soft);
+      max-width: 40ch;
     }
   </style>
 </head>
 <body>
 
-  <a href="../index.html" class="back-link">← Back to AutoSuite</a>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <!-- Book a Test Drive Button -->
-  <button class="test-drive-btn" onclick="openTestDriveModal()">Book a Test Drive</button>
+  <header class="navbar">
+    <div class="logo">
+      <a href="../index.html">
+        <img src="../assets/web/autosuite-mark.png" alt="">
+        <span class="logo-wordmark">Auto<span>Suite</span></span>
+      </a>
+    </div>
+    <nav class="nav-links" id="primaryNav" aria-label="Primary">
+      <a href="../index.html">Home</a>
+      <a href="cars.html">Inventory</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#roadmap">Platform</a>
+      <a href="../index.html#contact">Contact</a>
+      <button class="btn small" onclick="openTestDriveModal()">Book a Test Drive</button>
+    </nav>
+    <button class="burger" onclick="toggleMenu()" aria-label="Toggle menu" aria-expanded="false" aria-controls="primaryNav">☰</button>
+  </header>
 
-  <!-- Modal -->
-  <div id="testDriveModal" class="modal">
+  <main id="main-content">
+    <div class="preview-wrap">
+      <span class="eyebrow">Booking flow preview</span>
+      <h1>Test drive, isolated</h1>
+      <h2 class="visually-hidden">Preview the booking form</h2>
+      <p>This page exists to preview the booking modal on its own. It's the same shared form used on every AutoSuite page — try it below.</p>
+      <button class="btn" onclick="openTestDriveModal()">Book a Test Drive</button>
+    </div>
+  </main>
+
+  <!-- Shared Test Drive Modal -->
+  <div id="testDriveModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="testDriveTitle">
     <div class="modal-content">
-      <span class="close" onclick="closeTestDriveModal()">&times;</span>
-      <h2>Book a Test Drive</h2>
-      <form id="testDriveForm">
-        <input type="text" name="car" placeholder="Car Name" required>
-        <input type="text" name="name" placeholder="Your Name" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <input type="tel" name="phone" placeholder="Phone Number" required>
-        <button type="submit">Submit</button>
+      <button class="close" onclick="closeTestDriveModal()" aria-label="Close">&times;</button>
+      <h2 id="testDriveTitle">Book a Test Drive</h2>
+      <p class="modal-sub">Tell us a bit about you and we'll confirm a time.</p>
+      <form id="testDriveForm" novalidate>
+        <div class="field">
+          <label for="td-car">Car<span class="required-mark" aria-hidden="true">*</span></label>
+          <input type="text" id="td-car" name="car" placeholder="Which car?" required>
+          <span class="field-error">Let us know which car you're interested in.</span>
+        </div>
+        <div class="field">
+          <label for="td-email">Email<span class="required-mark" aria-hidden="true">*</span></label>
+          <input type="email" id="td-email" name="email" placeholder="you@example.com" required>
+          <span class="field-error">Enter a valid email address.</span>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="td-name">Your name<span class="required-mark" aria-hidden="true">*</span></label>
+            <input type="text" id="td-name" name="name" placeholder="Full name" required>
+            <span class="field-error">Enter your name.</span>
+          </div>
+          <div class="field">
+            <label for="td-phone">Phone number<span class="required-mark" aria-hidden="true">*</span></label>
+            <input type="tel" id="td-phone" name="phone" placeholder="+234" inputmode="tel" required>
+            <span class="field-error">Enter a phone number.</span>
+          </div>
+        </div>
+        <button type="submit" class="btn">Submit Request</button>
+        <p class="form-status" id="td-status" role="status" aria-live="polite">
+          <span class="status-icon" aria-hidden="true">&check;</span>
+          <span class="status-text"></span>
+        </p>
       </form>
     </div>
   </div>
 
-  <script>
-    // Open modal
-    function openTestDriveModal() {
-      document.getElementById('testDriveModal').style.display = 'block';
-    }
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <img src="../assets/web/autosuite-mark.png" alt="" width="22" height="22">
+          AutoSuite
+        </div>
+        <p>Dealership Operating System</p>
+        <p>Abuja, Nigeria</p>
+      </div>
+      <div class="footer-col">
+        <h3>Quick Links</h3>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="../index.html">Home</a>
+          <a href="cars.html">Inventory</a>
+        </nav>
+      </div>
+      <div class="footer-col">
+        <h3>Contact</h3>
+        <p><a href="mailto:hello@autosuite.ng">hello@autosuite.ng</a></p>
+        <p><a href="tel:+2348001234567">+234 800 123 4567</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom">&copy; <span id="year"></span> AutoSuite. All rights reserved.</div>
+  </footer>
 
-    // Close modal
-    function closeTestDriveModal() {
-      document.getElementById('testDriveModal').style.display = 'none';
-    }
-
-    // Close modal if click outside content
-    window.onclick = function(event) {
-      const modal = document.getElementById('testDriveModal');
-      if (event.target === modal) {
-        closeTestDriveModal();
-      }
-    }
-
-    // Form submission
-    document.getElementById('testDriveForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      alert('Your test drive request has been submitted!');
-      closeTestDriveModal();
-      this.reset(); // clear form fields
-    });
-  </script>
-
+  <script src="../js/script.js" defer></script>
 </body>
 </html>

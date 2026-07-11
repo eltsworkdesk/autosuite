@@ -193,22 +193,39 @@
   </main>
 
   <!-- Shared Test Drive Modal -->
-  <div id="testDriveModal" class="modal">
+  <div id="testDriveModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="testDriveTitle">
     <div class="modal-content">
       <button class="close" onclick="closeTestDriveModal()" aria-label="Close">&times;</button>
-      <h2>Book a Test Drive</h2>
+      <h2 id="testDriveTitle">Book a Test Drive</h2>
       <p class="modal-sub">Tell us a bit about you and we'll confirm a time.</p>
-      <form id="testDriveForm">
-        <label for="td-car">Car</label>
-        <input type="text" id="td-car" name="car" placeholder="Which car?" required>
-        <label for="td-name">Your name</label>
-        <input type="text" id="td-name" name="name" placeholder="Full name" required>
-        <label for="td-email">Email</label>
-        <input type="email" id="td-email" name="email" placeholder="you@example.com" required>
-        <label for="td-phone">Phone number</label>
-        <input type="tel" id="td-phone" name="phone" placeholder="+234" required>
+      <form id="testDriveForm" novalidate>
+        <div class="field">
+          <label for="td-car">Car<span class="required-mark" aria-hidden="true">*</span></label>
+          <input type="text" id="td-car" name="car" placeholder="Which car?" required>
+          <span class="field-error">Let us know which car you're interested in.</span>
+        </div>
+        <div class="field">
+          <label for="td-email">Email<span class="required-mark" aria-hidden="true">*</span></label>
+          <input type="email" id="td-email" name="email" placeholder="you@example.com" required>
+          <span class="field-error">Enter a valid email address.</span>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="td-name">Your name<span class="required-mark" aria-hidden="true">*</span></label>
+            <input type="text" id="td-name" name="name" placeholder="Full name" required>
+            <span class="field-error">Enter your name.</span>
+          </div>
+          <div class="field">
+            <label for="td-phone">Phone number<span class="required-mark" aria-hidden="true">*</span></label>
+            <input type="tel" id="td-phone" name="phone" placeholder="+234" inputmode="tel" required>
+            <span class="field-error">Enter a phone number.</span>
+          </div>
+        </div>
         <button type="submit" class="btn">Submit Request</button>
-        <p class="form-status" id="td-status"></p>
+        <p class="form-status" id="td-status" role="status" aria-live="polite">
+          <span class="status-icon" aria-hidden="true">&check;</span>
+          <span class="status-text"></span>
+        </p>
       </form>
     </div>
   </div>

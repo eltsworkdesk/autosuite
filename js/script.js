@@ -12,14 +12,21 @@ function toggleMenu() {
   if (burger) burger.setAttribute('aria-expanded', String(isOpen));
 }
 
+let lastFocusedBeforeModal = null;
+
 function openTestDriveModal(carName) {
   const modal = document.getElementById('testDriveModal');
   if (!modal) return;
+  lastFocusedBeforeModal = document.activeElement;
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
 
   const carField = document.getElementById('td-car');
   if (carField && carName) carField.value = carName;
+
+  // Move focus into the dialog — the first empty-ish field, or the close button
+  const focusTarget = (carField && !carField.value) ? carField : document.getElementById('td-email');
+  (focusTarget || modal.querySelector('.close'))?.focus();
 }
 
 function closeTestDriveModal() {
@@ -27,6 +34,9 @@ function closeTestDriveModal() {
   if (!modal) return;
   modal.classList.remove('open');
   document.body.style.overflow = '';
+  if (lastFocusedBeforeModal && typeof lastFocusedBeforeModal.focus === 'function') {
+    lastFocusedBeforeModal.focus();
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -48,21 +58,54 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Test drive form submission (demo — no backend wired up yet)
+  // Test drive form: client-side validation + demo success state (no backend)
   const form = document.getElementById('testDriveForm');
   if (form) {
     const status = document.getElementById('td-status');
+    const statusText = status?.querySelector('.status-text');
+    const fields = Array.from(form.querySelectorAll('.field'));
+
+    function validateField(fieldEl) {
+      const input = fieldEl.querySelector('input');
+      if (!input) return true;
+      const valid = input.checkValidity();
+      fieldEl.classList.toggle('invalid', !valid);
+      return valid;
+    }
+
+    // Clear the error as soon as the field becomes valid again
+    fields.forEach((fieldEl) => {
+      const input = fieldEl.querySelector('input');
+      input?.addEventListener('input', () => {
+        if (fieldEl.classList.contains('invalid')) validateField(fieldEl);
+      });
+    });
+
     form.addEventListener('submit', (event) => {
       event.preventDefault();
-      if (status) {
-        status.textContent = `Thanks! We'll reach out to confirm your test drive.`;
-        status.classList.add('visible');
+
+      let firstInvalid = null;
+      fields.forEach((fieldEl) => {
+        const ok = validateField(fieldEl);
+        if (!ok && !firstInvalid) firstInvalid = fieldEl.querySelector('input');
+      });
+
+      if (firstInvalid) {
+        firstInvalid.focus();
+        return;
       }
-      form.reset();
+
+      if (statusText) statusText.textContent = `Thanks! We'll reach out to confirm your test drive.`;
+      status?.classList.add('visible');
+      form.querySelector('button[type="submit"]').disabled = true;
+
       setTimeout(() => {
+        form.reset();
+        fields.forEach((f) => f.classList.remove('invalid'));
+        form.querySelector('button[type="submit"]').disabled = false;
         closeTestDriveModal();
-        if (status) status.classList.remove('visible');
-      }, 1600);
+        status?.classList.remove('visible');
+      }, 1800);
     });
   }
 

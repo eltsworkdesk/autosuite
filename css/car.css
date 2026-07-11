@@ -11,8 +11,8 @@
 .detail-hero {
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
-  padding: 1.5rem 1.25rem;
+  gap: var(--space-4);
+  padding: var(--space-5) var(--space-4);
   background: linear-gradient(160deg, var(--navy-950) 0%, var(--navy-800) 60%, #1c2650 100%);
   color: #fff;
 }
@@ -22,23 +22,23 @@
 
 .brand-tag {
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: var(--text-xs);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: #9fd4ff;
-  margin-bottom: 0.4rem;
+  margin-bottom: var(--space-2);
   display: inline-block;
 }
 
 .car-name {
-  font-size: 1.5rem;
+  font-size: var(--text-lg);
   color: #fff;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--space-2);
 }
 
 .car-msrp {
   color: #cdd8f0;
-  font-size: 0.95rem;
+  font-size: var(--text-base);
 }
 
 .car-msrp strong {
@@ -47,9 +47,9 @@
 }
 
 .hero-ctas {
-  margin-top: 1rem;
+  margin-top: var(--space-4);
   display: flex;
-  gap: 0.6rem;
+  gap: var(--space-3);
   flex-wrap: wrap;
 }
 
@@ -62,10 +62,10 @@
 }
 
 .photo-meta {
-  margin-top: 0.7rem;
+  margin-top: var(--space-3);
   display: flex;
   justify-content: center;
-  gap: 0.6rem;
+  gap: var(--space-3);
   align-items: center;
   flex-direction: column;
 }
@@ -74,63 +74,80 @@
   background: rgba(255, 255, 255, 0.12);
   color: #fff;
   border: none;
-  padding: 0.4rem 0.8rem;
-  border-radius: 999px;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
   font-weight: 700;
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: var(--text-xs);
 }
 
+.photo-360[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Thumbnails are real buttons now — keyboard operable, with a visible
+   selected state instead of relying on hover/click alone. */
 .photo-thumbs {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--space-2);
   overflow: auto;
-  padding: 0.3rem 0;
+  padding: var(--space-1) 0;
 }
 
-.photo-thumbs img {
+.photo-thumbs button {
+  flex: 0 0 auto;
+  padding: 0;
+  border: 2px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  overflow: hidden;
+  background: none;
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+  line-height: 0;
+}
+
+.photo-thumbs button img {
   width: 76px;
   height: 52px;
   object-fit: cover;
-  border-radius: 6px;
-  cursor: pointer;
-  border: 2px solid rgba(255, 255, 255, 0.14);
-  transition: border-color 0.15s ease;
+  display: block;
 }
 
-.photo-thumbs img:hover,
-.photo-thumbs img.active {
+.photo-thumbs button:hover,
+.photo-thumbs button:focus-visible,
+.photo-thumbs button[aria-current="true"] {
   border-color: var(--brand-blue);
 }
 
 /* ---------- Key specs ---------- */
 .key-specs {
-  padding: 1.5rem 1.25rem 0.5rem;
+  padding: var(--space-5) var(--space-4) var(--space-2);
 }
 
 .key-specs h2 {
   color: var(--ink);
-  margin-bottom: 0.9rem;
-  font-size: 1.1rem;
+  margin-bottom: var(--space-4);
+  font-size: var(--text-md);
 }
 
 .spec-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0.8rem;
+  gap: var(--space-3);
 }
 
 .spec-item {
   background: var(--surface);
   border-radius: var(--radius-sm);
-  padding: 0.9rem;
+  padding: var(--space-4);
   box-shadow: var(--shadow-sm);
 }
 
 .spec-title {
   color: var(--ink-faint);
-  font-size: 0.78rem;
-  margin-bottom: 0.35rem;
+  font-size: var(--text-xs);
+  margin-bottom: var(--space-2);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -139,17 +156,17 @@
   color: var(--ink);
   font-weight: 700;
   font-family: var(--font-mono);
-  font-size: 0.95rem;
+  font-size: var(--text-base);
 }
 
 /* ---------- Feature nav (chips) ---------- */
 .features-nav {
   display: flex;
-  gap: 0.6rem;
+  gap: var(--space-3);
   overflow-x: auto;
-  padding: 0.8rem 1.25rem;
+  padding: var(--space-3) var(--space-4);
   background: var(--surface);
-  margin: 1rem 0 0;
+  margin: var(--space-4) 0 0;
   box-shadow: var(--shadow-sm);
   scrollbar-width: none;
 }
@@ -160,33 +177,46 @@
 
 .features-nav .nav-chip {
   flex: 0 0 auto;
-  padding: 0.5rem 0.95rem;
-  background: var(--gradient-brand);
-  color: #fff;
-  border-radius: 999px;
+  padding: var(--space-2) var(--space-4);
+  background: var(--surface-sunken);
+  color: var(--ink-soft);
+  border-radius: var(--radius-pill);
   text-decoration: none;
   font-weight: 600;
-  font-size: 0.85rem;
+  font-size: var(--text-sm);
   white-space: nowrap;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+.features-nav .nav-chip:hover {
+  background: var(--line);
+  color: var(--ink);
+}
+
+/* Active section indicator, set by scroll-spy JS in cars-data.js */
+.features-nav .nav-chip[aria-current="true"] {
+  background: var(--gradient-brand);
+  color: #fff;
 }
 
 /* ---------- Content sections ---------- */
 .content-section {
   background: var(--surface);
-  margin: 0.9rem 1.25rem;
-  padding: 1.1rem;
+  margin: var(--space-4) var(--space-4);
+  padding: var(--space-4);
   border-radius: var(--radius-sm);
   box-shadow: var(--shadow-sm);
+  scroll-margin-top: 5rem;
 }
 
 .content-section h2 {
   color: var(--ink);
-  margin-bottom: 0.6rem;
-  font-size: 1.1rem;
+  margin-bottom: var(--space-3);
+  font-size: var(--text-md);
 }
 
 .content-section p + p {
-  margin-top: 0.6rem;
+  margin-top: var(--space-3);
 }
 
 .content-section p {
@@ -208,9 +238,9 @@
 .trim-table th,
 .trim-table td {
   text-align: left;
-  padding: 0.65rem 0.75rem;
+  padding: var(--space-3);
   border-bottom: 1px solid var(--line);
-  font-size: 0.9rem;
+  font-size: var(--text-sm);
 }
 
 .trim-table thead th {
@@ -218,7 +248,7 @@
   color: var(--ink);
   font-weight: 700;
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: var(--text-xs);
   text-transform: uppercase;
   letter-spacing: 0.03em;
 }
@@ -227,7 +257,7 @@
 .photo-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem;
+  gap: var(--space-2);
 }
 
 .photo-grid img {
@@ -241,23 +271,41 @@
 .similar-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 0.7rem;
+  gap: var(--space-3);
 }
 
 .similar-card {
   background: var(--surface-sunken);
-  padding: 0.8rem;
+  padding: var(--space-4);
   border-radius: var(--radius-sm);
+  display: block;
+  text-decoration: none;
+  transition: background var(--transition-fast), transform var(--transition-fast);
 }
 
-.similar-card strong {
+.similar-card:hover {
+  background: var(--line);
+  transform: translateY(-2px);
+}
+
+.similar-card h3 {
   font-family: var(--font-display);
+  font-size: var(--text-base);
+  color: var(--ink);
+}
+
+.similar-card .similar-price {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--brand-blue-deep);
+  font-size: var(--text-sm);
+  margin-top: var(--space-1);
 }
 
 .similar-card p {
   color: var(--ink-soft);
-  font-size: 0.88rem;
-  margin-top: 0.2rem;
+  font-size: var(--text-sm);
+  margin-top: var(--space-1);
 }
 
 /* ---------- Site footer (detail page variant) ---------- */
@@ -265,6 +313,26 @@
   background: linear-gradient(120deg, var(--navy-950), var(--navy-800));
   color: #cdd6ea;
   text-align: center;
-  padding: 1.4rem 0.8rem;
-  margin-top: 1.5rem;
+  padding: var(--space-5) var(--space-3);
+  margin-top: var(--space-6);
+}
+
+/* ---------- Mobile sticky CTA bar ----------
+   Keeps "Book a Test Drive" reachable on a long scrolling page without
+   fighting for space with the top nav. Desktop already shows the hero CTA
+   near the top, so this is mobile-only (see responsive.css). */
+.mobile-cta-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  background: var(--surface);
+  border-top: 1px solid var(--line);
+  padding: var(--space-3) var(--space-4);
+  box-shadow: 0 -8px 20px rgba(11, 18, 32, 0.08);
+}
+
+.mobile-cta-bar .btn {
+  width: 100%;
 }

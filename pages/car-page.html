@@ -16,11 +16,11 @@
   <header class="navbar">
     <div class="logo">
       <a href="../index.html">
-        <img src="../assets/web/autosuite-mark.png" alt="AutoSuite">
+        <img src="../assets/web/autosuite-mark.png" alt="">
         <span class="logo-wordmark">Auto<span>Suite</span></span>
       </a>
     </div>
-    <nav class="nav-links" id="mainNav">
+    <nav class="nav-links" id="mainNav" aria-label="Primary">
       <a href="../index.html">Home</a>
       <a href="cars.html">Inventory</a>
       <a href="../index.html#contact">Contact</a>
@@ -46,11 +46,17 @@
       <figure class="hero-right">
         <img id="mainPhoto" src="../assets/web/e450-hero.jpg" alt="Mercedes-Benz E450 exterior">
         <div class="photo-meta">
-          <button class="photo-360" title="360 view (coming soon)">360°</button>
-          <div class="photo-thumbs" id="thumbs">
-            <img src="../assets/web/e450-thumb-1.jpg" data-full="../assets/web/e450-thumb-1.jpg" alt="Exterior detail">
-            <img src="../assets/web/e450-thumb-2.jpg" data-full="../assets/web/e450-thumb-2.jpg" alt="Interior detail">
-            <img src="../assets/web/e450-thumb-3.jpg" data-full="../assets/web/e450-thumb-3.jpg" alt="Front interior detail">
+          <button class="photo-360" type="button" disabled title="360° view — coming soon">360°</button>
+          <div class="photo-thumbs" id="thumbs" role="group" aria-label="Photo gallery thumbnails">
+            <button type="button" aria-current="true">
+              <img src="../assets/web/e450-thumb-1.jpg" data-full="../assets/web/e450-thumb-1.jpg" alt="Exterior detail">
+            </button>
+            <button type="button">
+              <img src="../assets/web/e450-thumb-2.jpg" data-full="../assets/web/e450-thumb-2.jpg" alt="Interior detail">
+            </button>
+            <button type="button">
+              <img src="../assets/web/e450-thumb-3.jpg" data-full="../assets/web/e450-thumb-3.jpg" alt="Front interior detail">
+            </button>
           </div>
         </div>
       </figure>
@@ -88,7 +94,7 @@
     </section>
 
     <!-- HORIZONTAL SCROLL TABS -->
-    <nav class="features-nav" id="featuresNav">
+    <nav class="features-nav" id="featuresNav" aria-label="On this page">
       <a href="#buyers-guide" class="nav-chip">Buyer's Guide</a>
       <a href="#trim-comparison" class="nav-chip">Trim Comparison</a>
       <a href="#photos" class="nav-chip">Photos</a>
@@ -109,8 +115,8 @@
     <!-- TRIM COMPARISON -->
     <section id="trim-comparison" class="content-section">
       <h2>Trim Comparison</h2>
-      <div class="table-wrap">
-        <table class="trim-table" role="table">
+      <div class="table-wrap" tabindex="0" role="region" aria-label="Trim comparison table, scroll horizontally to see all trims">
+        <table class="trim-table">
           <thead>
             <tr>
               <th>Spec / Trim</th>
@@ -173,30 +179,64 @@
     <section id="similar-vehicles" class="content-section">
       <h2>Similar Vehicles</h2>
       <div class="similar-grid">
-        <div class="similar-card"><strong>BMW 5 Series</strong><p>Comparable mid-size executive sedan.</p></div>
-        <div class="similar-card"><strong>Audi A6</strong><p>Luxury tech and cabin refinement.</p></div>
-        <div class="similar-card"><strong>Lexus GS</strong><p>Comfort-oriented alternative.</p></div>
+        <a class="similar-card" href="car-page.html?id=bmw-5series-2018">
+          <h3>2018 BMW 5 Series</h3>
+          <p class="similar-price">₦33,000,000</p>
+          <p>Comparable mid-size executive sedan.</p>
+        </a>
+        <a class="similar-card" href="car-page.html?id=mercedes-glc300-2025">
+          <h3>2025 Mercedes-Benz GLC 300</h3>
+          <p class="similar-price">₦42,000,000</p>
+          <p>Same badge, newer, in an SUV body.</p>
+        </a>
+        <a class="similar-card" href="car-page.html?id=toyota-camry-2023">
+          <h3>2023 Toyota Camry</h3>
+          <p class="similar-price">₦24,500,000</p>
+          <p>Budget-friendly sedan alternative.</p>
+        </a>
       </div>
     </section>
   </main>
 
+  <!-- Mobile-only sticky CTA (hidden at tablet+ via responsive.css) -->
+  <div class="mobile-cta-bar">
+    <button class="btn" onclick="openTestDriveModal(document.getElementById('carName').textContent)">Book a Test Drive</button>
+  </div>
+
   <!-- Shared Test Drive Modal -->
-  <div id="testDriveModal" class="modal">
+  <div id="testDriveModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="testDriveTitle">
     <div class="modal-content">
       <button class="close" onclick="closeTestDriveModal()" aria-label="Close">&times;</button>
-      <h2>Book a Test Drive</h2>
+      <h2 id="testDriveTitle">Book a Test Drive</h2>
       <p class="modal-sub">Tell us a bit about you and we'll confirm a time.</p>
-      <form id="testDriveForm">
-        <label for="td-car">Car</label>
-        <input type="text" id="td-car" name="car" placeholder="Which car?" required>
-        <label for="td-name">Your name</label>
-        <input type="text" id="td-name" name="name" placeholder="Full name" required>
-        <label for="td-email">Email</label>
-        <input type="email" id="td-email" name="email" placeholder="you@example.com" required>
-        <label for="td-phone">Phone number</label>
-        <input type="tel" id="td-phone" name="phone" placeholder="+234" required>
+      <form id="testDriveForm" novalidate>
+        <div class="field">
+          <label for="td-car">Car<span class="required-mark" aria-hidden="true">*</span></label>
+          <input type="text" id="td-car" name="car" placeholder="Which car?" required>
+          <span class="field-error">Let us know which car you're interested in.</span>
+        </div>
+        <div class="field">
+          <label for="td-email">Email<span class="required-mark" aria-hidden="true">*</span></label>
+          <input type="email" id="td-email" name="email" placeholder="you@example.com" required>
+          <span class="field-error">Enter a valid email address.</span>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="td-name">Your name<span class="required-mark" aria-hidden="true">*</span></label>
+            <input type="text" id="td-name" name="name" placeholder="Full name" required>
+            <span class="field-error">Enter your name.</span>
+          </div>
+          <div class="field">
+            <label for="td-phone">Phone number<span class="required-mark" aria-hidden="true">*</span></label>
+            <input type="tel" id="td-phone" name="phone" placeholder="+234" inputmode="tel" required>
+            <span class="field-error">Enter a phone number.</span>
+          </div>
+        </div>
         <button type="submit" class="btn">Submit Request</button>
-        <p class="form-status" id="td-status"></p>
+        <p class="form-status" id="td-status" role="status" aria-live="polite">
+          <span class="status-icon" aria-hidden="true">&check;</span>
+          <span class="status-text"></span>
+        </p>
       </form>
     </div>
   </div>

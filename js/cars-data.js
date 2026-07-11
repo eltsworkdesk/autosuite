@@ -212,6 +212,25 @@ async function initListingPage() {
   applyFilters();
 }
 
+/* Wires click behavior onto whatever gallery thumbnail buttons currently
+   exist in #thumbs — used for both the static fallback markup (no ?id= in
+   the URL) and the JS-generated gallery after hydration. */
+function wireGalleryThumbs() {
+  const mainPhoto = document.getElementById('mainPhoto');
+  const thumbsWrap = document.getElementById('thumbs');
+  if (!mainPhoto || !thumbsWrap) return;
+
+  const thumbButtons = thumbsWrap.querySelectorAll('button');
+  thumbButtons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const img = btn.querySelector('img');
+      if (img) mainPhoto.src = img.dataset.full;
+      thumbButtons.forEach((b) => b.removeAttribute('aria-current'));
+      btn.setAttribute('aria-current', 'true');
+    });
+  });
+}
+
 /* ---------- Detail page: hydrate from ?id= ---------- */
 async function initDetailPage() {
   const nameEl = document.getElementById('carName');
@@ -240,14 +259,16 @@ async function initDetailPage() {
     const thumbsWrap = document.getElementById('thumbs');
     if (thumbsWrap && car.gallery?.length > 1) {
       thumbsWrap.innerHTML = car.gallery
-        .map((img, i) => `<img src="${imageUrl(img)}" data-full="${imageUrl(img)}" alt="${car.name} photo ${i + 1}">`)
+        .map(
+          (img, i) => `
+            <button type="button" ${i === 0 ? 'aria-current="true"' : ''}>
+              <img src="${imageUrl(img)}" data-full="${imageUrl(img)}" alt="${car.name} photo ${i + 1}">
+            </button>
+          `
+        )
         .join('');
-      thumbsWrap.querySelectorAll('img').forEach((thumb) => {
-        thumb.addEventListener('click', () => {
-          mainPhoto.src = thumb.dataset.full;
-        });
-      });
     }
+    wireGalleryThumbs();
 
     const specEngine = document.getElementById('specEngine');
     if (specEngine) specEngine.textContent = car.engine;
@@ -264,8 +285,70 @@ async function initDetailPage() {
   }
 }
 
+/* Highlights the feature-nav chip matching whichever content section's
+   midpoint is closest to the vertical center of the viewport. A "closest
+   section" comparison (rather than a fixed threshold line) handles short,
+   tightly-packed sections near the end of the page correctly — a fixed
+   threshold can become unreachable for those sections once scrolling hits
+   its max and the reading line can no longer advance far enough to reach
+   them, even though the user can clearly see they're in view. */
+function initFeatureNavScrollSpy() {
+  const nav = document.getElementById('featuresNav');
+  if (!nav) return;
+  const chips = Array.from(nav.querySelectorAll('.nav-chip'));
+  const sections = chips
+    .map((chip) => document.querySelector(chip.getAttribute('href')))
+    .filter(Boolean);
+  if (!sections.length) return;
+
+  const setActive = (id) => {
+    chips.forEach((chip) => {
+      chip.toggleAttribute('aria-current', chip.getAttribute('href') === `#${id}`);
+    });
+  };
+
+  function updateActive() {
+    const atBottom = window.innerHeight + window.scrollY >= document.body.scrollHeight - 4;
+    if (atBottom) {
+      setActive(sections[sections.length - 1].id);
+      return;
+    }
+
+    const viewportCenter = window.scrollY + window.innerHeight / 2;
+    let closest = sections[0];
+    let closestDistance = Infinity;
+    for (const section of sections) {
+      const mid = section.offsetTop + section.offsetHeight / 2;
+      const distance = Math.abs(mid - viewportCenter);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closest = section;
+      }
+    }
+    setActive(closest.id);
+  }
+
+  let ticking = false;
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        updateActive();
+        ticking = false;
+      });
+    },
+    { passive: true }
+  );
+
+  updateActive();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   renderFeatured('#featuredGrid');
   initListingPage();
   initDetailPage();
+  wireGalleryThumbs();
+  initFeatureNavScrollSpy();
 });
