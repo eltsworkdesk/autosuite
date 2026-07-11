@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventory | AutoSuite</title>
+  <meta name="description" content="Browse AutoSuite's full vehicle inventory — search by name, filter by brand, and set a max price.">
+  <link rel="icon" type="image/png" href="../assets/web/favicon-32.png">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/cars.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="navbar">
+    <div class="logo">
+      <a href="../index.html">
+        <img src="../assets/web/autosuite-mark.png" alt="AutoSuite">
+        <span class="logo-wordmark">Auto<span>Suite</span></span>
+      </a>
+    </div>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="cars.html">Inventory</a>
+      <a href="../index.html#about">About</a>
+      <a href="../index.html#roadmap">Platform</a>
+      <a href="../index.html#contact">Contact</a>
+      <button class="btn small" onclick="openTestDriveModal()">Book a Test Drive</button>
+    </nav>
+    <button class="burger" onclick="toggleMenu()" aria-label="Toggle menu">☰</button>
+  </header>
+
+  <section class="listing-hero">
+    <span class="eyebrow">Full Inventory</span>
+    <h1>Every car on the floor</h1>
+    <p>Search, filter by brand, or set a budget — the grid below updates as you go.</p>
+  </section>
+
+  <!-- Search & Filters -->
+  <section class="filters">
+    <div class="field">
+      <label for="searchBar">Search</label>
+      <input type="text" id="searchBar" placeholder="Search by name or brand…">
+    </div>
+
+    <div class="field">
+      <label for="brandFilter">Brand</label>
+      <select id="brandFilter">
+        <option value="">All Brands</option>
+      </select>
+    </div>
+
+    <div class="field" style="flex: 1 1 220px;">
+      <label for="priceRange">Max Price: <span class="price-readout" id="priceValue">₦0</span></label>
+      <input type="range" id="priceRange">
+    </div>
+
+    <span class="result-count" id="resultCount"></span>
+  </section>
+
+  <!-- Car Grid -->
+  <section class="cars-grid" id="carsGrid">
+    <p class="empty-state">Loading inventory…</p>
+  </section>
+
+  <!-- Shared Test Drive Modal -->
+  <div id="testDriveModal" class="modal">
+    <div class="modal-content">
+      <button class="close" onclick="closeTestDriveModal()" aria-label="Close">&times;</button>
+      <h2>Book a Test Drive</h2>
+      <p class="modal-sub">Tell us a bit about you and we'll confirm a time.</p>
+      <form id="testDriveForm">
+        <label for="td-car">Car</label>
+        <input type="text" id="td-car" name="car" placeholder="Which car?" required>
+        <label for="td-name">Your name</label>
+        <input type="text" id="td-name" name="name" placeholder="Full name" required>
+        <label for="td-email">Email</label>
+        <input type="email" id="td-email" name="email" placeholder="you@example.com" required>
+        <label for="td-phone">Phone number</label>
+        <input type="tel" id="td-phone" name="phone" placeholder="+234" required>
+        <button type="submit" class="btn">Submit Request</button>
+        <p class="form-status" id="td-status"></p>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-brand">AutoSuite</div>
+    <p>Dealership Operating System — Abuja, Nigeria</p>
+    <p>&copy; <span id="year"></span> AutoSuite. All rights reserved.</p>
+  </footer>
+
+  <script>
+    window.CARS_JSON_PATH = '../data/cars.json';
+    window.ASSET_BASE = '../assets/web/';
+  </script>
+  <script src="../js/script.js" defer></script>
+  <script src="../js/cars-data.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AutoSuite | Drive Luxury, Drive Confidence</title>
+  <meta name="description" content="AutoSuite is a modern dealership experience — browse verified premium inventory, compare specs, and book a test drive in minutes.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="AutoSuite | Drive Luxury, Drive Confidence">
+  <meta property="og:description" content="Browse verified premium inventory, compare specs, and book a test drive in minutes.">
+  <meta property="og:image" content="assets/web/e450-hero.jpg">
+  <meta name="theme-color" content="#0b1220">
+  <link rel="icon" type="image/png" href="assets/web/favicon-32.png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">
+      <a href="index.html">
+        <img src="assets/web/autosuite-mark.png" alt="">
+        <span class="logo-wordmark">Auto<span>Suite</span></span>
+      </a>
+    </div>
+    <nav class="nav-links" id="primaryNav" aria-label="Primary">
+      <a href="index.html" aria-current="page">Home</a>
+      <a href="pages/cars.html">Inventory</a>
+      <a href="#about">About</a>
+      <a href="#roadmap">Platform</a>
+      <a href="#contact">Contact</a>
+      <button class="btn small" onclick="openTestDriveModal()">Book a Test Drive</button>
+    </nav>
+    <button class="burger" onclick="toggleMenu()" aria-label="Toggle menu" aria-expanded="false" aria-controls="primaryNav">☰</button>
+  </header>
+
+  <main id="main-content">
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <span class="eyebrow">AutoSuite Showroom · Abuja, Nigeria</span>
+      <h1>Drive Luxury,<br>Drive Confidence</h1>
+      <p>Verified premium vehicles, transparent pricing, and a faster path to your next test drive.</p>
+      <div class="hero-ctas">
+        <a href="pages/cars.html" class="btn">Explore Inventory</a>
+        <button class="btn outline" onclick="openTestDriveModal()">Book a Test Drive</button>
+      </div>
+    </div>
+    <div class="hero-media">
+      <div class="hero-frame">
+        <img src="assets/web/e450-hero.jpg" alt="Mercedes-Benz E450 on the showroom floor">
+        <span class="data-chip"><span class="dot"></span>Available Now</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="intro" aria-labelledby="about-heading">
+    <div class="intro-card">
+      <div class="intro-text">
+        <span class="eyebrow">About AutoSuite</span>
+        <h2 id="about-heading">A showroom, backed by software</h2>
+        <p>
+          AutoSuite is a dealership operating system in the making — this showroom is a working preview of what it powers:
+          verified listings, transparent specs, and a straightforward path from browsing to a booked test drive.
+          Every car below pulls from a single inventory source, the same way a real dealership's stock would.
+        </p>
+      </div>
+      <div class="intro-media">
+        <img src="assets/web/about-handover.jpg" alt="Customer receiving car keys at handover" width="700" height="525" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <!-- Car Highlights -->
+  <section id="cars" class="featured" aria-labelledby="featured-heading">
+    <div class="section-heading">
+      <span class="eyebrow">Car Highlights</span>
+      <h2 id="featured-heading">Featured this week</h2>
+      <p>A rotating sample of what's currently on the floor.</p>
+    </div>
+    <div class="car-grid" id="featuredGrid">
+      <p class="empty-state">Loading inventory…</p>
+    </div>
+    <div class="featured-footer">
+      <a href="pages/cars.html" class="btn ghost">View Full Inventory</a>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="why-us" aria-labelledby="why-us-heading">
+    <div class="section-heading">
+      <span class="eyebrow">Why Choose Us</span>
+      <h2 id="why-us-heading">Buying a car, without the guesswork</h2>
+      <p>Four things every AutoSuite listing is built on.</p>
+    </div>
+    <div class="why-us-grid">
+      <div class="why-us-card">
+        <div class="why-us-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"></path>
+            <path d="M9 12l2 2 4-4"></path>
+          </svg>
+        </div>
+        <h3>Trusted Dealership</h3>
+        <p>Every listing on this floor is verified before it goes live — no surprises at handover.</p>
+      </div>
+      <div class="why-us-card">
+        <div class="why-us-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="9" r="5"></circle>
+            <path d="M8.5 13.5L7 21l5-2.5L17 21l-1.5-7.5"></path>
+          </svg>
+        </div>
+        <h3>Certified Vehicles</h3>
+        <p>Multi-point inspections and transparent history on every vehicle we list.</p>
+      </div>
+      <div class="why-us-card">
+        <div class="why-us-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2.5" y="6" width="19" height="12" rx="2"></rect>
+            <path d="M2.5 10h19"></path>
+            <path d="M6 14.5h4"></path>
+          </svg>
+        </div>
+        <h3>Financing Assistance</h3>
+        <p>Straightforward estimates and financing partner hand-off, built for the Nigerian market.</p>
+      </div>
+      <div class="why-us-card">
+        <div class="why-us-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 13a8 8 0 0116 0"></path>
+            <rect x="2.5" y="13" width="4" height="6" rx="1.5"></rect>
+            <rect x="17.5" y="13" width="4" height="6" rx="1.5"></rect>
+          </svg>
+        </div>
+        <h3>Expert Support</h3>
+        <p>Real people to answer real questions, before and after you drive off the lot.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Roadmap / platform teaser -->
+  <section id="roadmap" class="roadmap" aria-labelledby="roadmap-heading">
+    <div class="roadmap-inner">
+      <div class="section-heading">
+        <span class="eyebrow">Coming to AutoSuite</span>
+        <h2 id="roadmap-heading">Built to grow into a full dealership OS</h2>
+        <p>This sprint is the storefront. Here's what the platform is being designed to support next.</p>
+      </div>
+      <div class="roadmap-grid">
+        <div class="roadmap-card">
+          <span class="data-chip"><span class="dot"></span>Inventory</span>
+          <h3>Inventory Management</h3>
+          <p>Real-time stock, VIN tracking, and multi-lot visibility for every unit on the floor.</p>
+        </div>
+        <div class="roadmap-card">
+          <span class="data-chip"><span class="dot"></span>CRM</span>
+          <h3>Lead & CRM Pipeline</h3>
+          <p>Qualify buyers, track follow-ups, and route referrals without losing anyone in a spreadsheet.</p>
+        </div>
+        <div class="roadmap-card">
+          <span class="data-chip"><span class="dot"></span>Financing</span>
+          <h3>Financing Tools</h3>
+          <p>Instant estimates and financing partner hand-off, built for the Nigerian market.</p>
+        </div>
+        <div class="roadmap-card">
+          <span class="data-chip"><span class="dot"></span>Automation</span>
+          <h3>AI Workflows</h3>
+          <p>Automated follow-ups and after-sales check-ins that keep customers from going cold.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="contact" aria-labelledby="contact-heading">
+    <span class="eyebrow">Get in touch</span>
+    <h2 id="contact-heading">Come see the floor</h2>
+    <p>Have a question about a listing, or want a walkthrough of AutoSuite itself? Reach out.</p>
+    <div class="contact-links">
+      <a href="mailto:hello@autosuite.ng">hello@autosuite.ng</a>
+      <a href="tel:+2348001234567">+234 800 123 4567</a>
+      <span>Abuja, Nigeria</span>
+    </div>
+  </section>
+
+  </main>
+
+  <!-- Shared Test Drive Modal -->
+  <div id="testDriveModal" class="modal">
+    <div class="modal-content">
+      <button class="close" onclick="closeTestDriveModal()" aria-label="Close">&times;</button>
+      <h2>Book a Test Drive</h2>
+      <p class="modal-sub">Tell us a bit about you and we'll confirm a time.</p>
+      <form id="testDriveForm">
+        <label for="td-car">Car</label>
+        <input type="text" id="td-car" name="car" placeholder="Which car?" required>
+        <label for="td-name">Your name</label>
+        <input type="text" id="td-name" name="name" placeholder="Full name" required>
+        <label for="td-email">Email</label>
+        <input type="email" id="td-email" name="email" placeholder="you@example.com" required>
+        <label for="td-phone">Phone number</label>
+        <input type="tel" id="td-phone" name="phone" placeholder="+234" required>
+        <button type="submit" class="btn">Submit Request</button>
+        <p class="form-status" id="td-status"></p>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="footer-brand">
+          <img src="assets/web/autosuite-mark.png" alt="" width="22" height="22">
+          AutoSuite
+        </div>
+        <p>Dealership Operating System</p>
+        <p>Abuja, Nigeria</p>
+      </div>
+
+      <div class="footer-col">
+        <h3>Quick Links</h3>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="index.html">Home</a>
+          <a href="pages/cars.html">Inventory</a>
+          <a href="#about">About</a>
+          <a href="#roadmap">Platform</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+
+      <div class="footer-col">
+        <h3>Contact</h3>
+        <p><a href="mailto:hello@autosuite.ng">hello@autosuite.ng</a></p>
+        <p><a href="tel:+2348001234567">+234 800 123 4567</a></p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      &copy; <span id="year"></span> AutoSuite. All rights reserved.
+    </div>
+  </footer>
+
+  <script src="js/script.js" defer></script>
+  <script src="js/cars-data.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+/* =========================================================
+   AutoSuite — Cars listing page styles
+========================================================= */
+
+.listing-hero {
+  background: linear-gradient(120deg, var(--navy-950), var(--navy-800));
+  color: #fff;
+  padding: 2.2rem 1.25rem 2.6rem;
+  text-align: center;
+}
+
+.listing-hero h1 {
+  font-size: 1.8rem;
+  margin: 0.4rem 0 0.4rem;
+}
+
+.listing-hero p {
+  color: #cdd8f0;
+  font-size: 0.95rem;
+}
+
+/* ---------- Filters ---------- */
+.filters {
+  max-width: 1180px;
+  margin: -1.6rem auto 0;
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  padding: 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  align-items: center;
+  position: relative;
+  z-index: 5;
+}
+
+.filters .field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  flex: 1 1 180px;
+}
+
+.filters label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+}
+
+.filters input[type="text"],
+.filters select {
+  padding: 0.65rem 0.8rem;
+  font-size: 0.92rem;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--line);
+  background: var(--bg);
+  font-family: inherit;
+}
+
+.filters input[type="text"]:focus,
+.filters select:focus {
+  border-color: var(--brand-blue-deep);
+  outline: none;
+}
+
+.filters input[type="range"] {
+  width: 100%;
+  accent-color: var(--brand-blue-deep);
+}
+
+.filters .price-readout {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--brand-blue-deep);
+}
+
+.filters .result-count {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+/* ---------- Grid ---------- */
+.cars-grid {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 2.2rem 1.25rem 4rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.4rem;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--ink-soft);
+}
+
+.empty-state .eyebrow {
+  display: block;
+  margin-bottom: 0.6rem;
+}
