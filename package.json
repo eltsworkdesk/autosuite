@@ -1,0 +1,15 @@
+{
+  "name": "autosuite",
+  "private": true,
+  "version": "1.0.0",
+  "description": "AutoSuite dealership storefront + CRM API",
+  "scripts": {
+    "postinstall": "prisma generate"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.20.0"
+  },
+  "devDependencies": {
+    "prisma": "^5.20.0"
+  }
+}

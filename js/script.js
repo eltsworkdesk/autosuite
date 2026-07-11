@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
 
-    form.addEventListener('submit', (event) => {
+    form.addEventListener('submit', async (event) => {
       event.preventDefault();
 
       let firstInvalid = null;
@@ -95,17 +95,37 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      if (statusText) statusText.textContent = `Thanks! We'll reach out to confirm your test drive.`;
-      status?.classList.add('visible');
-      form.querySelector('button[type="submit"]').disabled = true;
+      const submitBtn = form.querySelector('button[type="submit"]');
+      submitBtn.disabled = true;
 
-      setTimeout(() => {
-        form.reset();
-        fields.forEach((f) => f.classList.remove('invalid'));
-        form.querySelector('button[type="submit"]').disabled = false;
-        closeTestDriveModal();
-        status?.classList.remove('visible');
-      }, 1800);
+      try {
+        const res = await fetch('/api/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            carName: form.querySelector('#td-car').value,
+            name: form.querySelector('#td-name').value,
+            email: form.querySelector('#td-email').value,
+            phone: form.querySelector('#td-phone').value,
+          }),
+        });
+        if (!res.ok) throw new Error('Request failed');
+
+        if (statusText) statusText.textContent = `Thanks! We'll reach out to confirm your test drive.`;
+        status?.classList.add('visible');
+
+        setTimeout(() => {
+          form.reset();
+          fields.forEach((f) => f.classList.remove('invalid'));
+          submitBtn.disabled = false;
+          closeTestDriveModal();
+          status?.classList.remove('visible');
+        }, 1800);
+      } catch (err) {
+        if (statusText) statusText.textContent = `Something went wrong. Please try again or call us directly.`;
+        status?.classList.add('visible');
+        submitBtn.disabled = false;
+      }
     });
   }
 
