@@ -4,6 +4,12 @@
    cars.css / car.css. This file only adds tablet+ overrides.
 ========================================================= */
 
+/* Mobile only: leave room at the bottom of the detail page for the
+   sticky CTA bar so it never covers the Similar Vehicles section. */
+.page-wrap {
+  padding-bottom: 4.5rem;
+}
+
 @media (min-width: 768px) {
   /* Navbar */
   .nav-links {
@@ -97,6 +103,24 @@
 
   .footer-bottom {
     text-align: left;
+  }
+
+  /* Test drive modal: pair name + phone in one row once there's room */
+  #testDriveForm .field-row {
+    flex-direction: row;
+  }
+
+  #testDriveForm .field-row .field {
+    flex: 1;
+  }
+
+  /* Mobile CTA bar isn't needed once the hero CTA has room to breathe */
+  .mobile-cta-bar {
+    display: none;
+  }
+
+  .page-wrap {
+    padding-bottom: 0;
   }
 
   /* Detail page */
