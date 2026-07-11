@@ -52,9 +52,9 @@
       <a href="../index.html">Home</a>
       <a href="cars.html">Inventory</a>
       <a href="../index.html#contact">Contact</a>
-      <button class="btn small" onclick="openTestDriveModal()">Book a Test Drive</button>
+      <button type="button" class="btn small" onclick="openTestDriveModal()">Book a Test Drive</button>
     </nav>
-    <button class="burger" id="burgerBtn" onclick="toggleMenu()" aria-label="menu">☰</button>
+    <button type="button" class="burger" id="burgerBtn" onclick="toggleMenu()" aria-label="menu">☰</button>
   </header>
 
   <!-- HERO / TOP -->
@@ -67,7 +67,7 @@
 
         <div class="hero-ctas">
           <a href="#inventory" class="btn">View Inventory</a>
-          <button class="btn outline" onclick="openTestDriveModal(document.getElementById('carName').textContent)">Book a Test Drive</button>
+          <button type="button" class="btn outline" onclick="openTestDriveModal(document.getElementById('carName').textContent)">Book a Test Drive</button>
         </div>
       </div>
 
@@ -228,13 +228,13 @@
 
   <!-- Mobile-only sticky CTA (hidden at tablet+ via responsive.css) -->
   <div class="mobile-cta-bar">
-    <button class="btn" onclick="openTestDriveModal(document.getElementById('carName').textContent)">Book a Test Drive</button>
+    <button type="button" class="btn" onclick="openTestDriveModal(document.getElementById('carName').textContent)">Book a Test Drive</button>
   </div>
 
   <!-- Shared Test Drive Modal -->
   <div id="testDriveModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="testDriveTitle">
     <div class="modal-content">
-      <button class="close" onclick="closeTestDriveModal()" aria-label="Close">&times;</button>
+      <button type="button" class="close" onclick="closeTestDriveModal()" aria-label="Close">&times;</button>
       <h2 id="testDriveTitle">Book a Test Drive</h2>
       <p class="modal-sub">Tell us a bit about you and we'll confirm a time.</p>
       <form id="testDriveForm" novalidate>

@@ -18,7 +18,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Install tooling
         run: npm install --no-save html-validate@8 @axe-core/cli@4 http-server@14 wait-on@7
