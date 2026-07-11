@@ -1,0 +1,159 @@
+/* =========================================================
+   AutoSuite — Responsive breakpoints
+   Mobile-first base styles live in style.css / home.css /
+   cars.css / car.css. This file only adds tablet+ overrides.
+========================================================= */
+
+@media (min-width: 768px) {
+  /* Navbar */
+  .nav-links {
+    display: flex !important;
+    flex-direction: row;
+    align-items: center;
+    position: static;
+    background: none;
+    width: auto;
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .nav-links a {
+    margin: 0 0.9rem;
+  }
+
+  .nav-links .btn {
+    margin: 0 0 0 0.4rem;
+  }
+
+  .burger {
+    display: none;
+  }
+
+  /* Home hero */
+  .hero {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+    padding: 4.5rem 2.5rem;
+    gap: 3rem;
+  }
+
+  .hero-content {
+    max-width: 460px;
+  }
+
+  .hero-content p {
+    margin: 0;
+  }
+
+  .hero-ctas {
+    justify-content: flex-start;
+  }
+
+  /* Intro / About — unify into a row layout */
+  .intro-card {
+    flex-direction: row;
+    align-items: center;
+    padding: var(--space-7);
+  }
+
+  .intro-text {
+    flex: 1;
+  }
+
+  .intro-media {
+    flex: 1;
+    max-width: 440px;
+  }
+
+  /* Featured + listing grids */
+  .car-grid,
+  .cars-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .roadmap-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .why-us-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer-grid {
+    grid-template-columns: repeat(3, 1fr);
+    text-align: left;
+  }
+
+  .footer-links {
+    align-items: flex-start;
+  }
+
+  .footer-bottom {
+    text-align: left;
+  }
+
+  /* Detail page */
+  .detail-hero {
+    flex-direction: row;
+    align-items: center;
+    padding: 2.4rem;
+    gap: 2.2rem;
+  }
+
+  .detail-hero .hero-left {
+    order: 1;
+    width: 44%;
+  }
+
+  .detail-hero .hero-right {
+    order: 2;
+    width: 56%;
+  }
+
+  .spec-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .photo-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .similar-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .features-nav {
+    margin: 1rem 1.25rem 0;
+    position: sticky;
+    top: 64px;
+    z-index: 40;
+  }
+}
+
+@media (min-width: 1024px) {
+  .roadmap-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .why-us-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .hero-content h1 {
+    font-size: 2.6rem;
+  }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

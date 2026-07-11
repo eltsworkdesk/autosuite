@@ -1,0 +1,616 @@
+/* =========================================================
+   AutoSuite — Base stylesheet
+   Design tokens, reset, and components shared by every page.
+   Page-specific rules live in home.css / cars.css / car.css.
+   Breakpoints live in responsive.css (loaded last).
+========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
+
+:root {
+  /* Brand gradient, sampled from the AutoSuite mark */
+  --brand-blue: #0ea5ff;
+  --brand-blue-deep: #1a4fb4; /* AA-compliant on light backgrounds — used for eyebrow/price text */
+  --brand-purple: #6c4cee;
+  --gradient-brand: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-purple) 100%);
+
+  /* Ink / neutrals */
+  --navy-950: #0b1220;
+  --navy-900: #10182c;
+  --navy-800: #171f3a;
+  --ink: #0b1220;
+  --ink-soft: #4b5568;
+  --ink-faint: #8892a6;
+  --line: #e6e8f0;
+
+  /* Surfaces */
+  --bg: #f6f7fb;
+  --surface: #ffffff;
+  --surface-sunken: #eef0f7;
+
+  /* Feedback */
+  --success: #16a34a;
+  --danger: #e0473f;
+
+  /* Type */
+  --font-display: 'Space Grotesk', 'Segoe UI', sans-serif;
+  --font-body: 'Inter', 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'SFMono-Regular', monospace;
+
+  /* Radius / shadow */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 2px 10px rgba(11, 18, 32, 0.06);
+  --shadow-md: 0 12px 30px rgba(11, 18, 32, 0.12);
+  --shadow-lg: 0 24px 60px rgba(11, 18, 32, 0.18);
+
+  /* Spacing scale (4px base) — use these instead of one-off rem values */
+  --space-1: 0.25rem;   /* 4px  */
+  --space-2: 0.5rem;    /* 8px  */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.5rem;    /* 24px */
+  --space-6: 2rem;      /* 32px */
+  --space-7: 3rem;      /* 48px */
+  --space-8: 4rem;      /* 64px */
+  --space-9: 6rem;      /* 96px */
+
+  /* Type scale */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-md: 1.125rem;
+  --text-lg: 1.375rem;
+  --text-xl: 1.75rem;
+  --text-2xl: 2.25rem;
+  --text-3xl: 2.75rem;
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-fast: 0.15s var(--ease);
+  --transition-base: 0.22s var(--ease);
+  --transition-slow: 0.4s var(--ease);
+}
+
+/* ---------- Reset ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+ul {
+  list-style: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand-blue);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: var(--space-4);
+  background: var(--ink);
+  color: #fff;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-sm);
+  z-index: 1000;
+  font-weight: 600;
+  text-decoration: none;
+  transition: top var(--transition-base);
+}
+
+.skip-link:focus {
+  top: var(--space-4);
+}
+
+/* ---------- Layout helpers ---------- */
+.container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brand-blue-deep);
+}
+
+/* ---------- Navbar ---------- */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  background: linear-gradient(120deg, var(--navy-950), var(--navy-800));
+  color: #fff;
+  padding: 0.85rem 1.25rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.18);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo a {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  text-decoration: none;
+}
+
+.logo img {
+  height: 30px;
+  width: auto;
+}
+
+.logo-wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.logo-wordmark span {
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.nav-links {
+  display: none;
+  flex-direction: column;
+  background: var(--navy-900);
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 230px;
+  padding: 1rem;
+  border-radius: 0 0 0 var(--radius-md);
+  box-shadow: var(--shadow-lg);
+}
+
+.nav-links a {
+  color: #fff;
+  margin: 0.4rem 0;
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: color var(--transition-base);
+  position: relative;
+}
+
+.nav-links a:hover,
+.nav-links a:focus-visible {
+  color: var(--brand-blue);
+}
+
+.nav-links a[aria-current="page"] {
+  color: var(--brand-blue);
+}
+
+.nav-links a[aria-current="page"]::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 100%;
+  height: 2px;
+  background: var(--gradient-brand);
+  border-radius: var(--radius-pill);
+}
+
+.nav-links.active {
+  display: flex;
+}
+
+.nav-links .btn {
+  margin-top: 0.5rem;
+}
+
+.burger {
+  font-size: 1.5rem;
+  line-height: 1;
+  background: none;
+  border: none;
+  color: #fff;
+  display: block;
+}
+
+/* ---------- Buttons ----------
+   Three roles, kept under the existing class names so every page
+   that already uses .btn / .btn.outline / .btn.ghost keeps working:
+     .btn            → Primary   (brand gradient, highest emphasis)
+     .btn.outline    → Secondary (for use on dark surfaces, e.g. the hero)
+     .btn.ghost      → Tertiary  (quiet, for "view all" style actions)
+     .btn.small       → compact size modifier, stacks with any of the above
+*/
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  background: var(--gradient-brand);
+  color: #fff;
+  padding: 0.75rem 1.4rem;
+  border-radius: var(--radius-pill);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  border: none;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  box-shadow: 0 8px 20px rgba(46, 124, 246, 0.28);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(46, 124, 246, 0.36);
+}
+
+.btn:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn.outline {
+  background: transparent;
+  color: #fff;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  box-shadow: none;
+}
+
+.btn.outline:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.btn.outline:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.btn.ghost {
+  background: var(--surface-sunken);
+  color: var(--ink);
+  box-shadow: none;
+}
+
+.btn.ghost:hover {
+  background: var(--line);
+}
+
+.btn.small {
+  padding: 0.5rem 1rem;
+  font-size: 0.82rem;
+}
+
+/* ---------- Data chip (signature element) ----------
+   Mono-font "readout" styling used for prices, specs, and
+   filter labels — a nod to AutoSuite's dashboard/OS identity. */
+.data-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.85rem;
+  background: var(--navy-950);
+  color: #d9e6ff;
+  padding: 0.3rem 0.65rem;
+  border-radius: 6px;
+  letter-spacing: 0.01em;
+}
+
+.data-chip .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--brand-blue);
+  box-shadow: 0 0 8px var(--brand-blue);
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  background: linear-gradient(120deg, var(--navy-950), var(--navy-800));
+  color: #cdd6ea;
+  padding: var(--space-7) var(--space-4) var(--space-5);
+  margin-top: var(--space-8);
+}
+
+.footer-grid {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  text-align: center;
+}
+
+.footer-col h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #93a2c4;
+  margin-bottom: var(--space-3);
+}
+
+.footer .footer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: #fff;
+  font-size: var(--text-md);
+  margin-bottom: var(--space-2);
+}
+
+.footer .footer-brand img {
+  height: 22px;
+  width: auto;
+}
+
+.footer-col p {
+  font-size: var(--text-sm);
+  margin: 0.2rem 0;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.footer a {
+  color: #cdd6ea;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.footer a:hover,
+.footer a:focus-visible {
+  color: var(--brand-blue);
+}
+
+.footer-bottom {
+  max-width: 1180px;
+  margin: var(--space-6) auto 0;
+  padding-top: var(--space-5);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  font-size: var(--text-xs);
+  color: #93a2c4;
+}
+
+/* ---------- Test Drive Modal (shared across pages) ---------- */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(11, 18, 32, 0.6);
+  backdrop-filter: blur(2px);
+  padding: 1.25rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal.open {
+  display: flex;
+}
+
+.modal-content {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  width: 100%;
+  max-width: 420px;
+  position: relative;
+  box-shadow: var(--shadow-lg);
+}
+
+.modal-content h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.3rem;
+}
+
+.modal-sub {
+  color: var(--ink-soft);
+  font-size: 0.88rem;
+  margin-bottom: 1.1rem;
+}
+
+.modal .close {
+  position: absolute;
+  right: 1.1rem;
+  top: 1rem;
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: var(--ink-faint);
+  background: none;
+  border: none;
+  line-height: 1;
+}
+
+.modal .close:hover {
+  color: var(--ink);
+}
+
+#testDriveForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+#testDriveForm label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  margin-bottom: -0.35rem;
+}
+
+#testDriveForm input,
+#testDriveForm select {
+  padding: 0.7rem 0.85rem;
+  font-size: 0.95rem;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--line);
+  background: var(--bg);
+  font-family: inherit;
+}
+
+#testDriveForm input:focus,
+#testDriveForm select:focus {
+  border-color: var(--brand-blue-deep);
+  outline: none;
+}
+
+#testDriveForm button {
+  margin-top: 0.4rem;
+}
+
+.form-status {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--success);
+  display: none;
+}
+
+.form-status.visible {
+  display: block;
+}
+
+/* ---------- Shared card look (used by featured + listing grids) ---------- */
+.car-card {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+}
+
+.car-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+}
+
+.car-card .car-card-media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--surface-sunken);
+}
+
+.car-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.car-card:hover img {
+  transform: scale(1.05);
+}
+
+.car-card .car-card-media .data-chip {
+  position: absolute;
+  top: 0.7rem;
+  left: 0.7rem;
+}
+
+.car-card-body {
+  padding: 1.1rem 1.2rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+.car-card-body h3 {
+  font-size: 1.05rem;
+}
+
+.car-card .price {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--brand-blue-deep);
+  font-size: 1.02rem;
+}
+
+.car-card .specs {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin: 0.1rem 0 0.6rem;
+}
+
+.car-card .btn {
+  align-self: flex-start;
+  margin-top: auto;
+}

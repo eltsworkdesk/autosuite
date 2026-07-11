@@ -1,0 +1,294 @@
+/* =========================================================
+   AutoSuite — Home page styles
+========================================================= */
+
+/* ---------- Hero ---------- */
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  align-items: center;
+  text-align: center;
+  padding: var(--space-7) var(--space-4) var(--space-7);
+  background: linear-gradient(160deg, var(--navy-950) 0%, var(--navy-800) 55%, #1c2650 100%);
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 15% 20%, rgba(14, 165, 255, 0.28), transparent 45%),
+              radial-gradient(circle at 85% 75%, rgba(108, 76, 238, 0.28), transparent 45%);
+  pointer-events: none;
+}
+
+.hero-content,
+.hero-media {
+  position: relative;
+  z-index: 1;
+  animation: hero-rise 0.6s var(--ease) both;
+}
+
+.hero-media {
+  animation-delay: 0.08s;
+}
+
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-content .eyebrow {
+  color: #9fd4ff;
+}
+
+.hero-content h1 {
+  font-size: var(--text-2xl);
+  margin: var(--space-3) 0 var(--space-4);
+}
+
+.hero-content p {
+  font-size: var(--text-base);
+  color: #cdd8f0;
+  max-width: 30ch;
+  margin: 0 auto;
+}
+
+.hero-ctas {
+  margin-top: var(--space-5);
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.hero-media {
+  width: 100%;
+  max-width: 640px;
+}
+
+.hero-frame {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.hero-frame img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+
+.hero-frame .data-chip {
+  position: absolute;
+  bottom: var(--space-3);
+  left: var(--space-3);
+}
+
+/* ---------- Intro / About ---------- */
+.intro {
+  padding: var(--space-8) var(--space-4);
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.intro-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-6);
+}
+
+.intro-text {
+  text-align: left;
+}
+
+.intro-text h2 {
+  font-size: var(--text-xl);
+  color: var(--ink);
+  margin: var(--space-2) 0 var(--space-4);
+}
+
+.intro-text p {
+  color: var(--ink-soft);
+}
+
+.intro-media {
+  width: 100%;
+}
+
+.intro-media img {
+  width: 100%;
+  border-radius: var(--radius-md);
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+/* ---------- Featured Cars ---------- */
+.featured {
+  padding: var(--space-4) var(--space-4) var(--space-7);
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.section-heading {
+  text-align: center;
+  margin-bottom: var(--space-6);
+}
+
+.section-heading h2 {
+  font-size: var(--text-xl);
+  margin: var(--space-2) 0 var(--space-3);
+}
+
+.section-heading p {
+  color: var(--ink-soft);
+}
+
+.car-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+}
+
+.featured-footer {
+  text-align: center;
+  margin-top: var(--space-6);
+}
+
+/* ---------- Why Choose Us ---------- */
+.why-us {
+  padding: var(--space-7) var(--space-4);
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.why-us-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+}
+
+.why-us-card {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+  text-align: left;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.why-us-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.why-us-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: var(--gradient-brand);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-4);
+}
+
+.why-us-icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: #fff;
+}
+
+.why-us-card h3 {
+  font-size: var(--text-md);
+  margin-bottom: var(--space-2);
+}
+
+.why-us-card p {
+  color: var(--ink-soft);
+  font-size: var(--text-sm);
+}
+
+/* ---------- Roadmap (platform teaser) ---------- */
+.roadmap {
+  background: var(--surface-sunken);
+  padding: 3rem 1.25rem;
+}
+
+.roadmap-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+}
+
+.roadmap-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.roadmap-card {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  padding: 1.4rem;
+  box-shadow: var(--shadow-sm);
+  border-top: 3px solid transparent;
+  border-image: var(--gradient-brand) 1;
+}
+
+.roadmap-card .data-chip {
+  margin-bottom: 0.8rem;
+}
+
+.roadmap-card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.4rem;
+}
+
+.roadmap-card p {
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+}
+
+/* ---------- Contact ---------- */
+.contact {
+  padding: 3rem 1.25rem;
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.contact h2 {
+  font-size: 1.5rem;
+  margin: 0.4rem 0 0.6rem;
+}
+
+.contact p {
+  color: var(--ink-soft);
+  margin-bottom: 1.2rem;
+}
+
+.contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+}

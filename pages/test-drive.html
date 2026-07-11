@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Test Drive Demo | AutoSuite</title>
+  <style>
+    /* Basic page styling
+       Note: this page is a standalone demo of the booking flow and isn't
+       linked from the main nav anymore — index.html, cars.html, and
+       car-page.html now each embed this same modal directly. Kept here
+       for reference / isolated testing. */
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background-color: #f6f7fb;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .back-link {
+      color: #4b5568;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .back-link:hover {
+      color: #2e7cf6;
+    }
+
+    /* Button styling */
+    .test-drive-btn {
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #0ea5ff, #6c4cee);
+      color: white;
+      border: none;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .test-drive-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Modal styling */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      position: relative;
+    }
+
+    .close {
+      position: absolute;
+      right: 15px;
+      top: 10px;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* Form styling */
+    #testDriveForm input {
+      display: block;
+      width: 90%;
+      margin: 10px auto;
+      padding: 10px;
+      font-size: 14px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    #testDriveForm button {
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #0ea5ff, #6c4cee);
+      color: white;
+      border: none;
+      border-radius: 999px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    #testDriveForm button:hover {
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <a href="../index.html" class="back-link">← Back to AutoSuite</a>
+
+  <!-- Book a Test Drive Button -->
+  <button class="test-drive-btn" onclick="openTestDriveModal()">Book a Test Drive</button>
+
+  <!-- Modal -->
+  <div id="testDriveModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeTestDriveModal()">&times;</span>
+      <h2>Book a Test Drive</h2>
+      <form id="testDriveForm">
+        <input type="text" name="car" placeholder="Car Name" required>
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="tel" name="phone" placeholder="Phone Number" required>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Open modal
+    function openTestDriveModal() {
+      document.getElementById('testDriveModal').style.display = 'block';
+    }
+
+    // Close modal
+    function closeTestDriveModal() {
+      document.getElementById('testDriveModal').style.display = 'none';
+    }
+
+    // Close modal if click outside content
+    window.onclick = function(event) {
+      const modal = document.getElementById('testDriveModal');
+      if (event.target === modal) {
+        closeTestDriveModal();
+      }
+    }
+
+    // Form submission
+    document.getElementById('testDriveForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Your test drive request has been submitted!');
+      closeTestDriveModal();
+      this.reset(); // clear form fields
+    });
+  </script>
+
+</body>
+</html>
