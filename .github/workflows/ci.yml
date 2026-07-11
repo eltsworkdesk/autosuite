@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate-and-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install tooling
+        run: npm install --no-save html-validate@8 @axe-core/cli@4 http-server@14 wait-on@7
+
+      - name: Validate HTML
+        run: npx html-validate index.html pages/*.html
+
+      - name: Serve site
+        run: npx http-server . -p 8080 --silent &
+
+      - name: Wait for server
+        run: npx wait-on http://localhost:8080/index.html
+
+      - name: Run accessibility audit (axe-core)
+        run: |
+          npx axe http://localhost:8080/index.html \
+                  http://localhost:8080/pages/cars.html \
+                  http://localhost:8080/pages/car-page.html \
+                  http://localhost:8080/pages/test-drive.html \
+                  --chrome-options="no-sandbox" \
+                  --exit
