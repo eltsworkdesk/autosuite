@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "description": "AutoSuite dealership storefront + CRM API",
   "scripts": {
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "build": "prisma db push --skip-generate"
   },
   "dependencies": {
     "@prisma/client": "^5.20.0"
