@@ -61,6 +61,18 @@ jobs:
         continue-on-error: true
         run: npx axe http://localhost:8080/pages/platform.html --chrome-options="no-sandbox" --exit
 
+      - name: Summarize axe outcomes
+        if: always()
+        run: |
+          echo "| Page | Outcome |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|---------|" >> $GITHUB_STEP_SUMMARY
+          echo "| index.html | ${{ steps.axe-index.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| cars.html | ${{ steps.axe-cars.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| car-page.html | ${{ steps.axe-car-page.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| test-drive.html | ${{ steps.axe-test-drive.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| compare.html | ${{ steps.axe-compare.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| platform.html | ${{ steps.axe-platform.outcome }} |" >> $GITHUB_STEP_SUMMARY
+
       - name: Fail the job if any axe audit failed
         if: >-
           steps.axe-index.outcome == 'failure' ||
