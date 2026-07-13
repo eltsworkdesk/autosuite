@@ -8,8 +8,6 @@ on:
 jobs:
   validate-and-audit:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -36,53 +34,44 @@ jobs:
       - name: "axe: index.html"
         id: axe-index
         continue-on-error: true
-        run: npx axe http://localhost:8080/index.html --chrome-options="no-sandbox" --exit > /tmp/axe-index.txt 2>&1
+        run: npx axe http://localhost:8080/index.html --chrome-options="no-sandbox" --exit
 
       - name: "axe: cars.html"
         id: axe-cars
         continue-on-error: true
-        run: npx axe http://localhost:8080/pages/cars.html --chrome-options="no-sandbox" --exit > /tmp/axe-cars.txt 2>&1
+        run: npx axe http://localhost:8080/pages/cars.html --chrome-options="no-sandbox" --exit
 
       - name: "axe: car-page.html"
         id: axe-car-page
         continue-on-error: true
-        run: npx axe http://localhost:8080/pages/car-page.html --chrome-options="no-sandbox" --exit > /tmp/axe-car-page.txt 2>&1
+        run: npx axe http://localhost:8080/pages/car-page.html --chrome-options="no-sandbox" --exit
 
       - name: "axe: test-drive.html"
         id: axe-test-drive
         continue-on-error: true
-        run: npx axe http://localhost:8080/pages/test-drive.html --chrome-options="no-sandbox" --exit > /tmp/axe-test-drive.txt 2>&1
+        run: npx axe http://localhost:8080/pages/test-drive.html --chrome-options="no-sandbox" --exit
 
       - name: "axe: compare.html"
         id: axe-compare
         continue-on-error: true
-        run: npx axe http://localhost:8080/pages/compare.html --chrome-options="no-sandbox" --exit > /tmp/axe-compare.txt 2>&1
+        run: npx axe http://localhost:8080/pages/compare.html --chrome-options="no-sandbox" --exit
 
       - name: "axe: platform.html"
         id: axe-platform
         continue-on-error: true
-        run: npx axe http://localhost:8080/pages/platform.html --chrome-options="no-sandbox" --exit > /tmp/axe-platform.txt 2>&1
+        run: npx axe http://localhost:8080/pages/platform.html --chrome-options="no-sandbox" --exit
 
-      - name: Post axe results as a commit comment
+      - name: Summarize axe outcomes
         if: always()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          {
-            echo "### axe-core diagnostic results"
-            echo ""
-            for f in index cars car-page test-drive compare platform; do
-              echo "<details><summary>$f — see output</summary>"
-              echo ""
-              echo '```'
-              tail -c 3000 "/tmp/axe-$f.txt" 2>/dev/null || echo "(no output file)"
-              echo '```'
-              echo "</details>"
-              echo ""
-            done
-          } > /tmp/comment-body.md
-          gh api "repos/${{ github.repository }}/commits/${{ github.sha }}/comments" \
-            -f body=@/tmp/comment-body.md
+          echo "| Page | Outcome |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|---------|" >> $GITHUB_STEP_SUMMARY
+          echo "| index.html | ${{ steps.axe-index.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| cars.html | ${{ steps.axe-cars.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| car-page.html | ${{ steps.axe-car-page.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| test-drive.html | ${{ steps.axe-test-drive.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| compare.html | ${{ steps.axe-compare.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| platform.html | ${{ steps.axe-platform.outcome }} |" >> $GITHUB_STEP_SUMMARY
 
       - name: Fail the job if any axe audit failed
         if: >-
@@ -93,5 +82,5 @@ jobs:
           steps.axe-compare.outcome == 'failure' ||
           steps.axe-platform.outcome == 'failure'
         run: |
-          echo "One or more axe-core audits failed — see the commit comment posted above for full output."
+          echo "One or more axe-core audits failed — check the 'axe: <page>' step logs above, or the Summarize axe outcomes step's job summary, for which page(s)."
           exit 1
