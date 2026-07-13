@@ -38,5 +38,7 @@ jobs:
                   http://localhost:8080/pages/cars.html \
                   http://localhost:8080/pages/car-page.html \
                   http://localhost:8080/pages/test-drive.html \
+                  http://localhost:8080/pages/compare.html \
+                  http://localhost:8080/pages/platform.html \
                   --chrome-options="no-sandbox" \
                   --exit

@@ -17,6 +17,7 @@
   --brand-blue-deep: oklch(38% 0.17 260); /* darker text-safe variant — used for eyebrow/price text, re-verified for AA via axe-core */
   --brand-blue-light: oklch(78% 0.1 260); /* blue accent text on dark surfaces — brand tags, highlights */
   --brand-accent: oklch(58% 0.15 55); /* amber — hot-lead indicators, notification dots, pricing highlights */
+  --brand-accent-deep: oklch(44% 0.15 55); /* 7.64:1 against --bg — use this, not --brand-accent, for text */
   --gradient-brand: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-accent) 100%);
 
   /* Ink / neutrals */
