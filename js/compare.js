@@ -33,6 +33,8 @@
       bar = document.createElement('div');
       bar.id = 'compareBar';
       bar.className = 'compare-bar';
+      bar.setAttribute('role', 'region');
+      bar.setAttribute('aria-label', 'Compare selection');
       bar.innerHTML = `
         <span id="compareBarCount"></span>
         <div class="compare-bar-actions">
