@@ -1,0 +1,560 @@
+/* =========================================================
+   AutoSuite — Platform (dealer-facing marketing) page styles
+========================================================= */
+
+.pf-hero {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-4) var(--space-6);
+  text-align: center;
+}
+
+.pf-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--brand-blue-deep);
+  margin-bottom: var(--space-5);
+}
+
+.pf-pill .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--brand-accent);
+}
+
+.pf-hero h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  line-height: 1.1;
+  margin-bottom: var(--space-4);
+}
+
+.pf-hero p {
+  color: var(--ink-soft);
+  font-size: var(--text-md);
+  max-width: 50ch;
+  margin: 0 auto var(--space-6);
+}
+
+.pf-hero-ctas {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--space-7);
+}
+
+.pf-btn-dark {
+  color: var(--ink) !important;
+  border-color: var(--line) !important;
+}
+
+.pf-btn-dark:hover {
+  background: var(--surface-sunken) !important;
+}
+
+.pf-btn-light {
+  color: var(--ink) !important;
+  border-color: var(--line) !important;
+}
+
+.pf-btn-white {
+  background: #fff !important;
+  color: var(--navy-950) !important;
+}
+
+/* ---------- Hero product preview ---------- */
+.pf-preview {
+  max-width: 960px;
+  margin: 0 auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  background: var(--navy-950);
+  text-align: left;
+}
+
+.pf-preview-dots {
+  display: flex;
+  gap: 7px;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--navy-800);
+}
+
+.pf-preview-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--navy-800);
+}
+
+.pf-preview-body {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+}
+
+.pf-preview-nav {
+  background: var(--navy-900);
+  padding: var(--space-5) var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border-right: 1px solid var(--navy-800);
+}
+
+.pf-preview-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--on-dark-faint);
+  margin-bottom: var(--space-2);
+}
+
+.pf-preview-navitem {
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  color: var(--on-dark-soft);
+}
+
+.pf-preview-navitem.active {
+  background: var(--brand-blue);
+  color: #fff;
+}
+
+.pf-preview-main {
+  padding: var(--space-5);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-3);
+}
+
+.pf-kpi,
+.pf-pipeline,
+.pf-activity {
+  background: var(--navy-800);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pf-kpi-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--on-dark-faint);
+}
+
+.pf-kpi-value {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  color: #fff;
+}
+
+.pf-kpi-trend {
+  font-size: 0.7rem;
+  color: oklch(70% 0.14 145);
+}
+
+.pf-pipeline {
+  grid-column: span 2;
+}
+
+.pf-pipeline-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--space-2);
+  height: 50px;
+  margin-top: var(--space-2);
+}
+
+.pf-pipeline-bars span {
+  flex: 1;
+  background: var(--brand-blue);
+  border-radius: 3px;
+}
+
+.pf-bar-1 { height: 70%; }
+.pf-bar-2 { height: 50%; }
+.pf-bar-3 { height: 38%; }
+.pf-bar-4 { height: 22%; }
+.pf-bar-5 { height: 16%; }
+
+.pf-activity p {
+  font-size: 0.75rem;
+  color: var(--on-dark-soft);
+}
+
+/* ---------- Sections ---------- */
+.pf-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-4);
+}
+
+.pf-section-sunken {
+  max-width: none;
+  background: var(--surface-sunken);
+}
+
+.pf-section-sunken > * {
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pf-section-head {
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto var(--space-6);
+}
+
+.pf-section-head h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-2);
+}
+
+.pf-section-head p {
+  color: var(--ink-soft);
+}
+
+/* ---------- How it works flow ---------- */
+.pf-flow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: var(--space-4);
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.pf-flow-card {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+}
+
+.pf-flow-card-dark {
+  background: var(--navy-950);
+  color: #fff;
+  border-color: var(--navy-950);
+}
+
+.pf-flow-card h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  margin-bottom: var(--space-2);
+}
+
+.pf-flow-card p {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.pf-flow-card-dark p {
+  color: var(--on-dark-soft);
+}
+
+.pf-flow-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-3);
+}
+
+.pf-flow-tag-consumer {
+  color: var(--brand-accent);
+}
+
+.pf-flow-tag-dealer {
+  color: var(--brand-blue-light);
+}
+
+.pf-flow-arrow {
+  font-size: var(--text-xl);
+  color: var(--ink-faint);
+  text-align: center;
+}
+
+/* ---------- Feature pillars ---------- */
+.pf-pillar-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+.pf-pillar {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+}
+
+.pf-pillar-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-4);
+}
+
+.pf-pillar-icon-blue { background: oklch(90% 0.05 260); }
+.pf-pillar-icon-amber { background: oklch(90% 0.06 55); }
+.pf-pillar-icon-green { background: oklch(90% 0.05 145); }
+
+.pf-pillar h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  margin-bottom: var(--space-2);
+}
+
+.pf-pillar p {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.pf-pillar-note {
+  margin-top: var(--space-6);
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--ink-faint);
+}
+
+/* ---------- Dealer section ---------- */
+.pf-dealer-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  align-items: center;
+}
+
+.pf-dealer-section h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  margin: var(--space-2) 0 var(--space-3);
+}
+
+.pf-dealer-section p {
+  color: var(--ink-soft);
+  margin-bottom: var(--space-5);
+}
+
+.pf-dealer-visual {
+  aspect-ratio: 4/3;
+  border-radius: var(--radius-lg);
+  background-image: repeating-linear-gradient(135deg, var(--surface-sunken) 0 10px, var(--surface) 10px 20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+}
+
+/* ---------- Testimonial ---------- */
+.pf-testimonial {
+  background: var(--navy-950);
+  color: #fff;
+  padding: var(--space-8) var(--space-4);
+  text-align: center;
+}
+
+.pf-testimonial blockquote {
+  max-width: 760px;
+  margin: 0 auto var(--space-5);
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  line-height: 1.5;
+}
+
+.pf-testimonial-author {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.pf-testimonial-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--brand-blue);
+  flex: none;
+}
+
+.pf-testimonial-name {
+  font-weight: 600;
+  font-size: var(--text-sm);
+}
+
+.pf-testimonial-role {
+  font-size: var(--text-xs);
+  color: var(--on-dark-faint);
+}
+
+/* ---------- Pricing ---------- */
+.pf-pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.pf-price-card {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  text-align: center;
+  position: relative;
+}
+
+.pf-price-card-featured {
+  border: 2px solid var(--brand-blue);
+}
+
+.pf-price-badge {
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--brand-blue);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+
+.pf-price-card h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  margin-bottom: var(--space-1);
+}
+
+.pf-price-sub {
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+  margin-bottom: var(--space-4);
+  min-height: 2.4em;
+}
+
+.pf-price-value {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-5);
+}
+
+.pf-price-value span {
+  font-size: var(--text-sm);
+  font-weight: 400;
+  color: var(--ink-faint);
+}
+
+.pf-price-card .btn {
+  width: 100%;
+}
+
+/* ---------- FAQ ---------- */
+.pf-faq {
+  max-width: 760px;
+}
+
+.pf-faq h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  text-align: center;
+  margin-bottom: var(--space-6);
+}
+
+.pf-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.pf-faq-list details {
+  background: var(--surface);
+  padding: var(--space-4) var(--space-5);
+}
+
+.pf-faq-list summary {
+  font-weight: 600;
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+
+.pf-faq-list p {
+  margin-top: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+/* ---------- Footer CTA ---------- */
+.pf-cta {
+  background: var(--navy-950);
+  color: #fff;
+  padding: var(--space-8) var(--space-4);
+  text-align: center;
+}
+
+.pf-cta h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-5);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 860px) {
+  .pf-preview-body {
+    grid-template-columns: 1fr;
+  }
+
+  .pf-preview-nav {
+    display: none;
+  }
+
+  .pf-preview-main {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pf-flow {
+    grid-template-columns: 1fr;
+  }
+
+  .pf-flow-arrow {
+    transform: rotate(90deg);
+  }
+
+  .pf-pillar-grid,
+  .pf-pricing-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pf-dealer-section {
+    grid-template-columns: 1fr;
+  }
+}

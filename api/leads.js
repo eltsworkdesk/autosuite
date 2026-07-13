@@ -1,16 +1,25 @@
 const { prisma } = require('./_lib/db');
 const { requireAuth } = require('./_lib/auth');
 
+const VALID_SOURCES = ['test-drive-modal', 'trade-in-estimator'];
+
 module.exports = async (req, res) => {
   try {
     if (req.method === 'POST') {
-      const { carId, carName, name, email, phone } = req.body || {};
+      const { carId, carName, name, email, phone, source } = req.body || {};
       if (!carName || !name || !email || !phone) {
         return res.status(400).json({ error: 'Missing required fields' });
       }
 
       const lead = await prisma.lead.create({
-        data: { carId: carId || null, carName, name, email, phone },
+        data: {
+          carId: carId || null,
+          carName,
+          name,
+          email,
+          phone,
+          source: VALID_SOURCES.includes(source) ? source : 'test-drive-modal',
+        },
       });
       return res.status(201).json({ id: lead.id });
     }

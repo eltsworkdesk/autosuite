@@ -1,7 +1,7 @@
 const { prisma } = require('../_lib/db');
 const { requireAuth } = require('../_lib/auth');
 
-const VALID_STATUSES = ['NEW', 'CONTACTED', 'SCHEDULED', 'COMPLETED', 'LOST'];
+const VALID_STATUSES = ['NEW', 'CONTACTED', 'QUALIFIED', 'APPT_SCHEDULED', 'NEGOTIATING', 'SOLD', 'LOST'];
 
 module.exports = async (req, res) => {
   if (!requireAuth(req, res)) return;

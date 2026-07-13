@@ -1,0 +1,69 @@
+/* =========================================================
+   AutoSuite — Compare page styles
+========================================================= */
+
+.compare-wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4) var(--space-8);
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.compare-table th,
+.compare-table td {
+  padding: var(--space-4);
+  text-align: center;
+  border-bottom: 1px solid var(--line);
+}
+
+.compare-table thead th {
+  vertical-align: top;
+  background: var(--surface-sunken);
+}
+
+.compare-table thead th img {
+  width: 100%;
+  max-width: 160px;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-2);
+}
+
+.compare-table thead th div {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-sm);
+}
+
+.compare-table tbody th {
+  text-align: left;
+  font-size: var(--text-sm);
+  color: var(--ink-faint);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.compare-table tbody td {
+  font-size: var(--text-sm);
+}
+
+.compare-table tr:last-child th,
+.compare-table tr:last-child td {
+  border-bottom: none;
+}
+
+@media (max-width: 720px) {
+  .compare-table {
+    display: block;
+    overflow-x: auto;
+  }
+}

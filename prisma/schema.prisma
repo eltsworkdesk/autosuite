@@ -11,8 +11,10 @@ datasource db {
 enum LeadStatus {
   NEW
   CONTACTED
-  SCHEDULED
-  COMPLETED
+  QUALIFIED
+  APPT_SCHEDULED
+  NEGOTIATING
+  SOLD
   LOST
 }
 
