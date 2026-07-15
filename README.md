@@ -4,6 +4,8 @@
 
 **Live:** [dealerstack.vercel.app](https://dealerstack.vercel.app) · **Platform pitch:** [/pages/platform.html](https://dealerstack.vercel.app/pages/platform.html)
 
+![AutoSuite storefront homepage](docs/screenshots/home.png)
+
 ---
 
 ## Why this project exists
@@ -45,6 +47,24 @@ This is not a tutorial project. It's engineered the way client work ships:
 | Inventory management, appointments, analytics, staff roles | 🔜 Next modules |
 
 The roadmap follows the product design brief in `docs/` — the same sitemap, personas, and journey mapping the built pages came from.
+
+## Screens
+
+**Dealer OS — leads pipeline.** Every test-drive booking on the storefront lands here as a live lead, on a 7-stage Kanban board with KPIs computed from real data.
+
+![Dealer dashboard with lead pipeline](docs/screenshots/dashboard.png)
+
+**Storefront inventory.** Search, brand filter, price slider, sort, and side-by-side compare — all client-side against real listings.
+
+![Inventory grid](docs/screenshots/inventory.png)
+
+**Vehicle page — the buyer's tools.** Financing calculator (real amortization against the listing price) and trade-in estimator, plus specs and trim comparison.
+
+![Vehicle detail page with financing calculator](docs/screenshots/vehicle-page.png)
+
+**Platform pitch.** The dealer-facing marketing page positioning AutoSuite as one operating system.
+
+![Platform marketing page](docs/screenshots/platform.png)
 
 ## Stack
 
