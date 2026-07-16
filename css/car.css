@@ -13,7 +13,7 @@
   flex-direction: column;
   gap: var(--space-4);
   padding: var(--space-5) var(--space-4);
-  background: linear-gradient(160deg, var(--navy-950) 0%, var(--navy-800) 60%, #1c2650 100%);
+  background: linear-gradient(160deg, var(--navy-950) 0%, var(--navy-800) 60%, oklch(27% 0.03 260) 100%);
   color: #fff;
 }
 
@@ -25,7 +25,7 @@
   font-size: var(--text-xs);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #9fd4ff;
+  color: var(--brand-blue-light);
   margin-bottom: var(--space-2);
   display: inline-block;
 }
@@ -37,7 +37,7 @@
 }
 
 .car-msrp {
-  color: #cdd8f0;
+  color: var(--on-dark-soft);
   font-size: var(--text-base);
 }
 
@@ -311,7 +311,7 @@
 /* ---------- Site footer (detail page variant) ---------- */
 .site-footer {
   background: linear-gradient(120deg, var(--navy-950), var(--navy-800));
-  color: #cdd6ea;
+  color: var(--on-dark-soft);
   text-align: center;
   padding: var(--space-5) var(--space-3);
   margin-top: var(--space-6);
@@ -330,9 +330,79 @@
   background: var(--surface);
   border-top: 1px solid var(--line);
   padding: var(--space-3) var(--space-4);
-  box-shadow: 0 -8px 20px rgba(11, 18, 32, 0.08);
+  box-shadow: 0 -8px 20px rgba(15, 23, 42, 0.08);
 }
 
 .mobile-cta-bar .btn {
   width: 100%;
+}
+
+/* ---------- Financing calculator + trade-in estimator ---------- */
+.finance-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+}
+
+.finance-card {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.finance-card h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  margin-bottom: var(--space-1);
+}
+
+.finance-sub {
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+  margin-bottom: var(--space-5);
+}
+
+.finance-field {
+  margin-bottom: var(--space-4);
+}
+
+.finance-field-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  margin-bottom: var(--space-2);
+}
+
+.finance-field input[type='range'] {
+  width: 100%;
+  accent-color: var(--brand-blue);
+}
+
+.finance-result {
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
+.finance-result strong {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  color: var(--ink);
+}
+
+.finance-card form .btn {
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 860px) {
+  .finance-grid {
+    grid-template-columns: 1fr;
+  }
 }

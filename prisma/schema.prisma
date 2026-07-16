@@ -1,0 +1,38 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// SCHEDULED and COMPLETED are retired from the UI (see api/leads/[id].js
+// VALID_STATUSES and js/dashboard.js STAGES) but kept here so `prisma db
+// push` never has to drop an enum value a live row might still reference —
+// dropping a value that's in use fails the column-type cast outright.
+enum LeadStatus {
+  NEW
+  CONTACTED
+  SCHEDULED
+  QUALIFIED
+  APPT_SCHEDULED
+  NEGOTIATING
+  COMPLETED
+  SOLD
+  LOST
+}
+
+model Lead {
+  id        String     @id @default(cuid())
+  carId     String?
+  carName   String
+  name      String
+  email     String
+  phone     String
+  status    LeadStatus @default(NEW)
+  source    String     @default("test-drive-modal")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}

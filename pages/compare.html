@@ -3,27 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inventory | AutoSuite</title>
-  <meta name="description" content="Browse AutoSuite's full vehicle inventory — search by name, filter by brand, and set a max price.">
+  <title>Compare Vehicles | AutoSuite</title>
+  <meta name="description" content="Compare specs, price, and mileage side by side across AutoSuite's inventory.">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Inventory | AutoSuite">
-  <meta property="og:description" content="Search, filter by brand, or set a budget across AutoSuite's full inventory.">
-  <meta property="og:image" content="../assets/web/e450-hero.jpg">
+  <meta property="og:title" content="Compare Vehicles | AutoSuite">
+  <meta property="og:description" content="Compare specs, price, and mileage side by side.">
   <meta name="theme-color" content="#0b1220">
   <link rel="icon" type="image/png" href="../assets/web/favicon-32.png">
-  <link rel="canonical" href="https://autosuite.ng/pages/cars.html">
+  <link rel="canonical" href="https://autosuite.ng/pages/compare.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/cars.css">
+  <link rel="stylesheet" href="../css/compare.css">
   <link rel="stylesheet" href="../css/responsive.css">
 </head>
 <body>
 
   <a href="#main-content" class="skip-link">Skip to main content</a>
 
-  <!-- Header -->
   <header class="navbar">
     <div class="logo">
       <a href="../index.html">
@@ -33,7 +31,7 @@
     </div>
     <nav class="nav-links" id="primaryNav" aria-label="Primary">
       <a href="../index.html">Home</a>
-      <a href="cars.html" aria-current="page">Inventory</a>
+      <a href="cars.html">Inventory</a>
       <a href="../index.html#about">About</a>
       <a href="../index.html#roadmap">Platform</a>
       <a href="../index.html#contact">Contact</a>
@@ -43,60 +41,16 @@
   </header>
 
   <main id="main-content">
+    <section class="listing-hero">
+      <span class="eyebrow">Side by Side</span>
+      <h1>Compare vehicles</h1>
+      <p>Specs, price, and mileage for up to three cars at once.</p>
+    </section>
 
-  <section class="listing-hero">
-    <span class="eyebrow">Full Inventory</span>
-    <h1>Every car on the floor</h1>
-    <p>Search, filter by brand, or set a budget — the grid below updates as you go.</p>
-  </section>
-
-  <!-- Search & Filters -->
-  <section class="filters" aria-label="Search and filter inventory">
-    <div class="field field-search">
-      <label for="searchBar">Search</label>
-      <div class="search-input-wrap">
-        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="11" cy="11" r="7"></circle>
-          <path d="M21 21l-4.3-4.3"></path>
-        </svg>
-        <input type="text" id="searchBar" placeholder="Search by name or brand…" autocomplete="off">
-        <button type="button" class="search-clear" id="searchClear" aria-label="Clear search" hidden>&times;</button>
-      </div>
-    </div>
-
-    <div class="field">
-      <label for="brandFilter">Brand</label>
-      <select id="brandFilter">
-        <option value="">All Brands</option>
-      </select>
-    </div>
-
-    <div class="field">
-      <label for="sortBy">Sort By</label>
-      <select id="sortBy">
-        <option value="default">Featured</option>
-        <option value="price-asc">Price: Low to High</option>
-        <option value="price-desc">Price: High to Low</option>
-        <option value="year-desc">Newest First</option>
-      </select>
-    </div>
-
-    <div class="field field-price">
-      <label for="priceRange">Max Price: <span class="price-readout" id="priceValue">₦0</span></label>
-      <input type="range" id="priceRange">
-    </div>
-
-    <button type="button" class="btn ghost small" id="resetFilters">Reset</button>
-
-    <span class="result-count" id="resultCount" role="status" aria-live="polite"></span>
-  </section>
-
-  <!-- Car Grid -->
-  <h2 class="visually-hidden" id="resultsHeading">Search Results</h2>
-  <section class="cars-grid" id="carsGrid" aria-labelledby="resultsHeading" aria-live="polite" aria-busy="true">
-    <p class="empty-state">Loading inventory…</p>
-  </section>
-
+    <section class="compare-wrap" aria-labelledby="compareHeading">
+      <h2 id="compareHeading" class="visually-hidden">Vehicle comparison</h2>
+      <div id="compareTable"></div>
+    </section>
   </main>
 
   <!-- Shared Test Drive Modal -->
@@ -147,7 +101,6 @@
         <p>Dealership Operating System</p>
         <p>Abuja, Nigeria</p>
       </div>
-
       <div class="footer-col">
         <h3>Quick Links</h3>
         <nav class="footer-links" aria-label="Footer">
@@ -158,17 +111,13 @@
           <a href="../index.html#contact">Contact</a>
         </nav>
       </div>
-
       <div class="footer-col">
         <h3>Contact</h3>
         <p><a href="mailto:hello@autosuite.ng">hello@autosuite.ng</a></p>
         <p><a href="tel:+2348001234567">+234 800 123 4567</a></p>
       </div>
     </div>
-
-    <div class="footer-bottom">
-      &copy; <span id="year"></span> AutoSuite. All rights reserved.
-    </div>
+    <div class="footer-bottom">&copy; <span id="year"></span> AutoSuite. All rights reserved.</div>
   </footer>
 
   <script>
@@ -181,4 +130,3 @@
   <script src="../js/compare.js" defer></script>
 </body>
 </html>
-

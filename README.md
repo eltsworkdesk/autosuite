@@ -1,52 +1,81 @@
-# autosuite
+# AutoSuite — The Dealership Operating System
 
-White-label dealership operating system featuring inventory management, CRM, financing, inspections, AI workflows, analytics, and dealer websites.
+**One connected product.** Customers get a premium car-shopping experience. Dealers get the CRM, inventory, and analytics engine that runs the business behind it. When a visitor books a test drive on the storefront, the lead lands in the dealer's pipeline **in real time** — nothing is disconnected.
 
-## Overview
+**Live:** [dealerstack.vercel.app](https://dealerstack.vercel.app) · **Platform pitch:** [/pages/platform.html](https://dealerstack.vercel.app/pages/platform.html)
 
-AutoSuite is a frontend-first dealership platform built with HTML, CSS and JavaScript. It focuses on delivering a clean browsing experience while laying the groundwork for future backend services, AI-powered workflows and dealership management tools.
+![AutoSuite storefront homepage](docs/screenshots/home.png)
 
+---
 
-## Features
+## Why this project exists
 
-- Responsive homepage
-- Vehicle catalogue
-- Vehicle detail pages
-- Search
-- Filtering
-- Test drive booking
+Most dealership software is a patchwork: a website from one vendor, a CRM from another, inventory in a spreadsheet, leads in an inbox. AutoSuite is built on a single thesis — **the storefront and the back office should be one system** — and this repo is the working proof:
 
+```
+ CUSTOMER SIDE                    DATA LAYER                DEALER SIDE
+┌─────────────────────┐        ┌──────────────┐        ┌──────────────────────┐
+│ Browse inventory    │        │              │        │ Dashboard (live KPIs)│
+│ Financing calculator│  ───►  │  Serverless  │  ───►  │ CRM pipeline         │
+│ Trade-in estimator  │        │  API +       │        │  New → Contacted →   │
+│ Compare vehicles    │        │  Postgres    │        │  Qualified → Appt →  │
+│ Book a test drive   │        │              │        │  Negotiating → Sold  │
+└─────────────────────┘        └──────────────┘        └──────────────────────┘
+```
 
-## Tech Stack
+Try it yourself: book a test drive on any vehicle page — that's a real database row, visible on the dealer dashboard seconds later.
 
-- HTML5
-- CSS3
-- JavaScript
+## Built to a deliverable standard
 
+This is not a tutorial project. It's engineered the way client work ships:
 
-## Project Structure
+- **Accessibility is a build gate.** Every push runs per-page axe-core audits plus HTML validation in CI — WCAG failures fail the build. Every color pairing in the design system is contrast-verified (AA minimum, most exceed 7:1).
+- **A real design system.** OKLCH color tokens, spacing/type scales, and motion curves defined once in `css/style.css` and consumed by all nine pages — no one-off hex values, no drift between pages.
+- **Real data end to end.** The dashboard shows actual Postgres rows. The financing calculator computes real amortization against each car's actual price. Nothing a dealer or reviewer touches is faked.
+- **Deliberate architecture.** Hand-written HTML/CSS/JS for the storefront (fast, auditable, zero dependencies to rot) + Vercel serverless functions with Prisma/Neon Postgres for persistence. The dashboard is served from behind HTTP Basic Auth — its markup never reaches unauthenticated clients.
+- **Traceable history.** Four documented storefront sprints (`SPRINT-*-CHANGELOG.md`), feature-branch merges, and design docs (`docs/`) from wireframe to shipped page.
 
+## For dealers: the MVP today
 
-Topics:
+| You get | Status |
+|---|---|
+| Branded storefront: search, filter, compare, vehicle pages | ✅ Live |
+| Financing calculator + trade-in estimator on every listing | ✅ Live |
+| Test-drive booking, no customer account needed | ✅ Live |
+| Lead pipeline (Kanban + table), 7-stage status ladder | ✅ Live |
+| Live KPIs: total leads, new this week, most-requested vehicle | ✅ Live |
+| Inventory management, appointments, analytics, staff roles | 🔜 Next modules |
 
-nextjs
-react
-typescript
-tailwindcss
-prisma
-postgres
-automotive
-dealership
-crm
-saas
-inventory-management
-shadcn-ui
-vercel
+The roadmap follows the product design brief in `docs/` — the same sitemap, personas, and journey mapping the built pages came from.
 
-## Roadmap
+## Screens
 
-See ROADMAP.md
+**Dealer OS — leads pipeline.** Every test-drive booking on the storefront lands here as a live lead, on a 7-stage Kanban board with KPIs computed from real data.
 
-## Documentation
+![Dealer dashboard with lead pipeline](docs/screenshots/dashboard.png)
 
-See docs/
+**Storefront inventory.** Search, brand filter, price slider, sort, and side-by-side compare — all client-side against real listings.
+
+![Inventory grid](docs/screenshots/inventory.png)
+
+**Vehicle page — the buyer's tools.** Financing calculator (real amortization against the listing price) and trade-in estimator, plus specs and trim comparison.
+
+![Vehicle detail page with financing calculator](docs/screenshots/vehicle-page.png)
+
+**Platform pitch.** The dealer-facing marketing page positioning AutoSuite as one operating system.
+
+![Platform marketing page](docs/screenshots/platform.png)
+
+## Stack
+
+`HTML/CSS/JS (storefront)` · `Vercel Serverless Functions` · `Prisma + Neon Postgres` · `GitHub Actions (html-validate + axe-core)` · `Git LFS`
+
+```
+├── index.html              Storefront homepage
+├── pages/                  Inventory, vehicle detail, compare, platform, test-drive
+├── css/                    Design tokens + per-page stylesheets
+├── js/                     Inventory, financing, compare, dashboard client
+├── api/                    Serverless: leads CRUD, auth, dashboard
+├── prisma/                 Lead schema (Postgres)
+└── .github/workflows/      Accessibility + validation CI
+```

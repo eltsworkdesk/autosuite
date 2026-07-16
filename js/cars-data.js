@@ -39,7 +39,8 @@ function carDetailUrl(car) {
   return `${base}?id=${encodeURIComponent(car.id)}`;
 }
 
-function carCardHTML(car) {
+function carCardHTML(car, options) {
+  const showCompare = options && options.compare;
   return `
     <article class="car-card">
       <div class="car-card-media">
@@ -54,7 +55,14 @@ function carCardHTML(car) {
           <li>${car.mileage}</li>
           <li>${car.drivetrain}</li>
         </ul>
-        <a href="${carDetailUrl(car)}" class="btn small">View Details</a>
+        <div class="car-card-actions">
+          <a href="${carDetailUrl(car)}" class="btn small">View Details</a>
+          ${showCompare ? `
+          <label class="compare-check">
+            <input type="checkbox" class="compare-toggle" data-id="${car.id}">
+            Compare
+          </label>` : ''}
+        </div>
       </div>
     </article>
   `;
@@ -173,7 +181,10 @@ async function initListingPage() {
     );
 
     grid.setAttribute('aria-busy', 'false');
-    grid.innerHTML = results.length ? results.map(carCardHTML).join('') : emptyStateHTML(hasActiveFilters());
+    grid.innerHTML = results.length
+      ? results.map((car) => carCardHTML(car, { compare: true })).join('')
+      : emptyStateHTML(hasActiveFilters());
+    window.dispatchEvent(new CustomEvent('autosuite:cards-rendered'));
 
     const emptyReset = document.getElementById('emptyStateReset');
     if (emptyReset) emptyReset.addEventListener('click', resetFilters);
@@ -244,6 +255,9 @@ async function initDetailPage() {
     const cars = await fetchCars();
     const car = cars.find((c) => c.id === id);
     if (!car) return;
+
+    window.AUTOSUITE_CURRENT_CAR = car;
+    window.dispatchEvent(new CustomEvent('autosuite:car-ready', { detail: car }));
 
     nameEl.textContent = car.name;
 

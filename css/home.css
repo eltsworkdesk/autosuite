@@ -10,7 +10,7 @@
   align-items: center;
   text-align: center;
   padding: var(--space-7) var(--space-4) var(--space-7);
-  background: linear-gradient(160deg, var(--navy-950) 0%, var(--navy-800) 55%, #1c2650 100%);
+  background: linear-gradient(160deg, var(--navy-950) 0%, var(--navy-800) 55%, oklch(27% 0.03 260) 100%);
   color: #fff;
   position: relative;
   overflow: hidden;
@@ -20,8 +20,8 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 15% 20%, rgba(14, 165, 255, 0.28), transparent 45%),
-              radial-gradient(circle at 85% 75%, rgba(108, 76, 238, 0.28), transparent 45%);
+  background: radial-gradient(circle at 15% 20%, oklch(48% 0.16 260 / 28%), transparent 45%),
+              radial-gradient(circle at 85% 75%, oklch(58% 0.15 55 / 28%), transparent 45%);
   pointer-events: none;
 }
 
@@ -48,7 +48,7 @@
 }
 
 .hero-content .eyebrow {
-  color: #9fd4ff;
+  color: var(--brand-blue-light);
 }
 
 .hero-content h1 {
@@ -58,7 +58,7 @@
 
 .hero-content p {
   font-size: var(--text-base);
-  color: #cdd8f0;
+  color: var(--on-dark-soft);
   max-width: 30ch;
   margin: 0 auto;
 }
@@ -264,6 +264,12 @@
 .roadmap-card p {
   color: var(--ink-soft);
   font-size: 0.92rem;
+}
+
+.roadmap-link {
+  text-align: center;
+  margin-top: var(--space-6);
+  font-weight: 600;
 }
 
 /* ---------- Contact ---------- */

@@ -14,7 +14,7 @@
   <link rel="icon" type="image/png" href="../assets/web/favicon-32.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/car.css">
   <link rel="stylesheet" href="../css/responsive.css">
@@ -121,8 +121,88 @@
       </div>
     </section>
 
+    <!-- FINANCING + TRADE-IN -->
+    <section id="financing" class="content-section">
+      <h2 class="visually-hidden">Financing &amp; Trade-In</h2>
+      <div class="finance-grid">
+        <div class="finance-card">
+          <h3>Financing Calculator</h3>
+          <p class="finance-sub">Estimate only — final terms confirmed at the dealership.</p>
+
+          <div class="finance-field">
+            <div class="finance-field-row"><span>Down payment</span><span id="fcDownOut">10%</span></div>
+            <input type="range" id="fcDown" min="0" max="50" value="10" aria-label="Down payment percentage">
+          </div>
+          <div class="finance-field">
+            <div class="finance-field-row"><span>Loan term</span><span id="fcTermOut">60 months</span></div>
+            <input type="range" id="fcTerm" min="24" max="84" step="6" value="60" aria-label="Loan term in months">
+          </div>
+          <div class="finance-field">
+            <div class="finance-field-row"><span>Est. APR</span><span id="fcAprOut">18%</span></div>
+            <input type="range" id="fcApr" min="5" max="30" step="0.5" value="18" aria-label="Estimated annual percentage rate">
+          </div>
+
+          <div class="finance-result">
+            <span>Est. monthly payment</span>
+            <strong id="fcMonthly">₦0</strong>
+          </div>
+        </div>
+
+        <div class="finance-card">
+          <h3>Trade-In Estimator</h3>
+          <p class="finance-sub">Tell us about your current vehicle and a dealer will follow up with a trade-in estimate.</p>
+          <form id="tradeInForm" novalidate>
+            <div class="field">
+              <label for="ti-vehicle">Year, make, model<span class="required-mark" aria-hidden="true">*</span></label>
+              <input type="text" id="ti-vehicle" name="vehicle" placeholder="e.g. 2019 Honda Accord" required>
+              <span class="field-error">Let us know your vehicle's year, make, and model.</span>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="ti-mileage">Mileage<span class="required-mark" aria-hidden="true">*</span></label>
+                <input type="text" id="ti-mileage" name="mileage" placeholder="e.g. 45,000 km" required>
+                <span class="field-error">Enter your vehicle's mileage.</span>
+              </div>
+              <div class="field">
+                <label for="ti-condition">Condition<span class="required-mark" aria-hidden="true">*</span></label>
+                <select id="ti-condition" name="condition" required>
+                  <option value="">Select&hellip;</option>
+                  <option value="Excellent">Excellent</option>
+                  <option value="Good">Good</option>
+                  <option value="Fair">Fair</option>
+                </select>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="ti-name">Your name<span class="required-mark" aria-hidden="true">*</span></label>
+                <input type="text" id="ti-name" name="name" placeholder="Full name" required>
+                <span class="field-error">Enter your name.</span>
+              </div>
+              <div class="field">
+                <label for="ti-email">Email<span class="required-mark" aria-hidden="true">*</span></label>
+                <input type="email" id="ti-email" name="email" placeholder="you@example.com" required>
+                <span class="field-error">Enter a valid email address.</span>
+              </div>
+            </div>
+            <div class="field">
+              <label for="ti-phone">Phone number<span class="required-mark" aria-hidden="true">*</span></label>
+              <input type="tel" id="ti-phone" name="phone" placeholder="+234" inputmode="tel" required>
+              <span class="field-error">Enter a phone number.</span>
+            </div>
+            <button type="submit" class="btn small">Get estimate</button>
+            <p class="form-status" id="ti-status" role="status" aria-live="polite">
+              <span class="status-icon" aria-hidden="true">&check;</span>
+              <span class="status-text"></span>
+            </p>
+          </form>
+        </div>
+      </div>
+    </section>
+
     <!-- HORIZONTAL SCROLL TABS -->
     <nav class="features-nav" id="featuresNav" aria-label="On this page">
+      <a href="#financing" class="nav-chip">Financing &amp; Trade-In</a>
       <a href="#buyers-guide" class="nav-chip">Buyer's Guide</a>
       <a href="#trim-comparison" class="nav-chip">Trim Comparison</a>
       <a href="#photos" class="nav-chip">Photos</a>
@@ -276,9 +356,14 @@
   <script>
     window.CARS_JSON_PATH = '../data/cars.json';
     window.ASSET_BASE = '../assets/web/';
+    // Static fallback data for when the page loads without a ?id= — matches
+    // the E450 content already in the HTML. Overwritten by initDetailPage()
+    // once a real car hydrates from the query string.
+    window.AUTOSUITE_CURRENT_CAR = { id: 'mercedes-e450-2024', name: '2024 Mercedes-Benz E450', price: 45000000 };
   </script>
   <script src="../data/cars.js" defer></script>
   <script src="../js/script.js" defer></script>
   <script src="../js/cars-data.js" defer></script>
+  <script src="../js/financing.js" defer></script>
 </body>
 </html>

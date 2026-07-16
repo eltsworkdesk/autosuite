@@ -2,7 +2,6 @@ name: CI
 
 on:
   push:
-    branches: [main]
   pull_request:
     branches: [main]
 
@@ -32,11 +31,56 @@ jobs:
       - name: Wait for server
         run: npx wait-on http://localhost:8080/index.html
 
-      - name: Run accessibility audit (axe-core)
+      - name: "axe: index.html"
+        id: axe-index
+        continue-on-error: true
+        run: npx axe http://localhost:8080/index.html --chrome-options="no-sandbox" --exit
+
+      - name: "axe: cars.html"
+        id: axe-cars
+        continue-on-error: true
+        run: npx axe http://localhost:8080/pages/cars.html --chrome-options="no-sandbox" --exit
+
+      - name: "axe: car-page.html"
+        id: axe-car-page
+        continue-on-error: true
+        run: npx axe http://localhost:8080/pages/car-page.html --chrome-options="no-sandbox" --exit
+
+      - name: "axe: test-drive.html"
+        id: axe-test-drive
+        continue-on-error: true
+        run: npx axe http://localhost:8080/pages/test-drive.html --chrome-options="no-sandbox" --exit
+
+      - name: "axe: compare.html"
+        id: axe-compare
+        continue-on-error: true
+        run: npx axe http://localhost:8080/pages/compare.html --chrome-options="no-sandbox" --exit
+
+      - name: "axe: platform.html"
+        id: axe-platform
+        continue-on-error: true
+        run: npx axe http://localhost:8080/pages/platform.html --chrome-options="no-sandbox" --exit
+
+      - name: Summarize axe outcomes
+        if: always()
         run: |
-          npx axe http://localhost:8080/index.html \
-                  http://localhost:8080/pages/cars.html \
-                  http://localhost:8080/pages/car-page.html \
-                  http://localhost:8080/pages/test-drive.html \
-                  --chrome-options="no-sandbox" \
-                  --exit
+          echo "| Page | Outcome |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|---------|" >> $GITHUB_STEP_SUMMARY
+          echo "| index.html | ${{ steps.axe-index.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| cars.html | ${{ steps.axe-cars.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| car-page.html | ${{ steps.axe-car-page.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| test-drive.html | ${{ steps.axe-test-drive.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| compare.html | ${{ steps.axe-compare.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| platform.html | ${{ steps.axe-platform.outcome }} |" >> $GITHUB_STEP_SUMMARY
+
+      - name: Fail the job if any axe audit failed
+        if: >-
+          steps.axe-index.outcome == 'failure' ||
+          steps.axe-cars.outcome == 'failure' ||
+          steps.axe-car-page.outcome == 'failure' ||
+          steps.axe-test-drive.outcome == 'failure' ||
+          steps.axe-compare.outcome == 'failure' ||
+          steps.axe-platform.outcome == 'failure'
+        run: |
+          echo "One or more axe-core audits failed — check the 'axe: <page>' step logs above, or the Summarize axe outcomes step's job summary, for which page(s)."
+          exit 1
