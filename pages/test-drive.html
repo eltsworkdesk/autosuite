@@ -56,9 +56,9 @@
       <a href="../index.html#about">About</a>
       <a href="../index.html#roadmap">Platform</a>
       <a href="../index.html#contact">Contact</a>
-      <button type="button" class="btn small" onclick="openTestDriveModal()">Book a Test Drive</button>
+      <button type="button" class="btn small" data-open-test-drive>Book a Test Drive</button>
     </nav>
-    <button type="button" class="burger" onclick="toggleMenu()" aria-label="Toggle menu" aria-expanded="false" aria-controls="primaryNav">☰</button>
+    <button type="button" class="burger" aria-label="Toggle menu" aria-expanded="false" aria-controls="primaryNav">☰</button>
   </header>
 
   <main id="main-content">
@@ -67,14 +67,14 @@
       <h1>Test drive, isolated</h1>
       <h2 class="visually-hidden">Preview the booking form</h2>
       <p>This page exists to preview the booking modal on its own. It's the same shared form used on every AutoSuite page — try it below.</p>
-      <button type="button" class="btn" onclick="openTestDriveModal()">Book a Test Drive</button>
+      <button type="button" class="btn" data-open-test-drive>Book a Test Drive</button>
     </div>
   </main>
 
   <!-- Shared Test Drive Modal -->
   <div id="testDriveModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="testDriveTitle">
     <div class="modal-content">
-      <button type="button" class="close" onclick="closeTestDriveModal()" aria-label="Close">&times;</button>
+      <button type="button" class="close" aria-label="Close">&times;</button>
       <h2 id="testDriveTitle">Book a Test Drive</h2>
       <p class="modal-sub">Tell us a bit about you and we'll confirm a time.</p>
       <form id="testDriveForm" novalidate>

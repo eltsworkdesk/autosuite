@@ -2,6 +2,10 @@
  * AutoSuite — shared site behavior
  * Loaded on every page. Handles the mobile nav toggle,
  * the shared "Book a Test Drive" modal, and small utilities.
+ *
+ * Every page wires these up the same way: no inline onclick="" in the HTML —
+ * triggers are marked with a class (.burger, .close) or a data attribute
+ * ([data-open-test-drive]) and bound below in the DOMContentLoaded handler.
  */
 
 function toggleMenu() {
@@ -44,6 +48,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+  // Mobile nav toggle
+  document.querySelectorAll('.burger').forEach((btn) => {
+    btn.addEventListener('click', toggleMenu);
+  });
+
   // Close modal when clicking the backdrop
   const modal = document.getElementById('testDriveModal');
   if (modal) {
@@ -55,6 +64,22 @@ document.addEventListener('DOMContentLoaded', () => {
       if (event.key === 'Escape' && modal.classList.contains('open')) {
         closeTestDriveModal();
       }
+    });
+
+    // Close button
+    modal.querySelectorAll('.close').forEach((btn) => {
+      btn.addEventListener('click', closeTestDriveModal);
+    });
+
+    // Every "Book a Test Drive" trigger. data-car-name-from optionally points
+    // at a selector (e.g. "#carName") whose text pre-fills the car field —
+    // used on the vehicle detail page, where the car is already known.
+    document.querySelectorAll('[data-open-test-drive]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const sourceSelector = btn.dataset.carNameFrom;
+        const carName = sourceSelector ? document.querySelector(sourceSelector)?.textContent : undefined;
+        openTestDriveModal(carName);
+      });
     });
   }
 
