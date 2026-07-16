@@ -12,10 +12,7 @@
 
 const CARS_JSON_PATH = window.CARS_JSON_PATH || 'data/cars.json';
 const ASSET_BASE = window.ASSET_BASE || 'assets/web/';
-
-function formatNaira(amount) {
-  return '₦' + Number(amount).toLocaleString('en-NG');
-}
+const { formatNaira, sortCars, filterCars } = window.AutoSuiteInventory;
 
 function imageUrl(fileName) {
   return ASSET_BASE + fileName;
@@ -146,39 +143,18 @@ async function initListingPage() {
   priceRange.value = sliderMax;
   priceValue.textContent = formatNaira(sliderMax);
 
-  function sortResults(results) {
-    const sorted = [...results];
-    switch (sortSelect.value) {
-      case 'price-asc':
-        return sorted.sort((a, b) => a.price - b.price);
-      case 'price-desc':
-        return sorted.sort((a, b) => b.price - a.price);
-      case 'year-desc':
-        return sorted.sort((a, b) => b.year - a.year);
-      default:
-        return sorted.sort((a, b) => (b.featured === a.featured ? 0 : b.featured ? 1 : -1));
-    }
-  }
-
   function hasActiveFilters() {
     return Boolean(searchInput.value.trim()) || Boolean(brandSelect.value) || Number(priceRange.value) < sliderMax;
   }
 
   function applyFilters() {
-    const query = searchInput.value.trim().toLowerCase();
+    const query = searchInput.value.trim();
     const brand = brandSelect.value;
     const maxAllowed = Number(priceRange.value);
 
     searchClear.hidden = query.length === 0;
 
-    const results = sortResults(
-      cars.filter((car) => {
-        const matchesQuery = !query || car.name.toLowerCase().includes(query) || car.brand.toLowerCase().includes(query);
-        const matchesBrand = !brand || car.brand === brand;
-        const matchesPrice = car.price <= maxAllowed;
-        return matchesQuery && matchesBrand && matchesPrice;
-      })
-    );
+    const results = sortCars(filterCars(cars, { query, brand, maxPrice: maxAllowed }), sortSelect.value);
 
     grid.setAttribute('aria-busy', 'false');
     grid.innerHTML = results.length

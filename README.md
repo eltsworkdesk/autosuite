@@ -68,14 +68,28 @@ The roadmap follows the product design brief in `docs/` — the same sitemap, pe
 
 ## Stack
 
-`HTML/CSS/JS (storefront)` · `Vercel Serverless Functions` · `Prisma + Neon Postgres` · `GitHub Actions (html-validate + axe-core)` · `Git LFS`
+`HTML/CSS/JS (storefront)` · `Vercel Serverless Functions` · `Prisma + Neon Postgres` · `Vitest` · `GitHub Actions (html-validate + axe-core)` · `Git LFS`
 
 ```
 ├── index.html              Storefront homepage
 ├── pages/                  Inventory, vehicle detail, compare, platform, test-drive
 ├── css/                    Design tokens + per-page stylesheets
 ├── js/                     Inventory, financing, compare, dashboard client
+│   └── lib/                Pure logic (filtering/sorting, financing math) — no DOM,
+│                           shared between the browser and tests/
+├── tests/                  Vitest unit tests for js/lib/
 ├── api/                    Serverless: leads CRUD, auth, dashboard
 ├── prisma/                 Lead schema (Postgres)
 └── .github/workflows/      Accessibility + validation CI
+```
+
+## Development
+
+No build step for the storefront — open the HTML files directly, or serve the
+repo root with any static server. The CRM API (`api/`) needs `DATABASE_URL`
+set (see `.env.example`) and runs on Vercel.
+
+```
+npm install   # also runs `prisma generate`
+npm test      # unit tests for js/lib/ (filtering, sorting, financing math)
 ```

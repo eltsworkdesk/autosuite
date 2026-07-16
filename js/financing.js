@@ -36,18 +36,8 @@
     termOut.textContent = `${termMonths} months`;
     aprOut.textContent = `${aprPct}%`;
 
-    const downAmount = price * (downPct / 100);
-    const principal = price - downAmount;
-    const monthlyRate = aprPct / 100 / 12;
-
-    let monthly;
-    if (monthlyRate === 0) {
-      monthly = principal / termMonths;
-    } else {
-      monthly = (principal * monthlyRate) / (1 - Math.pow(1 + monthlyRate, -termMonths));
-    }
-
-    monthlyOut.textContent = formatNaira(Math.max(monthly, 0));
+    const monthly = window.AutoSuiteFinance.calculateMonthlyPayment({ price, downPct, termMonths, aprPct });
+    monthlyOut.textContent = formatNaira(monthly);
   }
 
   [downInput, termInput, aprInput].forEach((input) => {
