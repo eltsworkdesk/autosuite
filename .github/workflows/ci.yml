@@ -19,6 +19,12 @@ jobs:
         with:
           node-version: 22
 
+      - name: Install project dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm test
+
       - name: Install tooling
         run: npm install --no-save html-validate@8 @axe-core/cli@4 http-server@14 wait-on@7
 
