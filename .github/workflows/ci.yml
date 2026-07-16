@@ -26,7 +26,7 @@ jobs:
         run: npm test
 
       - name: Install tooling
-        run: npm install --no-save html-validate@8 @axe-core/cli@4 http-server@14 wait-on@7
+        run: npm install --no-save html-validate@8 @axe-core/cli@4 http-server@14 wait-on@7 browser-driver-manager@latest
 
       - name: Validate HTML
         run: npx html-validate index.html pages/*.html
@@ -37,35 +37,46 @@ jobs:
       - name: Wait for server
         run: npx wait-on http://localhost:8080/index.html
 
+      # ubuntu-latest's preinstalled Chrome updates on its own schedule, independent of
+      # this repo — @axe-core/cli's bundled chromedriver falls out of sync with it
+      # periodically (a hard version match is required, not just "close enough"), which
+      # fails every "axe: <page>" step below with a driver error, not a real a11y issue.
+      # Installing a matched Chrome/chromedriver pair up front avoids that drift.
+      - name: Sync Chrome/ChromeDriver versions
+        run: |
+          npx browser-driver-manager install chrome | tee /tmp/browser-driver-manager.log
+          grep '^CHROMEDRIVER_TEST_PATH=' /tmp/browser-driver-manager.log \
+            | sed -E 's/^(CHROMEDRIVER_TEST_PATH)="(.*)"$/\1=\2/' >> "$GITHUB_ENV"
+
       - name: "axe: index.html"
         id: axe-index
         continue-on-error: true
-        run: npx axe http://localhost:8080/index.html --chrome-options="no-sandbox" --exit
+        run: npx axe http://localhost:8080/index.html --chromedriver-path "$CHROMEDRIVER_TEST_PATH" --chrome-options="no-sandbox" --exit
 
       - name: "axe: cars.html"
         id: axe-cars
         continue-on-error: true
-        run: npx axe http://localhost:8080/pages/cars.html --chrome-options="no-sandbox" --exit
+        run: npx axe http://localhost:8080/pages/cars.html --chromedriver-path "$CHROMEDRIVER_TEST_PATH" --chrome-options="no-sandbox" --exit
 
       - name: "axe: car-page.html"
         id: axe-car-page
         continue-on-error: true
-        run: npx axe http://localhost:8080/pages/car-page.html --chrome-options="no-sandbox" --exit
+        run: npx axe http://localhost:8080/pages/car-page.html --chromedriver-path "$CHROMEDRIVER_TEST_PATH" --chrome-options="no-sandbox" --exit
 
       - name: "axe: test-drive.html"
         id: axe-test-drive
         continue-on-error: true
-        run: npx axe http://localhost:8080/pages/test-drive.html --chrome-options="no-sandbox" --exit
+        run: npx axe http://localhost:8080/pages/test-drive.html --chromedriver-path "$CHROMEDRIVER_TEST_PATH" --chrome-options="no-sandbox" --exit
 
       - name: "axe: compare.html"
         id: axe-compare
         continue-on-error: true
-        run: npx axe http://localhost:8080/pages/compare.html --chrome-options="no-sandbox" --exit
+        run: npx axe http://localhost:8080/pages/compare.html --chromedriver-path "$CHROMEDRIVER_TEST_PATH" --chrome-options="no-sandbox" --exit
 
       - name: "axe: platform.html"
         id: axe-platform
         continue-on-error: true
-        run: npx axe http://localhost:8080/pages/platform.html --chrome-options="no-sandbox" --exit
+        run: npx axe http://localhost:8080/pages/platform.html --chromedriver-path "$CHROMEDRIVER_TEST_PATH" --chrome-options="no-sandbox" --exit
 
       - name: Summarize axe outcomes
         if: always()
