@@ -105,12 +105,14 @@
     text-align: left;
   }
 
-  /* Test drive modal: pair name + phone in one row once there's room */
-  #testDriveForm .field-row {
+  /* Test drive modal + trade-in estimator: pair fields in one row once there's room */
+  #testDriveForm .field-row,
+  #tradeInForm .field-row {
     flex-direction: row;
   }
 
-  #testDriveForm .field-row .field {
+  #testDriveForm .field-row .field,
+  #tradeInForm .field-row .field {
     flex: 1;
   }
 

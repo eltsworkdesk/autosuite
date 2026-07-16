@@ -218,6 +218,38 @@ function wireGalleryThumbs() {
   });
 }
 
+/* Picks up to 3 other vehicles to show as "Similar Vehicles": same brand
+   first, then whatever's closest in price, excluding the current car. */
+function renderSimilarVehicles(car, allCars) {
+  const grid = document.getElementById('similarGrid');
+  if (!grid) return;
+
+  const others = allCars.filter((c) => c.id !== car.id);
+  const similar = [...others]
+    .sort((a, b) => {
+      const aSameBrand = a.brand === car.brand ? 0 : 1;
+      const bSameBrand = b.brand === car.brand ? 0 : 1;
+      if (aSameBrand !== bSameBrand) return aSameBrand - bSameBrand;
+      return Math.abs(a.price - car.price) - Math.abs(b.price - car.price);
+    })
+    .slice(0, 3);
+
+  if (!similar.length) return;
+
+  grid.innerHTML = similar
+    .map(
+      (c) => `
+        <a class="similar-card" href="${carDetailUrl(c)}">
+          <img src="${imageUrl(c.image)}" alt="${c.name}">
+          <h3>${c.name}</h3>
+          <p class="similar-price">${formatNaira(c.price)}</p>
+          <p>${c.brand} · ${c.drivetrain}</p>
+        </a>
+      `
+    )
+    .join('');
+}
+
 /* ---------- Detail page: hydrate from ?id= ---------- */
 async function initDetailPage() {
   const nameEl = document.getElementById('carName');
@@ -231,6 +263,8 @@ async function initDetailPage() {
     const cars = await fetchCars();
     const car = cars.find((c) => c.id === id);
     if (!car) return;
+
+    renderSimilarVehicles(car, cars);
 
     window.AUTOSUITE_CURRENT_CAR = car;
     window.dispatchEvent(new CustomEvent('autosuite:car-ready', { detail: car }));
@@ -259,6 +293,20 @@ async function initDetailPage() {
         .join('');
     }
     wireGalleryThumbs();
+
+    // Full photo grid — every image in the gallery, not just the hero + thumbs strip.
+    const photoGrid = document.getElementById('photoGrid');
+    if (photoGrid && car.gallery?.length) {
+      let exteriorCount = 0;
+      let interiorCount = 0;
+      photoGrid.innerHTML = car.gallery
+        .map((img) => {
+          const isInterior = /interior/i.test(img);
+          const label = isInterior ? `Interior, photo ${++interiorCount}` : `Exterior, photo ${++exteriorCount}`;
+          return `<img src="${imageUrl(img)}" alt="${car.name} — ${label}" loading="lazy">`;
+        })
+        .join('');
+    }
 
     const specEngine = document.getElementById('specEngine');
     if (specEngine) specEngine.textContent = car.engine;

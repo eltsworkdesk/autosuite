@@ -512,38 +512,47 @@ button {
   color: var(--ink);
 }
 
-/* Form: single-column by default, name+phone pair up in .field-row at wider widths */
-#testDriveForm {
+/* Form fields: shared by the test-drive modal (#testDriveForm) and the
+   trade-in estimator (#tradeInForm) — single-column by default, name+phone
+   (or mileage+condition) pair up in .field-row at wider widths. */
+#testDriveForm,
+#tradeInForm {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
 }
 
-#testDriveForm .field {
+#testDriveForm .field,
+#tradeInForm .field {
   display: flex;
   flex-direction: column;
   gap: var(--space-1);
 }
 
-#testDriveForm .field-row {
+#testDriveForm .field-row,
+#tradeInForm .field-row {
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
 }
 
-#testDriveForm label {
+#testDriveForm label,
+#tradeInForm label {
   font-size: var(--text-xs);
   font-weight: 600;
   color: var(--ink-soft);
 }
 
-#testDriveForm label .required-mark {
+#testDriveForm label .required-mark,
+#tradeInForm label .required-mark {
   color: var(--danger);
   margin-left: 2px;
 }
 
 #testDriveForm input,
-#testDriveForm select {
+#testDriveForm select,
+#tradeInForm input,
+#tradeInForm select {
   padding: 0.7rem 0.85rem;
   font-size: var(--text-base);
   border-radius: var(--radius-sm);
@@ -552,34 +561,42 @@ button {
   font-family: inherit;
   color: var(--ink);
   transition: border-color var(--transition-fast);
+  width: 100%;
 }
 
 #testDriveForm input:focus,
-#testDriveForm select:focus {
+#testDriveForm select:focus,
+#tradeInForm input:focus,
+#tradeInForm select:focus {
   border-color: var(--brand-blue-deep);
   outline: none;
 }
 
-#testDriveForm input:invalid:not(:placeholder-shown):not(:focus) {
+#testDriveForm input:invalid:not(:placeholder-shown):not(:focus),
+#tradeInForm input:invalid:not(:placeholder-shown):not(:focus) {
   border-color: var(--danger);
 }
 
-#testDriveForm .field-error {
+#testDriveForm .field-error,
+#tradeInForm .field-error {
   font-size: var(--text-xs);
   color: var(--danger);
   min-height: 1em;
   display: none;
 }
 
-#testDriveForm .field.invalid .field-error {
+#testDriveForm .field.invalid .field-error,
+#tradeInForm .field.invalid .field-error {
   display: block;
 }
 
-#testDriveForm .field.invalid input {
+#testDriveForm .field.invalid input,
+#tradeInForm .field.invalid input {
   border-color: var(--danger);
 }
 
-#testDriveForm button[type="submit"] {
+#testDriveForm button[type="submit"],
+#tradeInForm button[type="submit"] {
   margin-top: var(--space-2);
 }
 

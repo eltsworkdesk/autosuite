@@ -28,11 +28,19 @@ window.AUTOSUITE_CARS = [
     "horsepower": 335,
     "drivetrain": "All-Wheel Drive",
     "featured": true,
-    "image": "bmw-x6-2024-1.jpg",
+    "image": "2024-x6-exterior1.jpg",
     "gallery": [
-      "bmw-x6-2024-1.jpg",
-      "bmw-x6-2024-2.jpg",
-      "bmw-x6-2024-3.jpg"
+      "2024-x6-exterior1.jpg",
+      "2024-x6-exterior2.jpg",
+      "2024-x6-exterior3.jpg",
+      "2024-x6-exterior4.jpg",
+      "2024-x6-exterior5.jpg",
+      "2024-x6-interior1.jpg",
+      "2024-x6-interior2.jpg",
+      "2024-x6-interior3.jpg",
+      "2024-x6-interior4.jpg",
+      "2024-x6-interior5.jpg",
+      "2024-x6-interior6.jpg"
     ]
   },
   {
@@ -46,11 +54,18 @@ window.AUTOSUITE_CARS = [
     "horsepower": 348,
     "drivetrain": "All-Wheel Drive",
     "featured": true,
-    "image": "porsche-cayenne-2025-1.jpg",
+    "image": "porsche-cayenne-exterior1.jpg",
     "gallery": [
-      "porsche-cayenne-2025-1.jpg",
-      "porsche-cayenne-2025-2.jpg",
-      "porsche-cayenne-2025-3.jpg"
+      "porsche-cayenne-exterior1.jpg",
+      "porsche-cayenne-exterior2.jpg",
+      "porsche-cayenne-exterior3.jpg",
+      "porsche-cayenne-exterior4.jpg",
+      "porsche-cayenne-exterior5.jpg",
+      "porsche-cayenne-interior1.jpg",
+      "porsche-cayenne-interior2.jpg",
+      "porsche-cayenne-interior3.jpg",
+      "porsche-cayenne-interior4.jpg",
+      "porsche-cayenne-interior5.jpg"
     ]
   },
   {
@@ -64,11 +79,18 @@ window.AUTOSUITE_CARS = [
     "horsepower": 577,
     "drivetrain": "All-Wheel Drive",
     "featured": false,
-    "image": "amg-g63-2025-1.jpg",
+    "image": "2025-g63-exterior1.jpg",
     "gallery": [
-      "amg-g63-2025-1.jpg",
-      "amg-g63-2025-2.jpg",
-      "amg-g63-2025-3.jpg"
+      "2025-g63-exterior1.jpg",
+      "2025-g63-exterior2.jpg",
+      "2025-g63-exterior3.jpg",
+      "2025-g63-exterior4.jpg",
+      "2025-g63-exterior5.jpg",
+      "2025-g63-interior1.jpg",
+      "2025-g63-interior2.jpg",
+      "2025-g63-interior3.jpg",
+      "2025-g63-interior4.jpg",
+      "2025-g63-interior5.jpg"
     ]
   },
   {
@@ -82,11 +104,15 @@ window.AUTOSUITE_CARS = [
     "horsepower": 429,
     "drivetrain": "All-Wheel Drive",
     "featured": false,
-    "image": "gle53-amg-1.jpg",
+    "image": "gle-53-amg-exterior1.jpg",
     "gallery": [
-      "gle53-amg-1.jpg",
-      "gle53-amg-2.jpg",
-      "gle53-amg-3.jpg"
+      "gle-53-amg-exterior1.jpg",
+      "gle-53-amg-exterior2.jpg",
+      "gle-53-amg-exterior3.jpg",
+      "gle-53-amg-interior1.jpg",
+      "gle-53-amg-interior2.jpg",
+      "gle-53-amg-interior3.jpg",
+      "gle-53-amg-interior4.jpg"
     ]
   },
   {
@@ -100,11 +126,15 @@ window.AUTOSUITE_CARS = [
     "horsepower": 420,
     "drivetrain": "4WD",
     "featured": false,
-    "image": "cadillac-escalade-2025-1.jpg",
+    "image": "2025-cadilac-escalade-exterior1.jpg",
     "gallery": [
-      "cadillac-escalade-2025-1.jpg",
-      "cadillac-escalade-2025-2.jpg",
-      "cadillac-escalade-2025-3.jpg"
+      "2025-cadilac-escalade-exterior1.jpg",
+      "2025-cadilac-escalade-exterior2.jpg",
+      "2025-cadilac-escalade-interior1.jpg",
+      "2025-cadilac-escalade-interior2.jpg",
+      "2025-cadilac-escalade-interior3.jpg",
+      "2025-cadilac-escalade-interior4.jpg",
+      "2025-cadilac-escalade-interior5.jpg"
     ]
   },
   {
@@ -118,11 +148,17 @@ window.AUTOSUITE_CARS = [
     "horsepower": 301,
     "drivetrain": "4WD",
     "featured": false,
-    "image": "lexus-gx460-1.jpg",
+    "image": "lexus-gx460-exterior1.jpg",
     "gallery": [
-      "lexus-gx460-1.jpg",
-      "lexus-gx460-2.jpg",
-      "lexus-gx460-3.jpg"
+      "lexus-gx460-exterior1.jpg",
+      "lexus-gx460-exterior2.jpg",
+      "lexus-gx460-exterior3.jpg",
+      "lexus-gx460-exterior4.jpg",
+      "lexus-gx460-interior1.jpg",
+      "lexus-gx460-interior2.jpg",
+      "lexus-gx460-interior3.jpg",
+      "lexus-gx460-interior4.jpg",
+      "lexus-gx460-interior5.jpg"
     ]
   },
   {
@@ -136,11 +172,16 @@ window.AUTOSUITE_CARS = [
     "horsepower": 203,
     "drivetrain": "Front-Wheel Drive",
     "featured": false,
-    "image": "toyota-camry-2023-1.jpg",
+    "image": "2023-camry-exterior1.jpg",
     "gallery": [
-      "toyota-camry-2023-1.jpg",
-      "toyota-camry-2023-2.jpg",
-      "toyota-camry-2023-3.jpg"
+      "2023-camry-exterior1.jpg",
+      "2023-camry-exterior2.jpg",
+      "2023-camry-exterior3.jpg",
+      "2023-camry-exterior4.jpg",
+      "2023-camry-interior1.jpg",
+      "2023-camry-interior2.jpg",
+      "2023-camry-interior3.jpg",
+      "2023-camry-interior4.jpg"
     ]
   },
   {
@@ -154,11 +195,18 @@ window.AUTOSUITE_CARS = [
     "horsepower": 255,
     "drivetrain": "All-Wheel Drive",
     "featured": false,
-    "image": "mercedes-glc300-2025-1.jpg",
+    "image": "2025-glc300-exterior1.jpg",
     "gallery": [
-      "mercedes-glc300-2025-1.jpg",
-      "mercedes-glc300-2025-2.jpg",
-      "mercedes-glc300-2025-3.jpg"
+      "2025-glc300-exterior1.jpg",
+      "2025-glc300-exterior2.jpg",
+      "2025-glc300-exterior3.jpg",
+      "2025-glc300-exterior4.jpg",
+      "2025-glc300-interior1.jpg",
+      "2025-glc300-interior2.jpg",
+      "2025-glc300-interior3.jpg",
+      "2025-glc300-interior4.jpg",
+      "2025-glc300-interior5.jpg",
+      "2025-glc300-interior6.jpg"
     ]
   },
   {

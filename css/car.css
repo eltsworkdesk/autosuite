@@ -283,6 +283,14 @@
   transition: background var(--transition-fast), transform var(--transition-fast);
 }
 
+.similar-card img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-3);
+}
+
 .similar-card:hover {
   background: var(--line);
   transform: translateY(-2px);
