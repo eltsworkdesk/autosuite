@@ -15,7 +15,10 @@
       "mercedes-e450-2024-1.jpg",
       "mercedes-e450-2024-2.jpg",
       "mercedes-e450-2024-3.jpg"
-    ]
+    ],
+    "bodyStyle": "Sedan",
+    "overview": "Mercedes-Benz redesigned its mid-size E-Class into a 10th generation in 2017, spanning sedan, wagon, coupe, and convertible body styles. Recent model years focused on trim and standard-feature updates rather than a full redesign — expect more tech as standard across the range, including a heated steering wheel and wireless phone charging.",
+    "whatsNew": "The entry-level model was renamed E 350, more standard tech was added across trims, and option packages were revised."
   },
   {
     "id": "bmw-x6-2024",
@@ -41,7 +44,10 @@
       "2024-x6-interior4.jpg",
       "2024-x6-interior5.jpg",
       "2024-x6-interior6.jpg"
-    ]
+    ],
+    "bodyStyle": "SUV",
+    "overview": "BMW introduced the X6 in 2008 as the original \"SUV coupe\" — a mid-size SUV with a sloping, coupe-like roofline traded for a little rear headroom and cargo space. This third generation (since 2019) shares its platform with the X5 but leans sportier, with a more aggressive stance and firmer tuning.",
+    "whatsNew": "Updated headlight and grille styling, an expanded suite of standard driver-assistance tech, and a refreshed infotainment system across the range."
   },
   {
     "id": "porsche-cayenne-2025",
@@ -66,7 +72,10 @@
       "porsche-cayenne-interior3.jpg",
       "porsche-cayenne-interior4.jpg",
       "porsche-cayenne-interior5.jpg"
-    ]
+    ],
+    "bodyStyle": "SUV",
+    "overview": "The Cayenne has been Porsche's SUV since 2002, credited with funding much of the brand's later sports-car development. Now in its third generation (since 2018, with a mid-cycle refresh), it's built to bring sports-car handling to an SUV body, with a wide spread of trims from naturally-aspirated V6 up to twin-turbo V8 Turbo models.",
+    "whatsNew": "Updated exterior styling, a redesigned interior with a fully digital instrument cluster, and revised suspension tuning."
   },
   {
     "id": "amg-g63-2025",
@@ -91,7 +100,10 @@
       "2025-g63-interior3.jpg",
       "2025-g63-interior4.jpg",
       "2025-g63-interior5.jpg"
-    ]
+    ],
+    "bodyStyle": "SUV",
+    "overview": "The G-Class traces back to 1979 and has kept its boxy, upright silhouette through a ground-up 2018 redesign that modernized the underpinnings while preserving the classic look. The AMG G63 is the performance flagship of the range, built around a twin-turbo V8 and unmistakably aggressive body styling.",
+    "whatsNew": "Updated AMG-specific trim details, a refreshed infotainment system, and expanded driver-assistance tech."
   },
   {
     "id": "gle53-amg",
@@ -113,7 +125,10 @@
       "gle-53-amg-interior2.jpg",
       "gle-53-amg-interior3.jpg",
       "gle-53-amg-interior4.jpg"
-    ]
+    ],
+    "bodyStyle": "SUV",
+    "overview": "The GLE is Mercedes-Benz's mid-size SUV, renamed from the M-Class in 2015 and now in its second generation since 2019. AMG 53 models pair a turbocharged inline-six with mild-hybrid assistance, aiming for a middle ground between the standard GLE's comfort and the full AMG 63's outright performance.",
+    "whatsNew": "Mild-hybrid assistance added across AMG 53 models for a brief torque boost off the line, plus updated cabin tech."
   },
   {
     "id": "cadillac-escalade-2025",
@@ -135,7 +150,10 @@
       "2025-cadilac-escalade-interior3.jpg",
       "2025-cadilac-escalade-interior4.jpg",
       "2025-cadilac-escalade-interior5.jpg"
-    ]
+    ],
+    "bodyStyle": "SUV",
+    "overview": "The Escalade has been Cadillac's full-size SUV flagship since 1998 and is now in its fifth generation (since 2021), built on GM's full-size SUV platform shared with the Chevrolet Tahoe/Suburban and GMC Yukon. It's distinguished by its length, a curved OLED display spanning the dash, and V8 power.",
+    "whatsNew": "A curved OLED display across the dashboard, updated driver-assistance tech, and revised trim-level equipment."
   },
   {
     "id": "lexus-gx460",
@@ -159,7 +177,10 @@
       "lexus-gx460-interior3.jpg",
       "lexus-gx460-interior4.jpg",
       "lexus-gx460-interior5.jpg"
-    ]
+    ],
+    "bodyStyle": "SUV",
+    "overview": "The GX is Lexus's body-on-frame, off-road-capable SUV, related to the Toyota Land Cruiser Prado platform. It trades some of the on-road polish of Lexus's car-based SUVs for genuine off-road capability and the brand's reputation for long-term reliability.",
+    "whatsNew": "Updated infotainment software and expanded standard driver-assistance features for this model year."
   },
   {
     "id": "toyota-camry-2023",
@@ -182,7 +203,10 @@
       "2023-camry-interior2.jpg",
       "2023-camry-interior3.jpg",
       "2023-camry-interior4.jpg"
-    ]
+    ],
+    "bodyStyle": "Sedan",
+    "overview": "The Camry is Toyota's long-running mid-size sedan, in its eighth generation since 2018 with a styling refresh for 2021. It's built around reliability and value rather than outright excitement, with the XSE trim adding sportier styling and firmer suspension tuning to the lineup.",
+    "whatsNew": "Refreshed front and rear styling, updated infotainment software, and expanded standard driver-assistance tech."
   },
   {
     "id": "mercedes-glc300-2025",
@@ -207,7 +231,10 @@
       "2025-glc300-interior4.jpg",
       "2025-glc300-interior5.jpg",
       "2025-glc300-interior6.jpg"
-    ]
+    ],
+    "bodyStyle": "SUV",
+    "overview": "The GLC is Mercedes-Benz's compact luxury SUV, now in its second generation since 2022, slotting below the mid-size GLE. It's the brand's volume SUV — built to balance everyday efficiency with the cabin materials and tech buyers expect from the three-pointed star.",
+    "whatsNew": "A redesigned interior with a larger central touchscreen, updated engine tuning, and expanded standard tech across trims."
   },
   {
     "id": "bmw-5series-2018",
@@ -223,6 +250,9 @@
     "image": "bmw-5series-2018-1.jpg",
     "gallery": [
       "bmw-5series-2018-1.jpg"
-    ]
+    ],
+    "bodyStyle": "Sedan",
+    "overview": "The 5 Series is BMW's mid-size executive sedan, sitting between the compact 3 Series and the flagship 7 Series. This generation (G30, introduced for 2017) was praised for a refined ride, upscale cabin, and BMW's traditionally driver-focused handling.",
+    "whatsNew": "Standard equipment expanded across trims, with updated infotainment software and additional driver-assistance options."
   }
 ]

@@ -207,13 +207,18 @@ function wireGalleryThumbs() {
   const thumbsWrap = document.getElementById('thumbs');
   if (!mainPhoto || !thumbsWrap) return;
 
+  const expandBtn = document.getElementById('expandMainPhoto');
   const thumbButtons = thumbsWrap.querySelectorAll('button');
-  thumbButtons.forEach((btn) => {
+  thumbButtons.forEach((btn, i) => {
     btn.addEventListener('click', () => {
       const img = btn.querySelector('img');
       if (img) mainPhoto.src = img.dataset.full;
       thumbButtons.forEach((b) => b.removeAttribute('aria-current'));
       btn.setAttribute('aria-current', 'true');
+      // Keep the hero "expand to full screen" button pointed at whichever
+      // photo is currently shown — thumbs and the photo grid share the same
+      // gallery order, so the thumb's index lines up with both.
+      if (expandBtn) expandBtn.dataset.lightboxIndex = String(i);
     });
   });
 }
@@ -295,15 +300,18 @@ async function initDetailPage() {
     wireGalleryThumbs();
 
     // Full photo grid — every image in the gallery, not just the hero + thumbs strip.
+    // Each photo is a real button (not a bare <img>) so it's keyboard-reachable and
+    // can open the fullscreen lightbox (see js/lightbox.js).
     const photoGrid = document.getElementById('photoGrid');
     if (photoGrid && car.gallery?.length) {
       let exteriorCount = 0;
       let interiorCount = 0;
       photoGrid.innerHTML = car.gallery
-        .map((img) => {
+        .map((img, i) => {
           const isInterior = /interior/i.test(img);
           const label = isInterior ? `Interior, photo ${++interiorCount}` : `Exterior, photo ${++exteriorCount}`;
-          return `<img src="${imageUrl(img)}" alt="${car.name} — ${label}" loading="lazy">`;
+          const alt = `${car.name} — ${label}`;
+          return `<button type="button" class="photo-grid-item" data-lightbox-index="${i}"><img src="${imageUrl(img)}" alt="${alt}" loading="lazy"></button>`;
         })
         .join('');
     }
@@ -316,6 +324,36 @@ async function initDetailPage() {
     if (specDrivetrain) specDrivetrain.textContent = car.drivetrain;
     const specMileage = document.getElementById('specMileage');
     if (specMileage) specMileage.textContent = car.mileage;
+
+    // Buyer's Guide — per-vehicle overview and "what's new" copy.
+    const overviewEl = document.getElementById('buyersGuideOverview');
+    if (overviewEl && car.overview) overviewEl.textContent = car.overview;
+    const whatsNewEl = document.getElementById('buyersGuideWhatsNew');
+    if (whatsNewEl && car.whatsNew) whatsNewEl.textContent = car.whatsNew;
+
+    // Vehicle Specifications — built entirely from this car's real data, so it's
+    // always accurate (no fabricated per-trim specs for vehicles we don't stock).
+    const specsBody = document.getElementById('specsTableBody');
+    if (specsBody) {
+      const rows = [
+        ['Body Style', car.bodyStyle],
+        ['Engine', car.engine],
+        ['Horsepower', `${car.horsepower} hp`],
+        ['Drivetrain', car.drivetrain],
+        ['Mileage', car.mileage],
+        ['Model Year', car.year],
+        ['Price', formatNaira(car.price)],
+      ];
+      specsBody.innerHTML = rows
+        .filter(([, value]) => value !== undefined && value !== null)
+        .map(([label, value]) => `<tr><th scope="row">${label}</th><td>${value}</td></tr>`)
+        .join('');
+    }
+
+    const recallCarName = document.getElementById('recallCarName');
+    if (recallCarName) recallCarName.textContent = car.name;
+    const inventoryCarName = document.getElementById('inventoryCarName');
+    if (inventoryCarName) inventoryCarName.textContent = car.name;
 
     document.title = `${car.name} — AutoSuite`;
   } catch (err) {

@@ -72,7 +72,14 @@
       </div>
 
       <figure class="hero-right">
-        <img id="mainPhoto" src="../assets/web/e450-hero.jpg" alt="Mercedes-Benz E450 exterior" width="1400" height="788" fetchpriority="high">
+        <div class="hero-photo-frame">
+          <img id="mainPhoto" src="../assets/web/e450-hero.jpg" alt="Mercedes-Benz E450 exterior" width="1400" height="788" fetchpriority="high">
+          <button type="button" class="photo-expand" id="expandMainPhoto" data-lightbox-index="0" aria-label="View photo full screen">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M8 3H4v5M16 3h4v5M8 21H4v-5M16 21h4v-5"></path>
+            </svg>
+          </button>
+        </div>
         <div class="photo-meta">
           <button class="photo-360" type="button" disabled title="360° view — coming soon">360°</button>
           <div class="photo-thumbs" id="thumbs" role="group" aria-label="Photo gallery thumbnails">
@@ -204,7 +211,7 @@
     <nav class="features-nav" id="featuresNav" aria-label="On this page">
       <a href="#financing" class="nav-chip">Financing &amp; Trade-In</a>
       <a href="#buyers-guide" class="nav-chip">Buyer's Guide</a>
-      <a href="#trim-comparison" class="nav-chip">Trim Comparison</a>
+      <a href="#vehicle-specs" class="nav-chip">Specifications</a>
       <a href="#photos" class="nav-chip">Photos</a>
       <a href="#recall-info" class="nav-chip">Recall Information</a>
       <a href="#inventory" class="nav-chip">Inventory</a>
@@ -214,30 +221,29 @@
     <!-- BUYER'S GUIDE -->
     <section id="buyers-guide" class="content-section">
       <h2>Buyer's Guide — History / Overview</h2>
-      <p>Mercedes-Benz redesigned its mid-size E-Class into a 10th generation in 2017, spanning sedan, wagon, coupe, and convertible body styles. Recent model years focused on trim and standard-feature updates rather than a full redesign — expect more tech as standard across the range, including a heated steering wheel and wireless phone charging.</p>
-      <p><strong>What's new</strong> — the entry-level model was renamed E 350, more standard tech was added across trims, and option packages were revised.</p>
+      <p id="buyersGuideOverview">Mercedes-Benz redesigned its mid-size E-Class into a 10th generation in 2017, spanning sedan, wagon, coupe, and convertible body styles. Recent model years focused on trim and standard-feature updates rather than a full redesign — expect more tech as standard across the range, including a heated steering wheel and wireless phone charging.</p>
+      <p><strong>What's new</strong> — <span id="buyersGuideWhatsNew">the entry-level model was renamed E 350, more standard tech was added across trims, and option packages were revised.</span></p>
     </section>
 
-    <!-- TRIM COMPARISON -->
-    <section id="trim-comparison" class="content-section">
-      <h2>Trim Comparison</h2>
-      <section class="table-wrap" tabindex="0" aria-label="Trim comparison table, scroll horizontally to see all trims">
+    <!-- VEHICLE SPECIFICATIONS -->
+    <section id="vehicle-specs" class="content-section">
+      <h2>Vehicle Specifications</h2>
+      <section class="table-wrap" tabindex="0" aria-label="Vehicle specifications table, scroll horizontally to see all details">
         <table class="trim-table">
           <thead>
             <tr>
-              <th scope="col">Spec / Trim</th>
-              <th scope="col">E 350</th>
-              <th scope="col">E 450</th>
-              <th scope="col">AMG E 53</th>
-              <th scope="col">AMG E 63 S</th>
+              <th scope="col">Specification</th>
+              <th scope="col">Detail</th>
             </tr>
           </thead>
-          <tbody>
-            <tr><td>Engine</td><td>2.0L I4</td><td>3.0L I6</td><td>3.0L I6 mild hybrid</td><td>4.0L V8</td></tr>
-            <tr><td>Horsepower</td><td>255 hp</td><td>375 hp</td><td>429 hp</td><td>603 hp</td></tr>
-            <tr><td>Drivetrain</td><td>RWD / AWD</td><td>AWD</td><td>AWD</td><td>AWD</td></tr>
-            <tr><td>Transmission</td><td>9-speed auto</td><td>9-speed auto</td><td>9-speed auto</td><td>9-speed auto</td></tr>
-            <tr><td>Notable features</td><td>18&Prime; wheels, LED</td><td>Leather, parking assist</td><td>Sport tuning, Nappa leather</td><td>Performance brakes, adaptive modes</td></tr>
+          <tbody id="specsTableBody">
+            <tr><th scope="row">Body Style</th><td>Sedan</td></tr>
+            <tr><th scope="row">Engine</th><td>3.0L Turbo I6</td></tr>
+            <tr><th scope="row">Horsepower</th><td>375 hp</td></tr>
+            <tr><th scope="row">Drivetrain</th><td>All-Wheel Drive</td></tr>
+            <tr><th scope="row">Mileage</th><td>8,500 km</td></tr>
+            <tr><th scope="row">Model Year</th><td>2024</td></tr>
+            <tr><th scope="row">Price</th><td>₦45,000,000</td></tr>
           </tbody>
         </table>
       </section>
@@ -247,10 +253,10 @@
     <section id="photos" class="content-section">
       <h2>Photos</h2>
       <div class="photo-grid" id="photoGrid">
-        <img src="../assets/web/e450-hero.jpg" alt="Exterior, three-quarter view" loading="lazy">
-        <img src="../assets/web/e450-thumb-2.jpg" alt="Interior, dashboard" loading="lazy">
-        <img src="../assets/web/e450-thumb-3.jpg" alt="Interior, front seats" loading="lazy">
-        <img src="../assets/web/e450-thumb-1.jpg" alt="Exterior detail" loading="lazy">
+        <button type="button" class="photo-grid-item" data-lightbox-index="0"><img src="../assets/web/e450-hero.jpg" alt="Exterior, three-quarter view" loading="lazy"></button>
+        <button type="button" class="photo-grid-item" data-lightbox-index="1"><img src="../assets/web/e450-thumb-2.jpg" alt="Interior, dashboard" loading="lazy"></button>
+        <button type="button" class="photo-grid-item" data-lightbox-index="2"><img src="../assets/web/e450-thumb-3.jpg" alt="Interior, front seats" loading="lazy"></button>
+        <button type="button" class="photo-grid-item" data-lightbox-index="3"><img src="../assets/web/e450-thumb-1.jpg" alt="Exterior detail" loading="lazy"></button>
       </div>
     </section>
 
@@ -258,13 +264,13 @@
     <!-- RECALL INFO -->
     <section id="recall-info" class="content-section">
       <h2>Recall Information</h2>
-      <p>No active recalls on this trim as of the last check. <em>(Demo placeholder — a production build would sync this with official recall sources.)</em></p>
+      <p>No active recalls on this <span id="recallCarName">2024 Mercedes-Benz E450</span> as of the last check. <em>(Demo placeholder — a production build would sync this with official recall sources.)</em></p>
     </section>
 
     <!-- INVENTORY -->
     <section id="inventory" class="content-section">
       <h2>Inventory</h2>
-      <p>Available at the AutoSuite showroom — multiple units may be in stock. <a href="cars.html">View the full inventory</a> to check current availability.</p>
+      <p>The <span id="inventoryCarName">2024 Mercedes-Benz E450</span> is available at the AutoSuite showroom — multiple units may be in stock. <a href="cars.html">View the full inventory</a> to check current availability.</p>
     </section>
 
     <!-- SIMILAR VEHICLES -->
@@ -296,6 +302,17 @@
   <!-- Mobile-only sticky CTA (hidden at tablet+ via responsive.css) -->
   <div class="mobile-cta-bar">
     <button type="button" class="btn" data-open-test-drive data-car-name-from="#carName">Book a Test Drive</button>
+  </div>
+
+  <!-- Fullscreen photo viewer -->
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <button type="button" class="lightbox-close" aria-label="Close photo viewer">&times;</button>
+    <button type="button" class="lightbox-nav lightbox-prev" aria-label="Previous photo">&lsaquo;</button>
+    <figure class="lightbox-figure">
+      <img class="lightbox-img" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBTAA7" alt="">
+      <figcaption class="lightbox-counter" aria-live="polite"></figcaption>
+    </figure>
+    <button type="button" class="lightbox-nav lightbox-next" aria-label="Next photo">&rsaquo;</button>
   </div>
 
   <!-- Shared Test Drive Modal -->
@@ -354,5 +371,6 @@
   <script src="../js/cars-data.js" defer></script>
   <script src="../js/lib/finance.js" defer></script>
   <script src="../js/financing.js" defer></script>
+  <script src="../js/lightbox.js" defer></script>
 </body>
 </html>

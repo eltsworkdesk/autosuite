@@ -53,12 +53,44 @@
   flex-wrap: wrap;
 }
 
+.hero-photo-frame {
+  position: relative;
+}
+
 .hero-right img#mainPhoto {
   width: 100%;
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-lg);
   aspect-ratio: 16/10;
   object-fit: cover;
+}
+
+.photo-expand {
+  position: absolute;
+  right: var(--space-3);
+  bottom: var(--space-3);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(11, 18, 32, 0.55);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  color: #fff;
+  cursor: zoom-in;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.photo-expand svg {
+  width: 18px;
+  height: 18px;
+}
+
+.photo-expand:hover,
+.photo-expand:focus-visible {
+  background: rgba(11, 18, 32, 0.8);
+  border-color: #fff;
 }
 
 .photo-meta {
@@ -260,11 +292,36 @@
   gap: var(--space-2);
 }
 
-.photo-grid img {
+.photo-grid-item {
+  display: block;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: zoom-in;
+  border-radius: var(--radius-sm);
+  position: relative;
+}
+
+.photo-grid-item::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-sm);
+  box-shadow: inset 0 0 0 2px transparent;
+  transition: box-shadow var(--transition-fast);
+}
+
+.photo-grid-item:hover::after,
+.photo-grid-item:focus-visible::after {
+  box-shadow: inset 0 0 0 2px var(--brand-blue);
+}
+
+.photo-grid-item img {
   width: 100%;
   aspect-ratio: 4/3;
   object-fit: cover;
   border-radius: var(--radius-sm);
+  display: block;
 }
 
 /* ---------- Similar vehicles ---------- */
@@ -323,6 +380,110 @@
   text-align: center;
   padding: var(--space-5) var(--space-3);
   margin-top: var(--space-6);
+}
+
+/* ---------- Fullscreen photo viewer (lightbox) ---------- */
+.lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  background: rgba(11, 18, 32, 0.92);
+  padding: var(--space-4);
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox.open {
+  display: flex;
+}
+
+.lightbox-figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  max-width: 100%;
+  margin: 0;
+}
+
+.lightbox-img {
+  max-width: min(90vw, 1100px);
+  max-height: 78vh;
+  width: auto;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+}
+
+.lightbox-counter {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: #cdd8f0;
+}
+
+.lightbox-close,
+.lightbox-nav {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.lightbox-close:hover,
+.lightbox-close:focus-visible,
+.lightbox-nav:hover,
+.lightbox-nav:focus-visible {
+  background: rgba(255, 255, 255, 0.24);
+  border-color: #fff;
+}
+
+.lightbox-close {
+  top: var(--space-4);
+  right: var(--space-4);
+  width: 40px;
+  height: 40px;
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.lightbox-nav {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.lightbox-prev {
+  left: var(--space-4);
+}
+
+.lightbox-next {
+  right: var(--space-4);
+}
+
+@media (max-width: 640px) {
+  .lightbox-nav {
+    width: 40px;
+    height: 40px;
+    font-size: 1.6rem;
+  }
+
+  .lightbox-prev {
+    left: var(--space-2);
+  }
+
+  .lightbox-next {
+    right: var(--space-2);
+  }
 }
 
 /* ---------- Mobile sticky CTA bar ----------
