@@ -253,14 +253,26 @@
 .crm-col-count { font-size: var(--text-xs); color: var(--ink-faint); }
 .crm-cards { display: flex; flex-direction: column; gap: var(--space-3); }
 
-.crm-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); padding: var(--space-4); }
-.crm-card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-1); }
+.crm-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); padding: var(--space-4); cursor: pointer; }
+.crm-card:hover { box-shadow: var(--shadow-md); }
+.crm-card-top { display: flex; align-items: center; gap: 6px; margin-bottom: var(--space-1); }
 .crm-card-name { font-weight: 600; font-size: var(--text-sm); }
 .crm-card-vehicle { font-size: var(--text-xs); color: var(--ink-soft); margin-bottom: var(--space-3); }
 .crm-card-foot { display: flex; align-items: center; justify-content: space-between; }
 .crm-source { font-size: 0.68rem; padding: 3px 8px; border-radius: var(--radius-sm); background: var(--surface-sunken); color: var(--ink-soft); }
-.crm-select { font-family: var(--font-body); font-size: var(--text-xs); padding: 4px 6px; border-radius: var(--radius-sm); border: 1px solid var(--line); background: var(--surface); color: var(--ink); margin-top: var(--space-2); width: 100%; }
+.crm-select { font-family: var(--font-body); font-size: var(--text-xs); padding: 4px 6px; border-radius: var(--radius-sm); border: 1px solid var(--line); background: var(--surface); color: var(--ink); margin-top: var(--space-2); width: 100%; cursor: pointer; }
 .crm-empty { font-size: var(--text-sm); color: var(--ink-faint); padding: var(--space-4) var(--space-1); }
+.crm-priority-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; flex: none; vertical-align: middle; margin-right: 2px; }
+
+/* Drag-and-drop is an enhancement on top of the <select> in every card —
+   see js/dashboard.js for the keyboard-operable fallback. */
+.crm-cards { border-radius: var(--radius-md); transition: background var(--transition-fast); }
+.crm-cards.drag-over { background: var(--surface-sunken); }
+.crm-card[draggable="true"] { cursor: grab; }
+
+.crm-table tbody tr[data-id] { cursor: pointer; }
+.crm-table tbody tr[data-id]:hover { background: var(--surface-sunken); }
+.crm-table tbody tr[data-id]:focus-visible { outline: 2px solid var(--brand-blue); outline-offset: -2px; }
 
 /* ---------- Tables (CRM table + inventory) ---------- */
 .crm-table-wrap, .inv-table-wrap { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); overflow-x: auto; }
@@ -275,6 +287,49 @@
 .module-soon h2 { font-family: var(--font-display); font-size: var(--text-md); margin-bottom: var(--space-3); }
 .module-soon p { font-size: var(--text-sm); color: var(--ink-soft); line-height: 1.6; }
 
+/* Compact variant for the Lead Detail sidebar's Documents card — same
+   component, tighter footprint than the full-page empty-state usage above. */
+.module-soon-compact { max-width: none; margin: 0; padding: var(--space-4); text-align: left; }
+.module-soon-compact p { font-size: var(--text-xs); }
+
+/* ---------- Lead Detail ---------- */
+.dos-back-link { border: none; background: transparent; font-family: var(--font-body); font-weight: 500; font-size: var(--text-sm); color: var(--ink-soft); cursor: pointer; padding: var(--space-1) 0; }
+.dos-back-link:hover { color: var(--ink); }
+
+.ld-layout { display: grid; grid-template-columns: 1fr 320px; align-items: start; gap: var(--space-5); }
+.ld-main { display: flex; flex-direction: column; gap: var(--space-5); }
+.ld-sidebar { display: flex; flex-direction: column; gap: var(--space-4); }
+
+.ld-header { display: flex; align-items: center; gap: var(--space-3); }
+.ld-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--gradient-brand); flex: none; display: flex; align-items: center; justify-content: center; color: #fff; font-family: var(--font-display); font-weight: 600; font-size: var(--text-md); }
+.ld-header-info { flex: 1; min-width: 0; }
+.ld-header-info h1 { font-family: var(--font-display); font-size: var(--text-lg); margin: 0 0 2px; }
+.ld-contact { font-size: var(--text-sm); color: var(--ink-faint); }
+.ld-status-pill { font-size: var(--text-xs); font-weight: 600; color: #fff; padding: var(--space-1) var(--space-3); border-radius: var(--radius-pill); flex: none; }
+
+.ld-vehicle { display: flex; align-items: center; gap: var(--space-3); }
+.ld-vehicle-thumb { width: 72px; height: 52px; border-radius: var(--radius-sm); object-fit: cover; flex: none; background: var(--surface-sunken); }
+.ld-vehicle-info { display: flex; flex-direction: column; gap: 2px; }
+.ld-vehicle-info span { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--brand-blue-deep); }
+
+.ld-timeline { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+.ld-timeline li { display: flex; align-items: flex-start; gap: var(--space-3); font-size: var(--text-sm); }
+.ld-timeline-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--brand-blue); flex: none; margin-top: 6px; }
+
+.ld-tags { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-3); }
+.ld-tag { display: inline-flex; align-items: center; gap: 6px; font-size: var(--text-xs); font-weight: 500; padding: 4px 6px 4px 10px; border-radius: var(--radius-pill); background: var(--surface-sunken); color: var(--ink-soft); }
+.ld-tag-remove { border: none; background: none; color: var(--ink-faint); font-size: 0.9rem; line-height: 1; cursor: pointer; padding: 2px; }
+.ld-tag-remove:hover { color: var(--danger); }
+
+.ld-inline-form { display: flex; gap: var(--space-2); }
+.ld-inline-form input { flex: 1; font-size: var(--text-sm); padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); border: 1px solid var(--line); background: var(--bg); color: var(--ink); font-family: inherit; }
+.ld-inline-form input:focus { outline: none; border-color: var(--brand-blue-deep); }
+
+.ld-tasks { list-style: none; margin: 0 0 var(--space-3); padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+.ld-task label { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-sm); cursor: pointer; }
+.ld-task.done span { text-decoration: line-through; color: var(--ink-faint); }
+.ld-task-check { width: 16px; height: 16px; accent-color: var(--brand-blue); flex: none; }
+
 @media (max-width: 900px) {
   .dos-shell { grid-template-columns: 1fr; }
   .dos-sidebar { flex-direction: row; align-items: center; flex-wrap: wrap; padding: var(--space-3) var(--space-4); }
@@ -283,4 +338,5 @@
   .dos-nav { flex-direction: row; flex-wrap: wrap; }
   .kpi-row { grid-template-columns: repeat(2, 1fr); }
   .dos-grid-2, .dos-grid-3 { grid-template-columns: 1fr; }
+  .ld-layout { grid-template-columns: 1fr; }
 }

@@ -102,12 +102,72 @@ const dashboardHtml = `<!DOCTYPE html>
           <span class="dos-live" id="crmLive" role="status" aria-live="polite"></span>
         </header>
         <div class="dos-content">
-          <div id="crmBoard" class="crm-board" aria-label="Leads board"></div>
+          <div id="crmBoard" class="crm-board" role="group" aria-label="Leads board"></div>
           <div id="crmTable" class="crm-table-wrap" hidden>
             <table class="crm-table">
-              <thead><tr><th scope="col">Customer</th><th scope="col">Vehicle</th><th scope="col">Source</th><th scope="col">Status</th></tr></thead>
+              <thead><tr><th scope="col">Customer</th><th scope="col">Vehicle</th><th scope="col">Source</th><th scope="col">Priority</th><th scope="col">Status</th></tr></thead>
               <tbody id="crmTableBody"></tbody>
             </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="dos-view" data-view="lead-detail" hidden>
+        <header class="dos-topbar">
+          <button type="button" class="dos-back-link" id="leadDetailBack">&larr; Back to Leads</button>
+        </header>
+        <div class="dos-content ld-layout">
+          <div class="ld-main">
+            <div class="ld-header">
+              <span class="ld-avatar" aria-hidden="true"></span>
+              <div class="ld-header-info">
+                <h1 id="ldName">&ndash;</h1>
+                <div class="ld-contact"><span id="ldEmail"></span> &middot; <span id="ldPhone"></span></div>
+              </div>
+              <span class="ld-status-pill" id="ldStatusPill"></span>
+            </div>
+
+            <div class="panel">
+              <div class="panel-head"><h2>Interested In</h2></div>
+              <div id="ldVehicle" class="ld-vehicle"></div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-head"><h2>Activity Timeline</h2></div>
+              <ul id="ldTimeline" class="ld-timeline"></ul>
+            </div>
+          </div>
+
+          <div class="ld-sidebar">
+            <div class="panel">
+              <div class="panel-head"><h2>Details</h2></div>
+              <ul id="ldDetails" class="stat-list"></ul>
+            </div>
+
+            <div class="panel">
+              <div class="panel-head"><h2>Tags</h2></div>
+              <div id="ldTags" class="ld-tags"></div>
+              <form id="ldTagForm" class="ld-inline-form">
+                <label for="ldTagInput" class="visually-hidden">Add a tag</label>
+                <input type="text" id="ldTagInput" placeholder="Add a tag&hellip;" maxlength="24">
+                <button type="submit" class="btn small">Add</button>
+              </form>
+            </div>
+
+            <div class="panel">
+              <div class="panel-head"><h2>Tasks</h2></div>
+              <ul id="ldTasks" class="ld-tasks"></ul>
+              <form id="ldTaskForm" class="ld-inline-form">
+                <label for="ldTaskInput" class="visually-hidden">Add a task</label>
+                <input type="text" id="ldTaskInput" placeholder="Add a task&hellip;" maxlength="80">
+                <button type="submit" class="btn small">Add</button>
+              </form>
+            </div>
+
+            <div class="panel">
+              <div class="panel-head"><h2>Documents</h2></div>
+              <div class="module-soon module-soon-compact"><p>File uploads aren&rsquo;t wired to storage yet. Shipping next.</p></div>
+            </div>
           </div>
         </div>
       </section>
@@ -161,6 +221,7 @@ const dashboardHtml = `<!DOCTYPE html>
     </main>
   </div>
 
+  <script src="/js/lib/lead-detail.js"></script>
   <script src="/js/dashboard.js"></script>
 </body>
 </html>`;

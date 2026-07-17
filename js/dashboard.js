@@ -1,12 +1,17 @@
 (function () {
+  // Stage colors double as solid white-text status-pill backgrounds on Lead
+  // Detail now (previously only ever used as small 8px dots, which aren't
+  // subject to text-contrast rules) — lightness values below are the ones
+  // that clear 4.5:1 with white text, verified with axe-core against every
+  // stage, not just the ones that happened to fail first.
   const STAGES = [
     { id: 'NEW', label: 'New', color: 'oklch(48% 0.16 260)' },
     { id: 'CONTACTED', label: 'Contacted', color: 'oklch(50% 0.12 235)' },
     { id: 'QUALIFIED', label: 'Qualified', color: 'oklch(55% 0.1 190)' },
-    { id: 'APPT_SCHEDULED', label: 'Appt. Scheduled', color: 'oklch(60% 0.12 155)' },
-    { id: 'NEGOTIATING', label: 'Negotiating', color: 'oklch(58% 0.15 55)' },
-    { id: 'SOLD', label: 'Sold', color: 'oklch(58% 0.14 145)' },
-    { id: 'LOST', label: 'Lost', color: 'oklch(60% 0.01 260)' },
+    { id: 'APPT_SCHEDULED', label: 'Appt. Scheduled', color: 'oklch(48% 0.12 155)' },
+    { id: 'NEGOTIATING', label: 'Negotiating', color: 'oklch(50% 0.15 55)' },
+    { id: 'SOLD', label: 'Sold', color: 'oklch(46% 0.14 145)' },
+    { id: 'LOST', label: 'Lost', color: 'oklch(45% 0.01 260)' },
   ];
   const OPEN_STAGES = ['NEW', 'CONTACTED', 'QUALIFIED', 'APPT_SCHEDULED', 'NEGOTIATING'];
 
@@ -26,15 +31,35 @@
     if (h < 24) return h + ' hr ago';
     return Math.round(h / 24) + ' d ago';
   }
+  function sourceLabel(source) {
+    const s = source || 'website';
+    if (s === 'test-drive-modal') return 'Website';
+    if (s === 'trade-in-estimator') return 'Trade-in';
+    return s;
+  }
+  function stageFor(status) {
+    return STAGES.find((s) => s.id === status) || STAGES[0];
+  }
+  function priorityDot(l) {
+    const color = (window.AutoSuiteLeadDetail && window.AutoSuiteLeadDetail.priorityColor(l.priority)) || 'oklch(50% 0.12 235)';
+    return `<span class="crm-priority-dot" style="background:${color}" title="${esc(l.priority || 'Normal')} priority" aria-hidden="true"></span>`;
+  }
 
-  /* ---------- Sidebar view switching ---------- */
+  /* ---------- View switching ---------- */
   const navItems = document.querySelectorAll('.dos-navitem[data-view]');
   const views = document.querySelectorAll('.dos-view[data-view]');
+
+  // Shared by sidebar nav clicks and the CRM -> Lead Detail drill-down. Lead
+  // Detail isn't a sidebar destination, so it only ever touches `views` —
+  // the sidebar keeps highlighting whichever section (CRM) it was opened from.
+  function showView(view) {
+    views.forEach((v) => { v.hidden = v.dataset.view !== view; });
+  }
+
   navItems.forEach((btn) => {
     btn.addEventListener('click', () => {
-      const view = btn.dataset.view;
       navItems.forEach((n) => n.classList.toggle('active', n === btn));
-      views.forEach((v) => { v.hidden = v.dataset.view !== view; });
+      showView(btn.dataset.view);
     });
   });
 
@@ -56,6 +81,23 @@
     return `<select class="crm-select" data-id="${lead.id}" aria-label="Status for ${esc(lead.name)}">${opts}</select>`;
   }
 
+  // Shared by every lead mutation (status dropdown, drag-and-drop, tags,
+  // tasks) — PATCHes the API, keeps the in-memory `leads` array in sync with
+  // the server's response, and surfaces failures via the CRM live region.
+  async function updateLead(id, data) {
+    try {
+      const res = await fetch('/api/leads/' + id, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+      if (!res.ok) throw new Error('fail');
+      const { lead: updated } = await res.json();
+      const idx = leads.findIndex((l) => l.id === id);
+      if (idx !== -1) leads[idx] = updated;
+      return updated;
+    } catch (err) {
+      document.getElementById('crmLive').textContent = 'Could not update. Try again.';
+      throw err;
+    }
+  }
+
   async function onStatusChange(e) {
     const sel = e.target;
     if (!sel.classList.contains('crm-select')) return;
@@ -63,16 +105,12 @@
     const status = sel.value;
     sel.disabled = true;
     try {
-      const res = await fetch('/api/leads/' + id, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) });
-      if (!res.ok) throw new Error('fail');
-      const lead = leads.find((l) => l.id === id);
-      if (lead) lead.status = status;
+      await updateLead(id, { status });
       document.getElementById('crmLive').textContent = 'Status updated.';
       renderCrm();
       renderOverview();
       renderAnalytics();
     } catch (err) {
-      document.getElementById('crmLive').textContent = 'Could not update. Try again.';
       sel.disabled = false;
     }
   }
@@ -87,27 +125,26 @@
     crmBoard.innerHTML = STAGES.map((stage) => {
       const inStage = leads.filter((l) => l.status === stage.id);
       const cards = inStage.map((l) => `
-        <div class="crm-card">
-          <div class="crm-card-top"><span class="crm-card-name">${esc(l.name)}</span></div>
+        <div class="crm-card" draggable="true" data-id="${l.id}">
+          <div class="crm-card-top">${priorityDot(l)}<span class="crm-card-name">${esc(l.name)}</span></div>
           <div class="crm-card-vehicle">${esc(l.carName)}</div>
-          <div class="crm-card-foot"><span class="crm-source">${esc((l.source || 'website').replace('test-drive-modal', 'Website').replace('trade-in-estimator', 'Trade-in'))}</span></div>
+          <div class="crm-card-foot"><span class="crm-source">${esc(sourceLabel(l.source))}</span></div>
           ${statusSelect(l)}
         </div>`).join('');
       return `<div class="crm-col">
         <div class="crm-col-head"><span class="crm-col-dot" style="background:${stage.color}"></span><span class="crm-col-name">${stage.label}</span><span class="crm-col-count">${inStage.length}</span></div>
-        <div class="crm-cards">${cards}</div>
+        <div class="crm-cards" data-stage="${stage.id}">${cards}</div>
       </div>`;
     }).join('');
 
-    document.getElementById('crmTableBody').innerHTML = leads.map((l) => {
-      const stage = STAGES.find((s) => s.id === l.status) || STAGES[0];
-      return `<tr>
+    document.getElementById('crmTableBody').innerHTML = leads.map((l) => `
+      <tr data-id="${l.id}" tabindex="0">
         <td><strong>${esc(l.name)}</strong><br><span class="dos-subtitle">${esc(l.email)}</span></td>
         <td>${esc(l.carName)}</td>
-        <td>${esc((l.source || 'website').replace('test-drive-modal', 'Website').replace('trade-in-estimator', 'Trade-in'))}</td>
+        <td>${esc(sourceLabel(l.source))}</td>
+        <td>${priorityDot(l)}${esc(l.priority || 'Normal')}</td>
         <td>${statusSelect(l)}</td>
-      </tr>`;
-    }).join('');
+      </tr>`).join('');
   }
 
   /* ---------- Overview ---------- */
@@ -181,6 +218,223 @@
   }
 
   document.addEventListener('change', onStatusChange);
+
+  /* ---------- CRM: drag-and-drop stage changes ---------- */
+  // The <select> in statusSelect() stays as the keyboard-operable equivalent
+  // of this — dragging is an enhancement on top, not a replacement.
+  let draggedLeadId = null;
+
+  crmBoard.addEventListener('dragstart', (e) => {
+    const card = e.target.closest('.crm-card');
+    if (!card) return;
+    draggedLeadId = card.dataset.id;
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', draggedLeadId);
+  });
+
+  crmBoard.addEventListener('dragover', (e) => {
+    const column = e.target.closest('.crm-cards');
+    if (!column) return;
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    column.classList.add('drag-over');
+  });
+
+  crmBoard.addEventListener('dragleave', (e) => {
+    const column = e.target.closest('.crm-cards');
+    if (column) column.classList.remove('drag-over');
+  });
+
+  crmBoard.addEventListener('drop', async (e) => {
+    const column = e.target.closest('.crm-cards');
+    if (!column) return;
+    e.preventDefault();
+    column.classList.remove('drag-over');
+    const id = draggedLeadId || e.dataTransfer.getData('text/plain');
+    draggedLeadId = null;
+    const status = column.dataset.stage;
+    const lead = leads.find((l) => l.id === id);
+    if (!lead || lead.status === status) return;
+    try {
+      await updateLead(id, { status });
+      document.getElementById('crmLive').textContent = 'Status updated.';
+      renderCrm();
+      renderOverview();
+      renderAnalytics();
+    } catch (err) {
+      /* updateLead already set the live-region error message */
+    }
+  });
+
+  /* ---------- CRM: click-through to Lead Detail ---------- */
+  function openLeadDetail(id) {
+    renderLeadDetail(id);
+    showView('lead-detail');
+  }
+
+  crmBoard.addEventListener('click', (e) => {
+    if (e.target.closest('.crm-select')) return;
+    const card = e.target.closest('.crm-card');
+    if (card) openLeadDetail(card.dataset.id);
+  });
+
+  crmTable.addEventListener('click', (e) => {
+    if (e.target.closest('.crm-select')) return;
+    const row = e.target.closest('tr[data-id]');
+    if (row) openLeadDetail(row.dataset.id);
+  });
+
+  crmTable.addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    if (e.target.closest('.crm-select')) return;
+    const row = e.target.closest('tr[data-id]');
+    if (!row) return;
+    e.preventDefault();
+    openLeadDetail(row.dataset.id);
+  });
+
+  /* ---------- Lead Detail ---------- */
+  function renderLeadDetail(id) {
+    const lead = leads.find((l) => l.id === id);
+    if (!lead) return;
+    const stage = stageFor(lead.status);
+
+    document.getElementById('ldName').textContent = lead.name;
+    document.getElementById('ldEmail').textContent = lead.email;
+    document.getElementById('ldPhone').textContent = lead.phone;
+    document.querySelector('.ld-avatar').textContent = lead.name.charAt(0).toUpperCase();
+
+    const pill = document.getElementById('ldStatusPill');
+    pill.textContent = stage.label;
+    pill.style.background = stage.color;
+
+    // Real leads today only ever carry carName (a string), not carId — see
+    // js/script.js and js/financing.js's POST bodies — so match on name.
+    const car = cars.find((c) => c.id === lead.carId) || cars.find((c) => c.name === lead.carName);
+    document.getElementById('ldVehicle').innerHTML = car
+      ? `<img class="ld-vehicle-thumb" src="/assets/web/${esc(car.image)}" alt="" loading="lazy">
+         <div class="ld-vehicle-info"><strong>${esc(car.name)}</strong><span>${naira(car.price)}</span></div>`
+      : `<div class="ld-vehicle-info"><strong>${esc(lead.carName)}</strong></div>`;
+
+    const timeline = window.AutoSuiteLeadDetail.synthesizeTimeline({
+      createdAt: lead.createdAt,
+      updatedAt: lead.updatedAt,
+      source: lead.source,
+      carName: lead.carName,
+      statusLabel: stage.label,
+    });
+    document.getElementById('ldTimeline').innerHTML = timeline.length
+      ? timeline
+          .map(
+            (ev) => `<li><span class="ld-timeline-dot" aria-hidden="true"></span><span>${esc(ev.text)}<span class="activity-when">${relTime(ev.when)}</span></span></li>`
+          )
+          .join('')
+      : '<li class="dos-subtitle">No activity yet.</li>';
+
+    document.getElementById('ldDetails').innerHTML = `
+      <li><span>Source</span><strong>${esc(sourceLabel(lead.source))}</strong></li>
+      <li><span>Assigned</span><strong>Derek Owusu</strong></li>
+      <li><span>Priority</span><strong>${esc(lead.priority || 'Normal')}</strong></li>
+      <li><span>Created</span><strong>${new Date(lead.createdAt).toLocaleDateString()}</strong></li>
+    `;
+
+    document.getElementById('ldTagForm').dataset.id = lead.id;
+    document.getElementById('ldTaskForm').dataset.id = lead.id;
+    renderTags(lead);
+    renderTasks(lead);
+  }
+
+  function renderTags(lead) {
+    const tags = lead.tags || [];
+    document.getElementById('ldTags').innerHTML = tags.length
+      ? tags.map((t) => `<span class="ld-tag">${esc(t)}<button type="button" class="ld-tag-remove" data-tag="${esc(t)}" aria-label="Remove tag ${esc(t)}">&times;</button></span>`).join('')
+      : '<span class="dos-subtitle">No tags yet.</span>';
+  }
+
+  function renderTasks(lead) {
+    const tasks = lead.tasks || [];
+    document.getElementById('ldTasks').innerHTML = tasks.length
+      ? tasks
+          .map(
+            (t) => `<li class="ld-task${t.done ? ' done' : ''}"><label><input type="checkbox" class="ld-task-check" data-task="${esc(t.id)}" ${t.done ? 'checked' : ''}><span>${esc(t.text)}</span></label></li>`
+          )
+          .join('')
+      : '<li class="dos-subtitle">No tasks yet.</li>';
+  }
+
+  document.getElementById('leadDetailBack').addEventListener('click', () => showView('crm'));
+
+  document.getElementById('ldTagForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = e.target.dataset.id;
+    const input = document.getElementById('ldTagInput');
+    const value = input.value.trim();
+    const lead = leads.find((l) => l.id === id);
+    if (!value || !lead || (lead.tags || []).includes(value)) {
+      input.value = '';
+      return;
+    }
+    input.disabled = true;
+    try {
+      await updateLead(id, { tags: [...(lead.tags || []), value] });
+      input.value = '';
+      renderTags(leads.find((l) => l.id === id));
+    } catch (err) {
+      /* updateLead already set the live-region error message */
+    }
+    input.disabled = false;
+  });
+
+  document.getElementById('ldTags').addEventListener('click', async (e) => {
+    const btn = e.target.closest('.ld-tag-remove');
+    if (!btn) return;
+    const id = document.getElementById('ldTagForm').dataset.id;
+    const lead = leads.find((l) => l.id === id);
+    if (!lead) return;
+    try {
+      await updateLead(id, { tags: (lead.tags || []).filter((t) => t !== btn.dataset.tag) });
+      renderTags(leads.find((l) => l.id === id));
+    } catch (err) {
+      /* updateLead already set the live-region error message */
+    }
+  });
+
+  document.getElementById('ldTaskForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const id = e.target.dataset.id;
+    const input = document.getElementById('ldTaskInput');
+    const value = input.value.trim();
+    const lead = leads.find((l) => l.id === id);
+    if (!value || !lead) {
+      input.value = '';
+      return;
+    }
+    input.disabled = true;
+    try {
+      const newTask = { id: 't' + Date.now(), text: value, done: false };
+      await updateLead(id, { tasks: [...(lead.tasks || []), newTask] });
+      input.value = '';
+      renderTasks(leads.find((l) => l.id === id));
+    } catch (err) {
+      /* updateLead already set the live-region error message */
+    }
+    input.disabled = false;
+  });
+
+  document.getElementById('ldTasks').addEventListener('change', async (e) => {
+    const check = e.target.closest('.ld-task-check');
+    if (!check) return;
+    const id = document.getElementById('ldTaskForm').dataset.id;
+    const lead = leads.find((l) => l.id === id);
+    if (!lead) return;
+    try {
+      const tasks = (lead.tasks || []).map((t) => (t.id === check.dataset.task ? { ...t, done: check.checked } : t));
+      await updateLead(id, { tasks });
+      renderTasks(leads.find((l) => l.id === id));
+    } catch (err) {
+      /* updateLead already set the live-region error message */
+    }
+  });
 
   async function load() {
     try {

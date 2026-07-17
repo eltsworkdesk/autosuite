@@ -33,6 +33,12 @@ model Lead {
   phone     String
   status    LeadStatus @default(NEW)
   source    String     @default("test-drive-modal")
+  // Additive CRM fields (Lead Detail page) — deliberately plain columns on
+  // the existing Lead, not new entities. tags/tasks are simple enough not
+  // to need their own tables; see js/lib/lead-detail.js for the shapes.
+  priority  String     @default("Normal") // Low | Normal | High
+  tags      String[]   @default([])
+  tasks     Json       @default("[]") // [{id, text, done}]
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
 }
