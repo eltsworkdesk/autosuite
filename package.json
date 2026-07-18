@@ -5,6 +5,7 @@
   "description": "AutoSuite dealership storefront + CRM API",
   "scripts": {
     "postinstall": "prisma generate",
+    "dev": "node server.js",
     "build": "prisma db push --skip-generate",
     "test": "vitest run"
   },

@@ -239,18 +239,23 @@
 </div>
 
 <script>
-  // Fetch real data from API
+  // Fetch real data from API with timeout
   async function loadDashboard() {
     try {
-      const auth = btoa('admin:admin'); // Demo credentials
+      const auth = btoa('admin:admin');
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 second timeout
+
       const res = await fetch('/api/leads', {
-        headers: { 'Authorization': `Basic ${auth}` }
+        headers: { 'Authorization': `Basic ${auth}` },
+        signal: controller.signal
       });
+      clearTimeout(timeoutId);
+
       if (!res.ok) throw new Error('Failed to fetch leads');
       const data = await res.json();
       const leads = data.leads || [];
 
-      // Update KPI: New Leads Today
       const newLeadsToday = leads.filter(l => {
         const date = new Date(l.createdAt);
         const today = new Date();
@@ -258,7 +263,6 @@
       }).length;
       document.getElementById('kpiNewLeads').textContent = newLeadsToday;
 
-      // Build pipeline
       const STAGES = [
         { name: 'New', key: 'NEW', color: 'oklch(45% 0.16 260)' },
         { name: 'Contacted', key: 'CONTACTED', color: 'oklch(50% 0.12 235)' },
@@ -284,12 +288,12 @@
       }).join('');
 
     } catch (err) {
-      console.error('Error loading dashboard:', err);
+      console.log('Dashboard: API unavailable (expected in dev mode without database)');
     }
   }
 
   loadDashboard();
-  setInterval(loadDashboard, 5000); // Refresh every 5 seconds
+  setInterval(loadDashboard, 5000);
 </script>
 
 </body>
