@@ -185,6 +185,7 @@
       if (!res.ok) throw new Error('Failed to fetch leads');
       const data = await res.json();
       leads = data.leads || [];
+      console.log('CRM: Fetched ' + leads.length + ' leads, currentView=' + currentView);
       render();
     } catch (err) {
       console.log('CRM: API unavailable (expected in dev mode without database)');
