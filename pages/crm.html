@@ -69,7 +69,7 @@
 
       <!-- KANBAN BOARD VIEW -->
       <div id="boardView" style="overflow-x: auto; display: block;">
-        <div style="display: flex; gap: 16px; min-width: 1400px;" id="kanbanBoard">
+        <div style="display: flex; gap: 16px; min-width: 1400px;" id="kanbanBoard" data-droppable-board>
           <!-- Stages and cards will be populated by JS -->
         </div>
       </div>
@@ -192,7 +192,7 @@
     else if (currentView === 'detail') renderDetail();
   }
 
-  // Render Kanban board
+  // Render Kanban board with drag-and-drop
   function renderBoard() {
     const board = document.getElementById('kanbanBoard');
     board.innerHTML = STAGES.map(stage => {
@@ -208,9 +208,9 @@
             <div style="font: 600 13px;">${stage.name}</div>
             <div style="font: 500 12px; color: oklch(55% 0.01 260);">${stageLeads.length}</div>
           </div>
-          <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div style="display: flex; flex-direction: column; gap: 10px; min-height: 400px; padding: 8px; border-radius: 8px; background: oklch(98% 0.003 260);" data-stage="${stage.name.replace(/\s+/g, '_')}">
             ${stageLeads.map(lead => `
-              <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 14px; cursor: pointer;" onclick="selectLead('${lead.id}')">
+              <div draggable="true" class="kanban-card" data-lead-id="${lead.id}" onclick="selectLead('${lead.id}')" style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 14px; cursor: grab; user-select: none; transition: all 0.2s ease; touch-action: none;">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                   <div style="font: 600 13px;">${lead.name}</div>
                   <div style="width: 6px; height: 6px; border-radius: 50%; background: ${lead.priority === 'High' ? 'oklch(60% 0.14 55)' : 'oklch(70% 0.01 260)'];"></div>
@@ -226,6 +226,60 @@
         </div>
       `;
     }).join('');
+
+    // Wire up drag-and-drop
+    setTimeout(() => {
+      const cards = document.querySelectorAll('.kanban-card');
+      const columns = document.querySelectorAll('[data-stage]');
+
+      cards.forEach(card => {
+        card.addEventListener('dragstart', (e) => {
+          card.style.opacity = '0.5';
+          e.dataTransfer.effectAllowed = 'move';
+          e.dataTransfer.setData('leadId', card.dataset.leadId);
+        });
+
+        card.addEventListener('dragend', (e) => {
+          card.style.opacity = '1';
+        });
+      });
+
+      columns.forEach(column => {
+        column.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'move';
+          column.style.background = 'oklch(94% 0.005 260)';
+        });
+
+        column.addEventListener('dragleave', (e) => {
+          column.style.background = 'oklch(98% 0.003 260)';
+        });
+
+        column.addEventListener('drop', async (e) => {
+          e.preventDefault();
+          column.style.background = 'oklch(98% 0.003 260)';
+          const leadId = e.dataTransfer.getData('leadId');
+          const newStatus = column.dataset.stage.toUpperCase();
+
+          try {
+            const auth = btoa('admin:admin');
+            const res = await fetch(`/api/leads/${leadId}`, {
+              method: 'PATCH',
+              headers: {
+                'Authorization': `Basic ${auth}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ status: newStatus })
+            });
+            if (res.ok) {
+              await fetchLeads();
+            }
+          } catch (err) {
+            console.error('Error updating lead:', err);
+          }
+        });
+      });
+    }, 100);
   }
 
   // Render table view
