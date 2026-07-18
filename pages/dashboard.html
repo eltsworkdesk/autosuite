@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | AutoSuite Dealer OS</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0b1220">
+  <link rel="icon" type="image/png" href="../assets/web/favicon-32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <style>
+    .dos-shell {
+      display: grid;
+      grid-template-columns: 236px 1fr;
+      min-height: 100vh;
+    }
+    .kpi-card {
+      background: #fff;
+      border: 1px solid oklch(91% 0.005 260);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .kpi-label {
+      font: 500 12px 'IBM Plex Mono', monospace;
+      color: oklch(50% 0.01 260);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+    }
+    .kpi-value {
+      font: 600 30px 'Space Grotesk', sans-serif;
+      margin-bottom: 4px;
+    }
+    .kpi-trend {
+      font: 500 12px;
+      color: oklch(55% 0.13 145);
+    }
+  </style>
+</head>
+<body class="dos-body">
+
+<div class="dos-shell">
+  <!-- SIDEBAR -->
+  <aside class="dos-sidebar">
+    <div class="dos-brand">
+      <span class="dos-brand-mark" aria-hidden="true" style="width: 22px; height: 22px; border-radius: 6px; background: oklch(55% 0.16 260); display: block;"></span>
+      <span class="dos-brand-text">AutoSuite</span>
+    </div>
+    <div style="padding: 8px 10px 14px; font: 400 13px 'IBM Plex Mono', monospace; color: oklch(55% 0.01 260); border: 1px solid oklch(30% 0.01 260); border-radius: 8px; margin-bottom: 16px; display: flex; justify-content: space-between;">
+      <span>⌘K Search everything</span>
+    </div>
+    <nav class="dos-nav" aria-label="Dealer OS">
+      <a href="dashboard.html" class="dos-nav-item active">▦ Overview</a>
+      <a href="crm.html" class="dos-nav-item">☎ CRM</a>
+      <a href="inventory.html" class="dos-nav-item">▤ Inventory</a>
+      <a href="appointments.html" class="dos-nav-item">◔ Appointments</a>
+      <a href="customers.html" class="dos-nav-item">✎ Customers</a>
+      <a href="analytics.html" class="dos-nav-item">▲ Analytics</a>
+      <a href="staff-activity.html" class="dos-nav-item">◫ Staff Activity</a>
+    </nav>
+    <div style="margin-top: auto; display: flex; flex-direction: column; gap: 2px; padding-top: 14px; border-top: 1px solid oklch(28% 0.01 260);">
+      <a href="settings.html" class="dos-nav-item">⚙ Settings</a>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 9px 10px;">
+        <div style="width: 26px; height: 26px; border-radius: 50%; background: oklch(50% 0.1 200);"></div>
+        <div style="font: 500 13px; color: #fff;">Derek Owusu</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div style="background: oklch(97.5% 0.004 90);">
+    <!-- TOP BAR -->
+    <div style="display: flex; align-items: center; gap: 16px; padding: 18px 36px; border-bottom: 1px solid oklch(91% 0.005 260); background: #fff;">
+      <h1 style="font: 600 20px 'Space Grotesk', sans-serif; margin: 0;">Overview</h1>
+      <div style="margin-left: auto; display: flex; align-items: center; gap: 16px;">
+        <div style="font: 500 13px; padding: 8px 14px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; cursor: pointer;">+ Quick action</div>
+        <div style="position: relative;">🔔<div style="position: absolute; top: -3px; right: -4px; width: 7px; height: 7px; border-radius: 50%; background: oklch(65% 0.14 55);"></div></div>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div style="padding: 32px 36px; display: flex; flex-direction: column; gap: 24px;">
+
+      <!-- KPI ROW -->
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;">
+        <div class="kpi-card">
+          <div class="kpi-label">New Leads Today</div>
+          <div class="kpi-value" id="kpiNewLeads">18</div>
+          <div class="kpi-trend">↑ 24% vs yesterday</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Test Drives Booked</div>
+          <div class="kpi-value" id="kpiTestDrives">7</div>
+          <div class="kpi-trend">↑ 12%</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Revenue MTD</div>
+          <div class="kpi-value" id="kpiRevenue">$412K</div>
+          <div class="kpi-trend">↑ 8%</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-label">Avg. Response Time</div>
+          <div class="kpi-value" id="kpiResponseTime">6 min</div>
+          <div class="kpi-trend">↓ 2 min improved</div>
+        </div>
+      </div>
+
+      <!-- LEAD PIPELINE + APPOINTMENTS -->
+      <div style="display: grid; grid-template-columns: 1.6fr 1fr; gap: 20px;">
+        <!-- Lead Pipeline -->
+        <div class="kpi-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div style="font: 600 15px 'Space Grotesk', sans-serif;">Lead Pipeline</div>
+            <div style="font: 500 12px; color: oklch(50% 0.01 260);">This month ▾</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px;" id="pipelineContainer">
+            <!-- Stages will be populated by JS -->
+          </div>
+        </div>
+
+        <!-- Upcoming Appointments -->
+        <div class="kpi-card">
+          <div style="font: 600 15px 'Space Grotesk', sans-serif; margin-bottom: 18px;">Upcoming Appointments</div>
+          <div style="display: flex; flex-direction: column; gap: 14px;" id="appointmentsContainer">
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <div style="width: 44px; text-align: center; font: 600 12px 'IBM Plex Mono', monospace; color: oklch(45% 0.16 260);">9:00a</div>
+              <div style="flex: 1;">
+                <div style="font: 500 13px;">Maya Torres</div>
+                <div style="font: 400 12px; color: oklch(50% 0.01 260);">2024 BMW X6</div>
+              </div>
+              <div style="font: 500 11px; padding: 4px 8px; border-radius: 6px; background: oklch(95% 0.01 260); color: oklch(40% 0.01 260);">Test drive</div>
+            </div>
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <div style="width: 44px; text-align: center; font: 600 12px 'IBM Plex Mono', monospace; color: oklch(45% 0.16 260);">11:30a</div>
+              <div style="flex: 1;">
+                <div style="font: 500 13px;">James Lin</div>
+                <div style="font: 400 12px; color: oklch(50% 0.01 260);">2023 Camry</div>
+              </div>
+              <div style="font: 500 11px; padding: 4px 8px; border-radius: 6px; background: oklch(95% 0.01 260); color: oklch(40% 0.01 260);">Inspection</div>
+            </div>
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <div style="width: 44px; text-align: center; font: 600 12px 'IBM Plex Mono', monospace; color: oklch(45% 0.16 260);">1:00p</div>
+              <div style="flex: 1;">
+                <div style="font: 500 13px;">Priya Shah</div>
+                <div style="font: 400 12px; color: oklch(50% 0.01 260);">E450 Sedan</div>
+              </div>
+              <div style="font: 500 11px; padding: 4px 8px; border-radius: 6px; background: oklch(95% 0.01 260); color: oklch(40% 0.01 260);">Test drive</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RECENT ACTIVITY -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+        <!-- Recently Added Vehicles -->
+        <div class="kpi-card">
+          <div style="font: 600 15px 'Space Grotesk', sans-serif; margin-bottom: 16px;">Recently Added Vehicles</div>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <div style="width: 44px; height: 32px; border-radius: 6px; background: oklch(94% 0.006 260);"></div>
+              <div style="flex: 1;">
+                <div style="font: 500 13px;">2025 Cadillac Escalade</div>
+                <div style="font: 400 12px; color: oklch(50% 0.01 260);">$84,000</div>
+              </div>
+              <div style="width: 7px; height: 7px; border-radius: 50%; background: oklch(60% 0.14 145);"></div>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <div style="width: 44px; height: 32px; border-radius: 6px; background: oklch(94% 0.006 260);"></div>
+              <div style="flex: 1;">
+                <div style="font: 500 13px;">2025 Porsche Cayenne</div>
+                <div style="font: 400 12px; color: oklch(50% 0.01 260);">$79,500</div>
+              </div>
+              <div style="width: 7px; height: 7px; border-radius: 50%; background: oklch(60% 0.14 145);"></div>
+            </div>
+            <div style="display: flex; gap: 10px; align-items: center;">
+              <div style="width: 44px; height: 32px; border-radius: 6px; background: oklch(94% 0.006 260);"></div>
+              <div style="flex: 1;">
+                <div style="font: 500 13px;">2018 BMW 5 Series</div>
+                <div style="font: 400 12px; color: oklch(50% 0.01 260);">$24,300</div>
+              </div>
+              <div style="width: 7px; height: 7px; border-radius: 50%; background: oklch(65% 0.14 55);"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Customer Activity -->
+        <div class="kpi-card">
+          <div style="font: 600 15px 'Space Grotesk', sans-serif; margin-bottom: 16px;">Recent Customer Activity</div>
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div style="font: 400 13px; line-height: 1.5;">
+              <span style="font-weight: 600;">Maya Torres</span> booked a test drive for the BMW X6
+              <div style="font: 400 11px; color: oklch(55% 0.01 260); margin-top: 2px;">2 min ago</div>
+            </div>
+            <div style="font: 400 13px; line-height: 1.5;">
+              <span style="font-weight: 600;">James Lin</span> requested financing on 2023 Camry
+              <div style="font: 400 11px; color: oklch(55% 0.01 260); margin-top: 2px;">18 min ago</div>
+            </div>
+            <div style="font: 400 13px; line-height: 1.5;">
+              <span style="font-weight: 600;">Priya Shah</span> favorited the Mercedes E450
+              <div style="font: 400 11px; color: oklch(55% 0.01 260); margin-top: 2px;">41 min ago</div>
+            </div>
+            <div style="font: 400 13px; line-height: 1.5;">
+              <span style="font-weight: 600;">Cole Bennett</span> submitted a trade-in estimate
+              <div style="font: 400 11px; color: oklch(55% 0.01 260); margin-top: 2px;">1 hr ago</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inventory Health -->
+        <div class="kpi-card">
+          <div style="font: 600 15px 'Space Grotesk', sans-serif; margin-bottom: 16px;">Inventory Health</div>
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <div style="display: flex; justify-content: space-between; font: 400 13px;">
+              <span style="color: oklch(45% 0.01 260);">Active listings</span>
+              <span style="font-weight: 600;">86</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font: 400 13px;">
+              <span style="color: oklch(45% 0.01 260);">Avg. days on lot</span>
+              <span style="font-weight: 600;">21</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font: 400 13px;">
+              <span style="color: oklch(45% 0.01 260);">Draft listings</span>
+              <span style="font-weight: 600;">4</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; font: 400 13px;">
+              <span style="color: oklch(45% 0.01 260);">Sold this month</span>
+              <span style="font-weight: 600; color: oklch(55% 0.13 145);">19</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  // Fetch real data from API
+  async function loadDashboard() {
+    try {
+      const auth = btoa('admin:admin'); // Demo credentials
+      const res = await fetch('/api/leads', {
+        headers: { 'Authorization': `Basic ${auth}` }
+      });
+      if (!res.ok) throw new Error('Failed to fetch leads');
+      const data = await res.json();
+      const leads = data.leads || [];
+
+      // Update KPI: New Leads Today
+      const newLeadsToday = leads.filter(l => {
+        const date = new Date(l.createdAt);
+        const today = new Date();
+        return date.toDateString() === today.toDateString();
+      }).length;
+      document.getElementById('kpiNewLeads').textContent = newLeadsToday;
+
+      // Build pipeline
+      const STAGES = [
+        { name: 'New', key: 'NEW', color: 'oklch(45% 0.16 260)' },
+        { name: 'Contacted', key: 'CONTACTED', color: 'oklch(50% 0.12 235)' },
+        { name: 'Qualified', key: 'QUALIFIED', color: 'oklch(55% 0.1 190)' },
+        { name: 'Appt. Scheduled', key: 'APPT_SCHEDULED', color: 'oklch(60% 0.12 155)' },
+        { name: 'Negotiating', key: 'NEGOTIATING', color: 'oklch(65% 0.14 55)' },
+        { name: 'Sold', key: 'SOLD', color: 'oklch(60% 0.14 145)' }
+      ];
+
+      const pipelineContainer = document.getElementById('pipelineContainer');
+      pipelineContainer.innerHTML = STAGES.map(stage => {
+        const count = leads.filter(l => (l.status || 'NEW') === stage.key).length;
+        const width = count > 0 ? Math.max(count * 5, 20) : 5;
+        return `
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 110px; font: 500 13px; color: oklch(35% 0.01 260);">${stage.name}</div>
+            <div style="flex: 1; background: oklch(95% 0.005 260); border-radius: 5px; height: 20px; position: relative;">
+              <div style="height: 100%; border-radius: 5px; background: ${stage.color}; width: ${Math.min(width, 100)}%;"></div>
+            </div>
+            <div style="width: 34px; text-align: right; font: 600 13px;">${count}</div>
+          </div>
+        `;
+      }).join('');
+
+    } catch (err) {
+      console.error('Error loading dashboard:', err);
+    }
+  }
+
+  loadDashboard();
+  setInterval(loadDashboard, 5000); // Refresh every 5 seconds
+</script>
+
+</body>
+</html>

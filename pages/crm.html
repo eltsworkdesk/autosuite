@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRM — Leads | AutoSuite Dealer OS</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0b1220">
+  <link rel="icon" type="image/png" href="../assets/web/favicon-32.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/crm.css">
+  <style>
+    .dos-shell {
+      display: grid;
+      grid-template-columns: 236px 1fr;
+      min-height: 100vh;
+    }
+  </style>
+</head>
+<body class="dos-body">
+
+<div class="dos-shell">
+  <!-- SIDEBAR -->
+  <aside class="dos-sidebar">
+    <div class="dos-brand">
+      <span class="dos-brand-mark" aria-hidden="true" style="width: 22px; height: 22px; border-radius: 6px; background: oklch(55% 0.16 260); display: block;"></span>
+      <span class="dos-brand-text">AutoSuite</span>
+    </div>
+    <div style="padding: 8px 10px 14px; font: 400 13px 'IBM Plex Mono', monospace; color: oklch(55% 0.01 260); border: 1px solid oklch(30% 0.01 260); border-radius: 8px; margin-bottom: 16px; display: flex; justify-content: space-between;">
+      <span>⌘K Search everything</span>
+    </div>
+    <nav class="dos-nav" aria-label="Dealer OS">
+      <a href="dashboard.html" class="dos-nav-item">▦ Overview</a>
+      <a href="crm.html" class="dos-nav-item active">☎ CRM</a>
+      <a href="inventory.html" class="dos-nav-item">▤ Inventory</a>
+      <a href="appointments.html" class="dos-nav-item">◔ Appointments</a>
+      <a href="customers.html" class="dos-nav-item">✎ Customers</a>
+      <a href="analytics.html" class="dos-nav-item">▲ Analytics</a>
+      <a href="staff-activity.html" class="dos-nav-item">◫ Staff Activity</a>
+    </nav>
+    <div style="margin-top: auto; display: flex; flex-direction: column; gap: 2px; padding-top: 14px; border-top: 1px solid oklch(28% 0.01 260);">
+      <a href="settings.html" class="dos-nav-item">⚙ Settings</a>
+      <div style="display: flex; align-items: center; gap: 10px; padding: 9px 10px;">
+        <div style="width: 26px; height: 26px; border-radius: 50%; background: oklch(50% 0.1 200);"></div>
+        <div style="font: 500 13px; color: #fff;">Derek Owusu</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div style="background: oklch(97.5% 0.004 90);">
+    <!-- TOP BAR -->
+    <div style="display: flex; align-items: center; gap: 16px; padding: 18px 36px; border-bottom: 1px solid oklch(91% 0.005 260); background: #fff;">
+      <h1 style="font: 600 20px 'Space Grotesk', sans-serif; margin: 0;">Leads</h1>
+      <div style="display: flex; gap: 4px; background: oklch(96% 0.004 260); padding: 4px; border-radius: 9px; margin-left: 20px;">
+        <button type="button" class="dos-tab active" data-view="board" style="padding: 8px 16px; border-radius: 8px; font: 500 13px; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.08); border: none; cursor: pointer;">Board</button>
+        <button type="button" class="dos-tab" data-view="table" style="padding: 8px 16px; border-radius: 8px; font: 500 13px; background: transparent; border: none; cursor: pointer; color: oklch(35% 0.01 260);">Table</button>
+        <button type="button" class="dos-tab" data-view="detail" style="padding: 8px 16px; border-radius: 8px; font: 500 13px; background: transparent; border: none; cursor: pointer; color: oklch(35% 0.01 260);">Lead Detail</button>
+      </div>
+      <div style="margin-left: auto; font: 500 13px; padding: 8px 14px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; cursor: pointer;">+ New lead</div>
+    </div>
+
+    <!-- CONTENT AREA -->
+    <div style="padding: 28px 36px;">
+
+      <!-- KANBAN BOARD VIEW -->
+      <div id="boardView" style="overflow-x: auto; display: block;">
+        <div style="display: flex; gap: 16px; min-width: 1400px;" id="kanbanBoard">
+          <!-- Stages and cards will be populated by JS -->
+        </div>
+      </div>
+
+      <!-- TABLE VIEW -->
+      <div id="tableView" style="display: none;">
+        <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 10px; overflow: hidden;">
+          <div style="display: grid; grid-template-columns: 1.4fr 1.2fr 1fr 1fr 0.8fr 1fr; background: oklch(97% 0.004 90); padding: 12px 20px; font: 600 11px 'IBM Plex Mono', monospace; text-transform: uppercase; letter-spacing: 0.04em; color: oklch(50% 0.01 260);">
+            <div>Customer</div>
+            <div>Vehicle</div>
+            <div>Source</div>
+            <div>Status</div>
+            <div>Priority</div>
+            <div>Assigned</div>
+          </div>
+          <div id="tableBody">
+            <!-- Rows will be populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- LEAD DETAIL VIEW -->
+      <div id="detailView" style="display: none; display: grid; grid-template-columns: 1fr 320px; gap: 24px;">
+        <div>
+          <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 24px;">
+            <div style="width: 48px; height: 48px; border-radius: 50%; background: oklch(88% 0.05 260);"></div>
+            <div>
+              <div style="font: 600 20px 'Space Grotesk', sans-serif;" id="detailName">Maya Torres</div>
+              <div style="font: 400 13px; color: oklch(50% 0.01 260);" id="detailContact">maya.torres@email.com · (312) 555-0148</div>
+            </div>
+            <div style="margin-left: auto; font: 500 12px; padding: 6px 12px; border-radius: 999px; background: oklch(95% 0.03 55); color: oklch(45% 0.13 55);" id="detailStatus">Negotiating</div>
+          </div>
+
+          <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+            <div style="font: 600 13px; text-transform: uppercase; letter-spacing: 0.04em; color: oklch(50% 0.01 260); margin-bottom: 14px;">Interested In</div>
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <div style="width: 64px; height: 44px; border-radius: 8px; background: oklch(94% 0.006 260);"></div>
+              <div>
+                <div style="font: 600 14px;" id="detailVehicle">2024 BMW X6 xDrive40i</div>
+                <div style="font: 400 12px; color: oklch(50% 0.01 260);" id="detailVehiclePrice">$68,900 · 12.4k mi</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 20px;">
+            <div style="font: 600 13px; text-transform: uppercase; letter-spacing: 0.04em; color: oklch(50% 0.01 260); margin-bottom: 16px;">Activity Timeline</div>
+            <div style="display: flex; flex-direction: column; gap: 16px;" id="detailTimeline">
+              <!-- Timeline items will be populated by JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- SIDE PANEL -->
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 18px;">
+            <div style="font: 600 12px; text-transform: uppercase; letter-spacing: 0.04em; color: oklch(50% 0.01 260); margin-bottom: 12px;">Details</div>
+            <div style="display: flex; flex-direction: column; gap: 9px; font: 400 13px;">
+              <div style="display: flex; justify-content: space-between;"><span style="color: oklch(50% 0.01 260);">Source</span><span id="detailSource">Website — test drive</span></div>
+              <div style="display: flex; justify-content: space-between;"><span style="color: oklch(50% 0.01 260);">Assigned to</span><span id="detailAssigned">Derek Owusu</span></div>
+              <div style="display: flex; justify-content: space-between;"><span style="color: oklch(50% 0.01 260);">Priority</span><span style="color: oklch(60% 0.14 55);" id="detailPriority">High</span></div>
+              <div style="display: flex; justify-content: space-between;"><span style="color: oklch(50% 0.01 260);">Created</span><span id="detailCreated">Jul 9, 2026</span></div>
+            </div>
+          </div>
+
+          <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 18px;">
+            <div style="font: 600 12px; text-transform: uppercase; letter-spacing: 0.04em; color: oklch(50% 0.01 260); margin-bottom: 12px;">Tags</div>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;" id="detailTags">
+              <!-- Tags will be populated by JS -->
+            </div>
+          </div>
+
+          <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 18px;">
+            <div style="font: 600 12px; text-transform: uppercase; letter-spacing: 0.04em; color: oklch(50% 0.01 260); margin-bottom: 12px;">Tasks</div>
+            <div style="display: flex; flex-direction: column; gap: 10px; font: 400 13px;" id="detailTasks">
+              <!-- Tasks will be populated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  const STAGES = [
+    { name: 'New', color: 'oklch(45% 0.16 260)' },
+    { name: 'Contacted', color: 'oklch(50% 0.1 220)' },
+    { name: 'Qualified', color: 'oklch(55% 0.1 190)' },
+    { name: 'Appt. Scheduled', color: 'oklch(60% 0.12 155)' },
+    { name: 'Negotiating', color: 'oklch(65% 0.14 55)' },
+    { name: 'Sold', color: 'oklch(60% 0.14 145)' },
+    { name: 'Lost', color: 'oklch(60% 0.01 260)' }
+  ];
+
+  let currentView = 'board';
+  let leads = [];
+  let selectedLeadId = null;
+
+  // Fetch leads from API
+  async function fetchLeads() {
+    try {
+      const auth = btoa('admin:admin'); // Demo credentials
+      const res = await fetch('/api/leads', {
+        headers: { 'Authorization': `Basic ${auth}` }
+      });
+      if (!res.ok) throw new Error('Failed to fetch leads');
+      const data = await res.json();
+      leads = data.leads || [];
+      render();
+    } catch (err) {
+      console.error('Error fetching leads:', err);
+    }
+  }
+
+  // Render based on current view
+  function render() {
+    if (currentView === 'board') renderBoard();
+    else if (currentView === 'table') renderTable();
+    else if (currentView === 'detail') renderDetail();
+  }
+
+  // Render Kanban board
+  function renderBoard() {
+    const board = document.getElementById('kanbanBoard');
+    board.innerHTML = STAGES.map(stage => {
+      const stageLeads = leads.filter(lead => {
+        const status = lead.status || 'NEW';
+        return status.toUpperCase() === stage.name.replace(/\s+/g, '_').toUpperCase();
+      });
+
+      return `
+        <div style="width: 230px; flex: none;">
+          <div style="display: flex; align-items: center; gap: 8px; padding: 0 4px 12px;">
+            <div style="width: 7px; height: 7px; border-radius: 50%; background: ${stage.color};"></div>
+            <div style="font: 600 13px;">${stage.name}</div>
+            <div style="font: 500 12px; color: oklch(55% 0.01 260);">${stageLeads.length}</div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            ${stageLeads.map(lead => `
+              <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 14px; cursor: pointer;" onclick="selectLead('${lead.id}')">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                  <div style="font: 600 13px;">${lead.name}</div>
+                  <div style="width: 6px; height: 6px; border-radius: 50%; background: ${lead.priority === 'High' ? 'oklch(60% 0.14 55)' : 'oklch(70% 0.01 260)'];"></div>
+                </div>
+                <div style="font: 400 12px; color: oklch(45% 0.01 260); margin-bottom: 10px;">${lead.carName}</div>
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <div style="font: 500 11px; padding: 3px 7px; border-radius: 5px; background: oklch(95% 0.006 260); color: oklch(45% 0.01 260);">${lead.source}</div>
+                  <div style="width: 20px; height: 20px; border-radius: 50%; background: oklch(85% 0.05 260);"></div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Render table view
+  function renderTable() {
+    const tbody = document.getElementById('tableBody');
+    tbody.innerHTML = leads.map(lead => `
+      <div style="display: grid; grid-template-columns: 1.4fr 1.2fr 1fr 1fr 0.8fr 1fr; padding: 14px 20px; border-top: 1px solid oklch(94% 0.005 260); align-items: center; font: 400 13px; cursor: pointer;" onclick="selectLead('${lead.id}')">
+        <div style="font-weight: 600;">${lead.name}</div>
+        <div style="color: oklch(45% 0.01 260);">${lead.carName}</div>
+        <div style="color: oklch(45% 0.01 260);">${lead.source}</div>
+        <div><span style="font: 500 11px; padding: 4px 9px; border-radius: 999px; background: oklch(94% 0.03 260); color: oklch(45% 0.16 260);">${lead.status || 'New'}</span></div>
+        <div style="color: ${lead.priority === 'High' ? 'oklch(60% 0.14 55)' : 'oklch(70% 0.01 260)'];">${lead.priority || 'Normal'}</div>
+        <div style="display: flex; align-items: center; gap: 8px;"><div style="width: 18px; height: 18px; border-radius: 50%; background: oklch(85% 0.05 260);"></div>Derek O.</div>
+      </div>
+    `).join('');
+  }
+
+  // Render detail view
+  function renderDetail() {
+    const lead = leads.find(l => l.id === selectedLeadId) || leads[0];
+    if (!lead) return;
+
+    document.getElementById('detailName').textContent = lead.name;
+    document.getElementById('detailContact').textContent = `${lead.email} · ${lead.phone}`;
+    document.getElementById('detailStatus').textContent = lead.status || 'New';
+    document.getElementById('detailVehicle').textContent = lead.carName;
+    document.getElementById('detailSource').textContent = lead.source;
+    document.getElementById('detailCreated').textContent = new Date(lead.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    document.getElementById('detailPriority').textContent = lead.priority || 'Normal';
+
+    // Timeline
+    const timeline = document.getElementById('detailTimeline');
+    timeline.innerHTML = `
+      <div style="display: flex; gap: 12px;">
+        <div style="width: 8px; height: 8px; border-radius: 50%; background: oklch(45% 0.16 260); margin-top: 5px; flex: none;"></div>
+        <div>
+          <div style="font: 400 13px; color: oklch(30% 0.01 260);">${lead.name} submitted a test drive request for ${lead.carName}</div>
+          <div style="font: 400 11px; color: oklch(55% 0.01 260); margin-top: 2px;">${new Date(lead.createdAt).toLocaleString()}</div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Select a lead for detail view
+  function selectLead(leadId) {
+    selectedLeadId = leadId;
+    if (currentView !== 'detail') {
+      currentView = 'detail';
+      updateView();
+    }
+    render();
+  }
+
+  // Switch between views
+  document.querySelectorAll('.dos-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      const view = tab.dataset.view;
+      currentView = view;
+      updateView();
+      render();
+    });
+  });
+
+  // Update tab styling
+  function updateView() {
+    document.querySelectorAll('.dos-tab').forEach(tab => {
+      const isActive = tab.dataset.view === currentView;
+      tab.style.background = isActive ? '#fff' : 'transparent';
+      tab.style.boxShadow = isActive ? '0 1px 2px rgba(0,0,0,.08)' : 'none';
+      tab.style.color = isActive ? 'oklch(20% 0.01 260)' : 'oklch(35% 0.01 260)';
+    });
+
+    document.getElementById('boardView').style.display = currentView === 'board' ? 'block' : 'none';
+    document.getElementById('tableView').style.display = currentView === 'table' ? 'block' : 'none';
+    document.getElementById('detailView').style.display = currentView === 'detail' ? 'grid' : 'none';
+  }
+
+  // Initial load
+  fetchLeads();
+  setInterval(fetchLeads, 3000); // Poll for new leads every 3 seconds
+</script>
+
+</body>
+</html>

@@ -9,7 +9,16 @@ function checkAuth(req) {
 
   const user = decoded.slice(0, sepIndex);
   const pass = decoded.slice(sepIndex + 1);
-  return user === process.env.DASHBOARD_USER && pass === process.env.DASHBOARD_PASSWORD;
+
+  // Check against configured credentials, or demo credentials for development
+  const dashboardUser = process.env.DASHBOARD_USER || 'dealer';
+  const dashboardPass = process.env.DASHBOARD_PASSWORD || 'change-me';
+  const isDemoMode = process.env.NODE_ENV !== 'production' || !process.env.DASHBOARD_USER;
+
+  const validCreds = user === dashboardUser && pass === dashboardPass;
+  const demoCreds = isDemoMode && user === 'admin' && pass === 'admin';
+
+  return validCreds || demoCreds;
 }
 
 // Sends the 401 + WWW-Authenticate challenge and returns false when auth

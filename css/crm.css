@@ -1,0 +1,57 @@
+/* CRM-specific styles */
+
+.dos-tab {
+  transition: all 0.2s ease;
+}
+
+.dos-tab:hover {
+  opacity: 0.8;
+}
+
+#kanbanBoard {
+  padding: 0;
+}
+
+/* Kanban card interactions */
+[style*="cursor: pointer"] {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+[style*="cursor: pointer"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Timeline styling */
+#detailTimeline div:not(:last-child) {
+  padding-bottom: 16px;
+  border-bottom: 1px solid oklch(94% 0.005 260);
+}
+
+/* Detail panel scrollable */
+#detailView > div:last-child {
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+}
+
+@media (max-width: 1024px) {
+  #boardView {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  #detailView {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .dos-tab {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  #kanbanBoard {
+    min-width: auto;
+  }
+}
