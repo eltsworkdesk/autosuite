@@ -83,6 +83,8 @@ const server = http.createServer((req, res) => {
     const apiPath = pathname.slice(5); // Remove '/api/'
     const handler = handlers[apiPath] || handlers['leads/[id]'];
 
+    console.log(`[API] ${req.method} ${pathname} -> handlers['${apiPath}'] ${handler ? 'found' : 'not found'}`);
+
     if (handler) {
       parseBody(req, (body) => {
         const mockReq = {
@@ -98,6 +100,8 @@ const server = http.createServer((req, res) => {
           mockReq.query.id = pathname.split('/')[3];
         }
 
+        let responseSent = false;
+
         const mockRes = {
           statusCode: 200,
           headers: {},
@@ -109,10 +113,12 @@ const server = http.createServer((req, res) => {
           json(data) {
             this.body = JSON.stringify(data);
             this.headers['Content-Type'] = 'application/json';
+            this.end();
             return this;
           },
           send(data) {
             this.body = data;
+            this.end();
             return this;
           },
           setHeader(key, val) {
@@ -120,18 +126,43 @@ const server = http.createServer((req, res) => {
             return this;
           },
           end(data) {
+            if (responseSent) return;
+            responseSent = true;
             if (data) this.body = data;
             res.writeHead(this.statusCode, this.headers);
-            res.end(this.body);
+            res.end(this.body || '');
           }
         };
 
         // Call handler
-        handler(mockReq, mockRes).catch((err) => {
-          console.error('API Error:', err);
-          res.writeHead(500, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ error: 'Internal server error' }));
-        });
+        console.log(`[API] Calling handler for ${pathname}...`);
+        try {
+          const result = handler(mockReq, mockRes);
+          if (result && typeof result.then === 'function') {
+            result
+              .then(() => {
+                console.log(`[API] Handler completed for ${pathname}`);
+                if (!responseSent) {
+                  // Handler didn't send response, send empty 200
+                  res.writeHead(200, { 'Content-Type': 'application/json' });
+                  res.end('{}');
+                }
+              })
+              .catch((err) => {
+                console.error(`[API] Error in ${pathname}:`, err);
+                if (!responseSent) {
+                  res.writeHead(500, { 'Content-Type': 'application/json' });
+                  res.end(JSON.stringify({ error: 'Internal server error' }));
+                }
+              });
+          }
+        } catch (err) {
+          console.error(`[API] Sync error calling ${pathname}:`, err);
+          if (!responseSent) {
+            res.writeHead(500, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Internal server error' }));
+          }
+        }
       });
       return;
     }

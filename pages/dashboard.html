@@ -244,7 +244,7 @@
     try {
       const auth = btoa('admin:admin');
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 second timeout
+      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout for DB init
 
       const res = await fetch('/api/leads', {
         headers: { 'Authorization': `Basic ${auth}` },
