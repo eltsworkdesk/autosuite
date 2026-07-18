@@ -75,7 +75,29 @@
   /* Featured + listing grids */
   .car-grid,
   .cars-grid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+
+  /* Inventory: promote to rail + results, and pin the rail while scrolling.
+     The summary toggle is hidden — the rail is always shown, even if a mobile
+     user had collapsed the <details> before resizing up. */
+  .inv-layout {
+    grid-template-columns: 260px 1fr;
+    gap: var(--space-6);
+  }
+
+  .inv-filters-summary {
+    display: none;
+  }
+
+  .inv-filters {
+    position: sticky;
+    top: var(--space-5);
+  }
+
+  .inv-filters:not([open]) .inv-rail,
+  .inv-filters[open] .inv-rail {
+    display: flex;
   }
 
   .roadmap-grid {
@@ -84,12 +106,6 @@
 
   .why-us-grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-
-  .filters .result-count {
-    flex: 0 0 auto;
-    text-align: left;
-    margin-left: auto;
   }
 
   .footer-grid {

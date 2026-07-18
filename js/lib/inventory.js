@@ -30,15 +30,30 @@
     }
   }
 
-  function filterCars(cars, { query = '', brand = '', maxPrice = Infinity } = {}) {
+  /** cars.json stores mileage as a formatted string ("6,200 km"); pull the
+   *  numeric part for the mileage filter/sort. Returns Infinity if unparseable
+   *  so an odd value never silently excludes a car from a "max mileage" filter. */
+  function parseMileageKm(str) {
+    const digits = String(str == null ? '' : str).replace(/[^\d]/g, '');
+    return digits ? Number(digits) : Infinity;
+  }
+
+  /**
+   * Filter inventory. `brands` and `bodyStyles` are multi-select — an empty
+   * array means "all" (no constraint on that facet). `maxPrice`/`maxMileage`
+   * are inclusive caps.
+   */
+  function filterCars(cars, { query = '', brands = [], bodyStyles = [], maxPrice = Infinity, maxMileage = Infinity } = {}) {
     const q = query.trim().toLowerCase();
     return cars.filter((car) => {
       const matchesQuery = !q || car.name.toLowerCase().includes(q) || car.brand.toLowerCase().includes(q);
-      const matchesBrand = !brand || car.brand === brand;
+      const matchesBrand = brands.length === 0 || brands.includes(car.brand);
+      const matchesBody = bodyStyles.length === 0 || bodyStyles.includes(car.bodyStyle);
       const matchesPrice = car.price <= maxPrice;
-      return matchesQuery && matchesBrand && matchesPrice;
+      const matchesMileage = parseMileageKm(car.mileage) <= maxMileage;
+      return matchesQuery && matchesBrand && matchesBody && matchesPrice && matchesMileage;
     });
   }
 
-  return { formatNaira, sortCars, filterCars };
+  return { formatNaira, sortCars, filterCars, parseMileageKm };
 });

@@ -2,75 +2,152 @@
    AutoSuite — Cars listing page styles
 ========================================================= */
 
-.listing-hero {
-  background: linear-gradient(120deg, var(--navy-950), var(--navy-800));
-  color: #fff;
-  padding: var(--space-6) var(--space-4) var(--space-7);
-  text-align: center;
+/* ---------- Inventory page shell ---------- */
+.inv-page {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4) var(--space-8);
 }
 
-.listing-hero h1 {
-  font-size: var(--text-xl);
-  margin: var(--space-2) 0 var(--space-2);
+.inv-head {
+  margin-bottom: var(--space-5);
 }
 
-.listing-hero p {
-  color: var(--on-dark-soft);
+.inv-head h1 {
+  font-size: var(--text-2xl);
+  margin: var(--space-1) 0 var(--space-2);
+}
+
+.inv-sub {
+  color: var(--ink-soft);
   font-size: var(--text-sm);
 }
 
-/* ---------- Filters ---------- */
-.filters {
-  max-width: 1180px;
-  margin: calc(-1 * var(--space-6)) auto 0;
-  background: var(--surface);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
-  padding: var(--space-5);
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-4);
-  align-items: flex-end;
-  position: relative;
-  z-index: 5;
+/* Mobile-first: single column (rail stacks above results). responsive.css
+   promotes this to a 260px rail + results grid at tablet+ widths. */
+.inv-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+  align-items: start;
 }
 
-.filters .field {
+/* ---------- Filter rail ---------- */
+/* On mobile the rail is a <details> disclosure — the summary is the toggle.
+   At tablet+ the summary is hidden and the rail is always shown (responsive.css). */
+.inv-filters-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--text-sm);
+  color: var(--ink);
+  cursor: pointer;
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  list-style: none;
+  margin-bottom: var(--space-4);
+}
+
+.inv-filters-summary::-webkit-details-marker {
+  display: none;
+}
+
+.inv-filters-summary::after {
+  content: '▾';
+  color: var(--ink-faint);
+}
+
+/* Display is toggled explicitly by the disclosure's open state (not left to
+   the UA's <details> collapse, which a styled child overrides) — hidden when
+   closed on mobile, shown when open, and always shown at desktop where the
+   summary toggle is hidden (see responsive.css). */
+.inv-rail {
+  flex-direction: column;
+  gap: var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+}
+
+.inv-filters:not([open]) .inv-rail {
+  display: none;
+}
+
+.inv-filters[open] .inv-rail {
+  display: flex;
+}
+
+.rail-group {
+  border: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
-  flex: 1 1 160px;
 }
 
-.filters .field-search {
-  flex: 1 1 240px;
-}
-
-.filters .field-price {
-  flex: 1 1 220px;
-}
-
-.filters label {
+.rail-label {
   font-size: var(--text-xs);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--ink-faint);
+  padding: 0;
 }
 
-.filters select {
-  padding: 0.65rem 0.8rem;
+.rail-readout {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--brand-blue-deep);
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.rail-checks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.rail-check {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   font-size: var(--text-sm);
-  border-radius: var(--radius-sm);
-  border: 1.5px solid var(--line);
-  background: var(--bg);
-  font-family: inherit;
   color: var(--ink);
+  cursor: pointer;
 }
 
-.filters select:focus {
-  border-color: var(--brand-blue-deep);
-  outline: none;
+.rail-check input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--brand-blue-deep);
+  flex: none;
+}
+
+.rail-check-label {
+  flex: 1;
+}
+
+.rail-check-count {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+}
+
+.inv-rail input[type="range"] {
+  width: 100%;
+  accent-color: var(--brand-blue-deep);
+  height: 1.75rem;
+}
+
+#resetFilters {
+  align-self: flex-start;
 }
 
 /* Modern pill search field, with icon + clear button */
@@ -91,7 +168,7 @@
 
 .search-input-wrap input[type="text"] {
   width: 100%;
-  padding: 0.65rem 2.2rem 0.65rem 2.4rem;
+  padding: 0.6rem 2.2rem 0.6rem 2.4rem;
   font-size: var(--text-sm);
   border-radius: var(--radius-pill);
   border: 1.5px solid var(--line);
@@ -126,37 +203,35 @@
   color: var(--ink);
 }
 
-.filters input[type="range"] {
-  width: 100%;
-  accent-color: var(--brand-blue-deep);
-  height: 2rem;
+/* ---------- Results column ---------- */
+.inv-results {
+  min-width: 0;
 }
 
-.filters .price-readout {
-  font-family: var(--font-mono);
-  font-weight: 600;
-  color: var(--brand-blue-deep);
+.inv-results-bar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--space-4);
 }
 
-#resetFilters {
-  flex: 0 0 auto;
-  align-self: flex-end;
+.inv-sort {
+  padding: 0.55rem 0.8rem;
+  font-size: var(--text-sm);
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--line);
+  background: var(--surface);
+  font-family: inherit;
+  color: var(--ink);
+  cursor: pointer;
 }
 
-.filters .result-count {
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--ink-soft);
-  white-space: nowrap;
-  flex: 1 1 100%;
-  text-align: right;
+.inv-sort:focus {
+  border-color: var(--brand-blue-deep);
+  outline: none;
 }
 
 /* ---------- Grid ---------- */
 .cars-grid {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: var(--space-6) var(--space-4) var(--space-8);
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-5);

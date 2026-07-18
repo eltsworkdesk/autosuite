@@ -44,57 +44,71 @@
 
   <main id="main-content">
 
-  <section class="listing-hero">
-    <span class="eyebrow">Full Inventory</span>
-    <h1>Every car on the floor</h1>
-    <p>Search, filter by brand, or set a budget — the grid below updates as you go.</p>
-  </section>
+  <section class="inv-page" aria-label="Vehicle inventory">
+    <header class="inv-head">
+      <span class="eyebrow">Full Inventory</span>
+      <h1><span id="resultCount" role="status" aria-live="polite">Loading</span> available</h1>
+      <p class="inv-sub">Filter by body style, make, budget, or mileage — the grid updates as you go.</p>
+    </header>
 
-  <!-- Search & Filters -->
-  <section class="filters" aria-label="Search and filter inventory">
-    <div class="field field-search">
-      <label for="searchBar">Search</label>
-      <div class="search-input-wrap">
-        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="11" cy="11" r="7"></circle>
-          <path d="M21 21l-4.3-4.3"></path>
-        </svg>
-        <input type="text" id="searchBar" placeholder="Search by name or brand…" autocomplete="off">
-        <button type="button" class="search-clear" id="searchClear" aria-label="Clear search" hidden>&times;</button>
+    <div class="inv-layout">
+      <!-- FILTER RAIL (collapses into a disclosure on mobile) -->
+      <details class="inv-filters" open>
+        <summary class="inv-filters-summary">Filters</summary>
+        <div class="inv-rail" role="search" aria-label="Filter inventory">
+          <div class="rail-group">
+            <label for="searchBar" class="rail-label">Search</label>
+            <div class="search-input-wrap">
+              <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="7"></circle>
+                <path d="M21 21l-4.3-4.3"></path>
+              </svg>
+              <input type="text" id="searchBar" placeholder="Name or make…" autocomplete="off">
+              <button type="button" class="search-clear" id="searchClear" aria-label="Clear search" hidden>&times;</button>
+            </div>
+          </div>
+
+          <fieldset class="rail-group">
+            <legend class="rail-label">Body style</legend>
+            <div id="bodyStyleFilters" class="rail-checks"></div>
+          </fieldset>
+
+          <div class="rail-group">
+            <label for="priceRange" class="rail-label">Max price: <span class="rail-readout" id="priceValue">₦0</span></label>
+            <input type="range" id="priceRange">
+          </div>
+
+          <fieldset class="rail-group">
+            <legend class="rail-label">Make</legend>
+            <div id="makeFilters" class="rail-checks"></div>
+          </fieldset>
+
+          <div class="rail-group">
+            <label for="mileageRange" class="rail-label">Max mileage: <span class="rail-readout" id="mileageValue">Any</span></label>
+            <input type="range" id="mileageRange">
+          </div>
+
+          <button type="button" class="btn ghost small" id="resetFilters">Reset filters</button>
+        </div>
+      </details>
+
+      <!-- RESULTS -->
+      <div class="inv-results">
+        <div class="inv-results-bar">
+          <label for="sortBy" class="visually-hidden">Sort results</label>
+          <select id="sortBy" class="inv-sort">
+            <option value="default">Sort: Featured</option>
+            <option value="price-asc">Sort: Price low to high</option>
+            <option value="price-desc">Sort: Price high to low</option>
+            <option value="year-desc">Sort: Newest first</option>
+          </select>
+        </div>
+        <h2 class="visually-hidden" id="resultsHeading">Search results</h2>
+        <section class="cars-grid" id="carsGrid" aria-labelledby="resultsHeading" aria-live="polite" aria-busy="true">
+          <p class="empty-state">Loading inventory…</p>
+        </section>
       </div>
     </div>
-
-    <div class="field">
-      <label for="brandFilter">Brand</label>
-      <select id="brandFilter">
-        <option value="">All Brands</option>
-      </select>
-    </div>
-
-    <div class="field">
-      <label for="sortBy">Sort By</label>
-      <select id="sortBy">
-        <option value="default">Featured</option>
-        <option value="price-asc">Price: Low to High</option>
-        <option value="price-desc">Price: High to Low</option>
-        <option value="year-desc">Newest First</option>
-      </select>
-    </div>
-
-    <div class="field field-price">
-      <label for="priceRange">Max Price: <span class="price-readout" id="priceValue">₦0</span></label>
-      <input type="range" id="priceRange">
-    </div>
-
-    <button type="button" class="btn ghost small" id="resetFilters">Reset</button>
-
-    <span class="result-count" id="resultCount" role="status" aria-live="polite"></span>
-  </section>
-
-  <!-- Car Grid -->
-  <h2 class="visually-hidden" id="resultsHeading">Search Results</h2>
-  <section class="cars-grid" id="carsGrid" aria-labelledby="resultsHeading" aria-live="polite" aria-busy="true">
-    <p class="empty-state">Loading inventory…</p>
   </section>
 
   </main>

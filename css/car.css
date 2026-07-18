@@ -53,6 +53,100 @@
   flex-wrap: wrap;
 }
 
+/* ---------- Breadcrumb ---------- */
+.detail-breadcrumb {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--space-3) var(--space-4);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  font-size: var(--text-sm);
+  color: var(--ink-faint);
+}
+
+.detail-breadcrumb a {
+  color: var(--brand-blue-deep);
+  text-decoration: none;
+}
+
+.detail-breadcrumb a:hover,
+.detail-breadcrumb a:focus-visible {
+  text-decoration: underline;
+}
+
+.detail-breadcrumb [aria-current="page"] {
+  color: var(--ink);
+}
+
+/* ---------- Availability banner (matches .form-status success treatment) ---------- */
+.availability-banner {
+  margin-top: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: #eafaf0;
+  color: #0f7a37;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.availability-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--success);
+  flex: none;
+}
+
+/* ---------- Vehicle history (light text + green checks, on the dark hero) ---------- */
+.vehicle-history {
+  margin-top: var(--space-4);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+}
+
+.vehicle-history li {
+  font-size: var(--text-sm);
+  color: #cdd8f0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.vehicle-history li::before {
+  content: '✓';
+  color: oklch(72% 0.14 155);
+  font-weight: 700;
+}
+
+/* ---------- Trust band ---------- */
+.trust-band {
+  max-width: 1100px;
+  margin: var(--space-5) auto 0;
+  padding: var(--space-5) var(--space-4);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  text-align: center;
+}
+
+.trust-value {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  color: var(--ink);
+}
+
+.trust-label {
+  font-size: var(--text-sm);
+  color: var(--ink-soft);
+}
+
 .hero-photo-frame {
   position: relative;
 }

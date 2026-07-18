@@ -12,7 +12,7 @@
 
 const CARS_JSON_PATH = window.CARS_JSON_PATH || 'data/cars.json';
 const ASSET_BASE = window.ASSET_BASE || 'assets/web/';
-const { formatNaira, sortCars, filterCars } = window.AutoSuiteInventory;
+const { formatNaira, sortCars, filterCars, parseMileageKm } = window.AutoSuiteInventory;
 
 function imageUrl(fileName) {
   return ASSET_BASE + fileName;
@@ -105,16 +105,45 @@ function emptyStateHTML(hasActiveFilters) {
   `;
 }
 
+/* Renders a group of filter checkboxes (with per-value counts) into `host`,
+   built from the real inventory so the rail never lists a facet value that
+   isn't in stock. `field` is the car property to read (brand / bodyStyle). */
+function renderCheckboxFacet(host, cars, field, nameAttr) {
+  const counts = {};
+  cars.forEach((c) => {
+    const v = c[field];
+    if (v) counts[v] = (counts[v] || 0) + 1;
+  });
+  host.innerHTML = Object.keys(counts)
+    .sort()
+    .map(
+      (value) => `
+        <label class="rail-check">
+          <input type="checkbox" name="${nameAttr}" value="${value}">
+          <span class="rail-check-label">${value}</span>
+          <span class="rail-check-count">${counts[value]}</span>
+        </label>`
+    )
+    .join('');
+}
+
+function checkedValues(host) {
+  return Array.from(host.querySelectorAll('input:checked')).map((el) => el.value);
+}
+
 async function initListingPage() {
   const grid = document.getElementById('carsGrid');
   if (!grid) return;
 
   const searchInput = document.getElementById('searchBar');
   const searchClear = document.getElementById('searchClear');
-  const brandSelect = document.getElementById('brandFilter');
+  const bodyStyleHost = document.getElementById('bodyStyleFilters');
+  const makeHost = document.getElementById('makeFilters');
   const sortSelect = document.getElementById('sortBy');
   const priceRange = document.getElementById('priceRange');
   const priceValue = document.getElementById('priceValue');
+  const mileageRange = document.getElementById('mileageRange');
+  const mileageValue = document.getElementById('mileageValue');
   const resultCount = document.getElementById('resultCount');
   const resetBtn = document.getElementById('resetFilters');
 
@@ -128,33 +157,52 @@ async function initListingPage() {
     return;
   }
 
-  // Populate brand filter from real data instead of a hardcoded list
-  const brands = [...new Set(cars.map((c) => c.brand))].sort();
-  brandSelect.innerHTML =
-    '<option value="">All Brands</option>' +
-    brands.map((b) => `<option value="${b}">${b}</option>`).join('');
+  // Build the body-style and make checkbox groups from real data.
+  renderCheckboxFacet(bodyStyleHost, cars, 'bodyStyle', 'bodyStyle');
+  renderCheckboxFacet(makeHost, cars, 'brand', 'make');
 
-  // Set the price slider range to match actual inventory
+  // Price slider scales to actual inventory; max value = no cap.
   const maxPrice = Math.max(...cars.map((c) => c.price));
-  const sliderMax = Math.ceil(maxPrice / 1000000) * 1000000;
+  const priceMax = Math.ceil(maxPrice / 1000000) * 1000000;
   priceRange.min = 0;
-  priceRange.max = sliderMax;
+  priceRange.max = priceMax;
   priceRange.step = 1000000;
-  priceRange.value = sliderMax;
-  priceValue.textContent = formatNaira(sliderMax);
+  priceRange.value = priceMax;
+  priceValue.textContent = formatNaira(priceMax);
+
+  // Mileage slider likewise; at max it reads "Any" and applies no cap.
+  const maxMileage = Math.max(...cars.map((c) => parseMileageKm(c.mileage)).filter((n) => Number.isFinite(n)));
+  const mileageMax = Math.ceil(maxMileage / 5000) * 5000;
+  mileageRange.min = 0;
+  mileageRange.max = mileageMax;
+  mileageRange.step = 5000;
+  mileageRange.value = mileageMax;
+  mileageValue.textContent = 'Any';
 
   function hasActiveFilters() {
-    return Boolean(searchInput.value.trim()) || Boolean(brandSelect.value) || Number(priceRange.value) < sliderMax;
+    return (
+      Boolean(searchInput.value.trim()) ||
+      checkedValues(bodyStyleHost).length > 0 ||
+      checkedValues(makeHost).length > 0 ||
+      Number(priceRange.value) < priceMax ||
+      Number(mileageRange.value) < mileageMax
+    );
   }
 
   function applyFilters() {
     const query = searchInput.value.trim();
-    const brand = brandSelect.value;
-    const maxAllowed = Number(priceRange.value);
+    const bodyStyles = checkedValues(bodyStyleHost);
+    const brands = checkedValues(makeHost);
+    const maxPriceAllowed = Number(priceRange.value);
+    const mileageVal = Number(mileageRange.value);
+    const maxMileageAllowed = mileageVal >= mileageMax ? Infinity : mileageVal;
 
     searchClear.hidden = query.length === 0;
 
-    const results = sortCars(filterCars(cars, { query, brand, maxPrice: maxAllowed }), sortSelect.value);
+    const results = sortCars(
+      filterCars(cars, { query, brands, bodyStyles, maxPrice: maxPriceAllowed, maxMileage: maxMileageAllowed }),
+      sortSelect.value
+    );
 
     grid.setAttribute('aria-busy', 'false');
     grid.innerHTML = results.length
@@ -166,16 +214,19 @@ async function initListingPage() {
     if (emptyReset) emptyReset.addEventListener('click', resetFilters);
 
     if (resultCount) {
-      resultCount.textContent = `${results.length} car${results.length === 1 ? '' : 's'}`;
+      resultCount.textContent = `${results.length} vehicle${results.length === 1 ? '' : 's'}`;
     }
   }
 
   function resetFilters() {
     searchInput.value = '';
-    brandSelect.value = '';
+    bodyStyleHost.querySelectorAll('input:checked').forEach((el) => (el.checked = false));
+    makeHost.querySelectorAll('input:checked').forEach((el) => (el.checked = false));
     sortSelect.value = 'default';
-    priceRange.value = sliderMax;
-    priceValue.textContent = formatNaira(sliderMax);
+    priceRange.value = priceMax;
+    priceValue.textContent = formatNaira(priceMax);
+    mileageRange.value = mileageMax;
+    mileageValue.textContent = 'Any';
     applyFilters();
     searchInput.focus();
   }
@@ -188,10 +239,16 @@ async function initListingPage() {
     applyFilters();
     searchInput.focus();
   });
-  brandSelect.addEventListener('change', applyFilters);
+  bodyStyleHost.addEventListener('change', applyFilters);
+  makeHost.addEventListener('change', applyFilters);
   sortSelect.addEventListener('change', applyFilters);
   priceRange.addEventListener('input', () => {
     priceValue.textContent = formatNaira(priceRange.value);
+    debouncedApply();
+  });
+  mileageRange.addEventListener('input', () => {
+    const v = Number(mileageRange.value);
+    mileageValue.textContent = v >= mileageMax ? 'Any' : `${v.toLocaleString('en-NG')} km`;
     debouncedApply();
   });
   resetBtn.addEventListener('click', resetFilters);
@@ -354,6 +411,12 @@ async function initDetailPage() {
     if (recallCarName) recallCarName.textContent = car.name;
     const inventoryCarName = document.getElementById('inventoryCarName');
     if (inventoryCarName) inventoryCarName.textContent = car.name;
+
+    // Breadcrumb: Inventory / {BodyStyle}s / {name}
+    const breadcrumbBody = document.getElementById('breadcrumbBody');
+    if (breadcrumbBody && car.bodyStyle) breadcrumbBody.textContent = `${car.bodyStyle}s`;
+    const breadcrumbName = document.getElementById('breadcrumbName');
+    if (breadcrumbName) breadcrumbName.textContent = car.name;
 
     document.title = `${car.name} — AutoSuite`;
   } catch (err) {

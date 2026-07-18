@@ -57,6 +57,15 @@
     <button type="button" class="burger" aria-label="Toggle menu" aria-expanded="false" aria-controls="primaryNav">☰</button>
   </header>
 
+  <!-- Breadcrumb (hydrated per-vehicle from ?id=) -->
+  <nav class="detail-breadcrumb" aria-label="Breadcrumb">
+    <a href="cars.html">Inventory</a>
+    <span aria-hidden="true">/</span>
+    <span id="breadcrumbBody">Sedans</span>
+    <span aria-hidden="true">/</span>
+    <span id="breadcrumbName" aria-current="page">2024 Mercedes-Benz E450</span>
+  </nav>
+
   <!-- HERO / TOP -->
   <main class="page-wrap">
     <section class="detail-hero">
@@ -69,6 +78,17 @@
           <a href="#inventory" class="btn">View Inventory</a>
           <button type="button" class="btn outline" data-open-test-drive data-car-name-from="#carName">Book a Test Drive</button>
         </div>
+
+        <p class="availability-banner">
+          <span class="availability-dot" aria-hidden="true"></span>
+          Available now at the AutoSuite showroom — book a test drive today.
+        </p>
+
+        <ul class="vehicle-history">
+          <li>Clean title</li>
+          <li>Single owner</li>
+          <li>No accidents reported</li>
+        </ul>
       </div>
 
       <figure class="hero-right">
@@ -125,6 +145,22 @@
           <div class="spec-title">Seats</div>
           <div class="spec-value">5</div>
         </div>
+      </div>
+    </section>
+
+    <!-- TRUST STATS -->
+    <section class="trust-band" aria-label="Buyer assurances">
+      <div class="trust-stat">
+        <span class="trust-value">130-pt</span>
+        <span class="trust-label">Inspection on every vehicle</span>
+      </div>
+      <div class="trust-stat">
+        <span class="trust-value">7-day</span>
+        <span class="trust-label">Money-back guarantee</span>
+      </div>
+      <div class="trust-stat">
+        <span class="trust-value">1yr</span>
+        <span class="trust-label">Limited warranty included</span>
       </div>
     </section>
 
