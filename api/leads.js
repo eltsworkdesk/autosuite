@@ -4,7 +4,6 @@ const { requireAuth } = require('./_lib/auth');
 const VALID_SOURCES = ['test-drive-modal', 'trade-in-estimator'];
 
 module.exports = async (req, res) => {
-  console.log(`[leads.js] ${req.method} request received`);
   try {
     if (req.method === 'POST') {
       const { carId, carName, name, email, phone, source } = req.body || {};
@@ -26,14 +25,8 @@ module.exports = async (req, res) => {
     }
 
     if (req.method === 'GET') {
-      console.log(`[leads.js] GET: checking auth...`);
-      if (!requireAuth(req, res)) {
-        console.log(`[leads.js] GET: auth failed`);
-        return;
-      }
-      console.log(`[leads.js] GET: auth passed, fetching leads...`);
+      if (!requireAuth(req, res)) return;
       const leads = await prisma.lead.findMany({ orderBy: { createdAt: 'desc' } });
-      console.log(`[leads.js] GET: found ${leads.length} leads, sending response...`);
       return res.status(200).json({ leads });
     }
 

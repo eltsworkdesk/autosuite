@@ -83,8 +83,6 @@ const server = http.createServer((req, res) => {
     const apiPath = pathname.slice(5); // Remove '/api/'
     const handler = handlers[apiPath] || handlers['leads/[id]'];
 
-    console.log(`[API] ${req.method} ${pathname} -> handlers['${apiPath}'] ${handler ? 'found' : 'not found'}`);
-
     if (handler) {
       parseBody(req, (body) => {
         const mockReq = {
@@ -135,13 +133,11 @@ const server = http.createServer((req, res) => {
         };
 
         // Call handler
-        console.log(`[API] Calling handler for ${pathname}...`);
         try {
           const result = handler(mockReq, mockRes);
           if (result && typeof result.then === 'function') {
             result
               .then(() => {
-                console.log(`[API] Handler completed for ${pathname}`);
                 if (!responseSent) {
                   // Handler didn't send response, send empty 200
                   res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -149,7 +145,7 @@ const server = http.createServer((req, res) => {
                 }
               })
               .catch((err) => {
-                console.error(`[API] Error in ${pathname}:`, err);
+                console.error(`API Error [${pathname}]:`, err);
                 if (!responseSent) {
                   res.writeHead(500, { 'Content-Type': 'application/json' });
                   res.end(JSON.stringify({ error: 'Internal server error' }));
@@ -157,7 +153,7 @@ const server = http.createServer((req, res) => {
               });
           }
         } catch (err) {
-          console.error(`[API] Sync error calling ${pathname}:`, err);
+          console.error(`API Sync Error [${pathname}]:`, err);
           if (!responseSent) {
             res.writeHead(500, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify({ error: 'Internal server error' }));
