@@ -336,8 +336,20 @@ async function initDetailPage() {
     const brandTag = document.getElementById('brandTag');
     if (brandTag) brandTag.textContent = car.brand;
 
+    const subline = document.getElementById('carSubline');
+    if (subline) subline.textContent = [car.mileage, car.drivetrain].filter(Boolean).join(' · ');
+
     const priceEl = document.getElementById('carPrice');
     if (priceEl) priceEl.innerHTML = `Listed at <strong>${formatNaira(car.price)}</strong>`;
+
+    // Hero "Est. ₦X/mo" — reuses the tested financing lib with sensible
+    // defaults (10% down, 60 months, 18% APR); the financing section below
+    // lets the buyer adjust from there.
+    const estEl = document.getElementById('heroEstMonthly');
+    if (estEl && window.AutoSuiteFinance) {
+      const monthly = window.AutoSuiteFinance.calculateMonthlyPayment({ price: car.price, downPct: 10, termMonths: 60, aprPct: 18 });
+      estEl.textContent = formatNaira(Math.round(monthly));
+    }
 
     const mainPhoto = document.getElementById('mainPhoto');
     if (mainPhoto && car.gallery?.length) mainPhoto.src = imageUrl(car.gallery[0]);

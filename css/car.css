@@ -7,16 +7,18 @@
   margin: 0 auto;
 }
 
-/* ---------- Detail hero ---------- */
+/* ---------- Detail hero (light 2-col, per design docs 03/09) ---------- */
 .detail-hero {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-5);
   padding: var(--space-5) var(--space-4);
-  background: linear-gradient(160deg, var(--navy-950) 0%, var(--navy-800) 60%, oklch(27% 0.03 260) 100%);
-  color: #fff;
+  background: var(--bg);
+  color: var(--ink);
 }
 
+/* Mobile: gallery first, info below. Desktop swaps to gallery-left /
+   info-right via responsive.css. */
 .detail-hero .hero-left { order: 2; }
 .detail-hero .hero-right { order: 1; }
 
@@ -25,24 +27,50 @@
   font-size: var(--text-xs);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--brand-blue-light);
+  color: var(--brand-blue-deep);
   margin-bottom: var(--space-2);
   display: inline-block;
 }
 
 .car-name {
-  font-size: var(--text-lg);
-  color: #fff;
-  margin-bottom: var(--space-2);
+  font-size: var(--text-xl);
+  color: var(--ink);
+  margin-bottom: var(--space-1);
+}
+
+.detail-subline {
+  color: var(--ink-soft);
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-3);
 }
 
 .car-msrp {
-  color: var(--on-dark-soft);
-  font-size: var(--text-base);
+  color: var(--ink-soft);
+  font-size: var(--text-lg);
 }
 
 .car-msrp strong {
-  color: #fff;
+  color: var(--ink);
+  font-family: var(--font-mono);
+}
+
+.hero-est {
+  margin-top: var(--space-1);
+  font-size: var(--text-sm);
+}
+
+.hero-est a {
+  color: var(--brand-blue-deep);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.hero-est a:hover,
+.hero-est a:focus-visible {
+  text-decoration: underline;
+}
+
+.hero-est span {
   font-family: var(--font-mono);
 }
 
@@ -112,7 +140,7 @@
 
 .vehicle-history li {
   font-size: var(--text-sm);
-  color: #cdd8f0;
+  color: var(--ink-soft);
   display: flex;
   align-items: center;
   gap: var(--space-2);
@@ -120,7 +148,7 @@
 
 .vehicle-history li::before {
   content: '✓';
-  color: oklch(72% 0.14 155);
+  color: var(--success);
   font-weight: 700;
 }
 
@@ -197,8 +225,8 @@
 }
 
 .photo-360 {
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
+  background: var(--surface-sunken);
+  color: var(--ink-soft);
   border: none;
   padding: var(--space-2) var(--space-4);
   border-radius: var(--radius-pill);
@@ -224,7 +252,7 @@
 .photo-thumbs button {
   flex: 0 0 auto;
   padding: 0;
-  border: 2px solid rgba(255, 255, 255, 0.14);
+  border: 2px solid var(--line);
   border-radius: 6px;
   overflow: hidden;
   background: none;

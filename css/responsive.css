@@ -141,22 +141,22 @@
     padding-bottom: 0;
   }
 
-  /* Detail page */
+  /* Detail page — gallery left (1.4fr), info right (1fr) per design docs 03/09 */
   .detail-hero {
     flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     padding: 2.4rem;
-    gap: 2.2rem;
-  }
-
-  .detail-hero .hero-left {
-    order: 1;
-    width: 44%;
+    gap: 2.6rem;
   }
 
   .detail-hero .hero-right {
+    order: 1;
+    width: 58%;
+  }
+
+  .detail-hero .hero-left {
     order: 2;
-    width: 56%;
+    width: 42%;
   }
 
   .spec-grid {
