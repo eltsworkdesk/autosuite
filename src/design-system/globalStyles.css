@@ -1,0 +1,269 @@
+/**
+ * AutoSuite Global Styles
+ * Uses design tokens for consistency
+ */
+
+:root {
+  /* Colors */
+  --color-primary: #4A5FFF;
+  --color-primary-dark: #2e3799;
+  --color-primary-light: #e6ebff;
+  --color-accent: #FFB700;
+  --color-success: #00A876;
+  --color-danger: #E63946;
+  --color-ink-primary: #0B1220;
+  --color-ink-secondary: #3d4a6c;
+  --color-ink-tertiary: #5f6b8d;
+  --color-neutral-50: #fafbfc;
+  --color-neutral-100: #f3f5f7;
+  --color-neutral-200: #e8ecf1;
+  --color-neutral-300: #d9dfe8;
+  --color-neutral-400: #c7cdd8;
+  --color-neutral-500: #aab3c4;
+  --color-neutral-600: #8896aa;
+  --color-neutral-700: #5f6b7f;
+  --color-neutral-800: #3d4552;
+  --color-neutral-900: #1a1e27;
+
+  /* Typography */
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+  --space-xl: 20px;
+  --space-2xl: 24px;
+  --space-3xl: 32px;
+  --space-4xl: 40px;
+  --space-5xl: 48px;
+  --space-6xl: 64px;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-button: 9px;
+  --radius-pill: 999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 20px -8px rgba(0, 0, 0, 0.15);
+  --shadow-xl: 0 20px 40px -12px rgba(0, 0, 0, 0.2);
+
+  /* Z-index */
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-overlay: 400;
+  --z-modal: 500;
+  --z-toast: 600;
+  --z-tooltip: 700;
+
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-base: 250ms ease-in-out;
+  --transition-slow: 350ms ease-in-out;
+
+  /* Breakpoints (for reference in JS) */
+  --breakpoint-mobile: 375px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1280px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: var(--font-weight-regular);
+  line-height: 1.5;
+  color: var(--color-ink-primary);
+  background-color: var(--color-neutral-50);
+  transition: background-color var(--transition-base);
+}
+
+/* Typography */
+h1 {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+}
+
+h2 {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+}
+
+h3 {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+}
+
+h4 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.3;
+}
+
+h5 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.4;
+}
+
+h6 {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.4;
+}
+
+p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+small {
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+code,
+pre {
+  font-family: var(--font-mono);
+  font-size: 12px;
+}
+
+/* Links */
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+}
+
+a:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Buttons (basic reset) */
+button {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius-button);
+  transition: all var(--transition-fast);
+}
+
+button:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Form controls */
+input,
+textarea,
+select {
+  font-family: var(--font-body);
+  font-size: 14px;
+  border: 1px solid var(--color-neutral-300);
+  border-radius: var(--radius-sm);
+  padding: var(--space-md) var(--space-lg);
+  transition: all var(--transition-fast);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px var(--color-primary-light);
+}
+
+input:invalid,
+textarea:invalid,
+select:invalid {
+  border-color: var(--color-danger);
+}
+
+input:disabled,
+textarea:disabled,
+select:disabled {
+  background-color: var(--color-neutral-100);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+  font-weight: var(--font-weight-semibold);
+  padding: var(--space-lg);
+  border-bottom: 2px solid var(--color-neutral-200);
+}
+
+td {
+  padding: var(--space-lg);
+  border-bottom: 1px solid var(--color-neutral-200);
+}
+
+/* Responsive */
+@media (max-width: 767px) {
+  h1 {
+    font-size: 32px;
+  }
+
+  h2 {
+    font-size: 28px;
+  }
+
+  h3 {
+    font-size: 24px;
+  }
+
+  body {
+    font-size: 13px;
+  }
+}
