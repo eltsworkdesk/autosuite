@@ -92,7 +92,7 @@
       </div>
 
       <!-- LEAD DETAIL VIEW -->
-      <div id="detailView" style="display: none; display: grid; grid-template-columns: 1fr 320px; gap: 24px;">
+      <div id="detailView" style="display: none; grid-template-columns: 1fr 320px; gap: 24px;">
         <div>
           <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 24px;">
             <div style="width: 48px; height: 48px; border-radius: 50%; background: oklch(88% 0.05 260);"></div>
@@ -156,13 +156,13 @@
 
 <script>
   const STAGES = [
-    { name: 'New', color: 'oklch(45% 0.16 260)' },
-    { name: 'Contacted', color: 'oklch(50% 0.1 220)' },
-    { name: 'Qualified', color: 'oklch(55% 0.1 190)' },
-    { name: 'Appt. Scheduled', color: 'oklch(60% 0.12 155)' },
-    { name: 'Negotiating', color: 'oklch(65% 0.14 55)' },
-    { name: 'Sold', color: 'oklch(60% 0.14 145)' },
-    { name: 'Lost', color: 'oklch(60% 0.01 260)' }
+    { name: 'New', dbName: 'NEW', color: 'oklch(45% 0.16 260)' },
+    { name: 'Contacted', dbName: 'CONTACTED', color: 'oklch(50% 0.1 220)' },
+    { name: 'Qualified', dbName: 'QUALIFIED', color: 'oklch(55% 0.1 190)' },
+    { name: 'Appt. Scheduled', dbName: 'APPT_SCHEDULED', color: 'oklch(60% 0.12 155)' },
+    { name: 'Negotiating', dbName: 'NEGOTIATING', color: 'oklch(65% 0.14 55)' },
+    { name: 'Sold', dbName: 'SOLD', color: 'oklch(60% 0.14 145)' },
+    { name: 'Lost', dbName: 'LOST', color: 'oklch(60% 0.01 260)' }
   ];
 
   let currentView = 'board';
@@ -204,7 +204,7 @@
     board.innerHTML = STAGES.map(stage => {
       const stageLeads = leads.filter(lead => {
         const status = lead.status || 'NEW';
-        return status.toUpperCase() === stage.name.replace(/\s+/g, '_').toUpperCase();
+        return status.toUpperCase() === stage.dbName;
       });
 
       return `
@@ -214,7 +214,7 @@
             <div style="font: 600 13px;">${stage.name}</div>
             <div style="font: 500 12px; color: oklch(55% 0.01 260);">${stageLeads.length}</div>
           </div>
-          <div style="display: flex; flex-direction: column; gap: 10px; min-height: 400px; padding: 8px; border-radius: 8px; background: oklch(98% 0.003 260);" data-stage="${stage.name.replace(/\s+/g, '_')}">
+          <div style="display: flex; flex-direction: column; gap: 10px; min-height: 400px; padding: 8px; border-radius: 8px; background: oklch(98% 0.003 260);" data-stage="${stage.dbName}">
             ${stageLeads.map(lead => `
               <div draggable="true" class="kanban-card" data-lead-id="${lead.id}" onclick="selectLead('${lead.id}')" style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 14px; cursor: grab; user-select: none; transition: all 0.2s ease; touch-action: none;">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
