@@ -6,6 +6,8 @@
   "scripts": {
     "postinstall": "prisma generate",
     "dev": "node server.js",
+    "db:seed": "node prisma/seed.js",
+    "db:reset": "prisma migrate reset --force",
     "build": "prisma db push --skip-generate",
     "test": "vitest run"
   },

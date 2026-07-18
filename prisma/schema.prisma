@@ -4,41 +4,160 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
-// SCHEDULED and COMPLETED are retired from the UI (see api/leads/[id].js
-// VALID_STATUSES and js/dashboard.js STAGES) but kept here so `prisma db
-// push` never has to drop an enum value a live row might still reference —
-// dropping a value that's in use fails the column-type cast outright.
-enum LeadStatus {
-  NEW
-  CONTACTED
-  SCHEDULED
-  QUALIFIED
-  APPT_SCHEDULED
-  NEGOTIATING
-  COMPLETED
-  SOLD
-  LOST
+model Lead {
+  id            String      @id @default(cuid())
+  carId         String?
+  carName       String
+  name          String
+  email         String
+  phone         String
+  status        String      @default("NEW") // NEW, CONTACTED, QUALIFIED, APPT_SCHEDULED, NEGOTIATING, SOLD, LOST
+  source        String      @default("test-drive-modal")
+  priority      String      @default("Normal") // Low, Normal, High
+  tags          String      @default("[]") // JSON stringified array
+  tasks         String      @default("[]") // JSON stringified array: [{id, text, done}]
+  appointmentId String?
+  assignedToId  String?
+  assignedTo    TeamMember? @relation(fields: [assignedToId], references: [id])
+  appointments  Appointment[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 }
 
-model Lead {
-  id        String     @id @default(cuid())
-  carId     String?
-  carName   String
-  name      String
-  email     String
-  phone     String
-  status    LeadStatus @default(NEW)
-  source    String     @default("test-drive-modal")
-  // Additive CRM fields (Lead Detail page) — deliberately plain columns on
-  // the existing Lead, not new entities. tags/tasks are simple enough not
-  // to need their own tables; see js/lib/lead-detail.js for the shapes.
-  priority  String     @default("Normal") // Low | Normal | High
-  tags      String[]   @default([])
-  tasks     Json       @default("[]") // [{id, text, done}]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+model Vehicle {
+  id            String        @id @default(cuid())
+  vin           String        @unique
+  make          String
+  model         String
+  year          Int
+  price         Int
+  mileage       Int
+  color         String
+  body          String        // SUV, Sedan, Truck, etc.
+  engine        String
+  transmission  String        // Manual, Automatic
+  drivetrain    String        // FWD, RWD, AWD
+  mpg           Float?
+  images        String        @default("[]") // JSON stringified array of URLs
+  history       String?       // Vehicle history notes
+  dealerNotes   String?
+  status        String        @default("active") // draft, active, featured, sold
+  appointments  Appointment[]
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Appointment {
+  id         String    @id @default(cuid())
+  leadId     String
+  lead       Lead      @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  vehicleId  String?
+  vehicle    Vehicle?  @relation(fields: [vehicleId], references: [id])
+  type       String    @default("test-drive") // test-drive, inspection
+  dateTime   DateTime
+  status     String    @default("scheduled") // scheduled, completed, no_show
+  notes      String?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Customer {
+  id              String   @id @default(cuid())
+  name            String
+  email           String   @unique
+  phone           String?
+  address         String?
+  preferredMakes  String   @default("[]") // JSON stringified array
+  purchaseHistory String   @default("[]") // JSON stringified array of Vehicle IDs
+  referralCode    String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Dealership {
+  id           String       @id @default(cuid())
+  name         String
+  email        String
+  phone        String?
+  address      String?
+  timezone     String       @default("UTC")
+  leadRouting  String       @default("round-robin") // round-robin, territory, skill-based
+  settings     String       @default("{}") // JSON stringified object
+  teamMembers  TeamMember[]
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+model TeamMember {
+  id             String      @id @default(cuid())
+  dealershipId   String
+  dealership     Dealership  @relation(fields: [dealershipId], references: [id], onDelete: Cascade)
+  name           String
+  email          String
+  role           String      @default("sales") // owner, manager, sales, bdc
+  permissions    String      @default("[]") // JSON stringified array
+  assignedLeads  Lead[]
+  joinedAt       DateTime    @default(now())
+  deactivatedAt  DateTime?
+}
+
+model TradeInEstimate {
+  id                       String   @id @default(cuid())
+  leadId                   String
+  yearMakeModel            String
+  mileage                  Int
+  condition                String   // excellent, good, fair, poor
+  estimateRange            String   // JSON stringified: {low: number, high: number}
+  status                   String   @default("pending") // pending, estimated, inspection_scheduled, completed
+  inPersonInspectionNeeded Boolean  @default(false)
+  inspectionDatetime       DateTime?
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+}
+
+model FinanceApplication {
+  id              String   @id @default(cuid())
+  leadId          String
+  vehicleId       String?
+  downPayment     Int
+  loanTerm        Int
+  apr             Float
+  monthlyPayment  Int
+  status          String   @default("pending") // pending, approved, denied
+  approvalDetails String?  // JSON stringified object
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Analytics {
+  id                    String   @id @default(cuid())
+  dealershipId          String
+  date                  DateTime
+  newLeads              Int      @default(0)
+  contactedLeads        Int      @default(0)
+  qualifiedLeads        Int      @default(0)
+  appointmentsScheduled Int      @default(0)
+  testDrivesCompleted   Int      @default(0)
+  salesClosed           Int      @default(0)
+  revenue               Int      @default(0)
+  conversionRate        Float    @default(0)
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+
+  @@unique([dealershipId, date])
+}
+
+model Notification {
+  id               String   @id @default(cuid())
+  recipientId      String   // TeamMember ID
+  type             String   // LeadCreated, TestDriveBooked, AppointmentReminder, MessageReceived
+  linkedEntityId   String?
+  linkedEntityType String?
+  read             Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 }
