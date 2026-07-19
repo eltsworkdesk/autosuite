@@ -30,7 +30,7 @@
       <span class="dos-brand-mark" aria-hidden="true" style="width: 22px; height: 22px; border-radius: 6px; background: oklch(55% 0.16 260); display: block;"></span>
       <span class="dos-brand-text">AutoSuite</span>
     </div>
-    <div style="padding: 8px 10px 14px; font: 400 13px 'IBM Plex Mono', monospace; color: oklch(55% 0.01 260); border: 1px solid oklch(30% 0.01 260); border-radius: 8px; margin-bottom: 16px; display: flex; justify-content: space-between;">
+    <div data-dos-search style="padding: 8px 10px 14px; font: 400 13px 'IBM Plex Mono', monospace; color: oklch(55% 0.01 260); border: 1px solid oklch(30% 0.01 260); border-radius: 8px; margin-bottom: 16px; display: flex; justify-content: space-between;">
       <span>⌘K Search everything</span>
     </div>
     <nav class="dos-nav" aria-label="Dealer OS">
@@ -61,7 +61,10 @@
         <button type="button" class="dos-tab" data-view="table" style="padding: 8px 16px; border-radius: 8px; font: 500 13px; background: transparent; border: none; cursor: pointer; color: oklch(35% 0.01 260);">Table</button>
         <button type="button" class="dos-tab" data-view="detail" style="padding: 8px 16px; border-radius: 8px; font: 500 13px; background: transparent; border: none; cursor: pointer; color: oklch(35% 0.01 260);">Lead Detail</button>
       </div>
-      <div style="margin-left: auto; font: 500 13px; padding: 8px 14px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; cursor: pointer;">+ New lead</div>
+      <div style="margin-left: auto; display: flex; align-items: center; gap: 16px;">
+        <div style="font: 500 13px; padding: 8px 14px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; cursor: pointer;">+ New lead</div>
+        <div data-dos-bell style="position: relative;">🔔<div data-dos-bell-dot style="position: absolute; top: -3px; right: -4px; width: 7px; height: 7px; border-radius: 50%; background: oklch(65% 0.14 55);"></div></div>
+      </div>
     </div>
 
     <!-- CONTENT AREA -->
@@ -154,6 +157,7 @@
   </div>
 </div>
 
+<script src="../js/dos-shell.js"></script>
 <script>
   const STAGES = [
     { name: 'New', dbName: 'NEW', color: 'oklch(45% 0.16 260)' },
@@ -387,25 +391,9 @@
     document.getElementById('detailView').style.display = currentView === 'detail' ? 'grid' : 'none';
   }
 
-  // Live updates via SSE; fall back to slow polling if the stream drops.
-  function subscribeToEvents(types, onEvent) {
-    try {
-      const source = new EventSource('/api/events');
-      source.onmessage = (e) => {
-        try {
-          const evt = JSON.parse(e.data);
-          if (types.includes(evt.type)) onEvent(evt);
-        } catch (err) { /* ignore malformed frames */ }
-      };
-      source.onerror = () => console.warn('SSE connection lost, relying on polling fallback');
-    } catch (err) {
-      console.warn('EventSource unavailable:', err.message);
-    }
-  }
-
   // Initial load
   fetchLeads();
-  subscribeToEvents(['lead.created', 'lead.updated'], fetchLeads);
+  DosShell.onEvent(['lead.created', 'lead.updated'], fetchLeads);
   setInterval(fetchLeads, 30000); // Slow fallback poll in case SSE drops
 </script>
 

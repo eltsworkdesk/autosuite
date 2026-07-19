@@ -17,6 +17,9 @@
       <div style="width: 22px; height: 22px; border-radius: 6px; background: oklch(55% 0.16 260);"></div>
       <div style="font: 600 15px 'Space Grotesk', sans-serif; color: #fff;">AutoSuite</div>
     </div>
+    <div data-dos-search style="padding: 8px 10px 14px; font: 400 13px 'IBM Plex Mono', monospace; color: oklch(55% 0.01 260); border: 1px solid oklch(30% 0.01 260); border-radius: 8px; margin-bottom: 16px; display: flex; justify-content: space-between;">
+      <span>⌘K Search everything</span>
+    </div>
     <nav class="dos-nav" aria-label="Dealer OS">
       <a href="dashboard.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">▦ Overview</a>
       <a href="crm.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">☎ CRM</a>
@@ -31,8 +34,11 @@
     </div>
   </aside>
   <div style="background: oklch(97.5% 0.004 90);">
-    <div style="display: flex; gap: 16px; padding: 18px 36px; border-bottom: 1px solid oklch(91% 0.005 260); background: #fff;">
+    <div style="display: flex; align-items: center; gap: 16px; padding: 18px 36px; border-bottom: 1px solid oklch(91% 0.005 260); background: #fff;">
       <h1 style="font: 600 20px 'Space Grotesk', sans-serif; margin: 0;">Settings</h1>
+      <div style="margin-left: auto;">
+        <div data-dos-bell style="position: relative;">🔔<div data-dos-bell-dot style="position: absolute; top: -3px; right: -4px; width: 7px; height: 7px; border-radius: 50%; background: oklch(65% 0.14 55);"></div></div>
+      </div>
     </div>
     <div style="padding: 32px 36px;">
       <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 40px; text-align: center;">
@@ -41,5 +47,6 @@
     </div>
   </div>
 </div>
+<script src="../js/dos-shell.js"></script>
 </body>
 </html>
