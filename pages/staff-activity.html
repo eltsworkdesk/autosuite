@@ -40,27 +40,80 @@
         <div data-dos-bell style="position: relative;">🔔<div data-dos-bell-dot style="position: absolute; top: -3px; right: -4px; width: 7px; height: 7px; border-radius: 50%; background: oklch(65% 0.14 55);"></div></div>
       </div>
     </div>
-    <div style="padding: 32px 36px;">
+    <div style="padding: 28px 36px;">
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px;">
         <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 16px;">
           <div style="font: 500 11px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); margin-bottom: 8px;">Active Reps</div>
-          <div style="font: 600 24px 'Space Grotesk', sans-serif;">1</div>
+          <div style="font: 600 24px 'Space Grotesk', sans-serif;" id="statActiveReps">-</div>
         </div>
         <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 16px;">
-          <div style="font: 500 11px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); margin-bottom: 8px;">Leads Assigned Today</div>
-          <div style="font: 600 24px 'Space Grotesk', sans-serif;">3</div>
+          <div style="font: 500 11px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); margin-bottom: 8px;">Leads Assigned</div>
+          <div style="font: 600 24px 'Space Grotesk', sans-serif;" id="statAssigned">-</div>
         </div>
         <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 16px;">
-          <div style="font: 500 11px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); margin-bottom: 8px;">Avg Response Time</div>
-          <div style="font: 600 24px 'Space Grotesk', sans-serif;">6 min</div>
+          <div style="font: 500 11px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); margin-bottom: 8px;">Deals Closed</div>
+          <div style="font: 600 24px 'Space Grotesk', sans-serif;" id="statSold">-</div>
         </div>
       </div>
-      <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 40px; text-align: center;">
-        <p style="font: 400 15px; color: oklch(45% 0.01 260); margin: 0;">Per-rep activity log and performance leaderboard — coming soon</p>
+
+      <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; overflow: hidden;">
+        <div style="display: grid; grid-template-columns: 1.4fr 1.4fr 1fr 1fr 1fr 1fr; background: oklch(97% 0.004 90); padding: 12px 20px; font: 600 11px 'IBM Plex Mono', monospace; text-transform: uppercase; letter-spacing: 0.04em; color: oklch(50% 0.01 260);">
+          <div>Rep</div><div>Email</div><div>Role</div><div>Assigned</div><div>Open</div><div>Sold</div>
+        </div>
+        <div id="teamList"></div>
       </div>
     </div>
   </div>
 </div>
 <script src="../js/dos-shell.js"></script>
+<script>
+  async function fetchTeam() {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+    try {
+      const res = await fetch('/api/team', {
+        signal: controller.signal,
+        headers: { 'Authorization': 'Basic ' + btoa('admin:admin') }
+      });
+      clearTimeout(timeoutId);
+      if (!res.ok) throw new Error('Request failed');
+      const data = await res.json();
+      renderTeam(data.team || []);
+    } catch (err) {
+      console.warn('Team API unavailable:', err.message);
+      renderTeam([]);
+    }
+  }
+
+  function renderTeam(team) {
+    document.getElementById('statActiveReps').textContent = team.filter(m => m.active).length;
+    document.getElementById('statAssigned').textContent = team.reduce((sum, m) => sum + m.assignedLeadCount, 0);
+    document.getElementById('statSold').textContent = team.reduce((sum, m) => sum + m.soldCount, 0);
+
+    const list = document.getElementById('teamList');
+    if (team.length === 0) {
+      list.innerHTML = '<div style="padding: 40px; text-align: center; color: oklch(50% 0.01 260);">No team members yet</div>';
+      return;
+    }
+
+    list.innerHTML = team.map(m => `
+      <div style="display: grid; grid-template-columns: 1.4fr 1.4fr 1fr 1fr 1fr 1fr; padding: 14px 20px; border-top: 1px solid oklch(94% 0.005 260); align-items: center; font: 400 13px;">
+        <div style="font-weight: 600; display: flex; align-items: center; gap: 8px;">
+          <div style="width: 20px; height: 20px; border-radius: 50%; background: oklch(85% 0.05 260);"></div>
+          ${m.name}
+        </div>
+        <div style="color: oklch(45% 0.01 260);">${m.email}</div>
+        <div style="text-transform: capitalize; color: oklch(45% 0.01 260);">${m.role}</div>
+        <div>${m.assignedLeadCount}</div>
+        <div>${m.openCount}</div>
+        <div>${m.soldCount}</div>
+      </div>
+    `).join('');
+  }
+
+  fetchTeam();
+  DosShell.onEvent(['lead.created', 'lead.updated'], fetchTeam);
+  setInterval(fetchTeam, 30000);
+</script>
 </body>
 </html>

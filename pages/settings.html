@@ -40,13 +40,117 @@
         <div data-dos-bell style="position: relative;">🔔<div data-dos-bell-dot style="position: absolute; top: -3px; right: -4px; width: 7px; height: 7px; border-radius: 50%; background: oklch(65% 0.14 55);"></div></div>
       </div>
     </div>
-    <div style="padding: 32px 36px;">
-      <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 40px; text-align: center;">
-        <p style="font: 400 15px; color: oklch(45% 0.01 260); margin: 0;">Settings & Configuration — coming soon</p>
+    <div style="padding: 28px 36px; max-width: 640px;">
+      <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 24px; margin-bottom: 24px;">
+        <div style="font: 600 15px 'Space Grotesk', sans-serif; margin-bottom: 20px;">Dealership Profile</div>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div>
+            <label style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Name</label>
+            <input id="fieldName" type="text" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+          </div>
+          <div>
+            <label style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Email</label>
+            <input id="fieldEmail" type="email" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+          </div>
+          <div>
+            <label style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Phone</label>
+            <input id="fieldPhone" type="text" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+          </div>
+          <div>
+            <label style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Address</label>
+            <input id="fieldAddress" type="text" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+          </div>
+          <div>
+            <label style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Lead Routing</label>
+            <select id="fieldRouting" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+              <option value="round-robin">Round robin</option>
+              <option value="territory">Territory-based</option>
+              <option value="skill-based">Skill-based</option>
+            </select>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <button type="button" onclick="saveDealership()" style="font: 500 13px; padding: 10px 18px; border-radius: 8px; background: oklch(45% 0.16 260); color: #fff; border: none; cursor: pointer;">Save changes</button>
+            <span id="saveStatus" style="font: 400 12px; color: oklch(50% 0.13 145);"></span>
+          </div>
+        </div>
+      </div>
+
+      <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 24px;">
+        <div style="font: 600 15px 'Space Grotesk', sans-serif; margin-bottom: 16px;">Team</div>
+        <div id="teamRoster" style="display: flex; flex-direction: column; gap: 10px;"></div>
       </div>
     </div>
   </div>
 </div>
 <script src="../js/dos-shell.js"></script>
+<script>
+  async function fetchDealership() {
+    try {
+      const res = await fetch('/api/dealership', { headers: { 'Authorization': 'Basic ' + btoa('admin:admin') } });
+      if (!res.ok) throw new Error('Request failed');
+      const data = await res.json();
+      const d = data.dealership;
+      document.getElementById('fieldName').value = d.name || '';
+      document.getElementById('fieldEmail').value = d.email || '';
+      document.getElementById('fieldPhone').value = d.phone || '';
+      document.getElementById('fieldAddress').value = d.address || '';
+      document.getElementById('fieldRouting').value = d.leadRouting || 'round-robin';
+    } catch (err) {
+      console.warn('Dealership API unavailable:', err.message);
+    }
+  }
+
+  async function saveDealership() {
+    const status = document.getElementById('saveStatus');
+    status.textContent = 'Saving...';
+    status.style.color = 'oklch(50% 0.01 260)';
+    try {
+      const res = await fetch('/api/dealership', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
+        body: JSON.stringify({
+          name: document.getElementById('fieldName').value,
+          email: document.getElementById('fieldEmail').value,
+          phone: document.getElementById('fieldPhone').value,
+          address: document.getElementById('fieldAddress').value,
+          leadRouting: document.getElementById('fieldRouting').value,
+        })
+      });
+      if (!res.ok) throw new Error((await res.json()).error || 'Save failed');
+      status.textContent = 'Saved';
+      status.style.color = 'oklch(50% 0.13 145)';
+    } catch (err) {
+      status.textContent = 'Error: ' + err.message;
+      status.style.color = 'oklch(50% 0.15 25)';
+    }
+  }
+
+  async function fetchTeamRoster() {
+    const roster = document.getElementById('teamRoster');
+    try {
+      const res = await fetch('/api/team', { headers: { 'Authorization': 'Basic ' + btoa('admin:admin') } });
+      if (!res.ok) throw new Error('Request failed');
+      const data = await res.json();
+      const team = data.team || [];
+      roster.innerHTML = team.length === 0
+        ? '<div style="color: oklch(50% 0.01 260); font: 400 13px sans-serif;">No team members yet</div>'
+        : team.map(m => `
+            <div style="display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid oklch(95% 0.003 260);">
+              <div style="width: 26px; height: 26px; border-radius: 50%; background: oklch(85% 0.05 260);"></div>
+              <div style="flex: 1;">
+                <div style="font: 500 13px;">${m.name}</div>
+                <div style="font: 400 12px; color: oklch(50% 0.01 260);">${m.email} · ${m.role}</div>
+              </div>
+              <span style="font: 500 11px; padding: 3px 8px; border-radius: 999px; background: ${m.active ? 'oklch(90% 0.1 145)' : 'oklch(92% 0.005 260)'}; color: ${m.active ? 'oklch(30% 0.08 145)' : 'oklch(50% 0.01 260)'};">${m.active ? 'Active' : 'Inactive'}</span>
+            </div>
+          `).join('');
+    } catch (err) {
+      roster.innerHTML = '<div style="color: oklch(50% 0.01 260); font: 400 13px sans-serif;">Could not load team roster</div>';
+    }
+  }
+
+  fetchDealership();
+  fetchTeamRoster();
+</script>
 </body>
 </html>

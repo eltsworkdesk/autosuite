@@ -23,7 +23,10 @@ const handlers = {
   'appointments/[id]': require('./api/appointments/[id].js'),
   'trade-ins': require('./api/trade-ins.js'),
   finance: require('./api/finance.js'),
-  analytics: require('./api/analytics.js')
+  analytics: require('./api/analytics.js'),
+  customers: require('./api/customers.js'),
+  team: require('./api/team.js'),
+  dealership: require('./api/dealership.js')
 };
 
 const PORT = process.env.PORT || 3000;

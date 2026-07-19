@@ -177,6 +177,33 @@ async function main() {
 
   console.log(`✓ Created ${appointments.length} appointments`);
 
+  // Create sample customers (past buyers, distinct from active leads)
+  const customers = await Promise.all([
+    prisma.customer.create({
+      data: {
+        name: 'Amaka Eze',
+        email: 'amaka.eze@example.com',
+        phone: '+234 801 234 5678',
+        address: '14 Adeola Odeku St, Victoria Island, Lagos',
+        preferredMakes: JSON.stringify(['BMW', 'Mercedes-Benz']),
+        purchaseHistory: JSON.stringify([vehicles[2].id]),
+        referralCode: 'AMAKA10',
+      },
+    }),
+    prisma.customer.create({
+      data: {
+        name: 'Tunde Bakare',
+        email: 'tunde.bakare@example.com',
+        phone: '+234 802 345 6789',
+        address: '22 Awolowo Rd, Ikoyi, Lagos',
+        preferredMakes: JSON.stringify(['Honda', 'Toyota']),
+        purchaseHistory: JSON.stringify([vehicles[0].id]),
+      },
+    }),
+  ]);
+
+  console.log(`✓ Created ${customers.length} customers`);
+
   console.log('\n✅ Database seeded successfully!');
 }
 

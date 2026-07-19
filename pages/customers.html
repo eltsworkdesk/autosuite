@@ -40,13 +40,110 @@
         <div data-dos-bell style="position: relative;">🔔<div data-dos-bell-dot style="position: absolute; top: -3px; right: -4px; width: 7px; height: 7px; border-radius: 50%; background: oklch(65% 0.14 55);"></div></div>
       </div>
     </div>
-    <div style="padding: 32px 36px;">
-      <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 40px; text-align: center;">
-        <p style="font: 400 15px; color: oklch(45% 0.01 260); margin: 0;">Customer database, purchase history, and referral tracking — coming soon</p>
+    <div style="padding: 28px 36px;">
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px;">
+        <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 16px;">
+          <div style="font: 500 11px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); margin-bottom: 8px;">Total Customers</div>
+          <div style="font: 600 24px 'Space Grotesk', sans-serif;" id="statTotal">-</div>
+        </div>
+        <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 16px;">
+          <div style="font: 500 11px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); margin-bottom: 8px;">With Purchase History</div>
+          <div style="font: 600 24px 'Space Grotesk', sans-serif;" id="statPurchased">-</div>
+        </div>
+        <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 16px;">
+          <div style="font: 500 11px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); margin-bottom: 8px;">Referred</div>
+          <div style="font: 600 24px 'Space Grotesk', sans-serif;" id="statReferred">-</div>
+        </div>
+      </div>
+
+      <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
+        <button type="button" onclick="promptAddCustomer()" style="font: 500 13px; padding: 8px 14px; border-radius: 8px; background: oklch(45% 0.16 260); color: #fff; border: none; cursor: pointer;">+ Add customer</button>
+      </div>
+
+      <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; overflow: hidden;">
+        <div style="display: grid; grid-template-columns: 1.2fr 1.4fr 1fr 1.4fr 0.8fr 0.8fr; background: oklch(97% 0.004 90); padding: 12px 20px; font: 600 11px 'IBM Plex Mono', monospace; text-transform: uppercase; letter-spacing: 0.04em; color: oklch(50% 0.01 260);">
+          <div>Name</div><div>Contact</div><div>Preferred Makes</div><div>Address</div><div>Purchases</div><div>Referral</div>
+        </div>
+        <div id="customerList"></div>
+        <div id="emptyState" style="display: none; padding: 40px; text-align: center; color: oklch(50% 0.01 260);">No customers yet</div>
       </div>
     </div>
   </div>
 </div>
 <script src="../js/dos-shell.js"></script>
+<script>
+  let customers = [];
+
+  async function fetchCustomers() {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+    try {
+      const res = await fetch('/api/customers', {
+        signal: controller.signal,
+        headers: { 'Authorization': 'Basic ' + btoa('admin:admin') }
+      });
+      clearTimeout(timeoutId);
+      if (!res.ok) throw new Error('Request failed');
+      const data = await res.json();
+      customers = data.customers || [];
+    } catch (err) {
+      console.warn('Customers API unavailable:', err.message);
+      customers = [];
+    }
+    renderCustomers();
+  }
+
+  function renderCustomers() {
+    const list = document.getElementById('customerList');
+    const emptyState = document.getElementById('emptyState');
+
+    document.getElementById('statTotal').textContent = customers.length;
+    document.getElementById('statPurchased').textContent = customers.filter(c => c.purchaseHistory.length > 0).length;
+    document.getElementById('statReferred').textContent = customers.filter(c => c.referralCode).length;
+
+    if (customers.length === 0) {
+      list.style.display = 'none';
+      emptyState.style.display = 'block';
+      return;
+    }
+    list.style.display = '';
+    emptyState.style.display = 'none';
+
+    list.innerHTML = customers.map(c => `
+      <div style="display: grid; grid-template-columns: 1.2fr 1.4fr 1fr 1.4fr 0.8fr 0.8fr; padding: 14px 20px; border-top: 1px solid oklch(94% 0.005 260); align-items: center; font: 400 13px;">
+        <div style="font-weight: 600;">${c.name}</div>
+        <div style="color: oklch(45% 0.01 260);">${c.email}${c.phone ? '<br>' + c.phone : ''}</div>
+        <div style="color: oklch(45% 0.01 260);">${c.preferredMakes.join(', ') || '—'}</div>
+        <div style="color: oklch(45% 0.01 260); font-size: 12px;">${c.address || '—'}</div>
+        <div>${c.purchaseHistory.length}</div>
+        <div>${c.referralCode ? `<span style="font: 500 11px; padding: 3px 8px; border-radius: 999px; background: oklch(90% 0.1 145); color: oklch(30% 0.08 145);">${c.referralCode}</span>` : '—'}</div>
+      </div>
+    `).join('');
+  }
+
+  async function promptAddCustomer() {
+    const name = prompt('Customer name:');
+    if (!name) return;
+    const email = prompt('Email:');
+    if (!email) return;
+    const phone = prompt('Phone (optional):') || undefined;
+
+    try {
+      const res = await fetch('/api/customers', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
+        body: JSON.stringify({ name, email, phone })
+      });
+      if (!res.ok) throw new Error((await res.json()).error || 'Create failed');
+      await fetchCustomers();
+    } catch (err) {
+      alert('Could not add customer: ' + err.message);
+    }
+  }
+
+  fetchCustomers();
+  DosShell.onEvent(['customer.created'], fetchCustomers);
+  setInterval(fetchCustomers, 30000);
+</script>
 </body>
 </html>
