@@ -15,7 +15,14 @@ const url = require('url');
 const handlers = {
   leads: require('./api/leads.js'),
   'leads/[id]': require('./api/leads/[id].js'),
-  dashboard: require('./api/dashboard.js')
+  dashboard: require('./api/dashboard.js'),
+  vehicles: require('./api/vehicles.js'),
+  'vehicles/[id]': require('./api/vehicles/[id].js'),
+  appointments: require('./api/appointments.js'),
+  'appointments/[id]': require('./api/appointments/[id].js'),
+  'trade-ins': require('./api/trade-ins.js'),
+  finance: require('./api/finance.js'),
+  analytics: require('./api/analytics.js')
 };
 
 const PORT = process.env.PORT || 3000;
@@ -81,7 +88,11 @@ const server = http.createServer((req, res) => {
   // Route API requests
   if (pathname.startsWith('/api/')) {
     const apiPath = pathname.slice(5); // Remove '/api/'
-    const handler = handlers[apiPath] || handlers['leads/[id]'];
+    const segments = apiPath.split('/').filter(Boolean);
+    // Dynamic routes look like /api/<collection>/<id> and dispatch to the
+    // '<collection>/[id]' handler, mirroring Vercel's file-based routing.
+    const isDynamic = segments.length === 2 && handlers[`${segments[0]}/[id]`];
+    const handler = handlers[apiPath] || (isDynamic ? handlers[`${segments[0]}/[id]`] : undefined);
 
     if (handler) {
       parseBody(req, (body) => {
@@ -94,8 +105,8 @@ const server = http.createServer((req, res) => {
         };
 
         // Extract [id] from URL if present
-        if (pathname.startsWith('/api/leads/')) {
-          mockReq.query.id = pathname.split('/')[3];
+        if (isDynamic) {
+          mockReq.query.id = segments[1];
         }
 
         let responseSent = false;

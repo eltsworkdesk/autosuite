@@ -39,86 +39,110 @@
     <div class="metrics">
       <div class="metric-card">
         <div class="metric-label">Total Sales (MTD)</div>
-        <div class="metric-value">₦412M</div>
-        <div class="metric-change">↑ 23% from last month</div>
+        <div class="metric-value" id="metricTotalSales">-</div>
+        <div class="metric-change">From closed deals</div>
       </div>
       <div class="metric-card">
         <div class="metric-label">Conversion Rate</div>
-        <div class="metric-value">12.5%</div>
-        <div class="metric-change">↓ 2.1% from last month</div>
+        <div class="metric-value" id="metricConversion">-</div>
+        <div class="metric-change">Leads to sold</div>
       </div>
       <div class="metric-card">
         <div class="metric-label">Avg Sale Price</div>
-        <div class="metric-value">₦45.2M</div>
-        <div class="metric-change">↑ 5.3% from last month</div>
+        <div class="metric-value" id="metricAvgPrice">-</div>
+        <div class="metric-change">Per closed deal</div>
       </div>
       <div class="metric-card">
-        <div class="metric-label">Customer Satisfaction</div>
-        <div class="metric-value">4.7/5</div>
-        <div class="metric-change">↑ 0.2 from last month</div>
+        <div class="metric-label">Appointments</div>
+        <div class="metric-value" id="metricAppointments">-</div>
+        <div class="metric-change">Scheduled to date</div>
       </div>
     </div>
 
     <div class="charts">
       <div class="chart-card">
-        <div class="chart-title">Sales by Vehicle Type</div>
-        <div class="chart-bar">
-          <div class="chart-label">Sedan</div>
-          <div class="chart-fill" style="width: 85%;"></div>
-          <div class="chart-value">42 units</div>
-        </div>
-        <div class="chart-bar">
-          <div class="chart-label">SUV</div>
-          <div class="chart-fill" style="width: 72%;"></div>
-          <div class="chart-value">36 units</div>
-        </div>
-        <div class="chart-bar">
-          <div class="chart-label">Luxury</div>
-          <div class="chart-fill" style="width: 58%;"></div>
-          <div class="chart-value">29 units</div>
-        </div>
-        <div class="chart-bar">
-          <div class="chart-label">Sports</div>
-          <div class="chart-fill" style="width: 35%;"></div>
-          <div class="chart-value">18 units</div>
-        </div>
+        <div class="chart-title">Inventory by Vehicle Type</div>
+        <div id="vehicleTypeChart"></div>
       </div>
 
       <div class="chart-card">
         <div class="chart-title">Lead Source Distribution</div>
-        <div class="chart-bar">
-          <div class="chart-label">Direct Website</div>
-          <div class="chart-fill" style="width: 100%;"></div>
-          <div class="chart-value">45%</div>
-        </div>
-        <div class="chart-bar">
-          <div class="chart-label">Google Ads</div>
-          <div class="chart-fill" style="width: 68%;"></div>
-          <div class="chart-value">31%</div>
-        </div>
-        <div class="chart-bar">
-          <div class="chart-label">Social Media</div>
-          <div class="chart-fill" style="width: 42%;"></div>
-          <div class="chart-value">19%</div>
-        </div>
-        <div class="chart-bar">
-          <div class="chart-label">Referral</div>
-          <div class="chart-fill" style="width: 28%;"></div>
-          <div class="chart-value">5%</div>
-        </div>
+        <div id="leadSourceChart"></div>
       </div>
     </div>
 
     <div class="chart-card">
       <div class="chart-title">Lead Conversion Funnel</div>
-      <div class="conversion-funnel">
-        <div class="funnel-step">Leads<br>238</div>
-        <div class="funnel-step">Contacted<br>156</div>
-        <div class="funnel-step">Qualified<br>98</div>
-        <div class="funnel-step">Test Drive<br>52</div>
-        <div class="funnel-step">Deal Closed<br>29</div>
-      </div>
+      <div class="conversion-funnel" id="funnelChart"></div>
     </div>
   </div>
+
+  <script>
+    function fmtNaira(n) {
+      return '₦' + Math.round(n).toLocaleString('en-NG');
+    }
+
+    function renderBarChart(containerId, dataObj) {
+      const container = document.getElementById(containerId);
+      const entries = Object.entries(dataObj);
+      if (entries.length === 0) {
+        container.innerHTML = '<div style="color: oklch(50% 0.01 260); font-size: 13px;">No data yet</div>';
+        return;
+      }
+      const max = Math.max(...entries.map(([, v]) => v));
+      container.innerHTML = entries.map(([label, value]) => `
+        <div class="chart-bar">
+          <div class="chart-label">${label}</div>
+          <div class="chart-fill" style="width: ${Math.max((value / max) * 100, 8)}%;"></div>
+          <div class="chart-value">${value}</div>
+        </div>
+      `).join('');
+    }
+
+    async function fetchAnalytics() {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      try {
+        const res = await fetch('/api/analytics', {
+          signal: controller.signal,
+          headers: { 'Authorization': 'Basic ' + btoa('admin:admin') }
+        });
+        clearTimeout(timeoutId);
+        if (!res.ok) throw new Error('Request failed');
+        const data = await res.json();
+        render(data);
+      } catch (err) {
+        console.warn('Analytics API unavailable:', err.message);
+        document.getElementById('metricTotalSales').textContent = '₦0';
+        document.getElementById('metricConversion').textContent = '0%';
+        document.getElementById('metricAvgPrice').textContent = '₦0';
+        document.getElementById('metricAppointments').textContent = '0';
+      }
+    }
+
+    function render(data) {
+      document.getElementById('metricTotalSales').textContent = fmtNaira(data.totalSales);
+      document.getElementById('metricConversion').textContent = data.conversionRate + '%';
+      document.getElementById('metricAvgPrice').textContent = fmtNaira(data.avgSalePrice);
+      document.getElementById('metricAppointments').textContent = data.appointmentsThisWeek;
+
+      renderBarChart('vehicleTypeChart', data.vehiclesByType || {});
+      renderBarChart('leadSourceChart', data.leadSources || {});
+
+      const funnel = data.funnel || {};
+      const steps = [
+        ['Leads', funnel.leads],
+        ['Contacted', funnel.contacted],
+        ['Qualified', funnel.qualified],
+        ['Test Drive', funnel.testDriveBooked],
+        ['Sold', funnel.sold]
+      ];
+      document.getElementById('funnelChart').innerHTML = steps.map(([label, value]) =>
+        `<div class="funnel-step">${label}<br>${value ?? 0}</div>`
+      ).join('');
+    }
+
+    fetchAnalytics();
+  </script>
 </body>
 </html>

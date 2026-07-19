@@ -362,13 +362,37 @@
       document.getElementById('interestMonth').textContent = formatCurrency(interestPerMonth);
     }
 
-    function appliedForFinancing() {
+    async function appliedForFinancing() {
+      const name = prompt('Your name:');
+      if (!name) return;
+      const email = prompt('Your email:');
+      if (!email) return;
+      const phone = prompt('Your phone:');
+      if (!phone) return;
+
       const price = parseFloat(priceSlider.value);
       const downPayment = price * (parseFloat(downPaymentSlider.value) / 100);
       const loanAmount = price - downPayment;
-      const monthlyPayment = document.getElementById('monthlyPayment').textContent;
+      const term = parseFloat(termSlider.value);
+      const apr = parseFloat(aprSlider.value);
+      const monthlyPaymentText = document.getElementById('monthlyPayment').textContent;
+      const monthlyPayment = parseInt(monthlyPaymentText.replace('₦', '').replace(/,/g, ''));
 
-      alert(`Great! Your financing application:\n\nVehicle Price: ${formatCurrency(price)}\nLoan Amount: ${formatCurrency(loanAmount)}\nMonthly Payment: ${monthlyPayment}\n\nYou'll be redirected to complete your application.`);
+      try {
+        const res = await fetch('/api/finance', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name, email, phone,
+            carName: 'Financing Inquiry',
+            downPayment, loanTerm: term, apr, monthlyPayment
+          })
+        });
+        if (!res.ok) throw new Error((await res.json()).error || 'Submission failed');
+        alert(`Great, ${name}! Your financing application:\n\nVehicle Price: ${formatCurrency(price)}\nLoan Amount: ${formatCurrency(loanAmount)}\nMonthly Payment: ${monthlyPaymentText}\n\nA finance specialist will reach out to ${email} shortly.`);
+      } catch (err) {
+        alert('Could not submit your application right now: ' + err.message);
+      }
     }
 
     // Add event listeners

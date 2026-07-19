@@ -136,4 +136,47 @@
       document.getElementById('marketValue').textContent = '₦' + (baseValue / 1000000).toFixed(0) + 'M';
       document.getElementById('mileageDeduction').textContent = '-₦' + (mileageDeduction / 1000000).toFixed(1) + 'M';
       document.getElementById('conditionFactor').textContent = '-₦' + (conditionFactor / 1000000).toFixed(1) + 'M';
-      document.getElementById('demandFactor').textContent = (demandBonus > 0 ? '+' : '') + '₦' + (demandBonus / 1000000).toFixed(1) + 'M'
+      document.getElementById('demandFactor').textContent = (demandBonus > 0 ? '+' : '') + '₦' + (demandBonus / 1000000).toFixed(1) + 'M';
+    }
+
+    async function submitEstimate() {
+      const name = prompt('Your name:');
+      if (!name) return;
+      const email = prompt('Your email:');
+      if (!email) return;
+      const phone = prompt('Your phone:');
+      if (!phone) return;
+
+      const year = document.getElementById('year').value;
+      const make = document.getElementById('make').value;
+      const model = document.getElementById('model').value;
+      const mileage = parseInt(document.getElementById('mileage').value);
+      const conditionValue = parseInt(document.getElementById('condition').value);
+      const conditionMap = { 1: 'poor', 2: 'poor', 3: 'fair', 4: 'good', 5: 'excellent' };
+      const estimateText = document.getElementById('estimateValue').textContent;
+      const estimate = parseInt(estimateText.replace('₦', '').replace(/,/g, ''));
+
+      try {
+        const res = await fetch('/api/trade-ins', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name, email, phone,
+            yearMakeModel: `${year} ${make} ${model}`,
+            mileage,
+            condition: conditionMap[conditionValue] || 'good',
+            estimateLow: Math.round(estimate * 0.92),
+            estimateHigh: Math.round(estimate * 1.08)
+          })
+        });
+        if (!res.ok) throw new Error((await res.json()).error || 'Submission failed');
+        alert(`Your trade-in value: ${estimateText}\n\nThanks ${name}! A dealer will contact you at ${email} to schedule an in-person appraisal.`);
+      } catch (err) {
+        alert('Could not submit your estimate right now: ' + err.message + '\n\nYour estimate: ' + estimateText);
+      }
+    }
+
+    calculateEstimate();
+  </script>
+</body>
+</html>

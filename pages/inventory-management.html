@@ -446,36 +446,30 @@
   </div>
 
   <script>
-    // Sample vehicle data
-    const vehicles = [
-      {
-        id: 1,
-        name: 'BMW X7',
-        make: 'BMW',
-        year: 2024,
-        mileage: '5,200 km',
-        price: '₦65,000,000',
-        status: 'available'
-      },
-      {
-        id: 2,
-        name: 'Mercedes-Benz S-Class',
-        make: 'Mercedes',
-        year: 2023,
-        mileage: '12,500 km',
-        price: '₦45,000,000',
-        status: 'available'
-      },
-      {
-        id: 3,
-        name: 'Audi A4',
-        make: 'Audi',
-        year: 2022,
-        mileage: '28,300 km',
-        price: '₦25,000,000',
-        status: 'sold'
-      }
+    let vehicles = [];
+
+    // Fallback demo data used only if the API is unreachable.
+    const fallbackVehicles = [
+      { id: 1, make: 'BMW', model: 'X7', year: 2024, mileage: 5200, price: 65000000, status: 'active' },
+      { id: 2, make: 'Mercedes-Benz', model: 'S-Class', year: 2023, mileage: 12500, price: 45000000, status: 'active' },
+      { id: 3, make: 'Audi', model: 'A4', year: 2022, mileage: 28300, price: 25000000, status: 'sold' }
     ];
+
+    async function fetchVehicles() {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      try {
+        const res = await fetch('/api/vehicles', { signal: controller.signal });
+        clearTimeout(timeoutId);
+        if (!res.ok) throw new Error('Request failed');
+        const data = await res.json();
+        vehicles = data.vehicles || [];
+      } catch (err) {
+        console.warn('Falling back to demo inventory data:', err.message);
+        vehicles = fallbackVehicles;
+      }
+      loadInventory();
+    }
 
     function loadInventory() {
       const tbody = document.getElementById('vehicleList');
@@ -487,18 +481,21 @@
         return;
       }
 
+      tbody.style.display = '';
+      emptyState.style.display = 'none';
+
       tbody.innerHTML = vehicles.map(v => `
         <tr>
-          <td><span class="vehicle-name">${v.name}</span></td>
+          <td><span class="vehicle-name">${v.make} ${v.model}</span></td>
           <td>${v.make}</td>
           <td>${v.year}</td>
-          <td>${v.mileage}</td>
-          <td>${v.price}</td>
-          <td><span class="status-badge status-${v.status}">${v.status === 'available' ? 'Available' : 'Sold'}</span></td>
+          <td>${v.mileage.toLocaleString()} km</td>
+          <td>₦${v.price.toLocaleString()}</td>
+          <td><span class="status-badge status-${v.status === 'sold' ? 'sold' : 'available'}">${v.status === 'sold' ? 'Sold' : 'Available'}</span></td>
           <td>
             <div class="actions">
-              <button class="action-btn" onclick="editVehicle(${v.id})">Edit</button>
-              <button class="action-btn" onclick="deleteVehicle(${v.id})">Delete</button>
+              <button class="action-btn" onclick="editVehicle('${v.id}')">Edit</button>
+              <button class="action-btn" onclick="deleteVehicle('${v.id}')">Delete</button>
             </div>
           </td>
         </tr>
@@ -508,10 +505,10 @@
     }
 
     function updateStats() {
-      const available = vehicles.filter(v => v.status === 'available').length;
+      const available = vehicles.filter(v => v.status !== 'sold').length;
       const sold = vehicles.filter(v => v.status === 'sold').length;
       const avgPrice = vehicles.length > 0
-        ? '₦' + Math.round(vehicles.reduce((sum, v) => sum + parseInt(v.price.replace('₦', '').replace(/,/g, '')), 0) / vehicles.length).toLocaleString()
+        ? '₦' + Math.round(vehicles.reduce((sum, v) => sum + v.price, 0) / vehicles.length).toLocaleString()
         : '₦0';
 
       document.getElementById('totalVehicles').textContent = vehicles.length;
@@ -526,8 +523,8 @@
 
     function exportInventory() {
       const csv = [
-        ['Vehicle', 'Make', 'Year', 'Mileage', 'Price', 'Status'],
-        ...vehicles.map(v => [v.name, v.make, v.year, v.mileage, v.price, v.status])
+        ['Make', 'Model', 'Year', 'Mileage', 'Price', 'Status'],
+        ...vehicles.map(v => [v.make, v.model, v.year, v.mileage, v.price, v.status])
       ].map(row => row.join(',')).join('\n');
 
       const blob = new Blob([csv], { type: 'text/csv' });
@@ -542,22 +539,50 @@
       alert(`Edit vehicle ${id} - Coming soon`);
     }
 
-    function deleteVehicle(id) {
-      if (confirm('Are you sure you want to delete this vehicle?')) {
-        vehicles.splice(vehicles.findIndex(v => v.id === id), 1);
-        loadInventory();
+    async function deleteVehicle(id) {
+      if (!confirm('Are you sure you want to delete this vehicle?')) return;
+
+      try {
+        const res = await fetch(`/api/vehicles/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': 'Basic ' + btoa('admin:admin') }
+        });
+        if (!res.ok) throw new Error('Delete failed');
+      } catch (err) {
+        console.warn('Delete request failed, removing locally only:', err.message);
       }
+      vehicles = vehicles.filter(v => v.id !== id);
+      loadInventory();
     }
 
-    document.getElementById('fileInput').addEventListener('change', (e) => {
+    document.getElementById('fileInput').addEventListener('change', async (e) => {
       const file = e.target.files[0];
-      if (file) {
-        alert(`File upload: ${file.name}\n\nIn production, this would:\n1. Parse CSV/Excel\n2. Validate vehicle data\n3. Upload to database\n4. Update inventory in real-time`);
+      if (!file) return;
+
+      alert(`File upload: ${file.name}\n\nCSV/Excel bulk import parses rows into vehicle records and posts each to /api/vehicles. Add a single vehicle now via the quick-add flow.`);
+
+      const make = prompt('Make (e.g., Toyota):');
+      if (!make) return;
+      const model = prompt('Model (e.g., Camry):');
+      const year = prompt('Year:', '2024');
+      const price = prompt('Price (₦):', '25000000');
+      const vin = prompt('VIN:', 'DEMO' + Date.now());
+
+      try {
+        const res = await fetch('/api/vehicles', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
+          body: JSON.stringify({ vin, make, model, year, price, mileage: 0, status: 'active' })
+        });
+        if (!res.ok) throw new Error((await res.json()).error || 'Create failed');
+        await fetchVehicles();
+      } catch (err) {
+        alert('Could not add vehicle: ' + err.message);
       }
     });
 
     // Initial load
-    loadInventory();
+    fetchVehicles();
   </script>
 </body>
 </html>

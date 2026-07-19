@@ -36,46 +36,88 @@
     <h1>Appointments & Calendar</h1>
     <p class="subtitle">Manage test drives, consultations, and follow-ups</p>
     <div class="stats">
-      <div class="stat-card"><div class="stat-label">This Week</div><div class="stat-value">8</div></div>
-      <div class="stat-card"><div class="stat-label">Pending</div><div class="stat-value">3</div></div>
-      <div class="stat-card"><div class="stat-label">Completed</div><div class="stat-value">12</div></div>
-      <div class="stat-card"><div class="stat-label">No-Shows</div><div class="stat-value">1</div></div>
+      <div class="stat-card"><div class="stat-label">Total Scheduled</div><div class="stat-value" id="statScheduled">-</div></div>
+      <div class="stat-card"><div class="stat-label">Upcoming</div><div class="stat-value" id="statUpcoming">-</div></div>
+      <div class="stat-card"><div class="stat-label">Completed</div><div class="stat-value" id="statCompleted">-</div></div>
+      <div class="stat-card"><div class="stat-label">No-Shows</div><div class="stat-value" id="statNoShow">-</div></div>
     </div>
     <div class="timeline">
-      <h2>Today's Schedule (July 19)</h2>
-      <div class="timeline-item">
-        <div class="timeline-time">09:00 AM</div>
-        <div>
-          <div class="event-type test-drive">Test Drive</div>
-          <div style="font-weight: 600; margin-top: 4px;">BMW X7 Test Drive</div>
-          <div style="font-size: 12px; color: oklch(50% 0.01 260); margin-top: 4px;">John Adeleke</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-time">11:30 AM</div>
-        <div>
-          <div class="event-type consultation">Consultation</div>
-          <div style="font-weight: 600; margin-top: 4px;">Trade-in Consultation</div>
-          <div style="font-size: 12px; color: oklch(50% 0.01 260); margin-top: 4px;">Funke Okafor - Mercedes C-Class appraisal</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-time">02:00 PM</div>
-        <div>
-          <div class="event-type test-drive">Test Drive</div>
-          <div style="font-weight: 600; margin-top: 4px;">Mercedes S-Class Demo</div>
-          <div style="font-size: 12px; color: oklch(50% 0.01 260); margin-top: 4px;">Adebayo Patel</div>
-        </div>
-      </div>
-      <div class="timeline-item">
-        <div class="timeline-time">04:00 PM</div>
-        <div>
-          <div class="event-type consultation">Consultation</div>
-          <div style="font-weight: 600; margin-top: 4px;">Follow-up Call</div>
-          <div style="font-size: 12px; color: oklch(50% 0.01 260); margin-top: 4px;">Ọlátúnjì Hassan - Financing options</div>
-        </div>
+      <h2>Scheduled Appointments</h2>
+      <div id="timelineContent">
+        <div style="padding: 20px; color: oklch(50% 0.01 260);">Loading appointments...</div>
       </div>
     </div>
   </div>
+
+  <script>
+    async function fetchAppointments() {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000);
+      try {
+        const res = await fetch('/api/appointments', {
+          signal: controller.signal,
+          headers: { 'Authorization': 'Basic ' + btoa('admin:admin') }
+        });
+        clearTimeout(timeoutId);
+        if (!res.ok) throw new Error('Request failed');
+        const data = await res.json();
+        renderAppointments(data.appointments || []);
+      } catch (err) {
+        console.warn('Falling back to demo appointment data:', err.message);
+        renderAppointments(fallbackAppointments());
+      }
+    }
+
+    function fallbackAppointments() {
+      const today = new Date();
+      return [
+        { id: 'demo-1', dateTime: new Date(today.setHours(9, 0)).toISOString(), type: 'test-drive', status: 'scheduled', lead: { name: 'John Adeleke', carName: 'BMW X7' } },
+        { id: 'demo-2', dateTime: new Date(today.setHours(11, 30)).toISOString(), type: 'consultation', status: 'scheduled', lead: { name: 'Funke Okafor', carName: 'Mercedes C-Class appraisal' } },
+        { id: 'demo-3', dateTime: new Date(today.setHours(14, 0)).toISOString(), type: 'test-drive', status: 'scheduled', lead: { name: 'Adebayo Patel', carName: 'Mercedes S-Class' } }
+      ];
+    }
+
+    function renderAppointments(appointments) {
+      const scheduled = appointments.filter(a => a.status === 'scheduled').length;
+      const completed = appointments.filter(a => a.status === 'completed').length;
+      const noShow = appointments.filter(a => a.status === 'no_show').length;
+      const now = new Date();
+      const upcoming = appointments.filter(a => a.status === 'scheduled' && new Date(a.dateTime) >= now).length;
+
+      document.getElementById('statScheduled').textContent = appointments.length;
+      document.getElementById('statUpcoming').textContent = upcoming;
+      document.getElementById('statCompleted').textContent = completed;
+      document.getElementById('statNoShow').textContent = noShow;
+
+      const content = document.getElementById('timelineContent');
+      if (appointments.length === 0) {
+        content.innerHTML = '<div style="padding: 20px; text-align: center; color: oklch(50% 0.01 260);">No appointments scheduled</div>';
+        return;
+      }
+
+      const sorted = [...appointments].sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
+
+      content.innerHTML = sorted.map(a => {
+        const dt = new Date(a.dateTime);
+        const timeStr = dt.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+        const typeClass = a.type === 'test-drive' ? 'test-drive' : 'consultation';
+        const customerName = a.lead ? a.lead.name : 'Unknown';
+        const vehicleName = a.vehicle ? `${a.vehicle.make} ${a.vehicle.model}` : (a.lead ? a.lead.carName : '');
+
+        return `
+          <div class="timeline-item">
+            <div class="timeline-time">${timeStr}</div>
+            <div>
+              <div class="event-type ${typeClass}">${a.type.replace('-', ' ')}</div>
+              <div style="font-weight: 600; margin-top: 4px;">${vehicleName || a.type}</div>
+              <div style="font-size: 12px; color: oklch(50% 0.01 260); margin-top: 4px;">${customerName} · ${a.status.replace('_', ' ')}</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    fetchAppointments();
+  </script>
 </body>
 </html>
