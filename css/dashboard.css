@@ -50,7 +50,7 @@
 
 .dos-nav { display: flex; flex-direction: column; gap: 2px; }
 
-.dos-navitem {
+.dos-navitem, .dos-nav-item {
   display: block;
   width: 100%;
   text-align: left;
@@ -67,8 +67,8 @@
   transition: background var(--transition-fast), color var(--transition-fast);
 }
 
-.dos-navitem:hover { background: oklch(24% 0.012 260); color: #fff; }
-.dos-navitem.active { background: oklch(30% 0.02 260); color: #fff; }
+.dos-navitem:hover, .dos-nav-item:hover { background: oklch(24% 0.012 260); color: #fff; }
+.dos-navitem.active, .dos-nav-item.active { background: oklch(30% 0.02 260); color: #fff; }
 
 .dos-sidebar-foot {
   margin-top: auto;

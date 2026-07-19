@@ -3,121 +3,138 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Appointments | AutoSuite</title>
+  <title>Appointments | AutoSuite Dealer OS</title>
+  <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
   <style>
-    body { background: oklch(97% 0.005 260); }
-    .container { max-width: 1400px; margin: 0 auto; padding: 32px; }
-    h1 { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; margin-bottom: 8px; color: oklch(20% 0.01 260); }
-    .subtitle { color: oklch(50% 0.01 260); margin-bottom: 32px; font-size: 14px; }
-    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+    .dos-shell { display: grid; grid-template-columns: 236px 1fr; min-height: 100vh; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
     .stat-card { background: #fff; border-radius: 12px; padding: 16px; border: 1px solid oklch(91% 0.005 260); }
-    .stat-label { font-size: 12px; color: oklch(50% 0.01 260); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; }
-    .stat-value { font-size: 24px; font-weight: 700; color: oklch(20% 0.01 260); font-family: 'Space Grotesk', sans-serif; }
-    .calendar-container { display: grid; grid-template-columns: 1fr 380px; gap: 24px; margin-bottom: 32px; }
-    .calendar-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); padding: 24px; }
-    .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
-    .day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 8px; cursor: pointer; font-size: 13px; background: oklch(98% 0.003 260); color: oklch(35% 0.01 260); }
-    .day.active { background: oklch(45% 0.16 260); color: #fff; }
-    .timeline { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); padding: 24px; }
-    .timeline-item { display: flex; gap: 16px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid oklch(95% 0.003 260); }
-    .timeline-time { min-width: 80px; font-size: 13px; font-weight: 600; color: oklch(45% 0.16 260); }
+    .stat-label { font: 500 11px 'IBM Plex Mono', monospace; color: oklch(50% 0.01 260); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; }
+    .stat-value { font: 600 24px 'Space Grotesk', sans-serif; }
+    .timeline { background: #fff; border-radius: 12px; border: 1px solid oklch(91% 0.005 260); padding: 24px; }
+    .timeline-item { display: flex; gap: 16px; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid oklch(95% 0.003 260); }
+    .timeline-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .timeline-time { min-width: 120px; font: 600 13px; color: oklch(45% 0.16 260); }
     .event-type { display: inline-block; padding: 4px 8px; background: oklch(98% 0.003 260); border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
     .event-type.test-drive { background: oklch(85% 0.15 35); color: oklch(30% 0.08 35); }
     .event-type.consultation { background: oklch(85% 0.12 290); color: oklch(30% 0.08 290); }
-    @media (max-width: 1024px) { .calendar-container { grid-template-columns: 1fr; } }
   </style>
 </head>
-<body>
-  <div class="container">
-    <h1>Appointments & Calendar</h1>
-    <p class="subtitle">Manage test drives, consultations, and follow-ups</p>
-    <div class="stats">
-      <div class="stat-card"><div class="stat-label">Total Scheduled</div><div class="stat-value" id="statScheduled">-</div></div>
-      <div class="stat-card"><div class="stat-label">Upcoming</div><div class="stat-value" id="statUpcoming">-</div></div>
-      <div class="stat-card"><div class="stat-label">Completed</div><div class="stat-value" id="statCompleted">-</div></div>
-      <div class="stat-card"><div class="stat-label">No-Shows</div><div class="stat-value" id="statNoShow">-</div></div>
+<body class="dos-body">
+<div class="dos-shell">
+  <aside class="dos-sidebar">
+    <div class="dos-brand" style="display: flex; align-items: center; gap: 9px; padding: 6px 10px 22px;">
+      <div style="width: 22px; height: 22px; border-radius: 6px; background: oklch(55% 0.16 260);"></div>
+      <div style="font: 600 15px 'Space Grotesk', sans-serif; color: #fff;">AutoSuite</div>
     </div>
-    <div class="timeline">
-      <h2>Scheduled Appointments</h2>
-      <div id="timelineContent">
-        <div style="padding: 20px; color: oklch(50% 0.01 260);">Loading appointments...</div>
+    <nav class="dos-nav" aria-label="Dealer OS">
+      <a href="dashboard.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">▦ Overview</a>
+      <a href="crm.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">☎ CRM</a>
+      <a href="inventory.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">▤ Inventory</a>
+      <a href="appointments.html" class="dos-nav-item active" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; background: oklch(30% 0.02 260); color: #fff; text-decoration: none;">◔ Appointments</a>
+      <a href="customers.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">✎ Customers</a>
+      <a href="analytics.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">▲ Analytics</a>
+      <a href="staff-activity.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">◫ Staff Activity</a>
+    </nav>
+    <div style="margin-top: auto; display: flex; flex-direction: column; gap: 2px; padding-top: 14px; border-top: 1px solid oklch(28% 0.01 260);">
+      <a href="settings.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">⚙ Settings</a>
+    </div>
+  </aside>
+  <div style="background: oklch(97.5% 0.004 90);">
+    <div style="display: flex; gap: 16px; padding: 18px 36px; border-bottom: 1px solid oklch(91% 0.005 260); background: #fff;">
+      <h1 style="font: 600 20px 'Space Grotesk', sans-serif; margin: 0;">Appointments</h1>
+    </div>
+    <div style="padding: 28px 36px;">
+      <div class="stats">
+        <div class="stat-card"><div class="stat-label">Total Scheduled</div><div class="stat-value" id="statScheduled">-</div></div>
+        <div class="stat-card"><div class="stat-label">Upcoming</div><div class="stat-value" id="statUpcoming">-</div></div>
+        <div class="stat-card"><div class="stat-label">Completed</div><div class="stat-value" id="statCompleted">-</div></div>
+        <div class="stat-card"><div class="stat-label">No-Shows</div><div class="stat-value" id="statNoShow">-</div></div>
+      </div>
+      <div class="timeline">
+        <div style="font: 600 15px 'Space Grotesk', sans-serif; margin-bottom: 20px;">Scheduled Appointments</div>
+        <div id="timelineContent">
+          <div style="padding: 20px; color: oklch(50% 0.01 260);">Loading appointments...</div>
+        </div>
       </div>
     </div>
   </div>
+</div>
 
-  <script>
-    async function fetchAppointments() {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000);
-      try {
-        const res = await fetch('/api/appointments', {
-          signal: controller.signal,
-          headers: { 'Authorization': 'Basic ' + btoa('admin:admin') }
-        });
-        clearTimeout(timeoutId);
-        if (!res.ok) throw new Error('Request failed');
-        const data = await res.json();
-        renderAppointments(data.appointments || []);
-      } catch (err) {
-        console.warn('Falling back to demo appointment data:', err.message);
-        renderAppointments(fallbackAppointments());
-      }
+<script>
+  async function fetchAppointments() {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+    try {
+      const res = await fetch('/api/appointments', {
+        signal: controller.signal,
+        headers: { 'Authorization': 'Basic ' + btoa('admin:admin') }
+      });
+      clearTimeout(timeoutId);
+      if (!res.ok) throw new Error('Request failed');
+      const data = await res.json();
+      renderAppointments(data.appointments || []);
+    } catch (err) {
+      console.warn('Falling back to demo appointment data:', err.message);
+      renderAppointments(fallbackAppointments());
+    }
+  }
+
+  function fallbackAppointments() {
+    const today = new Date();
+    return [
+      { id: 'demo-1', dateTime: new Date(today.setHours(9, 0)).toISOString(), type: 'test-drive', status: 'scheduled', lead: { name: 'John Adeleke', carName: 'BMW X7' } },
+      { id: 'demo-2', dateTime: new Date(today.setHours(11, 30)).toISOString(), type: 'consultation', status: 'scheduled', lead: { name: 'Funke Okafor', carName: 'Mercedes C-Class appraisal' } },
+      { id: 'demo-3', dateTime: new Date(today.setHours(14, 0)).toISOString(), type: 'test-drive', status: 'scheduled', lead: { name: 'Adebayo Patel', carName: 'Mercedes S-Class' } }
+    ];
+  }
+
+  function renderAppointments(appointments) {
+    const scheduled = appointments.filter(a => a.status === 'scheduled').length;
+    const completed = appointments.filter(a => a.status === 'completed').length;
+    const noShow = appointments.filter(a => a.status === 'no_show').length;
+    const now = new Date();
+    const upcoming = appointments.filter(a => a.status === 'scheduled' && new Date(a.dateTime) >= now).length;
+
+    document.getElementById('statScheduled').textContent = appointments.length;
+    document.getElementById('statUpcoming').textContent = upcoming;
+    document.getElementById('statCompleted').textContent = completed;
+    document.getElementById('statNoShow').textContent = noShow;
+
+    const content = document.getElementById('timelineContent');
+    if (appointments.length === 0) {
+      content.innerHTML = '<div style="padding: 20px; text-align: center; color: oklch(50% 0.01 260);">No appointments scheduled</div>';
+      return;
     }
 
-    function fallbackAppointments() {
-      const today = new Date();
-      return [
-        { id: 'demo-1', dateTime: new Date(today.setHours(9, 0)).toISOString(), type: 'test-drive', status: 'scheduled', lead: { name: 'John Adeleke', carName: 'BMW X7' } },
-        { id: 'demo-2', dateTime: new Date(today.setHours(11, 30)).toISOString(), type: 'consultation', status: 'scheduled', lead: { name: 'Funke Okafor', carName: 'Mercedes C-Class appraisal' } },
-        { id: 'demo-3', dateTime: new Date(today.setHours(14, 0)).toISOString(), type: 'test-drive', status: 'scheduled', lead: { name: 'Adebayo Patel', carName: 'Mercedes S-Class' } }
-      ];
-    }
+    const sorted = [...appointments].sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
 
-    function renderAppointments(appointments) {
-      const scheduled = appointments.filter(a => a.status === 'scheduled').length;
-      const completed = appointments.filter(a => a.status === 'completed').length;
-      const noShow = appointments.filter(a => a.status === 'no_show').length;
-      const now = new Date();
-      const upcoming = appointments.filter(a => a.status === 'scheduled' && new Date(a.dateTime) >= now).length;
+    content.innerHTML = sorted.map(a => {
+      const dt = new Date(a.dateTime);
+      const timeStr = dt.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+      const typeClass = a.type === 'test-drive' ? 'test-drive' : 'consultation';
+      const customerName = a.lead ? a.lead.name : 'Unknown';
+      const vehicleName = a.vehicle ? `${a.vehicle.make} ${a.vehicle.model}` : (a.lead ? a.lead.carName : '');
 
-      document.getElementById('statScheduled').textContent = appointments.length;
-      document.getElementById('statUpcoming').textContent = upcoming;
-      document.getElementById('statCompleted').textContent = completed;
-      document.getElementById('statNoShow').textContent = noShow;
-
-      const content = document.getElementById('timelineContent');
-      if (appointments.length === 0) {
-        content.innerHTML = '<div style="padding: 20px; text-align: center; color: oklch(50% 0.01 260);">No appointments scheduled</div>';
-        return;
-      }
-
-      const sorted = [...appointments].sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
-
-      content.innerHTML = sorted.map(a => {
-        const dt = new Date(a.dateTime);
-        const timeStr = dt.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
-        const typeClass = a.type === 'test-drive' ? 'test-drive' : 'consultation';
-        const customerName = a.lead ? a.lead.name : 'Unknown';
-        const vehicleName = a.vehicle ? `${a.vehicle.make} ${a.vehicle.model}` : (a.lead ? a.lead.carName : '');
-
-        return `
-          <div class="timeline-item">
-            <div class="timeline-time">${timeStr}</div>
-            <div>
-              <div class="event-type ${typeClass}">${a.type.replace('-', ' ')}</div>
-              <div style="font-weight: 600; margin-top: 4px;">${vehicleName || a.type}</div>
-              <div style="font-size: 12px; color: oklch(50% 0.01 260); margin-top: 4px;">${customerName} · ${a.status.replace('_', ' ')}</div>
-            </div>
+      return `
+        <div class="timeline-item">
+          <div class="timeline-time">${timeStr}</div>
+          <div>
+            <div class="event-type ${typeClass}">${a.type.replace('-', ' ')}</div>
+            <div style="font-weight: 600; margin-top: 4px;">${vehicleName || a.type}</div>
+            <div style="font-size: 12px; color: oklch(50% 0.01 260); margin-top: 4px;">${customerName} · ${a.status.replace('_', ' ')}</div>
           </div>
-        `;
-      }).join('');
-    }
+        </div>
+      `;
+    }).join('');
+  }
 
-    fetchAppointments();
-  </script>
+  fetchAppointments();
+</script>
 </body>
 </html>

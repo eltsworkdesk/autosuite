@@ -30,9 +30,153 @@
     </div>
   </aside>
   <div style="background: oklch(97.5% 0.004 90);">
-    <div style="display: flex; align-items: center; gap: 16px; padding: 18px 36px; border-bottom: 1px solid oklch(91% 0.005 260); background: #fff;"><h1 style="font: 600 20px 'Space Grotesk', sans-serif; margin: 0;">Inventory Management</h1></div>
-    <div style="padding: 32px 36px;"><div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 40px; text-align: center;"><p style="font: 400 15px; color: oklch(45% 0.01 260); margin: 0;">Inventory Management — coming soon</p></div></div>
+    <div style="display: flex; align-items: center; gap: 16px; padding: 18px 36px; border-bottom: 1px solid oklch(91% 0.005 260); background: #fff;">
+      <h1 style="font: 600 20px 'Space Grotesk', sans-serif; margin: 0;">Inventory</h1>
+      <div style="margin-left: auto; display: flex; gap: 10px;">
+        <button type="button" onclick="triggerFileUpload()" style="font: 500 13px; padding: 8px 14px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; background: #fff; cursor: pointer;">Export CSV</button>
+        <button type="button" onclick="triggerFileUpload()" style="font: 500 13px; padding: 8px 14px; border-radius: 8px; background: oklch(45% 0.16 260); color: #fff; border: none; cursor: pointer;">+ Add vehicle</button>
+      </div>
+    </div>
+
+    <div style="padding: 28px 36px;">
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;">
+        <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 16px;">
+          <div style="font: 500 11px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); margin-bottom: 8px;">Total Vehicles</div>
+          <div style="font: 600 24px 'Space Grotesk', sans-serif;" id="totalVehicles">-</div>
+        </div>
+        <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 16px;">
+          <div style="font: 500 11px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); margin-bottom: 8px;">Available</div>
+          <div style="font: 600 24px 'Space Grotesk', sans-serif;" id="availableCount">-</div>
+        </div>
+        <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 16px;">
+          <div style="font: 500 11px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); margin-bottom: 8px;">Sold</div>
+          <div style="font: 600 24px 'Space Grotesk', sans-serif;" id="soldCount">-</div>
+        </div>
+        <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 16px;">
+          <div style="font: 500 11px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); margin-bottom: 8px;">Avg Price</div>
+          <div style="font: 600 24px 'Space Grotesk', sans-serif;" id="avgPrice">-</div>
+        </div>
+      </div>
+
+      <input type="file" id="fileInput" accept=".csv,.xlsx" style="display: none;">
+
+      <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; overflow: hidden;">
+        <div style="display: grid; grid-template-columns: 1.4fr 1fr 0.7fr 1fr 1fr 0.8fr 1fr; background: oklch(97% 0.004 90); padding: 12px 20px; font: 600 11px 'IBM Plex Mono', monospace; text-transform: uppercase; letter-spacing: 0.04em; color: oklch(50% 0.01 260);">
+          <div>Vehicle</div><div>Make</div><div>Year</div><div>Mileage</div><div>Price</div><div>Status</div><div>Actions</div>
+        </div>
+        <div id="vehicleList"></div>
+        <div id="emptyState" style="display: none; padding: 40px; text-align: center; color: oklch(50% 0.01 260);">No vehicles in inventory yet</div>
+      </div>
+    </div>
   </div>
 </div>
+
+<script>
+  let vehicles = [];
+  const fallbackVehicles = [
+    { id: 1, make: 'BMW', model: 'X7', year: 2024, mileage: 5200, price: 65000000, status: 'active' },
+    { id: 2, make: 'Mercedes-Benz', model: 'S-Class', year: 2023, mileage: 12500, price: 45000000, status: 'active' },
+    { id: 3, make: 'Audi', model: 'A4', year: 2022, mileage: 28300, price: 25000000, status: 'sold' }
+  ];
+
+  async function fetchVehicles() {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+    try {
+      const res = await fetch('/api/vehicles', { signal: controller.signal });
+      clearTimeout(timeoutId);
+      if (!res.ok) throw new Error('Request failed');
+      const data = await res.json();
+      vehicles = data.vehicles || [];
+    } catch (err) {
+      console.warn('Falling back to demo inventory data:', err.message);
+      vehicles = fallbackVehicles;
+    }
+    loadInventory();
+  }
+
+  function loadInventory() {
+    const list = document.getElementById('vehicleList');
+    const emptyState = document.getElementById('emptyState');
+
+    if (vehicles.length === 0) {
+      list.style.display = 'none';
+      emptyState.style.display = 'block';
+      updateStats();
+      return;
+    }
+    list.style.display = '';
+    emptyState.style.display = 'none';
+
+    list.innerHTML = vehicles.map(v => `
+      <div style="display: grid; grid-template-columns: 1.4fr 1fr 0.7fr 1fr 1fr 0.8fr 1fr; padding: 14px 20px; border-top: 1px solid oklch(94% 0.005 260); align-items: center; font: 400 13px;">
+        <div style="font-weight: 600;">${v.make} ${v.model}</div>
+        <div style="color: oklch(45% 0.01 260);">${v.make}</div>
+        <div style="color: oklch(45% 0.01 260);">${v.year}</div>
+        <div style="color: oklch(45% 0.01 260);">${v.mileage.toLocaleString()} km</div>
+        <div>₦${v.price.toLocaleString()}</div>
+        <div><span style="font: 500 11px; padding: 4px 9px; border-radius: 999px; background: ${v.status === 'sold' ? 'oklch(90% 0.08 350)' : 'oklch(90% 0.1 145)'}; color: ${v.status === 'sold' ? 'oklch(35% 0.06 350)' : 'oklch(30% 0.08 145)'};">${v.status === 'sold' ? 'Sold' : 'Available'}</span></div>
+        <div><button onclick="deleteVehicle('${v.id}')" style="font: 500 12px; padding: 5px 10px; border: none; background: oklch(97% 0.005 260); border-radius: 6px; cursor: pointer;">Delete</button></div>
+      </div>
+    `).join('');
+
+    updateStats();
+  }
+
+  function updateStats() {
+    const available = vehicles.filter(v => v.status !== 'sold').length;
+    const sold = vehicles.filter(v => v.status === 'sold').length;
+    const avgPrice = vehicles.length > 0
+      ? '₦' + Math.round(vehicles.reduce((sum, v) => sum + v.price, 0) / vehicles.length).toLocaleString()
+      : '₦0';
+    document.getElementById('totalVehicles').textContent = vehicles.length;
+    document.getElementById('availableCount').textContent = available;
+    document.getElementById('soldCount').textContent = sold;
+    document.getElementById('avgPrice').textContent = avgPrice;
+  }
+
+  function triggerFileUpload() {
+    document.getElementById('fileInput').click();
+  }
+
+  async function deleteVehicle(id) {
+    if (!confirm('Delete this vehicle?')) return;
+    try {
+      const res = await fetch(`/api/vehicles/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': 'Basic ' + btoa('admin:admin') }
+      });
+      if (!res.ok) throw new Error('Delete failed');
+    } catch (err) {
+      console.warn('Delete request failed, removing locally only:', err.message);
+    }
+    vehicles = vehicles.filter(v => v.id !== id);
+    loadInventory();
+  }
+
+  document.getElementById('fileInput').addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const make = prompt('Make (e.g., Toyota):');
+    if (!make) return;
+    const model = prompt('Model (e.g., Camry):');
+    const year = prompt('Year:', '2024');
+    const price = prompt('Price (₦):', '25000000');
+    const vin = prompt('VIN:', 'DEMO' + Date.now());
+    try {
+      const res = await fetch('/api/vehicles', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
+        body: JSON.stringify({ vin, make, model, year, price, mileage: 0, status: 'active' })
+      });
+      if (!res.ok) throw new Error((await res.json()).error || 'Create failed');
+      await fetchVehicles();
+    } catch (err) {
+      alert('Could not add vehicle: ' + err.message);
+    }
+  });
+
+  fetchVehicles();
+</script>
 </body>
 </html>

@@ -239,7 +239,7 @@
               <div draggable="true" class="kanban-card" data-lead-id="${lead.id}" onclick="selectLead('${lead.id}')" style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 14px; cursor: grab; user-select: none; transition: all 0.2s ease; touch-action: none;">
                 <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                   <div style="font: 600 13px;">${lead.name}</div>
-                  <div style="width: 6px; height: 6px; border-radius: 50%; background: ${lead.priority === 'High' ? 'oklch(60% 0.14 55)' : 'oklch(70% 0.01 260)'];"></div>
+                  <div style="width: 6px; height: 6px; border-radius: 50%; background: ${lead.priority === 'High' ? 'oklch(60% 0.14 55)' : 'oklch(70% 0.01 260)'};"></div>
                 </div>
                 <div style="font: 400 12px; color: oklch(45% 0.01 260); margin-bottom: 10px;">${lead.carName}</div>
                 <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -321,7 +321,7 @@
         <div style="color: oklch(45% 0.01 260);">${lead.carName}</div>
         <div style="color: oklch(45% 0.01 260);">${lead.source}</div>
         <div><span style="font: 500 11px; padding: 4px 9px; border-radius: 999px; background: oklch(94% 0.03 260); color: oklch(45% 0.16 260);">${lead.status || 'New'}</span></div>
-        <div style="color: ${lead.priority === 'High' ? 'oklch(60% 0.14 55)' : 'oklch(70% 0.01 260)'];">${lead.priority || 'Normal'}</div>
+        <div style="color: ${lead.priority === 'High' ? 'oklch(60% 0.14 55)' : 'oklch(70% 0.01 260)'};">${lead.priority || 'Normal'}</div>
         <div style="display: flex; align-items: center; gap: 8px;"><div style="width: 18px; height: 18px; border-radius: 50%; background: oklch(85% 0.05 260);"></div>Derek O.</div>
       </div>
     `).join('');

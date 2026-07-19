@@ -3,146 +3,164 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Analytics | AutoSuite</title>
+  <title>Analytics | AutoSuite Dealer OS</title>
+  <meta name="robots" content="noindex, nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
   <style>
-    body { background: oklch(97% 0.005 260); margin: 0; padding: 32px; }
-    .container { max-width: 1400px; margin: 0 auto; }
-    h1 { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; margin: 0 0 8px; color: oklch(20% 0.01 260); }
-    .subtitle { color: oklch(50% 0.01 260); margin: 0 0 32px; font-size: 14px; }
-    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+    .dos-shell { display: grid; grid-template-columns: 236px 1fr; min-height: 100vh; }
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
     .metric-card { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid oklch(91% 0.005 260); }
-    .metric-label { font-size: 12px; color: oklch(50% 0.01 260); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 12px; }
-    .metric-value { font-size: 32px; font-weight: 700; color: oklch(20% 0.01 260); font-family: 'Space Grotesk', sans-serif; margin-bottom: 4px; }
-    .metric-change { font-size: 12px; color: oklch(30% 0.1 142); }
-    .metric-change.negative { color: oklch(40% 0.15 25); }
+    .metric-label { font: 500 11px 'IBM Plex Mono', monospace; color: oklch(50% 0.01 260); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 12px; }
+    .metric-value { font: 600 28px 'Space Grotesk', sans-serif; margin-bottom: 4px; }
+    .metric-change { font-size: 12px; color: oklch(50% 0.01 260); }
     .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
-    .chart-card { background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); }
-    .chart-title { font-size: 16px; font-weight: 600; color: oklch(20% 0.01 260); margin-bottom: 20px; }
+    .chart-card { background: #fff; border-radius: 12px; padding: 24px; border: 1px solid oklch(91% 0.005 260); }
+    .chart-title { font: 600 15px 'Space Grotesk', sans-serif; margin-bottom: 20px; }
     .chart-bar { display: flex; align-items: center; margin-bottom: 16px; gap: 12px; }
-    .chart-label { font-size: 12px; color: oklch(50% 0.01 260); min-width: 80px; }
-    .chart-fill { background: linear-gradient(90deg, oklch(45% 0.16 260), oklch(50% 0.18 270)); height: 24px; border-radius: 4px; flex: 1; }
-    .chart-value { font-size: 12px; font-weight: 600; color: oklch(35% 0.01 260); min-width: 50px; text-align: right; }
+    .chart-label { font-size: 12px; color: oklch(50% 0.01 260); min-width: 100px; }
+    .chart-fill { background: linear-gradient(90deg, oklch(45% 0.16 260), oklch(50% 0.18 270)); height: 22px; border-radius: 4px; flex: 1; }
+    .chart-value { font-size: 12px; font-weight: 600; color: oklch(35% 0.01 260); min-width: 30px; text-align: right; }
     .conversion-funnel { display: flex; gap: 8px; }
     .funnel-step { background: oklch(45% 0.16 260); color: #fff; padding: 12px 16px; border-radius: 6px; flex: 1; text-align: center; font-size: 12px; font-weight: 600; }
-    @media (max-width: 1024px) { .metrics { grid-template-columns: repeat(2, 1fr); } .charts { grid-template-columns: 1fr; } }
   </style>
 </head>
-<body>
-  <div class="container">
-    <h1>Analytics Dashboard</h1>
-    <p class="subtitle">Sales performance and customer insights</p>
-    
-    <div class="metrics">
-      <div class="metric-card">
-        <div class="metric-label">Total Sales (MTD)</div>
-        <div class="metric-value" id="metricTotalSales">-</div>
-        <div class="metric-change">From closed deals</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">Conversion Rate</div>
-        <div class="metric-value" id="metricConversion">-</div>
-        <div class="metric-change">Leads to sold</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">Avg Sale Price</div>
-        <div class="metric-value" id="metricAvgPrice">-</div>
-        <div class="metric-change">Per closed deal</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-label">Appointments</div>
-        <div class="metric-value" id="metricAppointments">-</div>
-        <div class="metric-change">Scheduled to date</div>
-      </div>
+<body class="dos-body">
+<div class="dos-shell">
+  <aside class="dos-sidebar">
+    <div class="dos-brand" style="display: flex; align-items: center; gap: 9px; padding: 6px 10px 22px;">
+      <div style="width: 22px; height: 22px; border-radius: 6px; background: oklch(55% 0.16 260);"></div>
+      <div style="font: 600 15px 'Space Grotesk', sans-serif; color: #fff;">AutoSuite</div>
     </div>
-
-    <div class="charts">
-      <div class="chart-card">
-        <div class="chart-title">Inventory by Vehicle Type</div>
-        <div id="vehicleTypeChart"></div>
-      </div>
-
-      <div class="chart-card">
-        <div class="chart-title">Lead Source Distribution</div>
-        <div id="leadSourceChart"></div>
-      </div>
+    <nav class="dos-nav" aria-label="Dealer OS">
+      <a href="dashboard.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">▦ Overview</a>
+      <a href="crm.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">☎ CRM</a>
+      <a href="inventory.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">▤ Inventory</a>
+      <a href="appointments.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">◔ Appointments</a>
+      <a href="customers.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">✎ Customers</a>
+      <a href="analytics.html" class="dos-nav-item active" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; background: oklch(30% 0.02 260); color: #fff; text-decoration: none;">▲ Analytics</a>
+      <a href="staff-activity.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">◫ Staff Activity</a>
+    </nav>
+    <div style="margin-top: auto; display: flex; flex-direction: column; gap: 2px; padding-top: 14px; border-top: 1px solid oklch(28% 0.01 260);">
+      <a href="settings.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">⚙ Settings</a>
     </div>
+  </aside>
+  <div style="background: oklch(97.5% 0.004 90);">
+    <div style="display: flex; gap: 16px; padding: 18px 36px; border-bottom: 1px solid oklch(91% 0.005 260); background: #fff;">
+      <h1 style="font: 600 20px 'Space Grotesk', sans-serif; margin: 0;">Analytics</h1>
+    </div>
+    <div style="padding: 28px 36px;">
+      <div class="metrics">
+        <div class="metric-card">
+          <div class="metric-label">Total Sales (MTD)</div>
+          <div class="metric-value" id="metricTotalSales">-</div>
+          <div class="metric-change">From closed deals</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Conversion Rate</div>
+          <div class="metric-value" id="metricConversion">-</div>
+          <div class="metric-change">Leads to sold</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Avg Sale Price</div>
+          <div class="metric-value" id="metricAvgPrice">-</div>
+          <div class="metric-change">Per closed deal</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-label">Appointments</div>
+          <div class="metric-value" id="metricAppointments">-</div>
+          <div class="metric-change">Scheduled to date</div>
+        </div>
+      </div>
 
-    <div class="chart-card">
-      <div class="chart-title">Lead Conversion Funnel</div>
-      <div class="conversion-funnel" id="funnelChart"></div>
+      <div class="charts">
+        <div class="chart-card">
+          <div class="chart-title">Inventory by Vehicle Type</div>
+          <div id="vehicleTypeChart"></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">Lead Source Distribution</div>
+          <div id="leadSourceChart"></div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">Lead Conversion Funnel</div>
+        <div class="conversion-funnel" id="funnelChart"></div>
+      </div>
     </div>
   </div>
+</div>
 
-  <script>
-    function fmtNaira(n) {
-      return '₦' + Math.round(n).toLocaleString('en-NG');
+<script>
+  function fmtNaira(n) {
+    return '₦' + Math.round(n).toLocaleString('en-NG');
+  }
+
+  function renderBarChart(containerId, dataObj) {
+    const container = document.getElementById(containerId);
+    const entries = Object.entries(dataObj);
+    if (entries.length === 0) {
+      container.innerHTML = '<div style="color: oklch(50% 0.01 260); font-size: 13px;">No data yet</div>';
+      return;
     }
+    const max = Math.max(...entries.map(([, v]) => v));
+    container.innerHTML = entries.map(([label, value]) => `
+      <div class="chart-bar">
+        <div class="chart-label">${label}</div>
+        <div class="chart-fill" style="width: ${Math.max((value / max) * 100, 8)}%;"></div>
+        <div class="chart-value">${value}</div>
+      </div>
+    `).join('');
+  }
 
-    function renderBarChart(containerId, dataObj) {
-      const container = document.getElementById(containerId);
-      const entries = Object.entries(dataObj);
-      if (entries.length === 0) {
-        container.innerHTML = '<div style="color: oklch(50% 0.01 260); font-size: 13px;">No data yet</div>';
-        return;
-      }
-      const max = Math.max(...entries.map(([, v]) => v));
-      container.innerHTML = entries.map(([label, value]) => `
-        <div class="chart-bar">
-          <div class="chart-label">${label}</div>
-          <div class="chart-fill" style="width: ${Math.max((value / max) * 100, 8)}%;"></div>
-          <div class="chart-value">${value}</div>
-        </div>
-      `).join('');
+  async function fetchAnalytics() {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+    try {
+      const res = await fetch('/api/analytics', {
+        signal: controller.signal,
+        headers: { 'Authorization': 'Basic ' + btoa('admin:admin') }
+      });
+      clearTimeout(timeoutId);
+      if (!res.ok) throw new Error('Request failed');
+      const data = await res.json();
+      render(data);
+    } catch (err) {
+      console.warn('Analytics API unavailable:', err.message);
+      document.getElementById('metricTotalSales').textContent = '₦0';
+      document.getElementById('metricConversion').textContent = '0%';
+      document.getElementById('metricAvgPrice').textContent = '₦0';
+      document.getElementById('metricAppointments').textContent = '0';
     }
+  }
 
-    async function fetchAnalytics() {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 5000);
-      try {
-        const res = await fetch('/api/analytics', {
-          signal: controller.signal,
-          headers: { 'Authorization': 'Basic ' + btoa('admin:admin') }
-        });
-        clearTimeout(timeoutId);
-        if (!res.ok) throw new Error('Request failed');
-        const data = await res.json();
-        render(data);
-      } catch (err) {
-        console.warn('Analytics API unavailable:', err.message);
-        document.getElementById('metricTotalSales').textContent = '₦0';
-        document.getElementById('metricConversion').textContent = '0%';
-        document.getElementById('metricAvgPrice').textContent = '₦0';
-        document.getElementById('metricAppointments').textContent = '0';
-      }
-    }
+  function render(data) {
+    document.getElementById('metricTotalSales').textContent = fmtNaira(data.totalSales);
+    document.getElementById('metricConversion').textContent = data.conversionRate + '%';
+    document.getElementById('metricAvgPrice').textContent = fmtNaira(data.avgSalePrice);
+    document.getElementById('metricAppointments').textContent = data.appointmentsThisWeek;
 
-    function render(data) {
-      document.getElementById('metricTotalSales').textContent = fmtNaira(data.totalSales);
-      document.getElementById('metricConversion').textContent = data.conversionRate + '%';
-      document.getElementById('metricAvgPrice').textContent = fmtNaira(data.avgSalePrice);
-      document.getElementById('metricAppointments').textContent = data.appointmentsThisWeek;
+    renderBarChart('vehicleTypeChart', data.vehiclesByType || {});
+    renderBarChart('leadSourceChart', data.leadSources || {});
 
-      renderBarChart('vehicleTypeChart', data.vehiclesByType || {});
-      renderBarChart('leadSourceChart', data.leadSources || {});
+    const funnel = data.funnel || {};
+    const steps = [
+      ['Leads', funnel.leads],
+      ['Contacted', funnel.contacted],
+      ['Qualified', funnel.qualified],
+      ['Test Drive', funnel.testDriveBooked],
+      ['Sold', funnel.sold]
+    ];
+    document.getElementById('funnelChart').innerHTML = steps.map(([label, value]) =>
+      `<div class="funnel-step">${label}<br>${value ?? 0}</div>`
+    ).join('');
+  }
 
-      const funnel = data.funnel || {};
-      const steps = [
-        ['Leads', funnel.leads],
-        ['Contacted', funnel.contacted],
-        ['Qualified', funnel.qualified],
-        ['Test Drive', funnel.testDriveBooked],
-        ['Sold', funnel.sold]
-      ];
-      document.getElementById('funnelChart').innerHTML = steps.map(([label, value]) =>
-        `<div class="funnel-step">${label}<br>${value ?? 0}</div>`
-      ).join('');
-    }
-
-    fetchAnalytics();
-  </script>
+  fetchAnalytics();
+</script>
 </body>
 </html>
