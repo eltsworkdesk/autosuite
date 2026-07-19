@@ -194,9 +194,19 @@
 
   // Render based on current view
   function render() {
-    if (currentView === 'board') renderBoard();
-    else if (currentView === 'table') renderTable();
-    else if (currentView === 'detail') renderDetail();
+    console.log('render() called, currentView=' + currentView);
+    if (currentView === 'board') {
+      console.log('Calling renderBoard');
+      renderBoard();
+    }
+    else if (currentView === 'table') {
+      console.log('Calling renderTable');
+      renderTable();
+    }
+    else if (currentView === 'detail') {
+      console.log('Calling renderDetail');
+      renderDetail();
+    }
   }
 
   // Render Kanban board with drag-and-drop
