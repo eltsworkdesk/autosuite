@@ -201,12 +201,21 @@
 
   // Render Kanban board with drag-and-drop
   function renderBoard() {
+    console.log('renderBoard called, leads=' + leads.length + ', STAGES=' + STAGES.length);
     const board = document.getElementById('kanbanBoard');
-    board.innerHTML = STAGES.map(stage => {
+    if (!board) {
+      console.error('kanbanBoard element not found');
+      return;
+    }
+
+    const html = STAGES.map(stage => {
       const stageLeads = leads.filter(lead => {
         const status = lead.status || 'NEW';
-        return status.toUpperCase() === stage.dbName;
+        const match = status.toUpperCase() === stage.dbName;
+        if (!match) console.log('  ' + lead.name + ': ' + status.toUpperCase() + ' != ' + stage.dbName);
+        return match;
       });
+      console.log('Stage ' + stage.name + ': ' + stageLeads.length + ' leads');
 
       return `
         <div style="width: 230px; flex: none;">
@@ -233,6 +242,10 @@
         </div>
       `;
     }).join('');
+
+    console.log('Setting board innerHTML, length=' + html.length);
+    board.innerHTML = html;
+    console.log('Board rendered, element count=' + board.children.length);
 
     // Wire up drag-and-drop
     setTimeout(() => {
