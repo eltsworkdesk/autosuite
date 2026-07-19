@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trade-in Estimator | AutoSuite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body { background: linear-gradient(135deg, oklch(97% 0.005 260) 0%, oklch(95% 0.008 300) 100%); min-height: 100vh; margin: 0; }
+    .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+    .card { background: #fff; border-radius: 16px; padding: 40px; box-shadow: 0 10px 40px -12px rgba(0, 0, 0, 0.15); }
+    h1 { font-family: 'Space Grotesk', sans-serif; font-size: 32px; font-weight: 700; margin: 0 0 30px; color: oklch(20% 0.01 260); }
+    .subtitle { color: oklch(50% 0.01 260); margin-bottom: 30px; font-size: 14px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 30px; }
+    label { font-size: 13px; font-weight: 600; color: oklch(35% 0.01 260); text-transform: uppercase; letter-spacing: 0.04em; display: block; margin-bottom: 8px; }
+    input, select { width: 100%; padding: 12px; border: 1px solid oklch(91% 0.005 260); border-radius: 8px; font-size: 13px; font-family: inherit; }
+    input:focus, select:focus { outline: none; border-color: oklch(45% 0.16 260); box-shadow: 0 0 0 3px oklch(45% 0.16 260 / 0.1); }
+    .form-full { grid-column: 1 / -1; }
+    .estimate-section { background: oklch(98% 0.003 260); border-radius: 12px; padding: 24px; margin-bottom: 30px; border: 1px solid oklch(91% 0.005 260); }
+    .estimate-title { font-size: 12px; font-weight: 600; text-transform: uppercase; color: oklch(50% 0.01 260); letter-spacing: 0.04em; margin-bottom: 12px; }
+    .estimate-value { font-size: 32px; font-weight: 700; color: oklch(45% 0.16 260); font-family: 'Space Grotesk', sans-serif; }
+    .estimate-label { font-size: 12px; color: oklch(50% 0.01 260); margin-top: 4px; }
+    .condition-slider { width: 100%; }
+    .condition-labels { display: flex; justify-content: space-between; font-size: 11px; color: oklch(50% 0.01 260); margin-top: 4px; }
+    .button { width: 100%; padding: 14px; background: oklch(45% 0.16 260); color: #fff; border: none; border-radius: 9px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 150ms ease; }
+    .button:hover { background: oklch(40% 0.16 260); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(74, 95, 255, 0.3); }
+    .factors { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+    .factor { font-size: 12px; padding: 12px; background: #fff; border-radius: 8px; border: 1px solid oklch(91% 0.005 260); }
+    .factor-label { color: oklch(50% 0.01 260); margin-bottom: 4px; }
+    .factor-value { font-weight: 600; color: oklch(20% 0.01 260); }
+    @media (max-width: 768px) { .form-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Trade-in Estimator</h1>
+      <p class="subtitle">Get an instant valuation for your current vehicle</p>
+
+      <div class="form-grid">
+        <div>
+          <label>Vehicle Year</label>
+          <select id="year" onchange="calculateEstimate()">
+            <option value="2024">2024</option>
+            <option value="2023">2023</option>
+            <option value="2022">2022</option>
+            <option value="2021">2021</option>
+            <option value="2020">2020</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Make</label>
+          <select id="make" onchange="calculateEstimate()">
+            <option value="BMW">BMW</option>
+            <option value="Mercedes">Mercedes-Benz</option>
+            <option value="Audi">Audi</option>
+            <option value="Lexus">Lexus</option>
+            <option value="Toyota">Toyota</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Model</label>
+          <input type="text" id="model" placeholder="e.g., X7, S-Class" value="X7" oninput="calculateEstimate()">
+        </div>
+
+        <div>
+          <label>Mileage (km)</label>
+          <input type="number" id="mileage" placeholder="e.g., 50000" value="30000" oninput="calculateEstimate()">
+        </div>
+
+        <div class="form-full">
+          <label>Condition</label>
+          <input type="range" id="condition" min="1" max="5" step="1" value="4" class="condition-slider" oninput="calculateEstimate()">
+          <div class="condition-labels">
+            <span>Poor</span>
+            <span>Fair</span>
+            <span>Good</span>
+            <span>Very Good</span>
+            <span>Excellent</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="estimate-section">
+        <div class="estimate-title">Estimated Trade-in Value</div>
+        <div class="estimate-value" id="estimateValue">₦28,500,000</div>
+        <div class="estimate-label">Based on current market rates</div>
+        
+        <div class="factors" id="factorsDisplay">
+          <div class="factor">
+            <div class="factor-label">Market Value</div>
+            <div class="factor-value" id="marketValue">₦32M</div>
+          </div>
+          <div class="factor">
+            <div class="factor-label">Mileage Deduction</div>
+            <div class="factor-value" id="mileageDeduction">-₦2M</div>
+          </div>
+          <div class="factor">
+            <div class="factor-label">Condition Factor</div>
+            <div class="factor-value" id="conditionFactor">-₦1.5M</div>
+          </div>
+          <div class="factor">
+            <div class="factor-label">Market Demand</div>
+            <div class="factor-value" id="demandFactor">+₦0.5M</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="button" onclick="submitEstimate()">Get Appraisal & Trade-in Offer</button>
+    </div>
+  </div>
+
+  <script>
+    function calculateEstimate() {
+      const year = parseInt(document.getElementById('year').value);
+      const mileage = parseInt(document.getElementById('mileage').value);
+      const condition = parseInt(document.getElementById('condition').value);
+      const make = document.getElementById('make').value;
+
+      const baseValues = { 'BMW': 35000000, 'Mercedes': 40000000, 'Audi': 28000000, 'Lexus': 32000000, 'Toyota': 18000000 };
+      const baseValue = baseValues[make] || 30000000;
+      
+      const yearDeduction = (2024 - year) * 2000000;
+      const mileageDeduction = Math.floor(mileage / 10000) * 500000;
+      const conditionFactor = (5 - condition) * 1500000;
+      const demandBonus = make === 'BMW' || make === 'Mercedes' ? 500000 : 0;
+      
+      const estimate = baseValue - yearDeduction - mileageDeduction - conditionFactor + demandBonus;
+
+      document.getElementById('estimateValue').textContent = '₦' + Math.max(estimate, 5000000).toLocaleString('en-NG');
+      document.getElementById('marketValue').textContent = '₦' + (baseValue / 1000000).toFixed(0) + 'M';
+      document.getElementById('mileageDeduction').textContent = '-₦' + (mileageDeduction / 1000000).toFixed(1) + 'M';
+      document.getElementById('conditionFactor').textContent = '-₦' + (conditionFactor / 1000000).toFixed(1) + 'M';
+      document.getElementById('demandFactor').textContent = (demandBonus > 0 ? '+' : '') + '₦' + (demandBonus / 1000000).toFixed(1) + 'M'

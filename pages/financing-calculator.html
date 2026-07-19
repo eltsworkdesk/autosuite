@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Financing Calculator | AutoSuite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, oklch(97% 0.005 260) 0%, oklch(95% 0.008 300) 100%);
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .calculator-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 40px;
+      box-shadow: 0 10px 40px -12px rgba(0, 0, 0, 0.15);
+    }
+
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 30px;
+      color: oklch(20% 0.01 260);
+    }
+
+    .calc-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .input-group label {
+      font-size: 14px;
+      font-weight: 600;
+      color: oklch(35% 0.01 260);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .value-display {
+      font-size: 24px;
+      font-weight: 700;
+      color: oklch(45% 0.16 260);
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .slider {
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: oklch(90% 0.005 260);
+      outline: none;
+      -webkit-appearance: none;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: oklch(45% 0.16 260);
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(74, 95, 255, 0.3);
+      transition: all 150ms ease;
+    }
+
+    .slider::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(74, 95, 255, 0.5);
+    }
+
+    .slider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: oklch(45% 0.16 260);
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 2px 8px rgba(74, 95, 255, 0.3);
+      transition: all 150ms ease;
+    }
+
+    .slider::-moz-range-thumb:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(74, 95, 255, 0.5);
+    }
+
+    .summary-section {
+      background: oklch(98% 0.003 260);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 30px;
+      border: 1px solid oklch(91% 0.005 260);
+    }
+
+    .summary-title {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      color: oklch(50% 0.01 260);
+      letter-spacing: 0.04em;
+      margin-bottom: 16px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .summary-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .summary-label {
+      font-size: 12px;
+      color: oklch(50% 0.01 260);
+    }
+
+    .summary-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: oklch(20% 0.01 260);
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .monthly-payment {
+      font-size: 28px;
+      color: oklch(45% 0.16 260);
+    }
+
+    .breakdown {
+      background: #fff;
+      border: 1px solid oklch(91% 0.005 260);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+
+    .breakdown-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: oklch(35% 0.01 260);
+    }
+
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid oklch(95% 0.003 260);
+      font-size: 13px;
+    }
+
+    .breakdown-row:last-child {
+      border-bottom: none;
+    }
+
+    .breakdown-label {
+      color: oklch(50% 0.01 260);
+    }
+
+    .breakdown-value {
+      font-weight: 600;
+      color: oklch(35% 0.01 260);
+    }
+
+    .cta-button {
+      width: 100%;
+      padding: 14px;
+      background: oklch(45% 0.16 260);
+      color: #fff;
+      border: none;
+      border-radius: 9px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 150ms ease;
+    }
+
+    .cta-button:hover {
+      background: oklch(40% 0.16 260);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(74, 95, 255, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .calc-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .calculator-card {
+        padding: 20px;
+      }
+
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="calculator-card">
+      <h1>Car Financing Calculator</h1>
+
+      <div class="calc-grid">
+        <!-- Vehicle Price -->
+        <div class="input-group">
+          <label>Vehicle Price</label>
+          <div class="value-display" id="priceDisplay">₦45,000,000</div>
+          <input type="range" id="priceSlider" min="5000000" max="200000000" step="500000" value="45000000" class="slider">
+          <div style="font-size: 12px; color: oklch(50% 0.01 260); margin-top: 4px;">₦5M – ₦200M</div>
+        </div>
+
+        <!-- Down Payment -->
+        <div class="input-group">
+          <label>Down Payment</label>
+          <div class="value-display" id="downPaymentDisplay">₦9,000,000</div>
+          <input type="range" id="downPaymentSlider" min="0" max="100" step="5" value="20" class="slider">
+          <div style="font-size: 12px; color: oklch(50% 0.01 260); margin-top: 4px;"><span id="downPaymentPercent">20</span>% of price</div>
+        </div>
+      </div>
+
+      <div class="calc-grid">
+        <!-- Loan Term -->
+        <div class="input-group">
+          <label>Loan Term</label>
+          <div class="value-display" id="termDisplay">60 months</div>
+          <input type="range" id="termSlider" min="12" max="84" step="12" value="60" class="slider">
+          <div style="font-size: 12px; color: oklch(50% 0.01 260); margin-top: 4px;">1–7 years</div>
+        </div>
+
+        <!-- Interest Rate -->
+        <div class="input-group">
+          <label>Annual Interest Rate (APR)</label>
+          <div class="value-display" id="aprDisplay">7.5%</div>
+          <input type="range" id="aprSlider" min="3" max="15" step="0.5" value="7.5" class="slider">
+          <div style="font-size: 12px; color: oklch(50% 0.01 260); margin-top: 4px;">3% – 15%</div>
+        </div>
+      </div>
+
+      <!-- Summary Section -->
+      <div class="summary-section">
+        <div class="summary-title">Loan Summary</div>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <div class="summary-label">Loan Amount</div>
+            <div class="summary-value" id="loanAmount">₦36,000,000</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">Total Interest</div>
+            <div class="summary-value" id="totalInterest">₦6,840,000</div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-label">Total Repayment</div>
+            <div class="summary-value" id="totalRepayment">₦42,840,000</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Monthly Payment Highlight -->
+      <div class="breakdown">
+        <div class="breakdown-title">Monthly Payment</div>
+        <div style="text-align: center; padding: 12px 0;">
+          <div class="monthly-payment" id="monthlyPayment">₦714,000</div>
+        </div>
+      </div>
+
+      <!-- Payment Breakdown -->
+      <div class="breakdown">
+        <div class="breakdown-title">Payment Breakdown</div>
+        <div class="breakdown-row">
+          <span class="breakdown-label">Principal Per Month</span>
+          <span class="breakdown-value" id="principalMonth">₦600,000</span>
+        </div>
+        <div class="breakdown-row">
+          <span class="breakdown-label">Interest Per Month</span>
+          <span class="breakdown-value" id="interestMonth">₦114,000</span>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <button class="cta-button" onclick="appliedForFinancing()">Apply for Financing</button>
+    </div>
+  </div>
+
+  <script>
+    const priceSlider = document.getElementById('priceSlider');
+    const downPaymentSlider = document.getElementById('downPaymentSlider');
+    const termSlider = document.getElementById('termSlider');
+    const aprSlider = document.getElementById('aprSlider');
+
+    function formatCurrency(amount) {
+      return '₦' + Math.round(amount).toLocaleString('en-NG');
+    }
+
+    function calculate() {
+      const price = parseFloat(priceSlider.value);
+      const downPaymentPercent = parseFloat(downPaymentSlider.value);
+      const term = parseFloat(termSlider.value);
+      const apr = parseFloat(aprSlider.value);
+
+      // Calculate down payment amount
+      const downPayment = price * (downPaymentPercent / 100);
+      const loanAmount = price - downPayment;
+
+      // Calculate monthly payment using loan amortization formula
+      const monthlyRate = apr / 100 / 12;
+      const numberOfPayments = term;
+      const monthlyPayment = loanAmount *
+        (monthlyRate * Math.pow(1 + monthlyRate, numberOfPayments)) /
+        (Math.pow(1 + monthlyRate, numberOfPayments) - 1);
+
+      const totalRepayment = monthlyPayment * numberOfPayments;
+      const totalInterest = totalRepayment - loanAmount;
+      const interestPerMonth = totalInterest / numberOfPayments;
+      const principalPerMonth = monthlyPayment - interestPerMonth;
+
+      // Update display
+      document.getElementById('priceDisplay').textContent = formatCurrency(price);
+      document.getElementById('downPaymentDisplay').textContent = formatCurrency(downPayment);
+      document.getElementById('downPaymentPercent').textContent = downPaymentPercent;
+      document.getElementById('termDisplay').textContent = term + ' months';
+      document.getElementById('aprDisplay').textContent = apr + '%';
+
+      document.getElementById('loanAmount').textContent = formatCurrency(loanAmount);
+      document.getElementById('totalInterest').textContent = formatCurrency(totalInterest);
+      document.getElementById('totalRepayment').textContent = formatCurrency(totalRepayment);
+
+      document.getElementById('monthlyPayment').textContent = formatCurrency(monthlyPayment);
+      document.getElementById('principalMonth').textContent = formatCurrency(principalPerMonth);
+      document.getElementById('interestMonth').textContent = formatCurrency(interestPerMonth);
+    }
+
+    function appliedForFinancing() {
+      const price = parseFloat(priceSlider.value);
+      const downPayment = price * (parseFloat(downPaymentSlider.value) / 100);
+      const loanAmount = price - downPayment;
+      const monthlyPayment = document.getElementById('monthlyPayment').textContent;
+
+      alert(`Great! Your financing application:\n\nVehicle Price: ${formatCurrency(price)}\nLoan Amount: ${formatCurrency(loanAmount)}\nMonthly Payment: ${monthlyPayment}\n\nYou'll be redirected to complete your application.`);
+    }
+
+    // Add event listeners
+    [priceSlider, downPaymentSlider, termSlider, aprSlider].forEach(slider => {
+      slider.addEventListener('input', calculate);
+    });
+
+    // Initial calculation
+    calculate();
+  </script>
+</body>
+</html>

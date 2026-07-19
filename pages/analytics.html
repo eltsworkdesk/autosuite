@@ -1,45 +1,124 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>analytics | AutoSuite Dealer OS</title>
-  <meta name="robots" content="noindex, nofollow">
+  <title>Analytics | AutoSuite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/dashboard.css">
-  <style>.dos-shell { display: grid; grid-template-columns: 236px 1fr; min-height: 100vh; }</style>
+  <style>
+    body { background: oklch(97% 0.005 260); margin: 0; padding: 32px; }
+    .container { max-width: 1400px; margin: 0 auto; }
+    h1 { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; margin: 0 0 8px; color: oklch(20% 0.01 260); }
+    .subtitle { color: oklch(50% 0.01 260); margin: 0 0 32px; font-size: 14px; }
+    .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+    .metric-card { background: #fff; border-radius: 12px; padding: 20px; border: 1px solid oklch(91% 0.005 260); }
+    .metric-label { font-size: 12px; color: oklch(50% 0.01 260); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 12px; }
+    .metric-value { font-size: 32px; font-weight: 700; color: oklch(20% 0.01 260); font-family: 'Space Grotesk', sans-serif; margin-bottom: 4px; }
+    .metric-change { font-size: 12px; color: oklch(30% 0.1 142); }
+    .metric-change.negative { color: oklch(40% 0.15 25); }
+    .charts { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+    .chart-card { background: #fff; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); }
+    .chart-title { font-size: 16px; font-weight: 600; color: oklch(20% 0.01 260); margin-bottom: 20px; }
+    .chart-bar { display: flex; align-items: center; margin-bottom: 16px; gap: 12px; }
+    .chart-label { font-size: 12px; color: oklch(50% 0.01 260); min-width: 80px; }
+    .chart-fill { background: linear-gradient(90deg, oklch(45% 0.16 260), oklch(50% 0.18 270)); height: 24px; border-radius: 4px; flex: 1; }
+    .chart-value { font-size: 12px; font-weight: 600; color: oklch(35% 0.01 260); min-width: 50px; text-align: right; }
+    .conversion-funnel { display: flex; gap: 8px; }
+    .funnel-step { background: oklch(45% 0.16 260); color: #fff; padding: 12px 16px; border-radius: 6px; flex: 1; text-align: center; font-size: 12px; font-weight: 600; }
+    @media (max-width: 1024px) { .metrics { grid-template-columns: repeat(2, 1fr); } .charts { grid-template-columns: 1fr; } }
+  </style>
 </head>
-<body class="dos-body">
-<div class="dos-shell">
-  <aside class="dos-sidebar">
-    <div class="dos-brand" style="display: flex; align-items: center; gap: 9px; padding: 6px 10px 22px;">
-      <div style="width: 22px; height: 22px; border-radius: 6px; background: oklch(55% 0.16 260);"></div>
-      <div style="font: 600 15px 'Space Grotesk', sans-serif; color: #fff;">AutoSuite</div>
+<body>
+  <div class="container">
+    <h1>Analytics Dashboard</h1>
+    <p class="subtitle">Sales performance and customer insights</p>
+    
+    <div class="metrics">
+      <div class="metric-card">
+        <div class="metric-label">Total Sales (MTD)</div>
+        <div class="metric-value">₦412M</div>
+        <div class="metric-change">↑ 23% from last month</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Conversion Rate</div>
+        <div class="metric-value">12.5%</div>
+        <div class="metric-change">↓ 2.1% from last month</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Avg Sale Price</div>
+        <div class="metric-value">₦45.2M</div>
+        <div class="metric-change">↑ 5.3% from last month</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-label">Customer Satisfaction</div>
+        <div class="metric-value">4.7/5</div>
+        <div class="metric-change">↑ 0.2 from last month</div>
+      </div>
     </div>
-    <nav class="dos-nav" aria-label="Dealer OS">
-      <a href="dashboard.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">▦ Overview</a>
-      <a href="crm.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">☎ CRM</a>
-      <a href="inventory.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">▤ Inventory</a>
-      <a href="appointments.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">◔ Appointments</a>
-      <a href="customers.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">✎ Customers</a>
-      <a href="analytics.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">▲ Analytics</a>
-      <a href="staff-activity.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">◫ Staff Activity</a>
-    </nav>
-    <div style="margin-top: auto; display: flex; flex-direction: column; gap: 2px; padding-top: 14px; border-top: 1px solid oklch(28% 0.01 260);">
-      <a href="settings.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">⚙ Settings</a>
+
+    <div class="charts">
+      <div class="chart-card">
+        <div class="chart-title">Sales by Vehicle Type</div>
+        <div class="chart-bar">
+          <div class="chart-label">Sedan</div>
+          <div class="chart-fill" style="width: 85%;"></div>
+          <div class="chart-value">42 units</div>
+        </div>
+        <div class="chart-bar">
+          <div class="chart-label">SUV</div>
+          <div class="chart-fill" style="width: 72%;"></div>
+          <div class="chart-value">36 units</div>
+        </div>
+        <div class="chart-bar">
+          <div class="chart-label">Luxury</div>
+          <div class="chart-fill" style="width: 58%;"></div>
+          <div class="chart-value">29 units</div>
+        </div>
+        <div class="chart-bar">
+          <div class="chart-label">Sports</div>
+          <div class="chart-fill" style="width: 35%;"></div>
+          <div class="chart-value">18 units</div>
+        </div>
+      </div>
+
+      <div class="chart-card">
+        <div class="chart-title">Lead Source Distribution</div>
+        <div class="chart-bar">
+          <div class="chart-label">Direct Website</div>
+          <div class="chart-fill" style="width: 100%;"></div>
+          <div class="chart-value">45%</div>
+        </div>
+        <div class="chart-bar">
+          <div class="chart-label">Google Ads</div>
+          <div class="chart-fill" style="width: 68%;"></div>
+          <div class="chart-value">31%</div>
+        </div>
+        <div class="chart-bar">
+          <div class="chart-label">Social Media</div>
+          <div class="chart-fill" style="width: 42%;"></div>
+          <div class="chart-value">19%</div>
+        </div>
+        <div class="chart-bar">
+          <div class="chart-label">Referral</div>
+          <div class="chart-fill" style="width: 28%;"></div>
+          <div class="chart-value">5%</div>
+        </div>
+      </div>
     </div>
-  </aside>
-  <div style="background: oklch(97.5% 0.004 90);">
-    <div style="display: flex; gap: 16px; padding: 18px 36px; border-bottom: 1px solid oklch(91% 0.005 260); background: #fff;">
-      <h1 style="font: 600 20px 'Space Grotesk', sans-serif; margin: 0;">analytics</h1>
-    </div>
-    <div style="padding: 32px 36px;">
-      <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 40px; text-align: center;">
-        <p style="font: 400 15px; color: oklch(45% 0.01 260); margin: 0;">Analytics Dashboard — coming soon</p>
+
+    <div class="chart-card">
+      <div class="chart-title">Lead Conversion Funnel</div>
+      <div class="conversion-funnel">
+        <div class="funnel-step">Leads<br>238</div>
+        <div class="funnel-step">Contacted<br>156</div>
+        <div class="funnel-step">Qualified<br>98</div>
+        <div class="funnel-step">Test Drive<br>52</div>
+        <div class="funnel-step">Deal Closed<br>29</div>
       </div>
     </div>
   </div>
-</div>
 </body>
 </html>

@@ -1,45 +1,81 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>appointments | AutoSuite Dealer OS</title>
-  <meta name="robots" content="noindex, nofollow">
+  <title>Appointments | AutoSuite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
   <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/dashboard.css">
-  <style>.dos-shell { display: grid; grid-template-columns: 236px 1fr; min-height: 100vh; }</style>
+  <style>
+    body { background: oklch(97% 0.005 260); }
+    .container { max-width: 1400px; margin: 0 auto; padding: 32px; }
+    h1 { font-family: 'Space Grotesk', sans-serif; font-size: 28px; font-weight: 700; margin-bottom: 8px; color: oklch(20% 0.01 260); }
+    .subtitle { color: oklch(50% 0.01 260); margin-bottom: 32px; font-size: 14px; }
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+    .stat-card { background: #fff; border-radius: 12px; padding: 16px; border: 1px solid oklch(91% 0.005 260); }
+    .stat-label { font-size: 12px; color: oklch(50% 0.01 260); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; }
+    .stat-value { font-size: 24px; font-weight: 700; color: oklch(20% 0.01 260); font-family: 'Space Grotesk', sans-serif; }
+    .calendar-container { display: grid; grid-template-columns: 1fr 380px; gap: 24px; margin-bottom: 32px; }
+    .calendar-card { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); padding: 24px; }
+    .days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+    .day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 8px; cursor: pointer; font-size: 13px; background: oklch(98% 0.003 260); color: oklch(35% 0.01 260); }
+    .day.active { background: oklch(45% 0.16 260); color: #fff; }
+    .timeline { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); padding: 24px; }
+    .timeline-item { display: flex; gap: 16px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid oklch(95% 0.003 260); }
+    .timeline-time { min-width: 80px; font-size: 13px; font-weight: 600; color: oklch(45% 0.16 260); }
+    .event-type { display: inline-block; padding: 4px 8px; background: oklch(98% 0.003 260); border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+    .event-type.test-drive { background: oklch(85% 0.15 35); color: oklch(30% 0.08 35); }
+    .event-type.consultation { background: oklch(85% 0.12 290); color: oklch(30% 0.08 290); }
+    @media (max-width: 1024px) { .calendar-container { grid-template-columns: 1fr; } }
+  </style>
 </head>
-<body class="dos-body">
-<div class="dos-shell">
-  <aside class="dos-sidebar">
-    <div class="dos-brand" style="display: flex; align-items: center; gap: 9px; padding: 6px 10px 22px;">
-      <div style="width: 22px; height: 22px; border-radius: 6px; background: oklch(55% 0.16 260);"></div>
-      <div style="font: 600 15px 'Space Grotesk', sans-serif; color: #fff;">AutoSuite</div>
+<body>
+  <div class="container">
+    <h1>Appointments & Calendar</h1>
+    <p class="subtitle">Manage test drives, consultations, and follow-ups</p>
+    <div class="stats">
+      <div class="stat-card"><div class="stat-label">This Week</div><div class="stat-value">8</div></div>
+      <div class="stat-card"><div class="stat-label">Pending</div><div class="stat-value">3</div></div>
+      <div class="stat-card"><div class="stat-label">Completed</div><div class="stat-value">12</div></div>
+      <div class="stat-card"><div class="stat-label">No-Shows</div><div class="stat-value">1</div></div>
     </div>
-    <nav class="dos-nav" aria-label="Dealer OS">
-      <a href="dashboard.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">▦ Overview</a>
-      <a href="crm.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">☎ CRM</a>
-      <a href="inventory.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">▤ Inventory</a>
-      <a href="appointments.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">◔ Appointments</a>
-      <a href="customers.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">✎ Customers</a>
-      <a href="analytics.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">▲ Analytics</a>
-      <a href="staff-activity.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">◫ Staff Activity</a>
-    </nav>
-    <div style="margin-top: auto; display: flex; flex-direction: column; gap: 2px; padding-top: 14px; border-top: 1px solid oklch(28% 0.01 260);">
-      <a href="settings.html" class="dos-nav-item" style="display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">⚙ Settings</a>
-    </div>
-  </aside>
-  <div style="background: oklch(97.5% 0.004 90);">
-    <div style="display: flex; gap: 16px; padding: 18px 36px; border-bottom: 1px solid oklch(91% 0.005 260); background: #fff;">
-      <h1 style="font: 600 20px 'Space Grotesk', sans-serif; margin: 0;">appointments</h1>
-    </div>
-    <div style="padding: 32px 36px;">
-      <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 40px; text-align: center;">
-        <p style="font: 400 15px; color: oklch(45% 0.01 260); margin: 0;">Appointments & Calendar — coming soon</p>
+    <div class="timeline">
+      <h2>Today's Schedule (July 19)</h2>
+      <div class="timeline-item">
+        <div class="timeline-time">09:00 AM</div>
+        <div>
+          <div class="event-type test-drive">Test Drive</div>
+          <div style="font-weight: 600; margin-top: 4px;">BMW X7 Test Drive</div>
+          <div style="font-size: 12px; color: oklch(50% 0.01 260); margin-top: 4px;">John Adeleke</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-time">11:30 AM</div>
+        <div>
+          <div class="event-type consultation">Consultation</div>
+          <div style="font-weight: 600; margin-top: 4px;">Trade-in Consultation</div>
+          <div style="font-size: 12px; color: oklch(50% 0.01 260); margin-top: 4px;">Funke Okafor - Mercedes C-Class appraisal</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-time">02:00 PM</div>
+        <div>
+          <div class="event-type test-drive">Test Drive</div>
+          <div style="font-weight: 600; margin-top: 4px;">Mercedes S-Class Demo</div>
+          <div style="font-size: 12px; color: oklch(50% 0.01 260); margin-top: 4px;">Adebayo Patel</div>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-time">04:00 PM</div>
+        <div>
+          <div class="event-type consultation">Consultation</div>
+          <div style="font-weight: 600; margin-top: 4px;">Follow-up Call</div>
+          <div style="font-size: 12px; color: oklch(50% 0.01 260); margin-top: 4px;">Ọlátúnjì Hassan - Financing options</div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 </body>
 </html>
