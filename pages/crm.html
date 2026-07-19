@@ -387,9 +387,26 @@
     document.getElementById('detailView').style.display = currentView === 'detail' ? 'grid' : 'none';
   }
 
+  // Live updates via SSE; fall back to slow polling if the stream drops.
+  function subscribeToEvents(types, onEvent) {
+    try {
+      const source = new EventSource('/api/events');
+      source.onmessage = (e) => {
+        try {
+          const evt = JSON.parse(e.data);
+          if (types.includes(evt.type)) onEvent(evt);
+        } catch (err) { /* ignore malformed frames */ }
+      };
+      source.onerror = () => console.warn('SSE connection lost, relying on polling fallback');
+    } catch (err) {
+      console.warn('EventSource unavailable:', err.message);
+    }
+  }
+
   // Initial load
   fetchLeads();
-  setInterval(fetchLeads, 3000); // Poll for new leads every 3 seconds
+  subscribeToEvents(['lead.created', 'lead.updated'], fetchLeads);
+  setInterval(fetchLeads, 30000); // Slow fallback poll in case SSE drops
 </script>
 
 </body>

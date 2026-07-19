@@ -1,5 +1,6 @@
 const { prisma } = require('./_lib/db');
 const { requireAuth } = require('./_lib/auth');
+const { broadcast } = require('./_lib/events');
 
 const VALID_TYPES = ['test-drive', 'inspection', 'consultation', 'maintenance'];
 
@@ -37,6 +38,7 @@ module.exports = async (req, res) => {
         data: { status: 'APPT_SCHEDULED', appointmentId: appointment.id },
       }).catch(() => {}); // Lead status update is best-effort; appointment creation already succeeded.
 
+      broadcast('appointment.created', { id: appointment.id, dateTime: appointment.dateTime, type: appointment.type });
       return res.status(201).json({ appointment });
     }
 

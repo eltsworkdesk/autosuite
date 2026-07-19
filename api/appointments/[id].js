@@ -1,5 +1,6 @@
 const { prisma } = require('../_lib/db');
 const { requireAuth } = require('../_lib/auth');
+const { broadcast } = require('../_lib/events');
 
 const VALID_STATUSES = ['scheduled', 'completed', 'no_show', 'cancelled'];
 
@@ -24,6 +25,7 @@ module.exports = async (req, res) => {
       }
 
       const appointment = await prisma.appointment.update({ where: { id }, data });
+      broadcast('appointment.updated', { id: appointment.id, status: appointment.status });
       return res.status(200).json({ appointment });
     }
 

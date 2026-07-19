@@ -10,6 +10,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
+const { emitter } = require('./api/_lib/events');
 
 // Simulated API handlers (normally Vercel functions)
 const handlers = {
@@ -82,6 +83,30 @@ const server = http.createServer((req, res) => {
   if (req.method === 'OPTIONS') {
     res.writeHead(200);
     res.end();
+    return;
+  }
+
+  // Server-Sent Events stream: a long-lived connection, so it bypasses the
+  // one-shot mock req/res dispatch used for the rest of /api/*.
+  if (pathname === '/api/events') {
+    res.writeHead(200, {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache',
+      'Connection': 'keep-alive'
+    });
+    res.write(':ok\n\n');
+
+    const onEvent = (event) => {
+      res.write(`data: ${JSON.stringify(event)}\n\n`);
+    };
+    emitter.on('event', onEvent);
+
+    const heartbeat = setInterval(() => res.write(':hb\n\n'), 25000);
+
+    req.on('close', () => {
+      clearInterval(heartbeat);
+      emitter.off('event', onEvent);
+    });
     return;
   }
 

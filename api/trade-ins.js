@@ -1,5 +1,6 @@
 const { prisma } = require('./_lib/db');
 const { requireAuth } = require('./_lib/auth');
+const { broadcast } = require('./_lib/events');
 
 const VALID_CONDITIONS = ['excellent', 'good', 'fair', 'poor'];
 
@@ -41,6 +42,7 @@ module.exports = async (req, res) => {
         },
       });
 
+      broadcast('lead.created', { id: lead.id, name: lead.name, carName: lead.carName, status: lead.status });
       return res.status(201).json({ id: estimate.id, leadId: lead.id });
     }
 

@@ -1,5 +1,6 @@
 const { prisma } = require('../_lib/db');
 const { requireAuth } = require('../_lib/auth');
+const { broadcast } = require('../_lib/events');
 
 const VALID_STATUSES = ['draft', 'active', 'featured', 'sold'];
 
@@ -27,11 +28,13 @@ module.exports = async (req, res) => {
       }
 
       const vehicle = await prisma.vehicle.update({ where: { id }, data });
+      broadcast('vehicle.updated', { id: vehicle.id, status: vehicle.status, price: vehicle.price });
       return res.status(200).json({ vehicle });
     }
 
     if (req.method === 'DELETE') {
       await prisma.vehicle.delete({ where: { id } });
+      broadcast('vehicle.deleted', { id });
       return res.status(204).end();
     }
 

@@ -292,8 +292,25 @@
     }
   }
 
+  // Live updates via SSE; fall back to slow polling if the stream drops.
+  function subscribeToEvents(types, onEvent) {
+    try {
+      const source = new EventSource('/api/events');
+      source.onmessage = (e) => {
+        try {
+          const evt = JSON.parse(e.data);
+          if (types.includes(evt.type)) onEvent(evt);
+        } catch (err) { /* ignore malformed frames */ }
+      };
+      source.onerror = () => console.warn('SSE connection lost, relying on polling fallback');
+    } catch (err) {
+      console.warn('EventSource unavailable:', err.message);
+    }
+  }
+
   loadDashboard();
-  setInterval(loadDashboard, 5000);
+  subscribeToEvents(['lead.created', 'lead.updated'], loadDashboard);
+  setInterval(loadDashboard, 30000);
 </script>
 
 </body>

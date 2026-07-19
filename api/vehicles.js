@@ -1,5 +1,6 @@
 const { prisma } = require('./_lib/db');
 const { requireAuth } = require('./_lib/auth');
+const { broadcast } = require('./_lib/events');
 
 const VALID_STATUSES = ['draft', 'active', 'featured', 'sold'];
 
@@ -40,6 +41,7 @@ module.exports = async (req, res) => {
           status: VALID_STATUSES.includes(status) ? status : 'active',
         },
       });
+      broadcast('vehicle.created', { id: vehicle.id, make: vehicle.make, model: vehicle.model, price: vehicle.price });
       return res.status(201).json({ vehicle });
     }
 

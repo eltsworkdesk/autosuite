@@ -134,7 +134,24 @@
     }).join('');
   }
 
+  function subscribeToEvents(types, onEvent) {
+    try {
+      const source = new EventSource('/api/events');
+      source.onmessage = (e) => {
+        try {
+          const evt = JSON.parse(e.data);
+          if (types.includes(evt.type)) onEvent(evt);
+        } catch (err) { /* ignore malformed frames */ }
+      };
+      source.onerror = () => console.warn('SSE connection lost, relying on polling fallback');
+    } catch (err) {
+      console.warn('EventSource unavailable:', err.message);
+    }
+  }
+
   fetchAppointments();
+  subscribeToEvents(['appointment.created', 'appointment.updated'], fetchAppointments);
+  setInterval(fetchAppointments, 30000);
 </script>
 </body>
 </html>

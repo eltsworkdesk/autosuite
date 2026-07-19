@@ -1,5 +1,6 @@
 const { prisma } = require('../_lib/db');
 const { requireAuth } = require('../_lib/auth');
+const { broadcast } = require('../_lib/events');
 
 const VALID_STATUSES = ['NEW', 'CONTACTED', 'QUALIFIED', 'APPT_SCHEDULED', 'NEGOTIATING', 'SOLD', 'LOST'];
 const VALID_PRIORITIES = ['Low', 'Normal', 'High'];
@@ -46,6 +47,7 @@ module.exports = async (req, res) => {
       }
 
       const lead = await prisma.lead.update({ where: { id }, data });
+      broadcast('lead.updated', { id: lead.id, name: lead.name, status: lead.status, priority: lead.priority });
       return res.status(200).json({ lead });
     }
 
