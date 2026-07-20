@@ -46,7 +46,7 @@
   </aside>
 
   <!-- MAIN -->
-  <div class="is-cc38790d">
+  <main class="is-cc38790d">
     <!-- TOP BAR -->
     <div class="is-aa8ddd09">
       <h1 class="is-6f08c733">Leads</h1>
@@ -155,7 +155,7 @@
       </div>
 
     </div>
-  </div>
+  </main>
 </div>
 
 <script src="../js/dos-shell.js"></script>
@@ -235,7 +235,7 @@
       return `
         <div class="is-6ba6dba6">
           <div class="is-8950168e">
-            <div class="is-5ed77ee8"></div>
+            <div style="width: 7px; height: 7px; border-radius: 50%; background: ${stage.color};"></div>
             <div class="is-ec940996">${stage.name}</div>
             <div class="is-5ad819ce">${stageLeads.length}</div>
           </div>
@@ -244,7 +244,7 @@
               <div draggable="true" class="kanban-card is-b219fdf3" data-lead-id="${lead.id}" onclick="selectLead('${lead.id}')">
                 <div class="is-25ebd687">
                   <div class="is-ec940996">${lead.name}</div>
-                  <div class="is-2e99316f"></div>
+                  <div style="width: 6px; height: 6px; border-radius: 50%; background: ${lead.priority === 'High' ? 'oklch(60% 0.14 55)' : 'oklch(70% 0.01 260)'};"></div>
                 </div>
                 <div class="is-f6501b31">${lead.carName}</div>
                 <div class="is-948e6d6e">
@@ -326,7 +326,7 @@
         <div class="is-024dc74f">${lead.carName}</div>
         <div class="is-024dc74f">${lead.source}</div>
         <div><span class="is-93e08d6f">${lead.status || 'New'}</span></div>
-        <div class="is-25130899">${lead.priority || 'Normal'}</div>
+        <div style="color: ${lead.priority === 'High' ? 'oklch(60% 0.14 55)' : 'oklch(70% 0.01 260)'};">${lead.priority || 'Normal'}</div>
         <div class="is-bd9db1cb"><div class="is-94e51f7f"></div>Derek O.</div>
       </div>
     `).join('');

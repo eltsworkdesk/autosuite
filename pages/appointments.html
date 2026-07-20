@@ -57,7 +57,7 @@
       <a href="settings.html" class="dos-nav-item is-3fa6ef03">⚙ Settings</a>
     </div>
   </aside>
-  <div class="is-cc38790d">
+  <main class="is-cc38790d">
     <div class="is-aa8ddd09">
       <h1 class="is-6f08c733">Appointments</h1>
       <div class="is-dc310e06">
@@ -94,7 +94,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </main>
 </div>
 
 <script src="../js/dos-shell.js"></script>
@@ -184,7 +184,7 @@
     let html = '<div class="cal-head cal-head-corner"></div>';
     days.forEach(d => {
       const isToday = d.toDateString() === new Date().toDateString();
-      html += `<div class="cal-head is-76eea457">${d.toLocaleDateString('en-US', { weekday: 'short' })}<br>${d.getDate()}</div>`;
+      html += `<div class="cal-head" style="${isToday ? 'color: oklch(45% 0.16 260);' : ''}">${d.toLocaleDateString('en-US', { weekday: 'short' })}<br>${d.getDate()}</div>`;
     });
 
     hours.forEach(hour => {

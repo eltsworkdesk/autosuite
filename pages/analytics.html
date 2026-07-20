@@ -22,7 +22,8 @@
     .chart-title { font: 600 15px 'Space Grotesk', sans-serif; margin-bottom: 20px; }
     .chart-bar { display: flex; align-items: center; margin-bottom: 16px; gap: 12px; }
     .chart-label { font-size: 12px; color: oklch(50% 0.01 260); min-width: 100px; }
-    .chart-fill { background: linear-gradient(90deg, oklch(45% 0.16 260), oklch(50% 0.18 270)); height: 22px; border-radius: 4px; flex: 1; }
+    .chart-fill { background: linear-gradient(90deg, oklch(45% 0.16 260), oklch(50% 0.18 270)); height: 22px; border-radius: 4px; flex: none; }
+    .chart-track { flex: 1; background: oklch(95% 0.005 260); border-radius: 4px; overflow: hidden; }
     .chart-value { font-size: 12px; font-weight: 600; color: oklch(35% 0.01 260); min-width: 30px; text-align: right; }
     .conversion-funnel { display: flex; gap: 8px; }
     .funnel-step { background: oklch(45% 0.16 260); color: #fff; padding: 12px 16px; border-radius: 6px; flex: 1; text-align: center; font-size: 12px; font-weight: 600; }
@@ -51,7 +52,7 @@
       <a href="settings.html" class="dos-nav-item is-3fa6ef03">⚙ Settings</a>
     </div>
   </aside>
-  <div class="is-cc38790d">
+  <main class="is-cc38790d">
     <div class="is-aa8ddd09">
       <h1 class="is-6f08c733">Analytics</h1>
       <div class="is-dc310e06">
@@ -98,7 +99,7 @@
         <div class="conversion-funnel" id="funnelChart"></div>
       </div>
     </div>
-  </div>
+  </main>
 </div>
 
 <script src="../js/dos-shell.js"></script>
@@ -107,7 +108,7 @@
     return '₦' + Math.round(n).toLocaleString('en-NG');
   }
 
-  function renderBarChart(containerId, dataObj) {
+  function renderBarChart(containerId, dataObj, tableCaption) {
     const container = document.getElementById(containerId);
     const entries = Object.entries(dataObj);
     if (entries.length === 0) {
@@ -115,13 +116,21 @@
       return;
     }
     const max = Math.max(...entries.map(([, v]) => v));
-    container.innerHTML = entries.map(([label, value]) => `
+    const bars = entries.map(([label, value]) => `
       <div class="chart-bar">
         <div class="chart-label">${label}</div>
-        <div class="chart-fill is-2900fefd"></div>
+        <div class="chart-track"><div class="chart-fill" style="width: ${Math.max((value / max) * 100, 8)}%;"></div></div>
         <div class="chart-value">${value}</div>
       </div>
     `).join('');
+    const table = `
+      <table class="visually-hidden">
+        <caption>${tableCaption}</caption>
+        <thead><tr><th scope="col">Category</th><th scope="col">Count</th></tr></thead>
+        <tbody>${entries.map(([label, value]) => `<tr><th scope="row">${label}</th><td>${value}</td></tr>`).join('')}</tbody>
+      </table>
+    `;
+    container.innerHTML = bars + table;
   }
 
   async function fetchAnalytics() {
@@ -151,8 +160,8 @@
     document.getElementById('metricAvgPrice').textContent = fmtNaira(data.avgSalePrice);
     document.getElementById('metricAppointments').textContent = data.appointmentsThisWeek;
 
-    renderBarChart('vehicleTypeChart', data.vehiclesByType || {});
-    renderBarChart('leadSourceChart', data.leadSources || {});
+    renderBarChart('vehicleTypeChart', data.vehiclesByType || {}, 'Inventory by vehicle type');
+    renderBarChart('leadSourceChart', data.leadSources || {}, 'Lead source distribution');
 
     const funnel = data.funnel || {};
     const steps = [
@@ -164,7 +173,13 @@
     ];
     document.getElementById('funnelChart').innerHTML = steps.map(([label, value]) =>
       `<div class="funnel-step">${label}<br>${value ?? 0}</div>`
-    ).join('');
+    ).join('') + `
+      <table class="visually-hidden">
+        <caption>Lead conversion funnel</caption>
+        <thead><tr><th scope="col">Stage</th><th scope="col">Count</th></tr></thead>
+        <tbody>${steps.map(([label, value]) => `<tr><th scope="row">${label}</th><td>${value ?? 0}</td></tr>`).join('')}</tbody>
+      </table>
+    `;
   }
 
   fetchAnalytics();

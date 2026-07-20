@@ -39,7 +39,7 @@
       <a href="settings.html" class="dos-nav-item is-2397ef19">⚙ Settings</a>
     </div>
   </aside>
-  <div class="is-cc38790d">
+  <main class="is-cc38790d">
     <div class="is-aa8ddd09">
       <h1 class="is-6f08c733">Inventory</h1>
       <div id="countsSummary" class="is-fef4eb97">— active · — draft · — sold this month</div>
@@ -52,17 +52,17 @@
 
     <div class="is-13948eb4">
       <input type="text" id="filterSearch" class="inv-filter-input is-49cdf874" placeholder="Search inventory…"  oninput="applyFilters()">
-      <select id="filterStatus" class="inv-filter-input" onchange="applyFilters()">
+      <select id="filterStatus" class="inv-filter-input" aria-label="Filter by status" onchange="applyFilters()">
         <option value="">Status ▾</option>
         <option value="active">Active</option>
         <option value="featured">Featured</option>
         <option value="draft">Draft</option>
         <option value="sold">Sold</option>
       </select>
-      <select id="filterBody" class="inv-filter-input" onchange="applyFilters()">
+      <select id="filterBody" class="inv-filter-input" aria-label="Filter by body type" onchange="applyFilters()">
         <option value="">Body type ▾</option>
       </select>
-      <select id="filterPrice" class="inv-filter-input" onchange="applyFilters()">
+      <select id="filterPrice" class="inv-filter-input" aria-label="Filter by price range" onchange="applyFilters()">
         <option value="">Price ▾</option>
         <option value="0-20000000">Under ₦20M</option>
         <option value="20000000-50000000">₦20M – ₦50M</option>
@@ -84,7 +84,7 @@
       <!-- Table view -->
       <div id="tableViewWrap" class="is-3c773fe7">
         <div class="is-b64e61e5">
-          <div><input type="checkbox" id="selectAll" onchange="toggleSelectAll(this.checked)"></div>
+          <div><input type="checkbox" id="selectAll" aria-label="Select all vehicles" onchange="toggleSelectAll(this.checked)"></div>
           <div></div><div>Vehicle</div><div>Price</div><div>Mileage</div><div>Status</div><div>Days listed</div><div>Actions</div>
         </div>
         <div id="vehicleList"></div>
@@ -94,12 +94,12 @@
       <!-- Cards view -->
       <div id="cardsViewWrap" class="is-ff231f93"></div>
     </div>
-  </div>
+  </main>
 </div>
 
 <!-- Quick edit side panel -->
 <div class="quick-edit-overlay" id="quickEditOverlay" onclick="closeQuickEdit()"></div>
-<div class="quick-edit-panel" id="quickEditPanel">
+<div class="quick-edit-panel" id="quickEditPanel" role="dialog" aria-modal="true" aria-label="Quick edit vehicle">
   <div class="is-ba97c8dd">
     <div class="is-140a247e">Quick edit</div>
     <button type="button" onclick="closeQuickEdit()"  aria-label="Close" class="is-96d1af6f">✕</button>
@@ -133,6 +133,8 @@
   let currentView = 'table';
   let selectedIds = new Set();
   let quickEditId = null;
+  let quickEditFocusTrap = null;
+  let quickEditTrigger = null;
 
   const fallbackVehicles = [
     { id: 1, make: 'BMW', model: 'X7', year: 2024, mileage: 5200, price: 65000000, status: 'active', body: 'SUV', color: 'Black', drivetrain: 'AWD', createdAt: new Date().toISOString() },
@@ -244,7 +246,7 @@
 
     list.innerHTML = filteredVehicles.map(v => `
       <div class="is-937ce8ce">
-        <div><input type="checkbox" class="row-check" data-id="${v.id}" ${selectedIds.has(String(v.id)) ? 'checked' : ''} onchange="toggleSelect('${v.id}', this.checked)"></div>
+        <div><input type="checkbox" class="row-check" data-id="${v.id}" aria-label="Select ${esc(v.year)} ${esc(v.make)} ${esc(v.model)}" ${selectedIds.has(String(v.id)) ? 'checked' : ''} onchange="toggleSelect('${v.id}', this.checked)"></div>
         <div class="stripes is-86ba105f"></div>
         <div>
           <div class="is-db117290">${esc(v.year)} ${esc(v.make)} ${esc(v.model)}</div>
@@ -283,7 +285,7 @@
       sold: ['oklch(95% 0.02 260)', 'oklch(45% 0.13 260)', 'Sold']
     };
     const [bg, color, label] = map[status] || map.active;
-    return `<span class="is-90d68b40">${label}</span>`;
+    return `<span style="font: 500 11px; padding: 4px 9px; border-radius: 999px; background: ${bg}; color: ${color};">${label}</span>`;
   }
 
   function setView(view) {
@@ -328,18 +330,32 @@
     const v = vehicles.find(x => String(x.id) === String(id));
     if (!v) return;
     quickEditId = id;
+    quickEditTrigger = document.activeElement;
     document.getElementById('quickEditName').textContent = `${v.year} ${v.make} ${v.model}`;
     document.getElementById('qePrice').value = v.price;
     document.getElementById('qeStatus').value = v.status;
     document.getElementById('quickEditOverlay').style.display = 'block';
     document.getElementById('quickEditPanel').style.display = 'flex';
+    const panel = document.getElementById('quickEditPanel');
+    document.getElementById('qePrice').focus();
+    quickEditFocusTrap = DosShell.trapFocus(panel, quickEditTrigger);
   }
 
   function closeQuickEdit() {
     quickEditId = null;
     document.getElementById('quickEditOverlay').style.display = 'none';
     document.getElementById('quickEditPanel').style.display = 'none';
+    if (quickEditFocusTrap) {
+      quickEditFocusTrap.release();
+      quickEditFocusTrap = null;
+    }
   }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && document.getElementById('quickEditPanel').style.display === 'flex') {
+      closeQuickEdit();
+    }
+  });
 
   async function saveQuickEdit() {
     if (!quickEditId) return;

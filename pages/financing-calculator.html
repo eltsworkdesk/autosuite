@@ -230,14 +230,14 @@
   </style>
 </head>
 <body>
-  <div class="container">
+  <main class="container">
     <div class="calculator-card">
       <h1>Car Financing Calculator</h1>
 
       <div class="calc-grid">
         <!-- Vehicle Price -->
         <div class="input-group">
-          <label>Vehicle Price</label>
+          <label for="priceSlider">Vehicle Price</label>
           <div class="value-display" id="priceDisplay">₦45,000,000</div>
           <input type="range" id="priceSlider" min="5000000" max="200000000" step="500000" value="45000000" class="slider">
           <div class="is-ce79f797">₦5M – ₦200M</div>
@@ -245,7 +245,7 @@
 
         <!-- Down Payment -->
         <div class="input-group">
-          <label>Down Payment</label>
+          <label for="downPaymentSlider">Down Payment</label>
           <div class="value-display" id="downPaymentDisplay">₦9,000,000</div>
           <input type="range" id="downPaymentSlider" min="0" max="100" step="5" value="20" class="slider">
           <div class="is-ce79f797"><span id="downPaymentPercent">20</span>% of price</div>
@@ -255,7 +255,7 @@
       <div class="calc-grid">
         <!-- Loan Term -->
         <div class="input-group">
-          <label>Loan Term</label>
+          <label for="termSlider">Loan Term</label>
           <div class="value-display" id="termDisplay">60 months</div>
           <input type="range" id="termSlider" min="12" max="84" step="12" value="60" class="slider">
           <div class="is-ce79f797">1–7 years</div>
@@ -263,7 +263,7 @@
 
         <!-- Interest Rate -->
         <div class="input-group">
-          <label>Annual Interest Rate (APR)</label>
+          <label for="aprSlider">Annual Interest Rate (APR)</label>
           <div class="value-display" id="aprDisplay">7.5%</div>
           <input type="range" id="aprSlider" min="3" max="15" step="0.5" value="7.5" class="slider">
           <div class="is-ce79f797">3% – 15%</div>
@@ -313,7 +313,7 @@
       <!-- CTA -->
       <button type="button" class="cta-button" onclick="appliedForFinancing()">Apply for Financing</button>
     </div>
-  </div>
+  </main>
 
   <script>
     const priceSlider = document.getElementById('priceSlider');

@@ -74,13 +74,45 @@
     }, 3000);
   }
 
-  window.DosShell = { onEvent, toast };
+  // ---------- Focus trap (shared by the command palette and any other
+  // modal/panel, e.g. inventory.html's Quick Edit side panel) ----------
+  function trapFocus(container, restoreFocusTo) {
+    function focusables() {
+      return [...container.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')]
+        .filter((el) => el.offsetParent !== null);
+    }
+    function handleKeydown(e) {
+      if (e.key !== 'Tab') return;
+      const items = focusables();
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+    container.addEventListener('keydown', handleKeydown);
+    return {
+      release() {
+        container.removeEventListener('keydown', handleKeydown);
+        if (restoreFocusTo && typeof restoreFocusTo.focus === 'function') restoreFocusTo.focus();
+      }
+    };
+  }
+
+  window.DosShell = { onEvent, toast, trapFocus };
 
   // ---------- Command palette ----------
   let paletteEl, paletteInput, paletteResults;
   let searchCache = { leads: null, vehicles: null };
   let paletteRows = [];
   let paletteActiveIndex = -1;
+  let paletteFocusTrap = null;
+  let paletteTrigger = null;
 
   function buildPalette() {
     paletteEl = document.createElement('div');
@@ -108,15 +140,21 @@
 
   function openPalette() {
     if (!paletteEl) buildPalette();
+    paletteTrigger = document.activeElement;
     paletteEl.style.display = 'flex';
     paletteInput.value = '';
     paletteInput.focus();
     renderPaletteResults('');
     prefetchSearchData();
+    paletteFocusTrap = trapFocus(paletteEl, paletteTrigger);
   }
 
   function closePalette() {
     if (paletteEl) paletteEl.style.display = 'none';
+    if (paletteFocusTrap) {
+      paletteFocusTrap.release();
+      paletteFocusTrap = null;
+    }
   }
 
   function isPaletteOpen() {

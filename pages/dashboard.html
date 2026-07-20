@@ -68,7 +68,7 @@
   </aside>
 
   <!-- MAIN -->
-  <div class="is-cc38790d">
+  <main class="is-cc38790d">
     <!-- TOP BAR -->
     <div class="is-aa8ddd09">
       <h1 class="is-6f08c733">Overview</h1>
@@ -231,7 +231,7 @@
       </div>
 
     </div>
-  </div>
+  </main>
 </div>
 
 <script src="../js/dos-shell.js"></script>
@@ -270,19 +270,29 @@
       ];
 
       const pipelineContainer = document.getElementById('pipelineContainer');
-      pipelineContainer.innerHTML = STAGES.map(stage => {
-        const count = leads.filter(l => (l.status || 'NEW') === stage.key).length;
-        const width = count > 0 ? Math.max(count * 5, 20) : 5;
+      const pipelineCounts = STAGES.map(stage => ({
+        name: stage.name,
+        color: stage.color,
+        count: leads.filter(l => (l.status || 'NEW') === stage.key).length
+      }));
+      pipelineContainer.innerHTML = pipelineCounts.map(stage => {
+        const width = stage.count > 0 ? Math.max(stage.count * 5, 20) : 5;
         return `
           <div class="is-1c20bbe6">
             <div class="is-15cb806b">${stage.name}</div>
             <div class="is-24851e63">
-              <div class="is-f8ed189c"></div>
+              <div style="height: 100%; border-radius: 5px; background: ${stage.color}; width: ${Math.min(width, 100)}%;"></div>
             </div>
-            <div class="is-8250b786">${count}</div>
+            <div class="is-8250b786">${stage.count}</div>
           </div>
         `;
-      }).join('');
+      }).join('') + `
+        <table class="visually-hidden">
+          <caption>Lead pipeline by stage</caption>
+          <thead><tr><th scope="col">Stage</th><th scope="col">Count</th></tr></thead>
+          <tbody>${pipelineCounts.map(s => `<tr><th scope="row">${s.name}</th><td>${s.count}</td></tr>`).join('')}</tbody>
+        </table>
+      `;
 
     } catch (err) {
       console.log('Dashboard: API unavailable (expected in dev mode without database)');

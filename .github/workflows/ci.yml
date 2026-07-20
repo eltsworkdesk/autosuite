@@ -78,6 +78,56 @@ jobs:
         continue-on-error: true
         run: npx axe http://localhost:8080/pages/platform.html --chromedriver-path "$CHROMEDRIVER_TEST_PATH" --chrome-options="no-sandbox" --exit
 
+      - name: "axe: financing-calculator.html"
+        id: axe-financing-calculator
+        continue-on-error: true
+        run: npx axe http://localhost:8080/pages/financing-calculator.html --chromedriver-path "$CHROMEDRIVER_TEST_PATH" --chrome-options="no-sandbox" --exit
+
+      - name: "axe: trade-in-estimator.html"
+        id: axe-trade-in-estimator
+        continue-on-error: true
+        run: npx axe http://localhost:8080/pages/trade-in-estimator.html --chromedriver-path "$CHROMEDRIVER_TEST_PATH" --chrome-options="no-sandbox" --exit
+
+      - name: "axe: dashboard.html"
+        id: axe-dashboard
+        continue-on-error: true
+        run: npx axe http://localhost:8080/pages/dashboard.html --chromedriver-path "$CHROMEDRIVER_TEST_PATH" --chrome-options="no-sandbox" --exit
+
+      - name: "axe: crm.html"
+        id: axe-crm
+        continue-on-error: true
+        run: npx axe http://localhost:8080/pages/crm.html --chromedriver-path "$CHROMEDRIVER_TEST_PATH" --chrome-options="no-sandbox" --exit
+
+      - name: "axe: inventory.html"
+        id: axe-inventory
+        continue-on-error: true
+        run: npx axe http://localhost:8080/pages/inventory.html --chromedriver-path "$CHROMEDRIVER_TEST_PATH" --chrome-options="no-sandbox" --exit
+
+      - name: "axe: appointments.html"
+        id: axe-appointments
+        continue-on-error: true
+        run: npx axe http://localhost:8080/pages/appointments.html --chromedriver-path "$CHROMEDRIVER_TEST_PATH" --chrome-options="no-sandbox" --exit
+
+      - name: "axe: customers.html"
+        id: axe-customers
+        continue-on-error: true
+        run: npx axe http://localhost:8080/pages/customers.html --chromedriver-path "$CHROMEDRIVER_TEST_PATH" --chrome-options="no-sandbox" --exit
+
+      - name: "axe: analytics.html"
+        id: axe-analytics
+        continue-on-error: true
+        run: npx axe http://localhost:8080/pages/analytics.html --chromedriver-path "$CHROMEDRIVER_TEST_PATH" --chrome-options="no-sandbox" --exit
+
+      - name: "axe: staff-activity.html"
+        id: axe-staff-activity
+        continue-on-error: true
+        run: npx axe http://localhost:8080/pages/staff-activity.html --chromedriver-path "$CHROMEDRIVER_TEST_PATH" --chrome-options="no-sandbox" --exit
+
+      - name: "axe: settings.html"
+        id: axe-settings
+        continue-on-error: true
+        run: npx axe http://localhost:8080/pages/settings.html --chromedriver-path "$CHROMEDRIVER_TEST_PATH" --chrome-options="no-sandbox" --exit
+
       - name: Summarize axe outcomes
         if: always()
         run: |
@@ -89,6 +139,16 @@ jobs:
           echo "| test-drive.html | ${{ steps.axe-test-drive.outcome }} |" >> $GITHUB_STEP_SUMMARY
           echo "| compare.html | ${{ steps.axe-compare.outcome }} |" >> $GITHUB_STEP_SUMMARY
           echo "| platform.html | ${{ steps.axe-platform.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| financing-calculator.html | ${{ steps.axe-financing-calculator.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| trade-in-estimator.html | ${{ steps.axe-trade-in-estimator.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| dashboard.html | ${{ steps.axe-dashboard.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| crm.html | ${{ steps.axe-crm.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| inventory.html | ${{ steps.axe-inventory.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| appointments.html | ${{ steps.axe-appointments.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| customers.html | ${{ steps.axe-customers.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| analytics.html | ${{ steps.axe-analytics.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| staff-activity.html | ${{ steps.axe-staff-activity.outcome }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| settings.html | ${{ steps.axe-settings.outcome }} |" >> $GITHUB_STEP_SUMMARY
 
       - name: Fail the job if any axe audit failed
         if: >-
@@ -97,7 +157,17 @@ jobs:
           steps.axe-car-page.outcome == 'failure' ||
           steps.axe-test-drive.outcome == 'failure' ||
           steps.axe-compare.outcome == 'failure' ||
-          steps.axe-platform.outcome == 'failure'
+          steps.axe-platform.outcome == 'failure' ||
+          steps.axe-financing-calculator.outcome == 'failure' ||
+          steps.axe-trade-in-estimator.outcome == 'failure' ||
+          steps.axe-dashboard.outcome == 'failure' ||
+          steps.axe-crm.outcome == 'failure' ||
+          steps.axe-inventory.outcome == 'failure' ||
+          steps.axe-appointments.outcome == 'failure' ||
+          steps.axe-customers.outcome == 'failure' ||
+          steps.axe-analytics.outcome == 'failure' ||
+          steps.axe-staff-activity.outcome == 'failure' ||
+          steps.axe-settings.outcome == 'failure'
         run: |
           echo "One or more axe-core audits failed — check the 'axe: <page>' step logs above, or the Summarize axe outcomes step's job summary, for which page(s)."
           exit 1

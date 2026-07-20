@@ -3,7 +3,7 @@
    identical styles across pages/elements automatically dedupe. */
 
 .is-bb36f19f { width: 22px; height: 22px; border-radius: 6px; background: oklch(55% 0.16 260); display: block; }
-.is-4330c69b { padding: 8px 10px 14px; font: 400 13px 'IBM Plex Mono', monospace; color: oklch(55% 0.01 260); border: 1px solid oklch(30% 0.01 260); border-radius: 8px; margin-bottom: 16px; display: flex; justify-content: space-between; }
+.is-4330c69b { padding: 8px 10px 14px; font: 400 13px 'IBM Plex Mono', monospace; color: oklch(78% 0.01 260); border: 1px solid oklch(30% 0.01 260); border-radius: 8px; margin-bottom: 16px; display: flex; justify-content: space-between; }
 .is-df55b60c { margin-top: auto; display: flex; flex-direction: column; gap: 2px; padding-top: 14px; border-top: 1px solid oklch(28% 0.01 260); }
 .is-134698af { display: flex; align-items: center; gap: 10px; padding: 9px 10px; }
 .is-3d056148 { width: 26px; height: 26px; border-radius: 50%; background: oklch(50% 0.1 200); }
@@ -46,7 +46,6 @@
 .is-1c20bbe6 { display: flex; align-items: center; gap: 12px; }
 .is-15cb806b { width: 110px; font: 500 13px; color: oklch(35% 0.01 260); }
 .is-24851e63 { flex: 1; background: oklch(95% 0.005 260); border-radius: 5px; height: 20px; position: relative; }
-.is-f8ed189c { height: 100%; border-radius: 5px; background: ${stage.color}; width: ${Math.min(width, 100)}%; }
 .is-8250b786 { width: 34px; text-align: right; font: 600 13px; }
 .is-a8e69e4e { display: flex; gap: 4px; background: oklch(96% 0.004 260); padding: 4px; border-radius: 9px; margin-left: 20px; }
 .is-1bf973c9 { padding: 8px 16px; border-radius: 8px; font: 500 13px; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.08); border: none; cursor: pointer; }
@@ -82,20 +81,17 @@
 .is-02513184 { font: 400 13px; color: oklch(45% 0.01 260); display: flex; flex-direction: column; gap: 8px; }
 .is-6ba6dba6 { width: 230px; flex: none; }
 .is-8950168e { display: flex; align-items: center; gap: 8px; padding: 0 4px 12px; }
-.is-5ed77ee8 { width: 7px; height: 7px; border-radius: 50%; background: ${stage.color}; }
 .is-ec940996 { font: 600 13px; }
 .is-5ad819ce { font: 500 12px; color: oklch(55% 0.01 260); }
 .is-e327efce { display: flex; flex-direction: column; gap: 10px; min-height: 400px; padding: 8px; border-radius: 8px; background: oklch(98% 0.003 260); }
 .is-b219fdf3 { background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 14px; cursor: grab; user-select: none; transition: all 0.2s ease; touch-action: none; }
 .is-25ebd687 { display: flex; justify-content: space-between; margin-bottom: 8px; }
-.is-2e99316f { width: 6px; height: 6px; border-radius: 50%; background: ${lead.priority === 'High' ? 'oklch(60% 0.14 55)' : 'oklch(70% 0.01 260)'}; }
 .is-f6501b31 { font: 400 12px; color: oklch(45% 0.01 260); margin-bottom: 10px; }
 .is-948e6d6e { display: flex; justify-content: space-between; align-items: center; }
 .is-112a74ce { font: 500 11px; padding: 3px 7px; border-radius: 5px; background: oklch(95% 0.006 260); color: oklch(45% 0.01 260); }
 .is-5a55404e { width: 20px; height: 20px; border-radius: 50%; background: oklch(85% 0.05 260); }
 .is-d91df727 { display: grid; grid-template-columns: 1.4fr 1.2fr 1fr 1fr 0.8fr 1fr; padding: 14px 20px; border-top: 1px solid oklch(94% 0.005 260); align-items: center; font: 400 13px; cursor: pointer; }
 .is-93e08d6f { font: 500 11px; padding: 4px 9px; border-radius: 999px; background: oklch(94% 0.03 260); color: oklch(45% 0.16 260); }
-.is-25130899 { color: ${lead.priority === 'High' ? 'oklch(60% 0.14 55)' : 'oklch(70% 0.01 260)'}; }
 .is-bd9db1cb { display: flex; align-items: center; gap: 8px; }
 .is-94e51f7f { width: 18px; height: 18px; border-radius: 50%; background: oklch(85% 0.05 260); }
 .is-800a82fa { display: flex; gap: 12px; }
@@ -135,15 +131,13 @@
 .is-f8fe0cda { color: oklch(45% 0.16 260); font-weight: 500; text-decoration: none; }
 .is-adc0edca { font: 400 12px; color: oklch(50% 0.01 260); margin-bottom: 8px; }
 .is-2f2acdc5 { color: oklch(45% 0.16 260); font: 500 12px; text-decoration: none; }
-.is-90d68b40 { font: 500 11px; padding: 4px 9px; border-radius: 999px; background: ${bg}; color: ${color}; }
 .is-3fa6ef03 { display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none; }
 .is-1cd5d92b { display: flex; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; background: oklch(30% 0.02 260); color: #fff; text-decoration: none; }
 .is-3146e5eb { font: 600 18px 'Space Grotesk', sans-serif; }
 .is-d162d34a { width: auto; padding: 0 10px; }
 .is-872b78c6 { font: 500 13px; padding: 8px 14px; background: oklch(20% 0.012 260); color: #fff; border-radius: 8px; border: none; cursor: pointer; }
 .is-0e4b26d6 { display: none; padding: 8px 24px 24px; }
-.is-76eea457 { ${isToday ? 'color: oklch(45% 0.16 260);' : ''} }
-.is-602a9b5e { opacity:.85; }
+.is-602a9b5e { opacity: 1; }
 .is-577b8940 { padding: 20px; text-align: center; color: oklch(50% 0.01 260); }
 .is-14afaecd { display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid oklch(95% 0.003 260); }
 .is-103f41a5 { min-width: 130px; font: 600 13px; color: oklch(45% 0.16 260); }
@@ -161,7 +155,6 @@
 .is-206399af { color: oklch(45% 0.01 260); font-size: 12px; }
 .is-b41ec639 { font: 500 11px; padding: 3px 8px; border-radius: 999px; background: oklch(90% 0.1 145); color: oklch(30% 0.08 145); }
 .is-521521ca { color: oklch(50% 0.01 260); font-size: 13px; }
-.is-2900fefd { width: ${Math.max((value / max) * 100, 8)}%; }
 .is-23f5dd9b { display: grid; grid-template-columns: 1.4fr 1.4fr 1fr 1fr 1fr 1fr; background: oklch(97% 0.004 90); padding: 12px 20px; font: 600 11px 'IBM Plex Mono', monospace; text-transform: uppercase; letter-spacing: 0.04em; color: oklch(50% 0.01 260); }
 .is-69c2f96a { padding: 40px; text-align: center; color: oklch(50% 0.01 260); }
 .is-e8be4049 { display: grid; grid-template-columns: 1.4fr 1.4fr 1fr 1fr 1fr 1fr; padding: 14px 20px; border-top: 1px solid oklch(94% 0.005 260); align-items: center; font: 400 13px; }
@@ -190,6 +183,5 @@
 .is-bc4d4839 { color: oklch(50% 0.01 260); font: 400 13px sans-serif; }
 .is-3d25ce3b { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid oklch(95% 0.003 260); }
 .is-d4cbd094 { width: 26px; height: 26px; border-radius: 50%; background: oklch(85% 0.05 260); }
-.is-ebdac2cf { font: 500 11px; padding: 3px 8px; border-radius: 999px; background: ${m.active ? 'oklch(90% 0.1 145)' : 'oklch(92% 0.005 260)'}; color: ${m.active ? 'oklch(30% 0.08 145)' : 'oklch(50% 0.01 260)'}; }
 
 .is-f42717e9 { text-align: center; padding: 12px 0; }

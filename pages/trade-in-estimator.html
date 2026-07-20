@@ -35,14 +35,14 @@
   </style>
 </head>
 <body>
-  <div class="container">
+  <main class="container">
     <div class="card">
       <h1>Trade-in Estimator</h1>
       <p class="subtitle">Get an instant valuation for your current vehicle</p>
 
       <div class="form-grid">
         <div>
-          <label>Vehicle Year</label>
+          <label for="year">Vehicle Year</label>
           <select id="year" onchange="calculateEstimate()">
             <option value="2024">2024</option>
             <option value="2023">2023</option>
@@ -53,7 +53,7 @@
         </div>
 
         <div>
-          <label>Make</label>
+          <label for="make">Make</label>
           <select id="make" onchange="calculateEstimate()">
             <option value="BMW">BMW</option>
             <option value="Mercedes">Mercedes-Benz</option>
@@ -64,17 +64,17 @@
         </div>
 
         <div>
-          <label>Model</label>
+          <label for="model">Model</label>
           <input type="text" id="model" placeholder="e.g., X7, S-Class" value="X7" oninput="calculateEstimate()">
         </div>
 
         <div>
-          <label>Mileage (km)</label>
+          <label for="mileage">Mileage (km)</label>
           <input type="number" id="mileage" placeholder="e.g., 50000" value="30000" oninput="calculateEstimate()">
         </div>
 
         <div class="form-full">
-          <label>Condition</label>
+          <label for="condition">Condition</label>
           <input type="range" id="condition" min="1" max="5" step="1" value="4" class="condition-slider" oninput="calculateEstimate()">
           <div class="condition-labels">
             <span>Poor</span>
@@ -113,7 +113,7 @@
 
       <button type="button" class="button" onclick="submitEstimate()">Get Appraisal &amp; Trade-in Offer</button>
     </div>
-  </div>
+  </main>
 
   <script>
     function calculateEstimate() {
