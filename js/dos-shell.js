@@ -4,6 +4,7 @@
  *  - A single EventSource connection per page (window.DosShell.onEvent)
  *  - Command palette (Cmd/Ctrl+K, or click the sidebar search box)
  *  - A live notification bell fed by the same event stream
+ *  - A shared toast() helper for save/action confirmations
  */
 (function () {
   const NAV_ITEMS = [
@@ -19,6 +20,10 @@
 
   function authHeader() {
     return { Authorization: 'Basic ' + btoa('admin:admin') };
+  }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
 
   // ---------- Single shared SSE connection ----------
@@ -46,20 +51,51 @@
     console.warn('EventSource unavailable:', err.message);
   }
 
-  window.DosShell = { onEvent };
+  // ---------- Toast ----------
+  let toastContainer;
+
+  function toast(message, kind) {
+    if (!toastContainer) {
+      toastContainer = document.createElement('div');
+      toastContainer.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:1200;display:flex;flex-direction:column;gap:8px;align-items:center;';
+      toastContainer.setAttribute('aria-live', 'polite');
+      document.body.appendChild(toastContainer);
+    }
+    const mark = kind === 'error' ? { glyph: '✕', color: 'oklch(65% 0.18 25)' } : { glyph: '✓', color: 'oklch(60% 0.14 145)' };
+    const pill = document.createElement('div');
+    pill.style.cssText = 'display:inline-flex;align-items:center;gap:10px;padding:12px 16px;background:oklch(20% 0.012 260);border-radius:9px;box-shadow:0 12px 32px rgba(0,0,0,0.25);opacity:0;transform:translateY(8px);transition:opacity 150ms ease,transform 150ms ease;';
+    pill.innerHTML = `<span style="color:${mark.color};">${mark.glyph}</span><span style="font:500 13px 'IBM Plex Sans',sans-serif;color:#fff;">${esc(message)}</span>`;
+    toastContainer.appendChild(pill);
+    requestAnimationFrame(() => { pill.style.opacity = '1'; pill.style.transform = 'translateY(0)'; });
+    setTimeout(() => {
+      pill.style.opacity = '0';
+      pill.style.transform = 'translateY(8px)';
+      setTimeout(() => pill.remove(), 200);
+    }, 3000);
+  }
+
+  window.DosShell = { onEvent, toast };
 
   // ---------- Command palette ----------
   let paletteEl, paletteInput, paletteResults;
   let searchCache = { leads: null, vehicles: null };
+  let paletteRows = [];
+  let paletteActiveIndex = -1;
 
   function buildPalette() {
     paletteEl = document.createElement('div');
     paletteEl.id = 'dosPalette';
-    paletteEl.style.cssText = 'position:fixed;inset:0;background:rgba(10,12,20,0.5);display:none;align-items:flex-start;justify-content:center;padding-top:14vh;z-index:1000;';
+    paletteEl.setAttribute('role', 'dialog');
+    paletteEl.setAttribute('aria-modal', 'true');
+    paletteEl.setAttribute('aria-label', 'Command palette');
+    paletteEl.style.cssText = 'position:fixed;inset:0;background:rgba(10,12,20,0.6);display:none;align-items:flex-start;justify-content:center;padding-top:14vh;z-index:1000;';
     paletteEl.innerHTML = `
-      <div style="width:560px;max-width:92vw;background:#fff;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.3);overflow:hidden;">
-        <input id="dosPaletteInput" placeholder="Search leads, vehicles, or jump to a page..." style="width:100%;box-sizing:border-box;border:none;outline:none;padding:16px 18px;font:400 15px 'IBM Plex Sans',sans-serif;border-bottom:1px solid oklch(93% 0.005 260);">
-        <div id="dosPaletteResults" style="max-height:360px;overflow-y:auto;"></div>
+      <div style="width:560px;max-width:92vw;background:oklch(20% 0.012 260);border-radius:14px;box-shadow:0 30px 60px -20px rgba(0,0,0,0.5);overflow:hidden;">
+        <div style="display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid oklch(30% 0.01 260);">
+          <span style="color:oklch(55% 0.01 260);font:500 12px 'IBM Plex Mono',monospace;">⌘K</span>
+          <input id="dosPaletteInput" aria-label="Search leads, vehicles, or jump to a page" autocomplete="off" placeholder="Search leads, vehicles, or jump to a page..." style="flex:1;background:transparent;border:none;outline:none;padding:2px 0;font:400 15px 'IBM Plex Sans',sans-serif;color:#fff;">
+        </div>
+        <div id="dosPaletteResults" role="listbox" style="max-height:360px;overflow-y:auto;padding:8px;"></div>
       </div>
     `;
     document.body.appendChild(paletteEl);
@@ -67,6 +103,7 @@
     paletteResults = document.getElementById('dosPaletteResults');
     paletteEl.addEventListener('click', (e) => { if (e.target === paletteEl) closePalette(); });
     paletteInput.addEventListener('input', () => renderPaletteResults(paletteInput.value));
+    paletteInput.addEventListener('keydown', onPaletteKeydown);
   }
 
   function openPalette() {
@@ -80,6 +117,10 @@
 
   function closePalette() {
     if (paletteEl) paletteEl.style.display = 'none';
+  }
+
+  function isPaletteOpen() {
+    return !!paletteEl && paletteEl.style.display === 'flex';
   }
 
   async function prefetchSearchData() {
@@ -98,51 +139,74 @@
     renderPaletteResults(paletteInput.value);
   }
 
-  function esc(s) {
-    return String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  }
-
   function renderPaletteResults(query) {
     const q = query.trim().toLowerCase();
-    const rows = [];
+    const groups = [];
 
-    NAV_ITEMS.forEach((item) => {
-      if (!q || item.label.toLowerCase().includes(q)) {
-        rows.push({ type: 'Page', icon: item.icon, label: item.label, sub: 'Go to page', href: item.href });
-      }
-    });
+    const pageRows = NAV_ITEMS.filter((item) => !q || item.label.toLowerCase().includes(q))
+      .map((item) => ({ icon: item.icon, label: item.label, sub: 'Go to page', href: item.href }));
+    if (pageRows.length) groups.push({ title: 'Pages', rows: pageRows });
 
     if (q) {
-      (searchCache.leads || []).forEach((lead) => {
-        const hay = (lead.name + ' ' + lead.carName).toLowerCase();
-        if (hay.includes(q)) {
-          rows.push({ type: 'Lead', icon: '☎', label: lead.name, sub: lead.carName + ' · ' + (lead.status || 'NEW'), href: 'crm.html' });
-        }
-      });
+      const leadRows = (searchCache.leads || [])
+        .filter((lead) => (lead.name + ' ' + lead.carName).toLowerCase().includes(q))
+        .map((lead) => ({ icon: '☎', label: lead.name, sub: lead.carName + ' · ' + (lead.status || 'NEW'), href: 'crm.html' }));
+      if (leadRows.length) groups.push({ title: 'Leads', rows: leadRows });
 
-      (searchCache.vehicles || []).forEach((v) => {
-        const hay = (v.make + ' ' + v.model).toLowerCase();
-        if (hay.includes(q)) {
-          rows.push({ type: 'Vehicle', icon: '▤', label: `${v.make} ${v.model}`, sub: '₦' + v.price.toLocaleString(), href: 'inventory.html' });
-        }
-      });
+      const vehicleRows = (searchCache.vehicles || [])
+        .filter((v) => (v.make + ' ' + v.model).toLowerCase().includes(q))
+        .map((v) => ({ icon: '▤', label: `${v.make} ${v.model}`, sub: '₦' + v.price.toLocaleString(), href: 'inventory.html' }));
+      if (vehicleRows.length) groups.push({ title: 'Vehicles', rows: vehicleRows });
     }
 
-    if (rows.length === 0) {
-      paletteResults.innerHTML = '<div style="padding:24px;text-align:center;color:oklch(50% 0.01 260);font:400 13px sans-serif;">No results</div>';
+    paletteRows = groups.flatMap((g) => g.rows);
+    paletteActiveIndex = paletteRows.length ? 0 : -1;
+
+    if (paletteRows.length === 0) {
+      paletteResults.innerHTML = '<div style="padding:24px;text-align:center;color:oklch(60% 0.01 260);font:400 13px sans-serif;">No results</div>';
       return;
     }
 
-    paletteResults.innerHTML = rows.slice(0, 20).map((r) => `
-      <a href="${esc(r.href)}" style="display:flex;align-items:center;gap:12px;padding:12px 18px;text-decoration:none;color:inherit;border-bottom:1px solid oklch(96% 0.003 260);">
-        <div style="width:28px;text-align:center;">${r.icon}</div>
-        <div style="flex:1;">
-          <div style="font:500 13px 'IBM Plex Sans',sans-serif;color:oklch(20% 0.01 260);">${esc(r.label)}</div>
-          <div style="font:400 12px 'IBM Plex Sans',sans-serif;color:oklch(50% 0.01 260);">${esc(r.sub)}</div>
-        </div>
-        <div style="font:500 10px 'IBM Plex Mono',monospace;color:oklch(60% 0.01 260);text-transform:uppercase;">${r.type}</div>
-      </a>
+    let rowIndex = -1;
+    paletteResults.innerHTML = groups.map((g) => `
+      <div style="font:500 11px 'IBM Plex Mono',monospace;color:oklch(55% 0.01 260);text-transform:uppercase;letter-spacing:0.05em;padding:8px 10px 6px;">${esc(g.title)}</div>
+      ${g.rows.map((r) => {
+        rowIndex++;
+        return `
+          <a href="${esc(r.href)}" data-row-index="${rowIndex}" role="option" style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;text-decoration:none;color:inherit;">
+            <div style="width:24px;text-align:center;color:oklch(70% 0.01 260);">${r.icon}</div>
+            <div style="color:#fff;font:500 13px 'IBM Plex Sans',sans-serif;">${esc(r.label)} <span style="color:oklch(60% 0.01 260);font-weight:400;">— ${esc(r.sub)}</span></div>
+          </a>
+        `;
+      }).join('')}
     `).join('');
+
+    highlightActiveRow();
+  }
+
+  function highlightActiveRow() {
+    paletteResults.querySelectorAll('[data-row-index]').forEach((el) => {
+      const isActive = Number(el.dataset.rowIndex) === paletteActiveIndex;
+      el.style.background = isActive ? 'oklch(28% 0.01 260)' : 'transparent';
+      el.setAttribute('aria-selected', String(isActive));
+      if (isActive) el.scrollIntoView({ block: 'nearest' });
+    });
+  }
+
+  function onPaletteKeydown(e) {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (paletteRows.length) paletteActiveIndex = (paletteActiveIndex + 1) % paletteRows.length;
+      highlightActiveRow();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (paletteRows.length) paletteActiveIndex = (paletteActiveIndex - 1 + paletteRows.length) % paletteRows.length;
+      highlightActiveRow();
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      const active = paletteRows[paletteActiveIndex];
+      if (active) window.location.href = active.href;
+    }
   }
 
   document.addEventListener('keydown', (e) => {
@@ -150,7 +214,7 @@
       e.preventDefault();
       openPalette();
     }
-    if (e.key === 'Escape') closePalette();
+    if (e.key === 'Escape' && isPaletteOpen()) closePalette();
   });
 
   // ---------- Notification bell ----------
@@ -175,19 +239,21 @@
       case 'vehicle.created': return `Vehicle added: ${p.make} ${p.model}`;
       case 'vehicle.updated': return `Vehicle updated: ${(p.make || '') + ' ' + (p.model || '')}`.trim();
       case 'vehicle.deleted': return 'Vehicle removed from inventory';
+      case 'customer.created': return `New customer: ${p.name}`;
       default: return evt.type;
     }
   }
 
   function renderNotifPanel() {
     if (!notifPanel) return;
+    const body = notifPanel.querySelector('[data-notif-body]');
     if (notifications.length === 0) {
-      notifPanel.innerHTML = '<div style="padding:20px;text-align:center;color:oklch(50% 0.01 260);font:400 13px sans-serif;">No notifications yet</div>';
+      body.innerHTML = '<div style="padding:20px;text-align:center;color:oklch(50% 0.01 260);font:400 13px sans-serif;">No notifications yet</div>';
       return;
     }
-    notifPanel.innerHTML = notifications.map((n) => `
-      <div style="display:flex;gap:10px;padding:12px 16px;border-bottom:1px solid oklch(96% 0.003 260);">
-        <div style="width:24px;">${iconFor(n.type)}</div>
+    body.innerHTML = notifications.map((n) => `
+      <div style="display:flex;gap:10px;padding:12px 16px;border-bottom:1px solid oklch(95% 0.004 260);background:${n.read ? '#fff' : 'oklch(98% 0.01 260)'};">
+        <div style="width:8px;height:8px;border-radius:50%;background:${n.read ? 'transparent' : 'oklch(45% 0.16 260)'};margin-top:6px;flex:none;"></div>
         <div style="flex:1;">
           <div style="font:400 13px 'IBM Plex Sans',sans-serif;color:oklch(25% 0.01 260);">${esc(textFor(n))}</div>
           <div style="font:400 11px 'IBM Plex Mono',monospace;color:oklch(55% 0.01 260);margin-top:2px;">${new Date(n.at).toLocaleTimeString()}</div>
@@ -196,30 +262,51 @@
     `).join('');
   }
 
+  function markAllRead() {
+    notifications.forEach((n) => { n.read = true; });
+    renderNotifPanel();
+    if (notifBadge) notifBadge.style.display = 'none';
+  }
+
   function initBell() {
     const bellWrap = document.querySelector('[data-dos-bell]');
     if (!bellWrap) return;
     bellWrap.style.position = 'relative';
     bellWrap.style.cursor = 'pointer';
+    bellWrap.setAttribute('role', 'button');
+    bellWrap.setAttribute('tabindex', '0');
+    bellWrap.setAttribute('aria-label', 'Notifications');
     notifBadge = bellWrap.querySelector('[data-dos-bell-dot]');
     if (notifBadge) notifBadge.style.display = 'none';
 
     notifPanel = document.createElement('div');
-    notifPanel.style.cssText = 'position:absolute;top:24px;right:0;width:320px;max-height:400px;overflow-y:auto;background:#fff;border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,0.18);display:none;z-index:1001;';
+    notifPanel.setAttribute('role', 'region');
+    notifPanel.setAttribute('aria-label', 'Notifications list');
+    notifPanel.style.cssText = 'position:absolute;top:24px;right:0;width:320px;max-height:420px;overflow-y:auto;background:#fff;border-radius:10px;box-shadow:0 12px 32px rgba(0,0,0,0.18);display:none;z-index:1001;';
+    notifPanel.innerHTML = `
+      <div style="padding:14px 16px;border-bottom:1px solid oklch(93% 0.005 260);display:flex;justify-content:space-between;align-items:center;">
+        <div style="font:600 14px 'Space Grotesk',sans-serif;">Notifications</div>
+        <button type="button" data-mark-all style="font:500 12px 'IBM Plex Sans',sans-serif;color:oklch(45% 0.16 260);background:none;border:none;cursor:pointer;padding:0;">Mark all read</button>
+      </div>
+      <div data-notif-body></div>
+    `;
     bellWrap.appendChild(notifPanel);
+    notifPanel.querySelector('[data-mark-all]').addEventListener('click', (e) => { e.stopPropagation(); markAllRead(); });
     renderNotifPanel();
 
-    bellWrap.addEventListener('click', (e) => {
-      e.stopPropagation();
+    const toggle = () => {
       const isOpen = notifPanel.style.display === 'block';
       notifPanel.style.display = isOpen ? 'none' : 'block';
-      if (!isOpen && notifBadge) notifBadge.style.display = 'none';
+    };
+    bellWrap.addEventListener('click', (e) => { e.stopPropagation(); toggle(); });
+    bellWrap.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
     });
     document.addEventListener('click', () => { notifPanel.style.display = 'none'; });
   }
 
   function pushNotification(evt) {
-    notifications.unshift(evt);
+    notifications.unshift(Object.assign({ read: false }, evt));
     if (notifications.length > NOTIF_MAX) notifications.pop();
     renderNotifPanel();
     if (notifBadge) notifBadge.style.display = 'block';
@@ -229,15 +316,30 @@
     const box = document.querySelector('[data-dos-search]');
     if (box) {
       box.style.cursor = 'pointer';
+      box.setAttribute('role', 'button');
+      box.setAttribute('tabindex', '0');
+      box.setAttribute('aria-label', 'Open command palette');
       box.addEventListener('click', openPalette);
+      box.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPalette(); }
+      });
     }
+  }
+
+  function labelIconOnlyNav() {
+    document.querySelectorAll('.dos-nav-item, .dos-navitem').forEach((el) => {
+      if (!el.getAttribute('aria-label') && el.textContent.trim()) {
+        el.setAttribute('aria-label', el.textContent.trim().replace(/^[^\w]+/, '').trim());
+      }
+    });
   }
 
   function init() {
     initSearchBox();
     initBell();
+    labelIconOnlyNav();
     onEvent(
-      ['lead.created', 'lead.updated', 'appointment.created', 'appointment.updated', 'vehicle.created', 'vehicle.updated', 'vehicle.deleted'],
+      ['lead.created', 'lead.updated', 'appointment.created', 'appointment.updated', 'vehicle.created', 'vehicle.updated', 'vehicle.deleted', 'customer.created'],
       pushNotification
     );
   }

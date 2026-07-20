@@ -13,13 +13,6 @@
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/dashboard.css">
   <link rel="stylesheet" href="../css/crm.css">
-  <style>
-    .dos-shell {
-      display: grid;
-      grid-template-columns: 236px 1fr;
-      min-height: 100vh;
-    }
-  </style>
 </head>
 <body class="dos-body">
 
@@ -148,6 +141,13 @@
             <div style="font: 600 12px; text-transform: uppercase; letter-spacing: 0.04em; color: oklch(50% 0.01 260); margin-bottom: 12px;">Tasks</div>
             <div style="display: flex; flex-direction: column; gap: 10px; font: 400 13px;" id="detailTasks">
               <!-- Tasks will be populated by JS -->
+            </div>
+          </div>
+
+          <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 18px;">
+            <div style="font: 600 12px; text-transform: uppercase; letter-spacing: 0.04em; color: oklch(50% 0.01 260); margin-bottom: 12px;">Documents</div>
+            <div style="font: 400 13px; color: oklch(45% 0.01 260); display: flex; flex-direction: column; gap: 8px;" id="detailDocuments">
+              <!-- Documents will be populated by JS -->
             </div>
           </div>
         </div>
@@ -355,6 +355,16 @@
         </div>
       </div>
     `;
+
+    // Documents (derived from lead source — a trade-in submission attaches an estimate)
+    const documents = document.getElementById('detailDocuments');
+    if (lead.source === 'trade-in-estimator') {
+      documents.innerHTML = `<div>📄 Trade-in_estimate_${lead.id.slice(-6)}.pdf</div>`;
+    } else if (lead.source === 'financing-calculator') {
+      documents.innerHTML = `<div>📄 Financing_application_${lead.id.slice(-6)}.pdf</div>`;
+    } else {
+      documents.innerHTML = `<div style="color: oklch(55% 0.01 260);">No documents attached</div>`;
+    }
   }
 
   // Select a lead for detail view

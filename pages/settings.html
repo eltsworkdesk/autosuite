@@ -8,7 +8,6 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/dashboard.css">
-  <style>.dos-shell { display: grid; grid-template-columns: 236px 1fr; min-height: 100vh; }</style>
 </head>
 <body class="dos-body">
 <div class="dos-shell">
@@ -70,7 +69,6 @@
           </div>
           <div style="display: flex; align-items: center; gap: 12px;">
             <button type="button" onclick="saveDealership()" style="font: 500 13px; padding: 10px 18px; border-radius: 8px; background: oklch(45% 0.16 260); color: #fff; border: none; cursor: pointer;">Save changes</button>
-            <span id="saveStatus" style="font: 400 12px; color: oklch(50% 0.13 145);"></span>
           </div>
         </div>
       </div>
@@ -101,9 +99,6 @@
   }
 
   async function saveDealership() {
-    const status = document.getElementById('saveStatus');
-    status.textContent = 'Saving...';
-    status.style.color = 'oklch(50% 0.01 260)';
     try {
       const res = await fetch('/api/dealership', {
         method: 'PATCH',
@@ -117,11 +112,9 @@
         })
       });
       if (!res.ok) throw new Error((await res.json()).error || 'Save failed');
-      status.textContent = 'Saved';
-      status.style.color = 'oklch(50% 0.13 145)';
+      DosShell.toast('Saved successfully');
     } catch (err) {
-      status.textContent = 'Error: ' + err.message;
-      status.style.color = 'oklch(50% 0.15 25)';
+      DosShell.toast('Could not save: ' + err.message, 'error');
     }
   }
 
