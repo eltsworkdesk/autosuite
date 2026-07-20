@@ -251,6 +251,9 @@
                   <div class="is-112a74ce">${lead.source}</div>
                   <div class="is-5a55404e"></div>
                 </div>
+                <select class="kanban-move" aria-label="Move ${lead.name} to stage" style="width: 100%; margin-top: 8px; font: 500 11px 'IBM Plex Sans', sans-serif; padding: 4px 6px; border-radius: 6px; border: 1px solid oklch(91% 0.005 260); background: #fff;" onclick="event.stopPropagation()" onchange="event.stopPropagation(); moveLeadToStage('${lead.id}', this.value)">
+                  ${STAGES.map(s => `<option value="${s.dbName}" ${s.dbName === stage.dbName ? 'selected' : ''}>${s.name}</option>`).join('')}
+                </select>
               </div>
             `).join('')}
           </div>
@@ -294,27 +297,34 @@
           e.preventDefault();
           column.style.background = 'oklch(98% 0.003 260)';
           const leadId = e.dataTransfer.getData('leadId');
-          const newStatus = column.dataset.stage.toUpperCase();
-
-          try {
-            const auth = btoa('admin:admin');
-            const res = await fetch(`/api/leads/${leadId}`, {
-              method: 'PATCH',
-              headers: {
-                'Authorization': `Basic ${auth}`,
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ status: newStatus })
-            });
-            if (res.ok) {
-              await fetchLeads();
-            }
-          } catch (err) {
-            console.error('Error updating lead:', err);
-          }
+          await moveLeadToStage(leadId, column.dataset.stage.toUpperCase());
         });
       });
     }, 100);
+  }
+
+  // Shared by both drag-and-drop and the per-card "Move to" select, so
+  // keyboard users have a non-drag way to change a lead's stage.
+  async function moveLeadToStage(leadId, newStatus) {
+    try {
+      const auth = btoa('admin:admin');
+      const res = await fetch(`/api/leads/${leadId}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `Basic ${auth}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status: newStatus })
+      });
+      if (res.ok) {
+        await fetchLeads();
+      } else {
+        DosShell.toast('Could not move lead', 'error');
+      }
+    } catch (err) {
+      console.error('Error updating lead:', err);
+      DosShell.toast('Could not move lead: ' + err.message, 'error');
+    }
   }
 
   // Render table view
