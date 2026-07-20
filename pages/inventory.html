@@ -307,23 +307,36 @@
 
   async function openBulkActions() {
     if (selectedIds.size === 0) return;
-    const status = prompt(`Set status for ${selectedIds.size} selected vehicle(s):\n(active / featured / draft / sold)`, 'active');
-    if (!status || !['active', 'featured', 'draft', 'sold'].includes(status)) return;
-    try {
-      await Promise.all([...selectedIds].map(id =>
-        fetch(`/api/vehicles/${id}`, {
-          method: 'PATCH',
-          headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
-          body: JSON.stringify({ status })
-        })
-      ));
-      DosShell.toast(`Updated ${selectedIds.size} vehicle(s)`);
-      selectedIds = new Set();
-      document.getElementById('bulkActionsBtn').disabled = true;
-      await fetchVehicles();
-    } catch (err) {
-      DosShell.toast('Bulk update failed: ' + err.message, 'error');
-    }
+    const result = await DosShell.openModal({
+      title: `Update ${selectedIds.size} selected vehicle${selectedIds.size === 1 ? '' : 's'}`,
+      confirmLabel: 'Apply',
+      focusSelector: '#bulkStatus',
+      bodyHtml: `
+        <label for="bulkStatus" style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">New status</label>
+        <select id="bulkStatus" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+          <option value="active">Active</option>
+          <option value="featured">Featured</option>
+          <option value="draft">Draft</option>
+          <option value="sold">Sold</option>
+        </select>
+      `,
+      onConfirm: async (overlay) => {
+        const status = overlay.querySelector('#bulkStatus').value;
+        await Promise.all([...selectedIds].map(id =>
+          fetch(`/api/vehicles/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
+            body: JSON.stringify({ status })
+          })
+        ));
+        return true;
+      }
+    });
+    if (!result) return;
+    DosShell.toast(`Updated ${selectedIds.size} vehicle(s)`);
+    selectedIds = new Set();
+    document.getElementById('bulkActionsBtn').disabled = true;
+    await fetchVehicles();
   }
 
   function openQuickEdit(id) {
@@ -378,26 +391,53 @@
   }
 
   async function promptAddVehicle() {
-    const make = prompt('Make (e.g., Toyota):');
-    if (!make) return;
-    const model = prompt('Model (e.g., Camry):');
-    if (!model) return;
-    const year = prompt('Year:', '2024');
-    const price = prompt('Price (₦):', '25000000');
-    const body = prompt('Body type (Sedan/SUV/Truck/Coupe):', 'Sedan');
-    const vin = prompt('VIN:', 'DEMO' + Date.now());
-    try {
-      const res = await fetch('/api/vehicles', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
-        body: JSON.stringify({ vin, make, model, year, price, body, mileage: 0, status: 'active' })
-      });
-      if (!res.ok) throw new Error((await res.json()).error || 'Create failed');
-      DosShell.toast('Vehicle added');
-      await fetchVehicles();
-    } catch (err) {
-      DosShell.toast('Could not add vehicle: ' + err.message, 'error');
-    }
+    const field = (id, label, value = '', type = 'text') => `
+      <div style="margin-bottom: 14px;">
+        <label for="${id}" style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">${label}</label>
+        <input id="${id}" type="${type}" value="${value}" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+      </div>
+    `;
+    const result = await DosShell.openModal({
+      title: 'Add vehicle',
+      confirmLabel: 'Add vehicle',
+      focusSelector: '#avMake',
+      bodyHtml: `
+        ${field('avMake', 'Make', '', 'text')}
+        ${field('avModel', 'Model', '', 'text')}
+        ${field('avYear', 'Year', '2024', 'number')}
+        ${field('avPrice', 'Price (₦)', '25000000', 'number')}
+        <div style="margin-bottom: 14px;">
+          <label for="avBody" style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Body type</label>
+          <select id="avBody" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+            <option>Sedan</option><option>SUV</option><option>Truck</option><option>Coupe</option>
+          </select>
+        </div>
+        ${field('avVin', 'VIN', 'DEMO' + Date.now(), 'text')}
+      `,
+      onConfirm: async (overlay) => {
+        const make = overlay.querySelector('#avMake').value.trim();
+        const model = overlay.querySelector('#avModel').value.trim();
+        if (!make || !model) throw new Error('Make and model are required');
+        const res = await fetch('/api/vehicles', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
+          body: JSON.stringify({
+            vin: overlay.querySelector('#avVin').value.trim(),
+            make, model,
+            year: overlay.querySelector('#avYear').value,
+            price: overlay.querySelector('#avPrice').value,
+            body: overlay.querySelector('#avBody').value,
+            mileage: 0,
+            status: 'active'
+          })
+        });
+        if (!res.ok) throw new Error((await res.json()).error || 'Create failed');
+        return true;
+      }
+    });
+    if (!result) return;
+    DosShell.toast('Vehicle added');
+    await fetchVehicles();
   }
 
   fetchVehicles();

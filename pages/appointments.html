@@ -258,37 +258,70 @@
   });
 
   async function promptNewAppointment() {
+    let leads = [];
     try {
       const res = await fetch('/api/leads', { headers: { 'Authorization': 'Basic ' + btoa('admin:admin') } });
       const data = await res.json();
-      const leads = data.leads || [];
-      if (leads.length === 0) {
-        alert('No leads available to schedule. Create a lead first.');
-        return;
-      }
-      const listText = leads.map((l, i) => `${i + 1}. ${l.name} — ${l.carName}`).join('\n');
-      const choice = prompt(`Select a lead by number:\n${listText}`);
-      const idx = parseInt(choice) - 1;
-      if (isNaN(idx) || !leads[idx]) return;
-
-      const dateStr = prompt('Date (YYYY-MM-DD):', new Date().toISOString().slice(0, 10));
-      if (!dateStr) return;
-      const timeStr = prompt('Time (HH:MM, 24h):', '10:00');
-      if (!timeStr) return;
-      const type = prompt('Type (test-drive / consultation / inspection / maintenance):', 'test-drive') || 'test-drive';
-
-      const dateTime = new Date(`${dateStr}T${timeStr}:00`).toISOString();
-      const res2 = await fetch('/api/appointments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
-        body: JSON.stringify({ leadId: leads[idx].id, dateTime, type })
-      });
-      if (!res2.ok) throw new Error((await res2.json()).error || 'Create failed');
-      DosShell.toast('Appointment scheduled');
-      await fetchAppointments();
+      leads = data.leads || [];
     } catch (err) {
-      DosShell.toast('Could not schedule: ' + err.message, 'error');
+      DosShell.toast('Could not load leads: ' + err.message, 'error');
+      return;
     }
+    if (leads.length === 0) {
+      DosShell.toast('No leads available to schedule. Create a lead first.', 'error');
+      return;
+    }
+
+    const today = new Date().toISOString().slice(0, 10);
+    const result = await DosShell.openModal({
+      title: 'New appointment',
+      confirmLabel: 'Schedule',
+      focusSelector: '#naLead',
+      bodyHtml: `
+        <div style="margin-bottom: 14px;">
+          <label for="naLead" style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Lead</label>
+          <select id="naLead" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+            ${leads.map(l => `<option value="${l.id}">${esc(l.name)} — ${esc(l.carName)}</option>`).join('')}
+          </select>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+          <div>
+            <label for="naDate" style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Date</label>
+            <input id="naDate" type="date" value="${today}" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+          </div>
+          <div>
+            <label for="naTime" style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Time</label>
+            <input id="naTime" type="time" value="10:00" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+          </div>
+        </div>
+        <div>
+          <label for="naType" style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Type</label>
+          <select id="naType" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+            <option value="test-drive">Test drive</option>
+            <option value="consultation">Consultation</option>
+            <option value="inspection">Inspection</option>
+            <option value="maintenance">Maintenance</option>
+          </select>
+        </div>
+      `,
+      onConfirm: async (overlay) => {
+        const leadId = overlay.querySelector('#naLead').value;
+        const dateStr = overlay.querySelector('#naDate').value;
+        const timeStr = overlay.querySelector('#naTime').value;
+        if (!dateStr || !timeStr) throw new Error('Date and time are required');
+        const dateTime = new Date(`${dateStr}T${timeStr}:00`).toISOString();
+        const res = await fetch('/api/appointments', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
+          body: JSON.stringify({ leadId, dateTime, type: overlay.querySelector('#naType').value })
+        });
+        if (!res.ok) throw new Error((await res.json()).error || 'Create failed');
+        return true;
+      }
+    });
+    if (!result) return;
+    DosShell.toast('Appointment scheduled');
+    await fetchAppointments();
   }
 
   fetchAppointments();

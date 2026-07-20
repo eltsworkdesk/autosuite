@@ -104,7 +104,61 @@
     };
   }
 
-  window.DosShell = { onEvent, toast, trapFocus };
+  // ---------- Modal (spec 14's Modal/Drawer component: title, body,
+  // Cancel/Confirm actions, focus trap) ----------
+  function openModal({ title, bodyHtml, confirmLabel = 'Save', cancelLabel = 'Cancel', onConfirm, focusSelector }) {
+    return new Promise((resolve) => {
+      const trigger = document.activeElement;
+      const overlay = document.createElement('div');
+      overlay.style.cssText = 'position:fixed;inset:0;background:rgba(10,12,20,0.4);z-index:1150;display:flex;align-items:center;justify-content:center;padding:20px;';
+      overlay.innerHTML = `
+        <div role="dialog" aria-modal="true" aria-labelledby="dosModalTitle" style="width:420px;max-width:100%;background:#fff;border-radius:12px;box-shadow:0 20px 40px -12px rgba(0,0,0,.3);overflow:hidden;">
+          <div id="dosModalTitle" style="padding:16px 18px;border-bottom:1px solid oklch(93% 0.005 260);font:600 14px 'Space Grotesk',sans-serif;color:oklch(20% 0.01 260);">${esc(title)}</div>
+          <div data-modal-body style="padding:18px;max-height:60vh;overflow-y:auto;">${bodyHtml}</div>
+          <div data-modal-error style="padding:0 18px;color:oklch(55% 0.18 25);font:500 12px 'IBM Plex Sans',sans-serif;display:none;"></div>
+          <div style="padding:14px 18px 18px;display:flex;justify-content:flex-end;gap:8px;">
+            <button type="button" data-modal-cancel style="padding:9px 16px;border:1px solid oklch(88% 0.005 260);border-radius:8px;font:600 13px 'IBM Plex Sans',sans-serif;background:#fff;cursor:pointer;">${esc(cancelLabel)}</button>
+            <button type="button" data-modal-confirm style="padding:9px 16px;background:oklch(45% 0.16 260);color:#fff;border-radius:8px;font:600 13px 'IBM Plex Sans',sans-serif;border:none;cursor:pointer;">${esc(confirmLabel)}</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+
+      const focusTarget = (focusSelector && overlay.querySelector(focusSelector)) || overlay.querySelector('input, select, textarea');
+      if (focusTarget) focusTarget.focus();
+      const trap = trapFocus(overlay, trigger);
+
+      function close(result) {
+        trap.release();
+        document.removeEventListener('keydown', onKeydown);
+        overlay.remove();
+        resolve(result);
+      }
+
+      function onKeydown(e) {
+        if (e.key === 'Escape') close(null);
+      }
+      document.addEventListener('keydown', onKeydown);
+
+      overlay.addEventListener('mousedown', (e) => { if (e.target === overlay) close(null); });
+      overlay.querySelector('[data-modal-cancel]').addEventListener('click', () => close(null));
+      overlay.querySelector('[data-modal-confirm]').addEventListener('click', async () => {
+        const errorEl = overlay.querySelector('[data-modal-error]');
+        errorEl.style.display = 'none';
+        if (!onConfirm) return close(true);
+        try {
+          const result = await onConfirm(overlay);
+          if (result === false) return; // validation failed client-side, stay open
+          close(result === undefined ? true : result);
+        } catch (err) {
+          errorEl.textContent = err.message || 'Something went wrong';
+          errorEl.style.display = 'block';
+        }
+      });
+    });
+  }
+
+  window.DosShell = { onEvent, toast, trapFocus, openModal };
 
   // ---------- Command palette ----------
   let paletteEl, paletteInput, paletteResults;

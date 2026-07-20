@@ -122,23 +122,40 @@
   }
 
   async function promptAddCustomer() {
-    const name = prompt('Customer name:');
-    if (!name) return;
-    const email = prompt('Email:');
-    if (!email) return;
-    const phone = prompt('Phone (optional):') || undefined;
-
-    try {
-      const res = await fetch('/api/customers', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
-        body: JSON.stringify({ name, email, phone })
-      });
-      if (!res.ok) throw new Error((await res.json()).error || 'Create failed');
-      await fetchCustomers();
-    } catch (err) {
-      alert('Could not add customer: ' + err.message);
-    }
+    const result = await DosShell.openModal({
+      title: 'Add customer',
+      confirmLabel: 'Add customer',
+      focusSelector: '#acName',
+      bodyHtml: `
+        <div style="margin-bottom: 14px;">
+          <label for="acName" style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Name</label>
+          <input id="acName" type="text" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+        </div>
+        <div style="margin-bottom: 14px;">
+          <label for="acEmail" style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Email</label>
+          <input id="acEmail" type="email" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+        </div>
+        <div>
+          <label for="acPhone" style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Phone (optional)</label>
+          <input id="acPhone" type="text" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+        </div>
+      `,
+      onConfirm: async (overlay) => {
+        const name = overlay.querySelector('#acName').value.trim();
+        const email = overlay.querySelector('#acEmail').value.trim();
+        if (!name || !email) throw new Error('Name and email are required');
+        const res = await fetch('/api/customers', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
+          body: JSON.stringify({ name, email, phone: overlay.querySelector('#acPhone').value.trim() || undefined })
+        });
+        if (!res.ok) throw new Error((await res.json()).error || 'Create failed');
+        return true;
+      }
+    });
+    if (!result) return;
+    DosShell.toast('Customer added');
+    await fetchCustomers();
   }
 
   fetchCustomers();
