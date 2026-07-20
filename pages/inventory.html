@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/dos-inline.css">
   <style>
     .stripes { background-image: repeating-linear-gradient(135deg, oklch(94% 0.01 260) 0 8px, oklch(97% 0.006 260) 8px 16px); }
     .inv-filter-input { padding: 9px 14px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif; background: #fff; }
@@ -21,36 +22,36 @@
 <body class="dos-body">
 <div class="dos-shell">
   <aside class="dos-sidebar">
-    <div class="dos-brand" style="display: flex; align-items: center; gap: 9px; padding: 6px 10px 22px;"><div style="width: 22px; height: 22px; border-radius: 6px; background: oklch(55% 0.16 260);"></div><div style="font: 600 15px 'Space Grotesk', sans-serif; color: #fff;">AutoSuite</div></div>
-    <div data-dos-search style="padding: 8px 10px 14px; font: 400 13px 'IBM Plex Mono', monospace; color: oklch(55% 0.01 260); border: 1px solid oklch(30% 0.01 260); border-radius: 8px; margin-bottom: 16px; display: flex; justify-content: space-between;">
+    <div class="dos-brand is-3b2d2e52"><div class="is-97083f3d"></div><div class="is-dc3e742f">AutoSuite</div></div>
+    <div data-dos-search class="is-4330c69b">
       <span>⌘K Search everything</span>
     </div>
     <nav class="dos-nav" aria-label="Dealer OS">
-      <a href="dashboard.html" class="dos-nav-item" style="display: flex; align-items: center; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">▦ Overview</a>
-      <a href="crm.html" class="dos-nav-item" style="display: flex; align-items: center; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">☎ CRM</a>
-      <a href="inventory.html" class="dos-nav-item active" style="display: flex; align-items: center; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; background: oklch(30% 0.02 260); color: #fff; text-decoration: none;">▤ Inventory</a>
-      <a href="appointments.html" class="dos-nav-item" style="display: flex; align-items: center; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">◔ Appointments</a>
-      <a href="customers.html" class="dos-nav-item" style="display: flex; align-items: center; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">✎ Customers</a>
-      <a href="analytics.html" class="dos-nav-item" style="display: flex; align-items: center; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">▲ Analytics</a>
-      <a href="staff-activity.html" class="dos-nav-item" style="display: flex; align-items: center; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">◫ Staff Activity</a>
+      <a href="dashboard.html" class="dos-nav-item is-2397ef19">▦ Overview</a>
+      <a href="crm.html" class="dos-nav-item is-2397ef19">☎ CRM</a>
+      <a href="inventory.html" class="dos-nav-item active is-f7e90231">▤ Inventory</a>
+      <a href="appointments.html" class="dos-nav-item is-2397ef19">◔ Appointments</a>
+      <a href="customers.html" class="dos-nav-item is-2397ef19">✎ Customers</a>
+      <a href="analytics.html" class="dos-nav-item is-2397ef19">▲ Analytics</a>
+      <a href="staff-activity.html" class="dos-nav-item is-2397ef19">◫ Staff Activity</a>
     </nav>
-    <div style="margin-top: auto; display: flex; flex-direction: column; gap: 2px; padding-top: 14px; border-top: 1px solid oklch(28% 0.01 260);">
-      <a href="settings.html" class="dos-nav-item" style="display: flex; align-items: center; gap: 10px; padding: 9px 14px; border-radius: 8px; font: 500 13px; color: oklch(72% 0.008 260); text-decoration: none;">⚙ Settings</a>
+    <div class="is-df55b60c">
+      <a href="settings.html" class="dos-nav-item is-2397ef19">⚙ Settings</a>
     </div>
   </aside>
-  <div style="background: oklch(97.5% 0.004 90);">
-    <div style="display: flex; align-items: center; gap: 16px; padding: 18px 36px; border-bottom: 1px solid oklch(91% 0.005 260); background: #fff;">
-      <h1 style="font: 600 20px 'Space Grotesk', sans-serif; margin: 0;">Inventory</h1>
-      <div style="font: 400 13px; color: oklch(50% 0.01 260);" id="countsSummary">— active · — draft · — sold this month</div>
-      <div style="margin-left: auto; display: flex; align-items: center; gap: 10px;">
-        <button type="button" id="bulkActionsBtn" onclick="openBulkActions()" style="font: 500 13px; padding: 8px 14px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; background: #fff; cursor: pointer;" disabled>Bulk actions</button>
-        <button type="button" onclick="promptAddVehicle()" style="font: 500 13px; padding: 8px 14px; border-radius: 8px; background: oklch(20% 0.012 260); color: #fff; border: none; cursor: pointer;">+ Add vehicle</button>
-        <div data-dos-bell style="position: relative;">🔔<div data-dos-bell-dot style="position: absolute; top: -3px; right: -4px; width: 7px; height: 7px; border-radius: 50%; background: oklch(65% 0.14 55);"></div></div>
+  <div class="is-cc38790d">
+    <div class="is-aa8ddd09">
+      <h1 class="is-6f08c733">Inventory</h1>
+      <div id="countsSummary" class="is-fef4eb97">— active · — draft · — sold this month</div>
+      <div class="is-d869cfd4">
+        <button type="button" id="bulkActionsBtn" onclick="openBulkActions()"  disabled class="is-d4c06154">Bulk actions</button>
+        <button type="button" onclick="promptAddVehicle()" class="is-02c24281">+ Add vehicle</button>
+        <div data-dos-bell class="is-d85c4e64">🔔<div data-dos-bell-dot class="is-c313e78d"></div></div>
       </div>
     </div>
 
-    <div style="padding: 24px 36px 0; display: flex; gap: 10px; align-items: center;">
-      <input type="text" id="filterSearch" class="inv-filter-input" placeholder="Search inventory…" style="flex: 1;" oninput="applyFilters()">
+    <div class="is-13948eb4">
+      <input type="text" id="filterSearch" class="inv-filter-input is-49cdf874" placeholder="Search inventory…"  oninput="applyFilters()">
       <select id="filterStatus" class="inv-filter-input" onchange="applyFilters()">
         <option value="">Status ▾</option>
         <option value="active">Active</option>
@@ -67,31 +68,31 @@
         <option value="20000000-50000000">₦20M – ₦50M</option>
         <option value="50000000-999999999">₦50M+</option>
       </select>
-      <div class="inv-view-toggle" style="margin-left: auto;">
+      <div class="inv-view-toggle is-dc310e06">
         <button type="button" class="inv-view-btn active" data-view="table" onclick="setView('table')">Table</button>
         <button type="button" class="inv-view-btn" data-view="cards" onclick="setView('cards')">Cards</button>
       </div>
     </div>
 
     <!-- Featured strip -->
-    <div style="padding: 24px 36px 0;" id="featuredSection">
-      <div style="font: 600 12px 'IBM Plex Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em; color: oklch(50% 0.01 260); margin-bottom: 12px;">Featured on homepage</div>
-      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;" id="featuredStrip"></div>
+    <div id="featuredSection" class="is-6f243b60">
+      <div class="is-bf8e3981">Featured on homepage</div>
+      <div id="featuredStrip" class="is-52229003"></div>
     </div>
 
-    <div style="padding: 28px 36px 60px;">
+    <div class="is-5a356d1e">
       <!-- Table view -->
-      <div id="tableViewWrap" style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; overflow: hidden;">
-        <div style="display: grid; grid-template-columns: 0.3fr 0.6fr 1.6fr 1fr 1fr 0.9fr 0.7fr 0.8fr; background: oklch(97% 0.004 90); padding: 12px 20px; font: 600 11px 'IBM Plex Mono', monospace; text-transform: uppercase; letter-spacing: 0.04em; color: oklch(50% 0.01 260);">
+      <div id="tableViewWrap" class="is-3c773fe7">
+        <div class="is-b64e61e5">
           <div><input type="checkbox" id="selectAll" onchange="toggleSelectAll(this.checked)"></div>
           <div></div><div>Vehicle</div><div>Price</div><div>Mileage</div><div>Status</div><div>Days listed</div><div>Actions</div>
         </div>
         <div id="vehicleList"></div>
-        <div id="emptyState" style="display: none; padding: 40px; text-align: center; color: oklch(50% 0.01 260);">No vehicles match these filters</div>
+        <div id="emptyState" class="is-76756bd7">No vehicles match these filters</div>
       </div>
 
       <!-- Cards view -->
-      <div id="cardsViewWrap" style="display: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;" id="cardsGrid"></div>
+      <div id="cardsViewWrap" class="is-ff231f93"></div>
     </div>
   </div>
 </div>
@@ -99,19 +100,19 @@
 <!-- Quick edit side panel -->
 <div class="quick-edit-overlay" id="quickEditOverlay" onclick="closeQuickEdit()"></div>
 <div class="quick-edit-panel" id="quickEditPanel">
-  <div style="padding: 18px 20px; border-bottom: 1px solid oklch(93% 0.005 260); display: flex; justify-content: space-between; align-items: center;">
-    <div style="font: 600 15px 'Space Grotesk', sans-serif;">Quick edit</div>
-    <button type="button" onclick="closeQuickEdit()" style="border: none; background: none; font-size: 18px; cursor: pointer; color: oklch(50% 0.01 260);" aria-label="Close">✕</button>
+  <div class="is-ba97c8dd">
+    <div class="is-140a247e">Quick edit</div>
+    <button type="button" onclick="closeQuickEdit()"  aria-label="Close" class="is-96d1af6f">✕</button>
   </div>
-  <div style="padding: 20px; display: flex; flex-direction: column; gap: 16px; flex: 1; overflow-y: auto;">
-    <div id="quickEditName" style="font: 600 14px;"></div>
+  <div class="is-d3c9f1ae">
+    <div id="quickEditName" class="is-85b20de1"></div>
     <div>
-      <label style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Price (₦)</label>
-      <input type="number" id="qePrice" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+      <label class="is-204b9faf">Price (₦)</label>
+      <input type="number" id="qePrice" class="is-b94f2f17">
     </div>
     <div>
-      <label style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Status</label>
-      <select id="qeStatus" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+      <label class="is-204b9faf">Status</label>
+      <select id="qeStatus" class="is-b94f2f17">
         <option value="active">Active</option>
         <option value="featured">Featured</option>
         <option value="draft">Draft</option>
@@ -119,9 +120,9 @@
       </select>
     </div>
   </div>
-  <div style="padding: 16px 20px; border-top: 1px solid oklch(93% 0.005 260); display: flex; gap: 8px; justify-content: flex-end;">
-    <button type="button" onclick="closeQuickEdit()" style="font: 500 13px; padding: 9px 16px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; background: #fff; cursor: pointer;">Cancel</button>
-    <button type="button" onclick="saveQuickEdit()" style="font: 500 13px; padding: 9px 16px; border-radius: 8px; background: oklch(45% 0.16 260); color: #fff; border: none; cursor: pointer;">Save</button>
+  <div class="is-f4bbe62a">
+    <button type="button" onclick="closeQuickEdit()" class="is-25c24b1f">Cancel</button>
+    <button type="button" onclick="saveQuickEdit()" class="is-1c6c9cfd">Save</button>
   </div>
 </div>
 
@@ -218,10 +219,10 @@
     }
     section.style.display = 'block';
     strip.innerHTML = featured.map(v => `
-      <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 12px;">
-        <div class="stripes" style="aspect-ratio: 16/10; border-radius: 8px; margin-bottom: 10px;"></div>
-        <div style="font: 600 13px;">${esc(v.year)} ${esc(v.make)} ${esc(v.model)}</div>
-        <div style="font: 400 12px; color: oklch(50% 0.01 260);">₦${v.price.toLocaleString()}</div>
+      <div class="is-fe44beb6">
+        <div class="stripes is-141f1f5e"></div>
+        <div class="is-ec940996">${esc(v.year)} ${esc(v.make)} ${esc(v.model)}</div>
+        <div class="is-41b12b7b">₦${v.price.toLocaleString()}</div>
       </div>
     `).join('');
   }
@@ -242,18 +243,18 @@
     emptyState.style.display = 'none';
 
     list.innerHTML = filteredVehicles.map(v => `
-      <div style="display: grid; grid-template-columns: 0.3fr 0.6fr 1.6fr 1fr 1fr 0.9fr 0.7fr 0.8fr; padding: 12px 20px; border-top: 1px solid oklch(94% 0.005 260); align-items: center; font: 400 13px;">
+      <div class="is-937ce8ce">
         <div><input type="checkbox" class="row-check" data-id="${v.id}" ${selectedIds.has(String(v.id)) ? 'checked' : ''} onchange="toggleSelect('${v.id}', this.checked)"></div>
-        <div class="stripes" style="width: 48px; height: 34px; border-radius: 6px;"></div>
+        <div class="stripes is-86ba105f"></div>
         <div>
-          <div style="font-weight: 600;">${esc(v.year)} ${esc(v.make)} ${esc(v.model)}</div>
-          <div style="font: 400 12px; color: oklch(50% 0.01 260);">${esc(trimOf(v))}</div>
+          <div class="is-db117290">${esc(v.year)} ${esc(v.make)} ${esc(v.model)}</div>
+          <div class="is-41b12b7b">${esc(trimOf(v))}</div>
         </div>
-        <div style="font-weight: 600;">₦${v.price.toLocaleString()}</div>
-        <div style="color: oklch(45% 0.01 260);">${v.mileage.toLocaleString()} km</div>
+        <div class="is-db117290">₦${v.price.toLocaleString()}</div>
+        <div class="is-024dc74f">${v.mileage.toLocaleString()} km</div>
         <div>${statusPill(v.status)}</div>
-        <div style="color: oklch(45% 0.01 260);">${daysListed(v)}</div>
-        <div><a href="#" onclick="openQuickEdit('${v.id}'); return false;" style="color: oklch(45% 0.16 260); font-weight: 500; text-decoration: none;">Quick edit</a></div>
+        <div class="is-024dc74f">${daysListed(v)}</div>
+        <div><a href="#" onclick="openQuickEdit('${v.id}'); return false;" class="is-f8fe0cda">Quick edit</a></div>
       </div>
     `).join('');
   }
@@ -262,13 +263,13 @@
     document.getElementById('tableViewWrap').style.display = 'none';
     document.getElementById('cardsViewWrap').style.display = 'grid';
     document.getElementById('cardsViewWrap').innerHTML = filteredVehicles.map(v => `
-      <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 12px;">
-        <div class="stripes" style="aspect-ratio: 16/10; border-radius: 8px; margin-bottom: 10px;"></div>
-        <div style="font: 600 13px;">${esc(v.year)} ${esc(v.make)} ${esc(v.model)}</div>
-        <div style="font: 400 12px; color: oklch(50% 0.01 260); margin-bottom: 8px;">₦${v.price.toLocaleString()} · ${v.mileage.toLocaleString()} km</div>
-        <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div class="is-fe44beb6">
+        <div class="stripes is-141f1f5e"></div>
+        <div class="is-ec940996">${esc(v.year)} ${esc(v.make)} ${esc(v.model)}</div>
+        <div class="is-adc0edca">₦${v.price.toLocaleString()} · ${v.mileage.toLocaleString()} km</div>
+        <div class="is-948e6d6e">
           ${statusPill(v.status)}
-          <a href="#" onclick="openQuickEdit('${v.id}'); return false;" style="color: oklch(45% 0.16 260); font: 500 12px; text-decoration: none;">Quick edit</a>
+          <a href="#" onclick="openQuickEdit('${v.id}'); return false;" class="is-2f2acdc5">Quick edit</a>
         </div>
       </div>
     `).join('');
@@ -282,7 +283,7 @@
       sold: ['oklch(95% 0.02 260)', 'oklch(45% 0.13 260)', 'Sold']
     };
     const [bg, color, label] = map[status] || map.active;
-    return `<span style="font: 500 11px; padding: 4px 9px; border-radius: 999px; background: ${bg}; color: ${color};">${label}</span>`;
+    return `<span class="is-90d68b40">${label}</span>`;
   }
 
   function setView(view) {

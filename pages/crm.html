@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/dos-inline.css">
   <link rel="stylesheet" href="../css/crm.css">
 </head>
 <body class="dos-body">
@@ -20,10 +21,10 @@
   <!-- SIDEBAR -->
   <aside class="dos-sidebar">
     <div class="dos-brand">
-      <span class="dos-brand-mark" aria-hidden="true" style="width: 22px; height: 22px; border-radius: 6px; background: oklch(55% 0.16 260); display: block;"></span>
+      <span class="dos-brand-mark is-bb36f19f" aria-hidden="true"></span>
       <span class="dos-brand-text">AutoSuite</span>
     </div>
-    <div data-dos-search style="padding: 8px 10px 14px; font: 400 13px 'IBM Plex Mono', monospace; color: oklch(55% 0.01 260); border: 1px solid oklch(30% 0.01 260); border-radius: 8px; margin-bottom: 16px; display: flex; justify-content: space-between;">
+    <div data-dos-search class="is-4330c69b">
       <span>⌘K Search everything</span>
     </div>
     <nav class="dos-nav" aria-label="Dealer OS">
@@ -35,45 +36,45 @@
       <a href="analytics.html" class="dos-nav-item">▲ Analytics</a>
       <a href="staff-activity.html" class="dos-nav-item">◫ Staff Activity</a>
     </nav>
-    <div style="margin-top: auto; display: flex; flex-direction: column; gap: 2px; padding-top: 14px; border-top: 1px solid oklch(28% 0.01 260);">
+    <div class="is-df55b60c">
       <a href="settings.html" class="dos-nav-item">⚙ Settings</a>
-      <div style="display: flex; align-items: center; gap: 10px; padding: 9px 10px;">
-        <div style="width: 26px; height: 26px; border-radius: 50%; background: oklch(50% 0.1 200);"></div>
-        <div style="font: 500 13px; color: #fff;">Derek Owusu</div>
+      <div class="is-134698af">
+        <div class="is-3d056148"></div>
+        <div class="is-3258b918">Derek Owusu</div>
       </div>
     </div>
   </aside>
 
   <!-- MAIN -->
-  <div style="background: oklch(97.5% 0.004 90);">
+  <div class="is-cc38790d">
     <!-- TOP BAR -->
-    <div style="display: flex; align-items: center; gap: 16px; padding: 18px 36px; border-bottom: 1px solid oklch(91% 0.005 260); background: #fff;">
-      <h1 style="font: 600 20px 'Space Grotesk', sans-serif; margin: 0;">Leads</h1>
-      <div style="display: flex; gap: 4px; background: oklch(96% 0.004 260); padding: 4px; border-radius: 9px; margin-left: 20px;">
-        <button type="button" class="dos-tab active" data-view="board" style="padding: 8px 16px; border-radius: 8px; font: 500 13px; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.08); border: none; cursor: pointer;">Board</button>
-        <button type="button" class="dos-tab" data-view="table" style="padding: 8px 16px; border-radius: 8px; font: 500 13px; background: transparent; border: none; cursor: pointer; color: oklch(35% 0.01 260);">Table</button>
-        <button type="button" class="dos-tab" data-view="detail" style="padding: 8px 16px; border-radius: 8px; font: 500 13px; background: transparent; border: none; cursor: pointer; color: oklch(35% 0.01 260);">Lead Detail</button>
+    <div class="is-aa8ddd09">
+      <h1 class="is-6f08c733">Leads</h1>
+      <div class="is-a8e69e4e">
+        <button type="button" class="dos-tab active is-1bf973c9" data-view="board">Board</button>
+        <button type="button" class="dos-tab is-a6f24b44" data-view="table">Table</button>
+        <button type="button" class="dos-tab is-a6f24b44" data-view="detail">Lead Detail</button>
       </div>
-      <div style="margin-left: auto; display: flex; align-items: center; gap: 16px;">
-        <div style="font: 500 13px; padding: 8px 14px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; cursor: pointer;">+ New lead</div>
-        <div data-dos-bell style="position: relative;">🔔<div data-dos-bell-dot style="position: absolute; top: -3px; right: -4px; width: 7px; height: 7px; border-radius: 50%; background: oklch(65% 0.14 55);"></div></div>
+      <div class="is-5d07dfa7">
+        <div class="is-105a0715">+ New lead</div>
+        <div data-dos-bell class="is-d85c4e64">🔔<div data-dos-bell-dot class="is-c313e78d"></div></div>
       </div>
     </div>
 
     <!-- CONTENT AREA -->
-    <div style="padding: 28px 36px;">
+    <div class="is-80ba7097">
 
       <!-- KANBAN BOARD VIEW -->
-      <div id="boardView" style="overflow-x: auto; display: block;">
-        <div style="display: flex; gap: 16px; min-width: 1400px;" id="kanbanBoard" data-droppable-board>
+      <div id="boardView" class="is-c9e4ce51">
+        <div id="kanbanBoard" data-droppable-board class="is-a0dcdea0">
           <!-- Stages and cards will be populated by JS -->
         </div>
       </div>
 
       <!-- TABLE VIEW -->
-      <div id="tableView" style="display: none;">
-        <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 10px; overflow: hidden;">
-          <div style="display: grid; grid-template-columns: 1.4fr 1.2fr 1fr 1fr 0.8fr 1fr; background: oklch(97% 0.004 90); padding: 12px 20px; font: 600 11px 'IBM Plex Mono', monospace; text-transform: uppercase; letter-spacing: 0.04em; color: oklch(50% 0.01 260);">
+      <div id="tableView" class="is-224b51a7">
+        <div class="is-0f092062">
+          <div class="is-e11beb8f">
             <div>Customer</div>
             <div>Vehicle</div>
             <div>Source</div>
@@ -88,65 +89,65 @@
       </div>
 
       <!-- LEAD DETAIL VIEW -->
-      <div id="detailView" style="display: none; grid-template-columns: 1fr 320px; gap: 24px;">
+      <div id="detailView" class="is-8c69a45f">
         <div>
-          <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 24px;">
-            <div style="width: 48px; height: 48px; border-radius: 50%; background: oklch(88% 0.05 260);"></div>
+          <div class="is-a770a07d">
+            <div class="is-56b54a63"></div>
             <div>
-              <div style="font: 600 20px 'Space Grotesk', sans-serif;" id="detailName">Maya Torres</div>
-              <div style="font: 400 13px; color: oklch(50% 0.01 260);" id="detailContact">maya.torres@email.com · (312) 555-0148</div>
+              <div id="detailName" class="is-ebb50406">Maya Torres</div>
+              <div id="detailContact" class="is-fef4eb97">maya.torres@email.com · (312) 555-0148</div>
             </div>
-            <div style="margin-left: auto; font: 500 12px; padding: 6px 12px; border-radius: 999px; background: oklch(95% 0.03 55); color: oklch(45% 0.13 55);" id="detailStatus">Negotiating</div>
+            <div id="detailStatus" class="is-c296973d">Negotiating</div>
           </div>
 
-          <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
-            <div style="font: 600 13px; text-transform: uppercase; letter-spacing: 0.04em; color: oklch(50% 0.01 260); margin-bottom: 14px;">Interested In</div>
-            <div style="display: flex; gap: 12px; align-items: center;">
-              <div style="width: 64px; height: 44px; border-radius: 8px; background: oklch(94% 0.006 260);"></div>
+          <div class="is-86b626dd">
+            <div class="is-6a600615">Interested In</div>
+            <div class="is-8512dd41">
+              <div class="is-fa49d00a"></div>
               <div>
-                <div style="font: 600 14px;" id="detailVehicle">2024 BMW X6 xDrive40i</div>
-                <div style="font: 400 12px; color: oklch(50% 0.01 260);" id="detailVehiclePrice">$68,900 · 12.4k mi</div>
+                <div id="detailVehicle" class="is-85b20de1">2024 BMW X6 xDrive40i</div>
+                <div id="detailVehiclePrice" class="is-41b12b7b">$68,900 · 12.4k mi</div>
               </div>
             </div>
           </div>
 
-          <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 20px;">
-            <div style="font: 600 13px; text-transform: uppercase; letter-spacing: 0.04em; color: oklch(50% 0.01 260); margin-bottom: 16px;">Activity Timeline</div>
-            <div style="display: flex; flex-direction: column; gap: 16px;" id="detailTimeline">
+          <div class="is-25e4476e">
+            <div class="is-1a01a2e9">Activity Timeline</div>
+            <div id="detailTimeline" class="is-269ea7a6">
               <!-- Timeline items will be populated by JS -->
             </div>
           </div>
         </div>
 
         <!-- SIDE PANEL -->
-        <div style="display: flex; flex-direction: column; gap: 20px;">
-          <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 18px;">
-            <div style="font: 600 12px; text-transform: uppercase; letter-spacing: 0.04em; color: oklch(50% 0.01 260); margin-bottom: 12px;">Details</div>
-            <div style="display: flex; flex-direction: column; gap: 9px; font: 400 13px;">
-              <div style="display: flex; justify-content: space-between;"><span style="color: oklch(50% 0.01 260);">Source</span><span id="detailSource">Website — test drive</span></div>
-              <div style="display: flex; justify-content: space-between;"><span style="color: oklch(50% 0.01 260);">Assigned to</span><span id="detailAssigned">Derek Owusu</span></div>
-              <div style="display: flex; justify-content: space-between;"><span style="color: oklch(50% 0.01 260);">Priority</span><span style="color: oklch(60% 0.14 55);" id="detailPriority">High</span></div>
-              <div style="display: flex; justify-content: space-between;"><span style="color: oklch(50% 0.01 260);">Created</span><span id="detailCreated">Jul 9, 2026</span></div>
+        <div class="is-6a4f6b63">
+          <div class="is-04846003">
+            <div class="is-93c47945">Details</div>
+            <div class="is-7906cfd0">
+              <div class="is-58e548bd"><span class="is-41ab4fe8">Source</span><span id="detailSource">Website — test drive</span></div>
+              <div class="is-58e548bd"><span class="is-41ab4fe8">Assigned to</span><span id="detailAssigned">Derek Owusu</span></div>
+              <div class="is-58e548bd"><span class="is-41ab4fe8">Priority</span><span id="detailPriority" class="is-1a2dfef6">High</span></div>
+              <div class="is-58e548bd"><span class="is-41ab4fe8">Created</span><span id="detailCreated">Jul 9, 2026</span></div>
             </div>
           </div>
 
-          <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 18px;">
-            <div style="font: 600 12px; text-transform: uppercase; letter-spacing: 0.04em; color: oklch(50% 0.01 260); margin-bottom: 12px;">Tags</div>
-            <div style="display: flex; gap: 6px; flex-wrap: wrap;" id="detailTags">
+          <div class="is-04846003">
+            <div class="is-93c47945">Tags</div>
+            <div id="detailTags" class="is-e8afafb1">
               <!-- Tags will be populated by JS -->
             </div>
           </div>
 
-          <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 18px;">
-            <div style="font: 600 12px; text-transform: uppercase; letter-spacing: 0.04em; color: oklch(50% 0.01 260); margin-bottom: 12px;">Tasks</div>
-            <div style="display: flex; flex-direction: column; gap: 10px; font: 400 13px;" id="detailTasks">
+          <div class="is-04846003">
+            <div class="is-93c47945">Tasks</div>
+            <div id="detailTasks" class="is-9e74eefb">
               <!-- Tasks will be populated by JS -->
             </div>
           </div>
 
-          <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 18px;">
-            <div style="font: 600 12px; text-transform: uppercase; letter-spacing: 0.04em; color: oklch(50% 0.01 260); margin-bottom: 12px;">Documents</div>
-            <div style="font: 400 13px; color: oklch(45% 0.01 260); display: flex; flex-direction: column; gap: 8px;" id="detailDocuments">
+          <div class="is-04846003">
+            <div class="is-93c47945">Documents</div>
+            <div id="detailDocuments" class="is-02513184">
               <!-- Documents will be populated by JS -->
             </div>
           </div>
@@ -232,23 +233,23 @@
       console.log('Stage ' + stage.name + ': ' + stageLeads.length + ' leads');
 
       return `
-        <div style="width: 230px; flex: none;">
-          <div style="display: flex; align-items: center; gap: 8px; padding: 0 4px 12px;">
-            <div style="width: 7px; height: 7px; border-radius: 50%; background: ${stage.color};"></div>
-            <div style="font: 600 13px;">${stage.name}</div>
-            <div style="font: 500 12px; color: oklch(55% 0.01 260);">${stageLeads.length}</div>
+        <div class="is-6ba6dba6">
+          <div class="is-8950168e">
+            <div class="is-5ed77ee8"></div>
+            <div class="is-ec940996">${stage.name}</div>
+            <div class="is-5ad819ce">${stageLeads.length}</div>
           </div>
-          <div style="display: flex; flex-direction: column; gap: 10px; min-height: 400px; padding: 8px; border-radius: 8px; background: oklch(98% 0.003 260);" data-stage="${stage.dbName}">
+          <div data-stage="${stage.dbName}" class="is-e327efce">
             ${stageLeads.map(lead => `
-              <div draggable="true" class="kanban-card" data-lead-id="${lead.id}" onclick="selectLead('${lead.id}')" style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 14px; cursor: grab; user-select: none; transition: all 0.2s ease; touch-action: none;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
-                  <div style="font: 600 13px;">${lead.name}</div>
-                  <div style="width: 6px; height: 6px; border-radius: 50%; background: ${lead.priority === 'High' ? 'oklch(60% 0.14 55)' : 'oklch(70% 0.01 260)'};"></div>
+              <div draggable="true" class="kanban-card is-b219fdf3" data-lead-id="${lead.id}" onclick="selectLead('${lead.id}')">
+                <div class="is-25ebd687">
+                  <div class="is-ec940996">${lead.name}</div>
+                  <div class="is-2e99316f"></div>
                 </div>
-                <div style="font: 400 12px; color: oklch(45% 0.01 260); margin-bottom: 10px;">${lead.carName}</div>
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                  <div style="font: 500 11px; padding: 3px 7px; border-radius: 5px; background: oklch(95% 0.006 260); color: oklch(45% 0.01 260);">${lead.source}</div>
-                  <div style="width: 20px; height: 20px; border-radius: 50%; background: oklch(85% 0.05 260);"></div>
+                <div class="is-f6501b31">${lead.carName}</div>
+                <div class="is-948e6d6e">
+                  <div class="is-112a74ce">${lead.source}</div>
+                  <div class="is-5a55404e"></div>
                 </div>
               </div>
             `).join('')}
@@ -320,13 +321,13 @@
   function renderTable() {
     const tbody = document.getElementById('tableBody');
     tbody.innerHTML = leads.map(lead => `
-      <div style="display: grid; grid-template-columns: 1.4fr 1.2fr 1fr 1fr 0.8fr 1fr; padding: 14px 20px; border-top: 1px solid oklch(94% 0.005 260); align-items: center; font: 400 13px; cursor: pointer;" onclick="selectLead('${lead.id}')">
-        <div style="font-weight: 600;">${lead.name}</div>
-        <div style="color: oklch(45% 0.01 260);">${lead.carName}</div>
-        <div style="color: oklch(45% 0.01 260);">${lead.source}</div>
-        <div><span style="font: 500 11px; padding: 4px 9px; border-radius: 999px; background: oklch(94% 0.03 260); color: oklch(45% 0.16 260);">${lead.status || 'New'}</span></div>
-        <div style="color: ${lead.priority === 'High' ? 'oklch(60% 0.14 55)' : 'oklch(70% 0.01 260)'};">${lead.priority || 'Normal'}</div>
-        <div style="display: flex; align-items: center; gap: 8px;"><div style="width: 18px; height: 18px; border-radius: 50%; background: oklch(85% 0.05 260);"></div>Derek O.</div>
+      <div onclick="selectLead('${lead.id}')" class="is-d91df727">
+        <div class="is-db117290">${lead.name}</div>
+        <div class="is-024dc74f">${lead.carName}</div>
+        <div class="is-024dc74f">${lead.source}</div>
+        <div><span class="is-93e08d6f">${lead.status || 'New'}</span></div>
+        <div class="is-25130899">${lead.priority || 'Normal'}</div>
+        <div class="is-bd9db1cb"><div class="is-94e51f7f"></div>Derek O.</div>
       </div>
     `).join('');
   }
@@ -347,11 +348,11 @@
     // Timeline
     const timeline = document.getElementById('detailTimeline');
     timeline.innerHTML = `
-      <div style="display: flex; gap: 12px;">
-        <div style="width: 8px; height: 8px; border-radius: 50%; background: oklch(45% 0.16 260); margin-top: 5px; flex: none;"></div>
+      <div class="is-800a82fa">
+        <div class="is-65912071"></div>
         <div>
-          <div style="font: 400 13px; color: oklch(30% 0.01 260);">${lead.name} submitted a test drive request for ${lead.carName}</div>
-          <div style="font: 400 11px; color: oklch(55% 0.01 260); margin-top: 2px;">${new Date(lead.createdAt).toLocaleString()}</div>
+          <div class="is-befe80c3">${lead.name} submitted a test drive request for ${lead.carName}</div>
+          <div class="is-749d71d0">${new Date(lead.createdAt).toLocaleString()}</div>
         </div>
       </div>
     `;
@@ -363,7 +364,7 @@
     } else if (lead.source === 'financing-calculator') {
       documents.innerHTML = `<div>📄 Financing_application_${lead.id.slice(-6)}.pdf</div>`;
     } else {
-      documents.innerHTML = `<div style="color: oklch(55% 0.01 260);">No documents attached</div>`;
+      documents.innerHTML = `<div class="is-f8c16a82">No documents attached</div>`;
     }
   }
 

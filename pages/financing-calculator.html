@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/dos-inline.css">
   <style>
     body {
       background: linear-gradient(135deg, oklch(97% 0.005 260) 0%, oklch(95% 0.008 300) 100%);
@@ -239,7 +240,7 @@
           <label>Vehicle Price</label>
           <div class="value-display" id="priceDisplay">₦45,000,000</div>
           <input type="range" id="priceSlider" min="5000000" max="200000000" step="500000" value="45000000" class="slider">
-          <div style="font-size: 12px; color: oklch(50% 0.01 260); margin-top: 4px;">₦5M – ₦200M</div>
+          <div class="is-ce79f797">₦5M – ₦200M</div>
         </div>
 
         <!-- Down Payment -->
@@ -247,7 +248,7 @@
           <label>Down Payment</label>
           <div class="value-display" id="downPaymentDisplay">₦9,000,000</div>
           <input type="range" id="downPaymentSlider" min="0" max="100" step="5" value="20" class="slider">
-          <div style="font-size: 12px; color: oklch(50% 0.01 260); margin-top: 4px;"><span id="downPaymentPercent">20</span>% of price</div>
+          <div class="is-ce79f797"><span id="downPaymentPercent">20</span>% of price</div>
         </div>
       </div>
 
@@ -257,7 +258,7 @@
           <label>Loan Term</label>
           <div class="value-display" id="termDisplay">60 months</div>
           <input type="range" id="termSlider" min="12" max="84" step="12" value="60" class="slider">
-          <div style="font-size: 12px; color: oklch(50% 0.01 260); margin-top: 4px;">1–7 years</div>
+          <div class="is-ce79f797">1–7 years</div>
         </div>
 
         <!-- Interest Rate -->
@@ -265,7 +266,7 @@
           <label>Annual Interest Rate (APR)</label>
           <div class="value-display" id="aprDisplay">7.5%</div>
           <input type="range" id="aprSlider" min="3" max="15" step="0.5" value="7.5" class="slider">
-          <div style="font-size: 12px; color: oklch(50% 0.01 260); margin-top: 4px;">3% – 15%</div>
+          <div class="is-ce79f797">3% – 15%</div>
         </div>
       </div>
 
@@ -291,7 +292,7 @@
       <!-- Monthly Payment Highlight -->
       <div class="breakdown">
         <div class="breakdown-title">Monthly Payment</div>
-        <div style="text-align: center; padding: 12px 0;">
+        <div class="is-f42717e9">
           <div class="monthly-payment" id="monthlyPayment">₦714,000</div>
         </div>
       </div>
@@ -310,7 +311,7 @@
       </div>
 
       <!-- CTA -->
-      <button class="cta-button" onclick="appliedForFinancing()">Apply for Financing</button>
+      <button type="button" class="cta-button" onclick="appliedForFinancing()">Apply for Financing</button>
     </div>
   </div>
 
