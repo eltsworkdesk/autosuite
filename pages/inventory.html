@@ -8,6 +8,15 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/dashboard.css">
+  <style>
+    .stripes { background-image: repeating-linear-gradient(135deg, oklch(94% 0.01 260) 0 8px, oklch(97% 0.006 260) 8px 16px); }
+    .inv-filter-input { padding: 9px 14px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif; background: #fff; }
+    .inv-view-toggle { display: flex; gap: 4px; background: oklch(94% 0.004 260); padding: 4px; border-radius: 8px; }
+    .inv-view-btn { padding: 7px 12px; border-radius: 6px; font: 500 12px; border: none; cursor: pointer; background: transparent; color: oklch(50% 0.01 260); }
+    .inv-view-btn.active { background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.08); color: oklch(20% 0.01 260); }
+    .quick-edit-panel { position: fixed; top: 0; right: 0; height: 100vh; width: 360px; background: #fff; box-shadow: -12px 0 32px rgba(0,0,0,0.15); z-index: 1100; display: none; flex-direction: column; }
+    .quick-edit-overlay { position: fixed; inset: 0; background: rgba(10,12,20,0.4); z-index: 1099; display: none; }
+  </style>
 </head>
 <body class="dos-body">
 <div class="dos-shell">
@@ -32,53 +41,102 @@
   <div style="background: oklch(97.5% 0.004 90);">
     <div style="display: flex; align-items: center; gap: 16px; padding: 18px 36px; border-bottom: 1px solid oklch(91% 0.005 260); background: #fff;">
       <h1 style="font: 600 20px 'Space Grotesk', sans-serif; margin: 0;">Inventory</h1>
+      <div style="font: 400 13px; color: oklch(50% 0.01 260);" id="countsSummary">— active · — draft · — sold this month</div>
       <div style="margin-left: auto; display: flex; align-items: center; gap: 10px;">
-        <button type="button" onclick="triggerFileUpload()" style="font: 500 13px; padding: 8px 14px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; background: #fff; cursor: pointer;">Export CSV</button>
-        <button type="button" onclick="triggerFileUpload()" style="font: 500 13px; padding: 8px 14px; border-radius: 8px; background: oklch(45% 0.16 260); color: #fff; border: none; cursor: pointer;">+ Add vehicle</button>
+        <button type="button" id="bulkActionsBtn" onclick="openBulkActions()" style="font: 500 13px; padding: 8px 14px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; background: #fff; cursor: pointer;" disabled>Bulk actions</button>
+        <button type="button" onclick="promptAddVehicle()" style="font: 500 13px; padding: 8px 14px; border-radius: 8px; background: oklch(20% 0.012 260); color: #fff; border: none; cursor: pointer;">+ Add vehicle</button>
         <div data-dos-bell style="position: relative;">🔔<div data-dos-bell-dot style="position: absolute; top: -3px; right: -4px; width: 7px; height: 7px; border-radius: 50%; background: oklch(65% 0.14 55);"></div></div>
       </div>
     </div>
 
-    <div style="padding: 28px 36px;">
-      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;">
-        <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 16px;">
-          <div style="font: 500 11px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); margin-bottom: 8px;">Total Vehicles</div>
-          <div style="font: 600 24px 'Space Grotesk', sans-serif;" id="totalVehicles">-</div>
-        </div>
-        <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 16px;">
-          <div style="font: 500 11px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); margin-bottom: 8px;">Available</div>
-          <div style="font: 600 24px 'Space Grotesk', sans-serif;" id="availableCount">-</div>
-        </div>
-        <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 16px;">
-          <div style="font: 500 11px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); margin-bottom: 8px;">Sold</div>
-          <div style="font: 600 24px 'Space Grotesk', sans-serif;" id="soldCount">-</div>
-        </div>
-        <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 16px;">
-          <div style="font: 500 11px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); margin-bottom: 8px;">Avg Price</div>
-          <div style="font: 600 24px 'Space Grotesk', sans-serif;" id="avgPrice">-</div>
-        </div>
-      </div>
-
-      <input type="file" id="fileInput" accept=".csv,.xlsx" style="display: none;">
-
-      <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; overflow: hidden;">
-        <div style="display: grid; grid-template-columns: 1.4fr 1fr 0.7fr 1fr 1fr 0.8fr 1fr; background: oklch(97% 0.004 90); padding: 12px 20px; font: 600 11px 'IBM Plex Mono', monospace; text-transform: uppercase; letter-spacing: 0.04em; color: oklch(50% 0.01 260);">
-          <div>Vehicle</div><div>Make</div><div>Year</div><div>Mileage</div><div>Price</div><div>Status</div><div>Actions</div>
-        </div>
-        <div id="vehicleList"></div>
-        <div id="emptyState" style="display: none; padding: 40px; text-align: center; color: oklch(50% 0.01 260);">No vehicles in inventory yet</div>
+    <div style="padding: 24px 36px 0; display: flex; gap: 10px; align-items: center;">
+      <input type="text" id="filterSearch" class="inv-filter-input" placeholder="Search inventory…" style="flex: 1;" oninput="applyFilters()">
+      <select id="filterStatus" class="inv-filter-input" onchange="applyFilters()">
+        <option value="">Status ▾</option>
+        <option value="active">Active</option>
+        <option value="featured">Featured</option>
+        <option value="draft">Draft</option>
+        <option value="sold">Sold</option>
+      </select>
+      <select id="filterBody" class="inv-filter-input" onchange="applyFilters()">
+        <option value="">Body type ▾</option>
+      </select>
+      <select id="filterPrice" class="inv-filter-input" onchange="applyFilters()">
+        <option value="">Price ▾</option>
+        <option value="0-20000000">Under ₦20M</option>
+        <option value="20000000-50000000">₦20M – ₦50M</option>
+        <option value="50000000-999999999">₦50M+</option>
+      </select>
+      <div class="inv-view-toggle" style="margin-left: auto;">
+        <button type="button" class="inv-view-btn active" data-view="table" onclick="setView('table')">Table</button>
+        <button type="button" class="inv-view-btn" data-view="cards" onclick="setView('cards')">Cards</button>
       </div>
     </div>
+
+    <!-- Featured strip -->
+    <div style="padding: 24px 36px 0;" id="featuredSection">
+      <div style="font: 600 12px 'IBM Plex Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em; color: oklch(50% 0.01 260); margin-bottom: 12px;">Featured on homepage</div>
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;" id="featuredStrip"></div>
+    </div>
+
+    <div style="padding: 28px 36px 60px;">
+      <!-- Table view -->
+      <div id="tableViewWrap" style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; overflow: hidden;">
+        <div style="display: grid; grid-template-columns: 0.3fr 0.6fr 1.6fr 1fr 1fr 0.9fr 0.7fr 0.8fr; background: oklch(97% 0.004 90); padding: 12px 20px; font: 600 11px 'IBM Plex Mono', monospace; text-transform: uppercase; letter-spacing: 0.04em; color: oklch(50% 0.01 260);">
+          <div><input type="checkbox" id="selectAll" onchange="toggleSelectAll(this.checked)"></div>
+          <div></div><div>Vehicle</div><div>Price</div><div>Mileage</div><div>Status</div><div>Days listed</div><div>Actions</div>
+        </div>
+        <div id="vehicleList"></div>
+        <div id="emptyState" style="display: none; padding: 40px; text-align: center; color: oklch(50% 0.01 260);">No vehicles match these filters</div>
+      </div>
+
+      <!-- Cards view -->
+      <div id="cardsViewWrap" style="display: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;" id="cardsGrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Quick edit side panel -->
+<div class="quick-edit-overlay" id="quickEditOverlay" onclick="closeQuickEdit()"></div>
+<div class="quick-edit-panel" id="quickEditPanel">
+  <div style="padding: 18px 20px; border-bottom: 1px solid oklch(93% 0.005 260); display: flex; justify-content: space-between; align-items: center;">
+    <div style="font: 600 15px 'Space Grotesk', sans-serif;">Quick edit</div>
+    <button type="button" onclick="closeQuickEdit()" style="border: none; background: none; font-size: 18px; cursor: pointer; color: oklch(50% 0.01 260);" aria-label="Close">✕</button>
+  </div>
+  <div style="padding: 20px; display: flex; flex-direction: column; gap: 16px; flex: 1; overflow-y: auto;">
+    <div id="quickEditName" style="font: 600 14px;"></div>
+    <div>
+      <label style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Price (₦)</label>
+      <input type="number" id="qePrice" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+    </div>
+    <div>
+      <label style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Status</label>
+      <select id="qeStatus" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+        <option value="active">Active</option>
+        <option value="featured">Featured</option>
+        <option value="draft">Draft</option>
+        <option value="sold">Sold</option>
+      </select>
+    </div>
+  </div>
+  <div style="padding: 16px 20px; border-top: 1px solid oklch(93% 0.005 260); display: flex; gap: 8px; justify-content: flex-end;">
+    <button type="button" onclick="closeQuickEdit()" style="font: 500 13px; padding: 9px 16px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; background: #fff; cursor: pointer;">Cancel</button>
+    <button type="button" onclick="saveQuickEdit()" style="font: 500 13px; padding: 9px 16px; border-radius: 8px; background: oklch(45% 0.16 260); color: #fff; border: none; cursor: pointer;">Save</button>
   </div>
 </div>
 
 <script src="../js/dos-shell.js"></script>
 <script>
   let vehicles = [];
+  let filteredVehicles = [];
+  let currentView = 'table';
+  let selectedIds = new Set();
+  let quickEditId = null;
+
   const fallbackVehicles = [
-    { id: 1, make: 'BMW', model: 'X7', year: 2024, mileage: 5200, price: 65000000, status: 'active' },
-    { id: 2, make: 'Mercedes-Benz', model: 'S-Class', year: 2023, mileage: 12500, price: 45000000, status: 'active' },
-    { id: 3, make: 'Audi', model: 'A4', year: 2022, mileage: 28300, price: 25000000, status: 'sold' }
+    { id: 1, make: 'BMW', model: 'X7', year: 2024, mileage: 5200, price: 65000000, status: 'active', body: 'SUV', color: 'Black', drivetrain: 'AWD', createdAt: new Date().toISOString() },
+    { id: 2, make: 'Mercedes-Benz', model: 'S-Class', year: 2023, mileage: 12500, price: 45000000, status: 'featured', body: 'Sedan', color: 'Grey', drivetrain: 'RWD', createdAt: new Date().toISOString() },
+    { id: 3, make: 'Audi', model: 'A4', year: 2022, mileage: 28300, price: 25000000, status: 'sold', body: 'Sedan', color: 'White', drivetrain: 'AWD', createdAt: new Date().toISOString() }
   ];
 
   async function fetchVehicles() {
@@ -94,89 +152,236 @@
       console.warn('Falling back to demo inventory data:', err.message);
       vehicles = fallbackVehicles;
     }
-    loadInventory();
+    populateBodyFilter();
+    applyFilters();
   }
 
-  function loadInventory() {
+  function populateBodyFilter() {
+    const select = document.getElementById('filterBody');
+    const bodies = [...new Set(vehicles.map(v => v.body).filter(Boolean))].sort();
+    select.innerHTML = '<option value="">Body type ▾</option>' + bodies.map(b => `<option value="${b}">${b}</option>`).join('');
+  }
+
+  function daysListed(v) {
+    if (!v.createdAt) return 0;
+    return Math.max(0, Math.floor((Date.now() - new Date(v.createdAt).getTime()) / 86400000));
+  }
+
+  function trimOf(v) {
+    return `${v.drivetrain || ''} · ${v.color || ''}`.replace(/^ · | · $/, '');
+  }
+
+  function esc(s) {
+    return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  function applyFilters() {
+    const q = document.getElementById('filterSearch').value.trim().toLowerCase();
+    const status = document.getElementById('filterStatus').value;
+    const body = document.getElementById('filterBody').value;
+    const priceRange = document.getElementById('filterPrice').value;
+
+    filteredVehicles = vehicles.filter(v => {
+      if (q && !`${v.make} ${v.model} ${v.year}`.toLowerCase().includes(q)) return false;
+      if (status && v.status !== status) return false;
+      if (body && v.body !== body) return false;
+      if (priceRange) {
+        const [min, max] = priceRange.split('-').map(Number);
+        if (v.price < min || v.price > max) return false;
+      }
+      return true;
+    });
+
+    render();
+  }
+
+  function render() {
+    renderCounts();
+    renderFeatured();
+    if (currentView === 'table') renderTable(); else renderCards();
+  }
+
+  function renderCounts() {
+    const active = vehicles.filter(v => v.status === 'active' || v.status === 'featured').length;
+    const draft = vehicles.filter(v => v.status === 'draft').length;
+    const sold = vehicles.filter(v => v.status === 'sold').length;
+    document.getElementById('countsSummary').textContent = `${active} active · ${draft} draft · ${sold} sold`;
+  }
+
+  function renderFeatured() {
+    const featured = vehicles.filter(v => v.status === 'featured').slice(0, 4);
+    const section = document.getElementById('featuredSection');
+    const strip = document.getElementById('featuredStrip');
+    if (featured.length === 0) {
+      section.style.display = 'none';
+      return;
+    }
+    section.style.display = 'block';
+    strip.innerHTML = featured.map(v => `
+      <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 12px;">
+        <div class="stripes" style="aspect-ratio: 16/10; border-radius: 8px; margin-bottom: 10px;"></div>
+        <div style="font: 600 13px;">${esc(v.year)} ${esc(v.make)} ${esc(v.model)}</div>
+        <div style="font: 400 12px; color: oklch(50% 0.01 260);">₦${v.price.toLocaleString()}</div>
+      </div>
+    `).join('');
+  }
+
+  function renderTable() {
+    document.getElementById('tableViewWrap').style.display = 'block';
+    document.getElementById('cardsViewWrap').style.display = 'none';
+
     const list = document.getElementById('vehicleList');
     const emptyState = document.getElementById('emptyState');
 
-    if (vehicles.length === 0) {
+    if (filteredVehicles.length === 0) {
       list.style.display = 'none';
       emptyState.style.display = 'block';
-      updateStats();
       return;
     }
     list.style.display = '';
     emptyState.style.display = 'none';
 
-    list.innerHTML = vehicles.map(v => `
-      <div style="display: grid; grid-template-columns: 1.4fr 1fr 0.7fr 1fr 1fr 0.8fr 1fr; padding: 14px 20px; border-top: 1px solid oklch(94% 0.005 260); align-items: center; font: 400 13px;">
-        <div style="font-weight: 600;">${v.make} ${v.model}</div>
-        <div style="color: oklch(45% 0.01 260);">${v.make}</div>
-        <div style="color: oklch(45% 0.01 260);">${v.year}</div>
+    list.innerHTML = filteredVehicles.map(v => `
+      <div style="display: grid; grid-template-columns: 0.3fr 0.6fr 1.6fr 1fr 1fr 0.9fr 0.7fr 0.8fr; padding: 12px 20px; border-top: 1px solid oklch(94% 0.005 260); align-items: center; font: 400 13px;">
+        <div><input type="checkbox" class="row-check" data-id="${v.id}" ${selectedIds.has(String(v.id)) ? 'checked' : ''} onchange="toggleSelect('${v.id}', this.checked)"></div>
+        <div class="stripes" style="width: 48px; height: 34px; border-radius: 6px;"></div>
+        <div>
+          <div style="font-weight: 600;">${esc(v.year)} ${esc(v.make)} ${esc(v.model)}</div>
+          <div style="font: 400 12px; color: oklch(50% 0.01 260);">${esc(trimOf(v))}</div>
+        </div>
+        <div style="font-weight: 600;">₦${v.price.toLocaleString()}</div>
         <div style="color: oklch(45% 0.01 260);">${v.mileage.toLocaleString()} km</div>
-        <div>₦${v.price.toLocaleString()}</div>
-        <div><span style="font: 500 11px; padding: 4px 9px; border-radius: 999px; background: ${v.status === 'sold' ? 'oklch(90% 0.08 350)' : 'oklch(90% 0.1 145)'}; color: ${v.status === 'sold' ? 'oklch(35% 0.06 350)' : 'oklch(30% 0.08 145)'};">${v.status === 'sold' ? 'Sold' : 'Available'}</span></div>
-        <div><button onclick="deleteVehicle('${v.id}')" style="font: 500 12px; padding: 5px 10px; border: none; background: oklch(97% 0.005 260); border-radius: 6px; cursor: pointer;">Delete</button></div>
+        <div>${statusPill(v.status)}</div>
+        <div style="color: oklch(45% 0.01 260);">${daysListed(v)}</div>
+        <div><a href="#" onclick="openQuickEdit('${v.id}'); return false;" style="color: oklch(45% 0.16 260); font-weight: 500; text-decoration: none;">Quick edit</a></div>
       </div>
     `).join('');
-
-    updateStats();
   }
 
-  function updateStats() {
-    const available = vehicles.filter(v => v.status !== 'sold').length;
-    const sold = vehicles.filter(v => v.status === 'sold').length;
-    const avgPrice = vehicles.length > 0
-      ? '₦' + Math.round(vehicles.reduce((sum, v) => sum + v.price, 0) / vehicles.length).toLocaleString()
-      : '₦0';
-    document.getElementById('totalVehicles').textContent = vehicles.length;
-    document.getElementById('availableCount').textContent = available;
-    document.getElementById('soldCount').textContent = sold;
-    document.getElementById('avgPrice').textContent = avgPrice;
+  function renderCards() {
+    document.getElementById('tableViewWrap').style.display = 'none';
+    document.getElementById('cardsViewWrap').style.display = 'grid';
+    document.getElementById('cardsViewWrap').innerHTML = filteredVehicles.map(v => `
+      <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 12px;">
+        <div class="stripes" style="aspect-ratio: 16/10; border-radius: 8px; margin-bottom: 10px;"></div>
+        <div style="font: 600 13px;">${esc(v.year)} ${esc(v.make)} ${esc(v.model)}</div>
+        <div style="font: 400 12px; color: oklch(50% 0.01 260); margin-bottom: 8px;">₦${v.price.toLocaleString()} · ${v.mileage.toLocaleString()} km</div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          ${statusPill(v.status)}
+          <a href="#" onclick="openQuickEdit('${v.id}'); return false;" style="color: oklch(45% 0.16 260); font: 500 12px; text-decoration: none;">Quick edit</a>
+        </div>
+      </div>
+    `).join('');
   }
 
-  function triggerFileUpload() {
-    document.getElementById('fileInput').click();
+  function statusPill(status) {
+    const map = {
+      active: ['oklch(94% 0.03 145)', 'oklch(45% 0.13 145)', 'Active'],
+      featured: ['oklch(94% 0.03 55)', 'oklch(45% 0.13 55)', 'Featured'],
+      draft: ['oklch(95% 0.005 260)', 'oklch(45% 0.01 260)', 'Draft'],
+      sold: ['oklch(95% 0.02 260)', 'oklch(45% 0.13 260)', 'Sold']
+    };
+    const [bg, color, label] = map[status] || map.active;
+    return `<span style="font: 500 11px; padding: 4px 9px; border-radius: 999px; background: ${bg}; color: ${color};">${label}</span>`;
   }
 
-  async function deleteVehicle(id) {
-    if (!confirm('Delete this vehicle?')) return;
+  function setView(view) {
+    currentView = view;
+    document.querySelectorAll('.inv-view-btn').forEach(b => b.classList.toggle('active', b.dataset.view === view));
+    render();
+  }
+
+  function toggleSelect(id, checked) {
+    if (checked) selectedIds.add(String(id)); else selectedIds.delete(String(id));
+    document.getElementById('bulkActionsBtn').disabled = selectedIds.size === 0;
+  }
+
+  function toggleSelectAll(checked) {
+    selectedIds = checked ? new Set(filteredVehicles.map(v => String(v.id))) : new Set();
+    document.getElementById('bulkActionsBtn').disabled = selectedIds.size === 0;
+    renderTable();
+  }
+
+  async function openBulkActions() {
+    if (selectedIds.size === 0) return;
+    const status = prompt(`Set status for ${selectedIds.size} selected vehicle(s):\n(active / featured / draft / sold)`, 'active');
+    if (!status || !['active', 'featured', 'draft', 'sold'].includes(status)) return;
     try {
-      const res = await fetch(`/api/vehicles/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': 'Basic ' + btoa('admin:admin') }
-      });
-      if (!res.ok) throw new Error('Delete failed');
+      await Promise.all([...selectedIds].map(id =>
+        fetch(`/api/vehicles/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
+          body: JSON.stringify({ status })
+        })
+      ));
+      DosShell.toast(`Updated ${selectedIds.size} vehicle(s)`);
+      selectedIds = new Set();
+      document.getElementById('bulkActionsBtn').disabled = true;
+      await fetchVehicles();
     } catch (err) {
-      console.warn('Delete request failed, removing locally only:', err.message);
+      DosShell.toast('Bulk update failed: ' + err.message, 'error');
     }
-    vehicles = vehicles.filter(v => v.id !== id);
-    loadInventory();
   }
 
-  document.getElementById('fileInput').addEventListener('change', async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  function openQuickEdit(id) {
+    const v = vehicles.find(x => String(x.id) === String(id));
+    if (!v) return;
+    quickEditId = id;
+    document.getElementById('quickEditName').textContent = `${v.year} ${v.make} ${v.model}`;
+    document.getElementById('qePrice').value = v.price;
+    document.getElementById('qeStatus').value = v.status;
+    document.getElementById('quickEditOverlay').style.display = 'block';
+    document.getElementById('quickEditPanel').style.display = 'flex';
+  }
+
+  function closeQuickEdit() {
+    quickEditId = null;
+    document.getElementById('quickEditOverlay').style.display = 'none';
+    document.getElementById('quickEditPanel').style.display = 'none';
+  }
+
+  async function saveQuickEdit() {
+    if (!quickEditId) return;
+    try {
+      const res = await fetch(`/api/vehicles/${quickEditId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
+        body: JSON.stringify({
+          price: Number(document.getElementById('qePrice').value),
+          status: document.getElementById('qeStatus').value
+        })
+      });
+      if (!res.ok) throw new Error((await res.json()).error || 'Save failed');
+      DosShell.toast('Vehicle updated');
+      closeQuickEdit();
+      await fetchVehicles();
+    } catch (err) {
+      DosShell.toast('Could not save: ' + err.message, 'error');
+    }
+  }
+
+  async function promptAddVehicle() {
     const make = prompt('Make (e.g., Toyota):');
     if (!make) return;
     const model = prompt('Model (e.g., Camry):');
+    if (!model) return;
     const year = prompt('Year:', '2024');
     const price = prompt('Price (₦):', '25000000');
+    const body = prompt('Body type (Sedan/SUV/Truck/Coupe):', 'Sedan');
     const vin = prompt('VIN:', 'DEMO' + Date.now());
     try {
       const res = await fetch('/api/vehicles', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
-        body: JSON.stringify({ vin, make, model, year, price, mileage: 0, status: 'active' })
+        body: JSON.stringify({ vin, make, model, year, price, body, mileage: 0, status: 'active' })
       });
       if (!res.ok) throw new Error((await res.json()).error || 'Create failed');
+      DosShell.toast('Vehicle added');
       await fetchVehicles();
     } catch (err) {
-      alert('Could not add vehicle: ' + err.message);
+      DosShell.toast('Could not add vehicle: ' + err.message, 'error');
     }
-  });
+  }
 
   fetchVehicles();
   DosShell.onEvent(['vehicle.created', 'vehicle.updated', 'vehicle.deleted'], fetchVehicles);
