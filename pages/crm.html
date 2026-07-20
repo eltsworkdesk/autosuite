@@ -214,6 +214,10 @@
     }
   }
 
+  function esc(s) {
+    return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
   // Render Kanban board with drag-and-drop
   function renderBoard() {
     console.log('renderBoard called, leads=' + leads.length + ', STAGES=' + STAGES.length);
@@ -241,17 +245,17 @@
           </div>
           <div data-stage="${stage.dbName}" class="is-e327efce">
             ${stageLeads.map(lead => `
-              <div draggable="true" class="kanban-card is-b219fdf3" data-lead-id="${lead.id}" onclick="selectLead('${lead.id}')">
+              <div draggable="true" class="kanban-card is-b219fdf3" data-lead-id="${esc(lead.id)}" onclick="selectLead('${esc(lead.id)}')">
                 <div class="is-25ebd687">
-                  <div class="is-ec940996">${lead.name}</div>
+                  <div class="is-ec940996">${esc(lead.name)}</div>
                   <div style="width: 6px; height: 6px; border-radius: 50%; background: ${lead.priority === 'High' ? 'oklch(60% 0.14 55)' : 'oklch(70% 0.01 260)'};"></div>
                 </div>
-                <div class="is-f6501b31">${lead.carName}</div>
+                <div class="is-f6501b31">${esc(lead.carName)}</div>
                 <div class="is-948e6d6e">
-                  <div class="is-112a74ce">${lead.source}</div>
+                  <div class="is-112a74ce">${esc(lead.source)}</div>
                   <div class="is-5a55404e"></div>
                 </div>
-                <select class="kanban-move" aria-label="Move ${lead.name} to stage" style="width: 100%; margin-top: 8px; font: 500 11px 'IBM Plex Sans', sans-serif; padding: 4px 6px; border-radius: 6px; border: 1px solid oklch(91% 0.005 260); background: #fff;" onclick="event.stopPropagation()" onchange="event.stopPropagation(); moveLeadToStage('${lead.id}', this.value)">
+                <select class="kanban-move" aria-label="Move ${esc(lead.name)} to stage" style="width: 100%; margin-top: 8px; font: 500 11px 'IBM Plex Sans', sans-serif; padding: 4px 6px; border-radius: 6px; border: 1px solid oklch(91% 0.005 260); background: #fff;" onclick="event.stopPropagation()" onchange="event.stopPropagation(); moveLeadToStage('${esc(lead.id)}', this.value)">
                   ${STAGES.map(s => `<option value="${s.dbName}" ${s.dbName === stage.dbName ? 'selected' : ''}>${s.name}</option>`).join('')}
                 </select>
               </div>

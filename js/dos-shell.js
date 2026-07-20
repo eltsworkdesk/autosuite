@@ -104,8 +104,7 @@
     };
   }
 
-  // ---------- Modal (spec 14's Modal/Drawer component: title, body,
-  // Cancel/Confirm actions, focus trap) ----------
+  // ---------- Modal ----------
   function openModal({ title, bodyHtml, confirmLabel = 'Save', cancelLabel = 'Cancel', onConfirm, focusSelector }) {
     return new Promise((resolve) => {
       const trigger = document.activeElement;
@@ -427,9 +426,9 @@
   }
 
   // ---------- Mobile bottom tab bar ----------
-  // Spec 07: dealer-OS mobile nav is scoped to floor tasks only (Home /
-  // Leads / Inventory / Calendar); Analytics/Settings/Staff Activity stay
-  // desktop-only, reached via a "More" overflow from here.
+  // Scoped to floor tasks only (Home / Leads / Inventory / Calendar);
+  // Analytics/Settings/Staff Activity stay desktop-only, reached via a
+  // "More" overflow from here.
   const MOBILE_TABS = [
     { label: 'Home', href: 'dashboard.html', glyph: '▦' },
     { label: 'Leads', href: 'crm.html', glyph: '☎' },
