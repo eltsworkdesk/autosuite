@@ -330,13 +330,77 @@
 .ld-task.done span { text-decoration: line-through; color: var(--ink-faint); }
 .ld-task-check { width: 16px; height: 16px; accent-color: var(--brand-blue); flex: none; }
 
+/* ---------- Mobile bottom tab bar (base: hidden until the media query
+   below turns it on - must stay ABOVE that @media block in source order,
+   since two unconditional-vs-conditional rules of equal specificity
+   resolve by source order, not by which one "sounds" more specific) ---------- */
+.dos-mobile-tabbar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 58px;
+  background: #fff;
+  border-top: 1px solid var(--line);
+  z-index: 900;
+  align-items: stretch;
+  justify-content: space-around;
+}
+.dos-mobile-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  text-decoration: none;
+  color: var(--ink-faint);
+  font: 500 10px var(--font-body);
+  background: none;
+  border: none;
+  cursor: pointer;
+  min-width: 44px;
+}
+.dos-mobile-tab .glyph { font-size: 18px; line-height: 1; }
+.dos-mobile-tab.active { color: var(--brand-blue-deep, oklch(45% 0.16 260)); }
+.dos-mobile-more-sheet {
+  display: none;
+  position: fixed;
+  bottom: 58px;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -8px 24px rgba(0,0,0,.1);
+  z-index: 899;
+  padding: 8px;
+}
+.dos-mobile-more-sheet.open { display: block; }
+.dos-mobile-more-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  text-decoration: none;
+  color: var(--ink);
+  font: 500 14px var(--font-body);
+  border-radius: 8px;
+  min-height: 44px;
+}
+.dos-mobile-more-item:hover { background: var(--surface-sunken, oklch(97% 0.004 90)); }
+
 @media (max-width: 900px) {
   .dos-shell { grid-template-columns: 1fr; }
   .dos-sidebar { flex-direction: row; align-items: center; flex-wrap: wrap; padding: var(--space-3) var(--space-4); }
   .dos-search, .dos-sidebar-foot { display: none; }
   .dos-brand { padding: 0 var(--space-3) 0 0; }
-  .dos-nav { flex-direction: row; flex-wrap: wrap; }
+  /* Navigation moves to the bottom tab bar on mobile - the sidebar's own
+     nav list would otherwise duplicate it. */
+  .dos-sidebar .dos-nav, .dos-sidebar > nav { display: none; }
   .kpi-row { grid-template-columns: repeat(2, 1fr); }
   .dos-grid-2, .dos-grid-3 { grid-template-columns: 1fr; }
   .ld-layout { grid-template-columns: 1fr; }
+  body.dos-body { padding-bottom: 62px; }
+  .dos-mobile-tabbar { display: flex; }
 }

@@ -426,9 +426,72 @@
     });
   }
 
+  // ---------- Mobile bottom tab bar ----------
+  // Spec 07: dealer-OS mobile nav is scoped to floor tasks only (Home /
+  // Leads / Inventory / Calendar); Analytics/Settings/Staff Activity stay
+  // desktop-only, reached via a "More" overflow from here.
+  const MOBILE_TABS = [
+    { label: 'Home', href: 'dashboard.html', glyph: '▦' },
+    { label: 'Leads', href: 'crm.html', glyph: '☎' },
+    { label: 'Inventory', href: 'inventory.html', glyph: '▤' },
+    { label: 'Calendar', href: 'appointments.html', glyph: '◔' }
+  ];
+  const MOBILE_MORE_ITEMS = [
+    { label: 'Customers', href: 'customers.html', glyph: '✎' },
+    { label: 'Analytics', href: 'analytics.html', glyph: '▲' },
+    { label: 'Staff Activity', href: 'staff-activity.html', glyph: '◫' },
+    { label: 'Settings', href: 'settings.html', glyph: '⚙' }
+  ];
+
+  function currentPage() {
+    return location.pathname.split('/').pop() || 'dashboard.html';
+  }
+
+  function initMobileTabBar() {
+    if (!document.querySelector('.dos-shell')) return; // only on dealer-OS pages
+    const page = currentPage();
+
+    const sheet = document.createElement('div');
+    sheet.className = 'dos-mobile-more-sheet';
+    sheet.setAttribute('role', 'menu');
+    sheet.innerHTML = MOBILE_MORE_ITEMS.map((item) => `
+      <a class="dos-mobile-more-item" role="menuitem" href="${item.href}"><span class="glyph">${item.glyph}</span>${esc(item.label)}</a>
+    `).join('');
+    document.body.appendChild(sheet);
+
+    const bar = document.createElement('nav');
+    bar.className = 'dos-mobile-tabbar';
+    bar.setAttribute('aria-label', 'Dealer OS mobile navigation');
+    const isMoreActive = MOBILE_MORE_ITEMS.some((i) => i.href === page);
+    bar.innerHTML = MOBILE_TABS.map((tab) => `
+      <a class="dos-mobile-tab${tab.href === page ? ' active' : ''}" href="${tab.href}" aria-current="${tab.href === page ? 'page' : 'false'}">
+        <span class="glyph">${tab.glyph}</span>${esc(tab.label)}
+      </a>
+    `).join('') + `
+      <button type="button" class="dos-mobile-tab${isMoreActive ? ' active' : ''}" id="dosMobileMoreBtn" aria-haspopup="true" aria-expanded="false">
+        <span class="glyph">☰</span>More
+      </button>
+    `;
+    document.body.appendChild(bar);
+
+    const moreBtn = document.getElementById('dosMobileMoreBtn');
+    moreBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = sheet.classList.toggle('open');
+      moreBtn.setAttribute('aria-expanded', String(isOpen));
+    });
+    document.addEventListener('click', (e) => {
+      if (!sheet.contains(e.target)) {
+        sheet.classList.remove('open');
+        moreBtn.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
   function init() {
     initSearchBox();
     initBell();
+    initMobileTabBar();
     labelIconOnlyNav();
     onEvent(
       ['lead.created', 'lead.updated', 'appointment.created', 'appointment.updated', 'vehicle.created', 'vehicle.updated', 'vehicle.deleted', 'customer.created'],
