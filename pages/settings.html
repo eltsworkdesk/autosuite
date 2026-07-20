@@ -39,49 +39,137 @@
         <div data-dos-bell style="position: relative;">🔔<div data-dos-bell-dot style="position: absolute; top: -3px; right: -4px; width: 7px; height: 7px; border-radius: 50%; background: oklch(65% 0.14 55);"></div></div>
       </div>
     </div>
-    <div style="padding: 28px 36px; max-width: 640px;">
-      <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 24px; margin-bottom: 24px;">
-        <div style="font: 600 15px 'Space Grotesk', sans-serif; margin-bottom: 20px;">Dealership Profile</div>
-        <div style="display: flex; flex-direction: column; gap: 16px;">
-          <div>
-            <label style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Name</label>
-            <input id="fieldName" type="text" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+    <div style="display: grid; grid-template-columns: 200px 1fr;">
+      <div style="padding: 24px 12px; border-right: 1px solid oklch(93% 0.005 260); display: flex; flex-direction: column; gap: 2px;" id="settingsTabs">
+        <button type="button" class="settings-tab active" data-tab="profile" style="text-align: left; padding: 9px 12px; border-radius: 8px; font: 500 13px; color: oklch(30% 0.01 260); background: oklch(95% 0.02 260); border: none; cursor: pointer;">Dealership Profile</button>
+        <button type="button" class="settings-tab" data-tab="staff" style="text-align: left; padding: 9px 12px; border-radius: 8px; font: 500 13px; color: oklch(45% 0.01 260); background: none; border: none; cursor: pointer;">Staff &amp; Roles</button>
+        <button type="button" class="settings-tab" data-tab="routing" style="text-align: left; padding: 9px 12px; border-radius: 8px; font: 500 13px; color: oklch(45% 0.01 260); background: none; border: none; cursor: pointer;">Lead Routing</button>
+        <button type="button" class="settings-tab" data-tab="notifications" style="text-align: left; padding: 9px 12px; border-radius: 8px; font: 500 13px; color: oklch(45% 0.01 260); background: none; border: none; cursor: pointer;">Notifications</button>
+        <button type="button" class="settings-tab" data-tab="billing" style="text-align: left; padding: 9px 12px; border-radius: 8px; font: 500 13px; color: oklch(45% 0.01 260); background: none; border: none; cursor: pointer;">Billing &amp; Plan</button>
+        <button type="button" class="settings-tab" data-tab="integrations" style="text-align: left; padding: 9px 12px; border-radius: 8px; font: 500 13px; color: oklch(45% 0.01 260); background: none; border: none; cursor: pointer;">Integrations</button>
+      </div>
+
+      <div style="padding: 28px 32px; max-width: 520px;">
+
+        <!-- DEALERSHIP PROFILE -->
+        <div class="settings-panel" data-panel="profile">
+          <div style="font: 600 18px 'Space Grotesk', sans-serif; margin-bottom: 20px;">Dealership Profile</div>
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div>
+              <label for="fieldName" style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Name</label>
+              <input id="fieldName" type="text" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+            </div>
+            <div>
+              <label for="fieldEmail" style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Support email</label>
+              <input id="fieldEmail" type="email" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+            </div>
+            <div>
+              <label for="fieldPhone" style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Support phone</label>
+              <input id="fieldPhone" type="text" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+            </div>
+            <div>
+              <label for="fieldAddress" style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Address</label>
+              <input id="fieldAddress" type="text" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+            </div>
+            <div>
+              <button type="button" onclick="saveDealership()" style="font: 500 13px; padding: 10px 18px; border-radius: 8px; background: oklch(45% 0.16 260); color: #fff; border: none; cursor: pointer;">Save changes</button>
+            </div>
           </div>
+        </div>
+
+        <!-- STAFF & ROLES -->
+        <div class="settings-panel" data-panel="staff" style="display: none;">
+          <div style="font: 600 18px 'Space Grotesk', sans-serif; margin-bottom: 20px;">Staff &amp; Roles</div>
+          <div id="teamRoster" style="display: flex; flex-direction: column; gap: 10px;"></div>
+        </div>
+
+        <!-- LEAD ROUTING -->
+        <div class="settings-panel" data-panel="routing" style="display: none;">
+          <div style="font: 600 18px 'Space Grotesk', sans-serif; margin-bottom: 20px;">Lead Routing</div>
+          <p style="font: 400 13px; color: oklch(45% 0.01 260); margin: 0 0 16px;">How new leads get assigned to your sales team.</p>
           <div>
-            <label style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Email</label>
-            <input id="fieldEmail" type="email" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
-          </div>
-          <div>
-            <label style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Phone</label>
-            <input id="fieldPhone" type="text" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
-          </div>
-          <div>
-            <label style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Address</label>
-            <input id="fieldAddress" type="text" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
-          </div>
-          <div>
-            <label style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Lead Routing</label>
-            <select id="fieldRouting" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+            <label for="fieldRouting" style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Routing rule</label>
+            <select id="fieldRouting" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif; margin-bottom: 16px;">
               <option value="round-robin">Round robin</option>
               <option value="territory">Territory-based</option>
               <option value="skill-based">Skill-based</option>
             </select>
-          </div>
-          <div style="display: flex; align-items: center; gap: 12px;">
             <button type="button" onclick="saveDealership()" style="font: 500 13px; padding: 10px 18px; border-radius: 8px; background: oklch(45% 0.16 260); color: #fff; border: none; cursor: pointer;">Save changes</button>
           </div>
         </div>
-      </div>
 
-      <div style="background: #fff; border: 1px solid oklch(91% 0.005 260); border-radius: 12px; padding: 24px;">
-        <div style="font: 600 15px 'Space Grotesk', sans-serif; margin-bottom: 16px;">Team</div>
-        <div id="teamRoster" style="display: flex; flex-direction: column; gap: 10px;"></div>
+        <!-- NOTIFICATIONS -->
+        <div class="settings-panel" data-panel="notifications" style="display: none;">
+          <div style="font: 600 18px 'Space Grotesk', sans-serif; margin-bottom: 20px;">Notifications</div>
+          <div style="display: flex; flex-direction: column; gap: 18px;" id="notifToggles">
+            <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+              <span style="font: 400 14px; color: oklch(30% 0.01 260);">Email me new lead alerts</span>
+              <input type="checkbox" data-pref="emailNewLead" style="width: 36px; height: 20px; accent-color: oklch(45% 0.16 260);">
+            </label>
+            <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+              <span style="font: 400 14px; color: oklch(30% 0.01 260);">SMS test-drive reminders</span>
+              <input type="checkbox" data-pref="smsReminders" style="width: 36px; height: 20px; accent-color: oklch(45% 0.16 260);">
+            </label>
+            <label style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+              <span style="font: 400 14px; color: oklch(30% 0.01 260);">Weekly performance digest</span>
+              <input type="checkbox" data-pref="weeklyDigest" style="width: 36px; height: 20px; accent-color: oklch(45% 0.16 260);">
+            </label>
+          </div>
+        </div>
+
+        <!-- BILLING & PLAN -->
+        <div class="settings-panel" data-panel="billing" style="display: none;">
+          <div style="font: 600 18px 'Space Grotesk', sans-serif; margin-bottom: 20px;">Billing &amp; Plan</div>
+          <div style="background: oklch(98% 0.003 260); border: 1px solid oklch(91% 0.005 260); border-radius: 10px; padding: 18px; margin-bottom: 16px;">
+            <div style="font: 500 11px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); margin-bottom: 6px;">Current plan</div>
+            <div style="font: 600 20px 'Space Grotesk', sans-serif;">Growth — $899/mo</div>
+            <div style="font: 400 13px; color: oklch(45% 0.01 260); margin-top: 4px;">Up to 3 rooftops, unlimited vehicles</div>
+          </div>
+          <p style="font: 400 13px; color: oklch(55% 0.01 260);">Billing management is not part of this demo build.</p>
+        </div>
+
+        <!-- INTEGRATIONS -->
+        <div class="settings-panel" data-panel="integrations" style="display: none;">
+          <div style="font: 600 18px 'Space Grotesk', sans-serif; margin-bottom: 20px;">Integrations</div>
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border: 1px solid oklch(91% 0.005 260); border-radius: 10px;">
+              <span style="font: 500 14px;">Legacy DMS sync</span>
+              <span style="font: 500 11px; padding: 3px 8px; border-radius: 999px; background: oklch(92% 0.005 260); color: oklch(50% 0.01 260);">Coming soon</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border: 1px solid oklch(91% 0.005 260); border-radius: 10px;">
+              <span style="font: 500 14px;">Zapier</span>
+              <span style="font: 500 11px; padding: 3px 8px; border-radius: 999px; background: oklch(92% 0.005 260); color: oklch(50% 0.01 260);">Coming soon</span>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
 </div>
 <script src="../js/dos-shell.js"></script>
 <script>
+  let dealershipSettings = {};
+
+  function initTabs() {
+    document.querySelectorAll('.settings-tab').forEach((tab) => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.settings-tab').forEach((t) => {
+          t.classList.remove('active');
+          t.style.background = 'none';
+          t.style.color = 'oklch(45% 0.01 260)';
+        });
+        tab.classList.add('active');
+        tab.style.background = 'oklch(95% 0.02 260)';
+        tab.style.color = 'oklch(30% 0.01 260)';
+
+        document.querySelectorAll('.settings-panel').forEach((p) => {
+          p.style.display = p.dataset.panel === tab.dataset.tab ? 'block' : 'none';
+        });
+      });
+    });
+  }
+
   async function fetchDealership() {
     try {
       const res = await fetch('/api/dealership', { headers: { 'Authorization': 'Basic ' + btoa('admin:admin') } });
@@ -93,6 +181,10 @@
       document.getElementById('fieldPhone').value = d.phone || '';
       document.getElementById('fieldAddress').value = d.address || '';
       document.getElementById('fieldRouting').value = d.leadRouting || 'round-robin';
+      dealershipSettings = d.settings || {};
+      document.querySelectorAll('#notifToggles input[type=checkbox]').forEach((box) => {
+        box.checked = dealershipSettings[box.dataset.pref] !== false;
+      });
     } catch (err) {
       console.warn('Dealership API unavailable:', err.message);
     }
@@ -116,6 +208,26 @@
     } catch (err) {
       DosShell.toast('Could not save: ' + err.message, 'error');
     }
+  }
+
+  async function saveNotificationPref(key, value) {
+    try {
+      const res = await fetch('/api/dealership', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
+        body: JSON.stringify({ settings: { [key]: value } })
+      });
+      if (!res.ok) throw new Error((await res.json()).error || 'Save failed');
+      DosShell.toast('Preference saved');
+    } catch (err) {
+      DosShell.toast('Could not save preference: ' + err.message, 'error');
+    }
+  }
+
+  function initNotifToggles() {
+    document.querySelectorAll('#notifToggles input[type=checkbox]').forEach((box) => {
+      box.addEventListener('change', () => saveNotificationPref(box.dataset.pref, box.checked));
+    });
   }
 
   async function fetchTeamRoster() {
@@ -142,6 +254,8 @@
     }
   }
 
+  initTabs();
+  initNotifToggles();
   fetchDealership();
   fetchTeamRoster();
 </script>

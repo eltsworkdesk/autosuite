@@ -18,7 +18,7 @@ module.exports = async (req, res) => {
     }
 
     if (req.method === 'PATCH') {
-      const { name, email, phone, address, timezone, leadRouting } = req.body || {};
+      const { name, email, phone, address, timezone, leadRouting, settings } = req.body || {};
       const data = {};
       if (name !== undefined) data.name = name;
       if (email !== undefined) data.email = email;
@@ -28,6 +28,13 @@ module.exports = async (req, res) => {
       if (leadRouting !== undefined) {
         if (!VALID_ROUTING.includes(leadRouting)) return res.status(400).json({ error: 'Invalid leadRouting' });
         data.leadRouting = leadRouting;
+      }
+      if (settings !== undefined) {
+        if (typeof settings !== 'object' || settings === null || Array.isArray(settings)) {
+          return res.status(400).json({ error: 'Invalid settings' });
+        }
+        const existing = JSON.parse(dealership.settings || '{}');
+        data.settings = JSON.stringify({ ...existing, ...settings });
       }
       if (Object.keys(data).length === 0) {
         return res.status(400).json({ error: 'No valid fields to update' });

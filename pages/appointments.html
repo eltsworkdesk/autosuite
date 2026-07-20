@@ -15,13 +15,22 @@
     .stat-card { background: #fff; border-radius: 12px; padding: 16px; border: 1px solid oklch(91% 0.005 260); }
     .stat-label { font: 500 11px 'IBM Plex Mono', monospace; color: oklch(50% 0.01 260); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; }
     .stat-value { font: 600 24px 'Space Grotesk', sans-serif; }
-    .timeline { background: #fff; border-radius: 12px; border: 1px solid oklch(91% 0.005 260); padding: 24px; }
-    .timeline-item { display: flex; gap: 16px; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid oklch(95% 0.003 260); }
-    .timeline-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-    .timeline-time { min-width: 120px; font: 600 13px; color: oklch(45% 0.16 260); }
-    .event-type { display: inline-block; padding: 4px 8px; background: oklch(98% 0.003 260); border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
-    .event-type.test-drive { background: oklch(85% 0.15 35); color: oklch(30% 0.08 35); }
-    .event-type.consultation { background: oklch(85% 0.12 290); color: oklch(30% 0.08 290); }
+    .cal-card { background: #fff; border-radius: 12px; border: 1px solid oklch(91% 0.005 260); overflow: hidden; }
+    .cal-toolbar { display: flex; align-items: center; gap: 14px; padding: 18px 24px; border-bottom: 1px solid oklch(91% 0.005 260); }
+    .cal-nav-btn { border: none; background: oklch(97% 0.004 90); width: 28px; height: 28px; border-radius: 6px; font: 500 13px; color: oklch(45% 0.01 260); cursor: pointer; }
+    .cal-view-toggle { display: flex; gap: 4px; background: oklch(96% 0.004 260); padding: 4px; border-radius: 8px; }
+    .cal-view-btn { padding: 7px 12px; border-radius: 6px; font: 500 12px; border: none; cursor: pointer; background: transparent; color: oklch(50% 0.01 260); }
+    .cal-view-btn.active { background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.08); color: oklch(20% 0.01 260); }
+    .cal-grid { display: grid; grid-template-columns: 60px repeat(7, 1fr); gap: 1px; background: oklch(93% 0.005 260); border: 1px solid oklch(93% 0.005 260); margin: 20px 24px; border-radius: 10px; overflow: hidden; }
+    .cal-head { background: oklch(97% 0.004 90); padding: 10px; text-align: center; font: 600 12px 'IBM Plex Sans', sans-serif; }
+    .cal-head-corner { background: oklch(97% 0.004 90); }
+    .cal-hour-label { background: #fff; padding: 8px; font: 500 11px 'IBM Plex Mono', monospace; color: oklch(55% 0.01 260); }
+    .cal-cell { background: #fff; min-height: 52px; padding: 3px; position: relative; }
+    .cal-appt { background: oklch(45% 0.16 260); border-radius: 6px; padding: 5px 7px; font: 500 11px; color: #fff; height: 100%; box-sizing: border-box; cursor: pointer; overflow: hidden; }
+    .cal-appt.type-test-drive { background: oklch(45% 0.16 260); }
+    .cal-appt.type-consultation { background: oklch(55% 0.1 190); }
+    .cal-appt.type-inspection { background: oklch(60% 0.12 155); }
+    .cal-appt.type-maintenance { background: oklch(65% 0.14 55); }
   </style>
 </head>
 <body class="dos-body">
@@ -61,10 +70,26 @@
         <div class="stat-card"><div class="stat-label">Completed</div><div class="stat-value" id="statCompleted">-</div></div>
         <div class="stat-card"><div class="stat-label">No-Shows</div><div class="stat-value" id="statNoShow">-</div></div>
       </div>
-      <div class="timeline">
-        <div style="font: 600 15px 'Space Grotesk', sans-serif; margin-bottom: 20px;">Scheduled Appointments</div>
-        <div id="timelineContent">
-          <div style="padding: 20px; color: oklch(50% 0.01 260);">Loading appointments...</div>
+
+      <div class="cal-card">
+        <div class="cal-toolbar">
+          <div style="font: 600 18px 'Space Grotesk', sans-serif;" id="calRangeLabel">—</div>
+          <button type="button" class="cal-nav-btn" onclick="shiftWeek(-1)" aria-label="Previous week">‹</button>
+          <button type="button" class="cal-nav-btn" onclick="shiftWeek(1)" aria-label="Next week">›</button>
+          <button type="button" class="cal-nav-btn" style="width: auto; padding: 0 10px;" onclick="goToday()">Today</button>
+          <div class="cal-view-toggle" style="margin-left: auto;">
+            <button type="button" class="cal-view-btn active" data-view="week">Week</button>
+            <button type="button" class="cal-view-btn" data-view="list">List</button>
+          </div>
+          <button type="button" onclick="promptNewAppointment()" style="font: 500 13px; padding: 8px 14px; background: oklch(20% 0.012 260); color: #fff; border-radius: 8px; border: none; cursor: pointer;">+ New appointment</button>
+        </div>
+
+        <div id="calGridWrap">
+          <div class="cal-grid" id="calGrid"></div>
+        </div>
+
+        <div id="calListWrap" style="display: none; padding: 8px 24px 24px;">
+          <div id="listContent"></div>
         </div>
       </div>
     </div>
@@ -73,6 +98,18 @@
 
 <script src="../js/dos-shell.js"></script>
 <script>
+  let allAppointments = [];
+  let currentView = 'week';
+  let weekStart = startOfWeek(new Date());
+
+  function startOfWeek(d) {
+    const date = new Date(d);
+    const day = date.getDay();
+    date.setDate(date.getDate() - day);
+    date.setHours(0, 0, 0, 0);
+    return date;
+  }
+
   async function fetchAppointments() {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000);
@@ -84,11 +121,13 @@
       clearTimeout(timeoutId);
       if (!res.ok) throw new Error('Request failed');
       const data = await res.json();
-      renderAppointments(data.appointments || []);
+      allAppointments = data.appointments || [];
     } catch (err) {
       console.warn('Falling back to demo appointment data:', err.message);
-      renderAppointments(fallbackAppointments());
+      allAppointments = fallbackAppointments();
     }
+    renderStats();
+    renderCurrentView();
   }
 
   function fallbackAppointments() {
@@ -100,44 +139,155 @@
     ];
   }
 
-  function renderAppointments(appointments) {
-    const scheduled = appointments.filter(a => a.status === 'scheduled').length;
-    const completed = appointments.filter(a => a.status === 'completed').length;
-    const noShow = appointments.filter(a => a.status === 'no_show').length;
+  function renderStats() {
+    const scheduled = allAppointments.filter(a => a.status === 'scheduled').length;
+    const completed = allAppointments.filter(a => a.status === 'completed').length;
+    const noShow = allAppointments.filter(a => a.status === 'no_show').length;
     const now = new Date();
-    const upcoming = appointments.filter(a => a.status === 'scheduled' && new Date(a.dateTime) >= now).length;
+    const upcoming = allAppointments.filter(a => a.status === 'scheduled' && new Date(a.dateTime) >= now).length;
 
-    document.getElementById('statScheduled').textContent = appointments.length;
+    document.getElementById('statScheduled').textContent = allAppointments.length;
     document.getElementById('statUpcoming').textContent = upcoming;
     document.getElementById('statCompleted').textContent = completed;
     document.getElementById('statNoShow').textContent = noShow;
+  }
 
-    const content = document.getElementById('timelineContent');
-    if (appointments.length === 0) {
+  function typeClassFor(type) {
+    return ['test-drive', 'consultation', 'inspection', 'maintenance'].includes(type) ? type : 'test-drive';
+  }
+
+  function apptLabel(a) {
+    const customerName = a.lead ? a.lead.name : 'Unknown';
+    const vehicleName = a.vehicle ? `${a.vehicle.make} ${a.vehicle.model}` : (a.lead ? a.lead.carName : '');
+    return { customerName, vehicleName };
+  }
+
+  function renderCurrentView() {
+    document.getElementById('calGridWrap').style.display = currentView === 'week' ? 'block' : 'none';
+    document.getElementById('calListWrap').style.display = currentView === 'list' ? 'block' : 'none';
+    if (currentView === 'week') renderWeekGrid(); else renderList();
+  }
+
+  function renderWeekGrid() {
+    const days = Array.from({ length: 7 }, (_, i) => {
+      const d = new Date(weekStart);
+      d.setDate(d.getDate() + i);
+      return d;
+    });
+    const hours = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+
+    document.getElementById('calRangeLabel').textContent =
+      `${days[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – ${days[6].toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+
+    const grid = document.getElementById('calGrid');
+    let html = '<div class="cal-head cal-head-corner"></div>';
+    days.forEach(d => {
+      const isToday = d.toDateString() === new Date().toDateString();
+      html += `<div class="cal-head" style="${isToday ? 'color: oklch(45% 0.16 260);' : ''}">${d.toLocaleDateString('en-US', { weekday: 'short' })}<br>${d.getDate()}</div>`;
+    });
+
+    hours.forEach(hour => {
+      html += `<div class="cal-hour-label">${hour % 12 === 0 ? 12 : hour % 12}${hour < 12 ? 'am' : 'pm'}</div>`;
+      days.forEach(d => {
+        const cellAppts = allAppointments.filter(a => {
+          const dt = new Date(a.dateTime);
+          return dt.toDateString() === d.toDateString() && dt.getHours() === hour;
+        });
+        if (cellAppts.length === 0) {
+          html += '<div class="cal-cell"></div>';
+        } else {
+          const a = cellAppts[0];
+          const { customerName, vehicleName } = apptLabel(a);
+          html += `<div class="cal-cell"><div class="cal-appt type-${typeClassFor(a.type)}" onclick="alert('${esc(customerName)} — ${esc(vehicleName)} (${esc(a.status)})')">
+            <div style="font-weight: 600;">${esc(customerName)}</div>
+            <div style="opacity:.85;">${esc(vehicleName)}</div>
+          </div></div>`;
+        }
+      });
+    });
+
+    grid.innerHTML = html;
+  }
+
+  function esc(s) {
+    return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  function renderList() {
+    const content = document.getElementById('listContent');
+    if (allAppointments.length === 0) {
       content.innerHTML = '<div style="padding: 20px; text-align: center; color: oklch(50% 0.01 260);">No appointments scheduled</div>';
       return;
     }
-
-    const sorted = [...appointments].sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
-
+    const sorted = [...allAppointments].sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime));
     content.innerHTML = sorted.map(a => {
       const dt = new Date(a.dateTime);
       const timeStr = dt.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
-      const typeClass = a.type === 'test-drive' ? 'test-drive' : 'consultation';
-      const customerName = a.lead ? a.lead.name : 'Unknown';
-      const vehicleName = a.vehicle ? `${a.vehicle.make} ${a.vehicle.model}` : (a.lead ? a.lead.carName : '');
-
+      const { customerName, vehicleName } = apptLabel(a);
       return `
-        <div class="timeline-item">
-          <div class="timeline-time">${timeStr}</div>
+        <div style="display: flex; gap: 16px; padding: 14px 0; border-bottom: 1px solid oklch(95% 0.003 260);">
+          <div style="min-width: 130px; font: 600 13px; color: oklch(45% 0.16 260);">${timeStr}</div>
           <div>
-            <div class="event-type ${typeClass}">${a.type.replace('-', ' ')}</div>
-            <div style="font-weight: 600; margin-top: 4px;">${vehicleName || a.type}</div>
-            <div style="font-size: 12px; color: oklch(50% 0.01 260); margin-top: 4px;">${customerName} · ${a.status.replace('_', ' ')}</div>
+            <div class="event-type type-${typeClassFor(a.type)}" style="display: inline-block; padding: 3px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; background: oklch(95% 0.02 260); color: oklch(40% 0.1 260);">${a.type.replace('-', ' ')}</div>
+            <div style="font-weight: 600; margin-top: 4px;">${esc(vehicleName) || a.type}</div>
+            <div style="font-size: 12px; color: oklch(50% 0.01 260); margin-top: 4px;">${esc(customerName)} · ${a.status.replace('_', ' ')}</div>
           </div>
         </div>
       `;
     }).join('');
+  }
+
+  function shiftWeek(delta) {
+    weekStart.setDate(weekStart.getDate() + delta * 7);
+    renderWeekGrid();
+  }
+
+  function goToday() {
+    weekStart = startOfWeek(new Date());
+    renderWeekGrid();
+  }
+
+  document.querySelectorAll('.cal-view-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cal-view-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentView = btn.dataset.view;
+      renderCurrentView();
+    });
+  });
+
+  async function promptNewAppointment() {
+    try {
+      const res = await fetch('/api/leads', { headers: { 'Authorization': 'Basic ' + btoa('admin:admin') } });
+      const data = await res.json();
+      const leads = data.leads || [];
+      if (leads.length === 0) {
+        alert('No leads available to schedule. Create a lead first.');
+        return;
+      }
+      const listText = leads.map((l, i) => `${i + 1}. ${l.name} — ${l.carName}`).join('\n');
+      const choice = prompt(`Select a lead by number:\n${listText}`);
+      const idx = parseInt(choice) - 1;
+      if (isNaN(idx) || !leads[idx]) return;
+
+      const dateStr = prompt('Date (YYYY-MM-DD):', new Date().toISOString().slice(0, 10));
+      if (!dateStr) return;
+      const timeStr = prompt('Time (HH:MM, 24h):', '10:00');
+      if (!timeStr) return;
+      const type = prompt('Type (test-drive / consultation / inspection / maintenance):', 'test-drive') || 'test-drive';
+
+      const dateTime = new Date(`${dateStr}T${timeStr}:00`).toISOString();
+      const res2 = await fetch('/api/appointments', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
+        body: JSON.stringify({ leadId: leads[idx].id, dateTime, type })
+      });
+      if (!res2.ok) throw new Error((await res2.json()).error || 'Create failed');
+      DosShell.toast('Appointment scheduled');
+      await fetchAppointments();
+    } catch (err) {
+      DosShell.toast('Could not schedule: ' + err.message, 'error');
+    }
   }
 
   fetchAppointments();

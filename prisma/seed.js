@@ -153,14 +153,22 @@ async function main() {
 
   console.log(`✓ Created ${leads.length} leads`);
 
-  // Create sample appointments
+  // Create sample appointments at fixed business hours (so they land inside
+  // the appointments calendar's 8am-5pm grid regardless of when seed runs)
+  function atHour(daysFromNow, hour, minute = 0) {
+    const d = new Date();
+    d.setDate(d.getDate() + daysFromNow);
+    d.setHours(hour, minute, 0, 0);
+    return d;
+  }
+
   const appointments = await Promise.all([
     prisma.appointment.create({
       data: {
         leadId: leads[0].id,
         vehicleId: vehicles[0].id,
         type: 'test-drive',
-        dateTime: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000), // 2 days from now
+        dateTime: atHour(1, 9, 0),
         status: 'scheduled',
       },
     }),
@@ -169,7 +177,16 @@ async function main() {
         leadId: leads[2].id,
         vehicleId: vehicles[2].id,
         type: 'test-drive',
-        dateTime: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000), // Tomorrow
+        dateTime: atHour(2, 14, 0),
+        status: 'scheduled',
+      },
+    }),
+    prisma.appointment.create({
+      data: {
+        leadId: leads[1].id,
+        vehicleId: vehicles[1].id,
+        type: 'consultation',
+        dateTime: atHour(0, 11, 0),
         status: 'scheduled',
       },
     }),
