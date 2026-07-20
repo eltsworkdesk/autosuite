@@ -673,6 +673,29 @@ button {
   left: 0.7rem;
 }
 
+.favorite-toggle {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--ink-faint);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform var(--transition-fast, 150ms ease), color var(--transition-fast, 150ms ease);
+}
+
+.favorite-toggle:hover { transform: scale(1.08); }
+.favorite-toggle.is-favorited { color: var(--danger, #e63946); }
+
 .car-card-body {
   padding: 1.1rem 1.2rem 1.3rem;
   display: flex;

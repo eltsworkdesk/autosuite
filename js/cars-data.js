@@ -38,10 +38,12 @@ function carDetailUrl(car) {
 
 function carCardHTML(car, options) {
   const showCompare = options && options.compare;
+  const favorited = window.AutoSuiteFavorites ? window.AutoSuiteFavorites.isFavorite(car.id) : false;
   return `
     <article class="car-card">
       <div class="car-card-media">
         <span class="data-chip"><span class="dot"></span>${car.year}</span>
+        <button type="button" class="favorite-toggle${favorited ? ' is-favorited' : ''}" data-favorite-toggle="${car.id}" aria-pressed="${favorited}" aria-label="Save ${car.name} to favorites">${favorited ? '♥' : '♡'}</button>
         <img src="${imageUrl(car.image)}" alt="${car.name}" loading="lazy">
       </div>
       <div class="car-card-body">
@@ -330,6 +332,20 @@ async function initDetailPage() {
 
     window.AUTOSUITE_CURRENT_CAR = car;
     window.dispatchEvent(new CustomEvent('autosuite:car-ready', { detail: car }));
+
+    const favBtn = document.getElementById('detailFavoriteToggle');
+    if (favBtn && window.AutoSuiteFavorites) {
+      const syncFavBtn = () => {
+        const favorited = window.AutoSuiteFavorites.isFavorite(car.id);
+        favBtn.setAttribute('aria-pressed', String(favorited));
+        favBtn.textContent = favorited ? '♥ Saved' : '♡ Save';
+      };
+      syncFavBtn();
+      favBtn.addEventListener('click', () => {
+        window.AutoSuiteFavorites.toggleFavorite(car.id);
+        syncFavBtn();
+      });
+    }
 
     nameEl.textContent = car.name;
 

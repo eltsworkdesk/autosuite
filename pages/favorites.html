@@ -3,15 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Inventory | AutoSuite</title>
-  <meta name="description" content="Browse AutoSuite's full vehicle inventory — search by name, filter by brand, and set a max price.">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Inventory | AutoSuite">
-  <meta property="og:description" content="Search, filter by brand, or set a budget across AutoSuite's full inventory.">
-  <meta property="og:image" content="../assets/web/e450-hero.jpg">
+  <title>Saved Vehicles | AutoSuite</title>
+  <meta name="description" content="Vehicles you've saved while browsing AutoSuite's inventory.">
+  <meta name="robots" content="noindex">
   <meta name="theme-color" content="#0b1220">
   <link rel="icon" type="image/png" href="../assets/web/favicon-32.png">
-  <link rel="canonical" href="https://autosuite.ng/pages/cars.html">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
@@ -33,10 +29,9 @@
     </div>
     <nav class="nav-links" id="primaryNav" aria-label="Primary">
       <a href="../index.html">Home</a>
-      <a href="cars.html" aria-current="page">Inventory</a>
-      <a href="favorites.html">Favorites</a>
+      <a href="cars.html">Inventory</a>
+      <a href="favorites.html" aria-current="page">Favorites</a>
       <a href="../index.html#about">About</a>
-      <a href="../index.html#roadmap">Platform</a>
       <a href="../index.html#contact">Contact</a>
       <button type="button" class="btn small" data-open-test-drive>Book a Test Drive</button>
     </nav>
@@ -45,68 +40,18 @@
 
   <main id="main-content">
 
-  <section class="inv-page" aria-label="Vehicle inventory">
+  <section class="inv-page" aria-labelledby="favPageHeading">
     <header class="inv-head">
-      <span class="eyebrow">Full Inventory</span>
-      <h1><span id="resultCount" role="status" aria-live="polite">Loading</span> available</h1>
-      <p class="inv-sub">Filter by body style, make, budget, or mileage — the grid updates as you go.</p>
+      <span class="eyebrow">Saved</span>
+      <h1 id="favPageHeading"><span id="favCount" role="status" aria-live="polite">0</span> saved vehicles</h1>
+      <p class="inv-sub">Vehicles you've favorited while browsing — saved on this device, no account needed.</p>
     </header>
 
-    <div class="inv-layout">
-      <!-- FILTER RAIL (collapses into a disclosure on mobile) -->
-      <details class="inv-filters" open>
-        <summary class="inv-filters-summary">Filters</summary>
-        <div class="inv-rail" role="search" aria-label="Filter inventory">
-          <div class="rail-group">
-            <label for="searchBar" class="rail-label">Search</label>
-            <div class="search-input-wrap">
-              <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="11" cy="11" r="7"></circle>
-                <path d="M21 21l-4.3-4.3"></path>
-              </svg>
-              <input type="text" id="searchBar" placeholder="Name or make…" autocomplete="off">
-              <button type="button" class="search-clear" id="searchClear" aria-label="Clear search" hidden>&times;</button>
-            </div>
-          </div>
-
-          <fieldset class="rail-group">
-            <legend class="rail-label">Body style</legend>
-            <div id="bodyStyleFilters" class="rail-checks"></div>
-          </fieldset>
-
-          <div class="rail-group">
-            <label for="priceRange" class="rail-label">Max price: <span class="rail-readout" id="priceValue">₦0</span></label>
-            <input type="range" id="priceRange">
-          </div>
-
-          <fieldset class="rail-group">
-            <legend class="rail-label">Make</legend>
-            <div id="makeFilters" class="rail-checks"></div>
-          </fieldset>
-
-          <div class="rail-group">
-            <label for="mileageRange" class="rail-label">Max mileage: <span class="rail-readout" id="mileageValue">Any</span></label>
-            <input type="range" id="mileageRange">
-          </div>
-
-          <button type="button" class="btn ghost small" id="resetFilters">Reset filters</button>
-        </div>
-      </details>
-
-      <!-- RESULTS -->
-      <div class="inv-results">
-        <div class="inv-results-bar">
-          <label for="sortBy" class="visually-hidden">Sort results</label>
-          <select id="sortBy" class="inv-sort">
-            <option value="default">Sort: Featured</option>
-            <option value="price-asc">Sort: Price low to high</option>
-            <option value="price-desc">Sort: Price high to low</option>
-            <option value="year-desc">Sort: Newest first</option>
-          </select>
-        </div>
-        <h2 class="visually-hidden" id="resultsHeading">Search results</h2>
-        <section class="cars-grid" id="carsGrid" aria-labelledby="resultsHeading" aria-live="polite" aria-busy="true">
-          <p class="empty-state">Loading inventory…</p>
+    <div class="inv-layout inv-layout-single">
+      <div>
+        <h2 class="visually-hidden" id="favResultsHeading">Saved vehicle results</h2>
+        <section class="cars-grid" id="favoritesGrid" aria-labelledby="favResultsHeading" aria-live="polite">
+          <p class="empty-state">Loading…</p>
         </section>
       </div>
     </div>
@@ -170,7 +115,6 @@
           <a href="cars.html">Inventory</a>
           <a href="favorites.html">Favorites</a>
           <a href="../index.html#about">About</a>
-          <a href="../index.html#roadmap">Platform</a>
           <a href="../index.html#contact">Contact</a>
         </nav>
       </div>
@@ -190,13 +134,46 @@
   <script>
     window.CARS_JSON_PATH = '../data/cars.json';
     window.ASSET_BASE = '../assets/web/';
+    document.getElementById('year').textContent = new Date().getFullYear();
   </script>
   <script src="../data/cars.js" defer></script>
   <script src="../js/script.js" defer></script>
   <script src="../js/lib/inventory.js" defer></script>
   <script src="../js/favorites.js" defer></script>
   <script src="../js/cars-data.js" defer></script>
-  <script src="../js/compare.js" defer></script>
+  <script defer>
+    async function renderFavorites() {
+      const grid = document.getElementById('favoritesGrid');
+      const countEl = document.getElementById('favCount');
+      const favIds = window.AutoSuiteFavorites ? window.AutoSuiteFavorites.getFavorites() : [];
+
+      countEl.textContent = favIds.length;
+
+      if (favIds.length === 0) {
+        grid.innerHTML = `
+          <p class="empty-state">
+            No saved vehicles yet. Browse the <a href="cars.html">full inventory</a> and tap the heart on any car to save it here.
+          </p>
+        `;
+        return;
+      }
+
+      try {
+        const cars = await fetchCars();
+        const favCars = cars.filter((c) => favIds.includes(c.id));
+        if (favCars.length === 0) {
+          grid.innerHTML = '<p class="empty-state">No saved vehicles yet. Browse the <a href="cars.html">full inventory</a> to save some.</p>';
+          return;
+        }
+        grid.innerHTML = favCars.map((car) => carCardHTML(car)).join('');
+      } catch (err) {
+        grid.innerHTML = '<p class="empty-state">Could not load saved vehicles right now.</p>';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', renderFavorites);
+    document.addEventListener('autosuite:favorites-changed', renderFavorites);
+  </script>
+
 </body>
 </html>
-

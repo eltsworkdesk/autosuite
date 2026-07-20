@@ -32,6 +32,14 @@
   align-items: start;
 }
 
+/* Pages with no filter rail (e.g. favorites.html) stay single-column at
+   every breakpoint. Two classes so specificity beats responsive.css's
+   `.inv-layout { grid-template-columns: 260px 1fr }` media-query rule
+   regardless of stylesheet load order. */
+.inv-layout.inv-layout-single {
+  grid-template-columns: 1fr;
+}
+
 /* ---------- Filter rail ---------- */
 /* On mobile the rail is a <details> disclosure — the summary is the toggle.
    At tablet+ the summary is hidden and the rail is always shown (responsive.css). */
