@@ -1,8 +1,8 @@
 # AutoSuite — The Dealership Operating System
 
-**One connected product.** Customers get a premium car-shopping experience. Dealers get the CRM, inventory, and analytics engine that runs the business behind it. When a visitor books a test drive on the storefront, the lead lands in the dealer's pipeline **in real time** — nothing is disconnected.
+**One connected product.** Customers get a premium car-shopping experience. Dealers get the CRM, inventory, appointments, and analytics engine that runs the business behind it. When a visitor books a test drive on the storefront, the lead lands in the dealer's pipeline **in real time** — nothing is disconnected.
 
-**Live:** [dealerstack.vercel.app](https://dealerstack.vercel.app) · **Platform pitch:** [/pages/platform.html](https://dealerstack.vercel.app/pages/platform.html)
+**Live:** [dealerstack.vercel.app](https://dealerstack.vercel.app) · **Dealer dashboard:** [/pages/dashboard.html](https://dealerstack.vercel.app/pages/dashboard.html) · **Platform pitch:** [/pages/platform.html](https://dealerstack.vercel.app/pages/platform.html)
 
 ![AutoSuite storefront homepage](docs/screenshots/home.png)
 
@@ -20,31 +20,38 @@ Most dealership software is a patchwork: a website from one vendor, a CRM from a
 │ Trade-in estimator  │        │  API +       │        │  New → Contacted →   │
 │ Compare vehicles    │        │  Postgres    │        │  Qualified → Appt →  │
 │ Book a test drive   │        │              │        │  Negotiating → Sold  │
-└─────────────────────┘        └──────────────┘        └──────────────────────┘
+│ Save favorites      │        │              │        │ Inventory management │
+└─────────────────────┘        └──────────────┘        │ Appointments calendar│
+                                                          │ Analytics + Staff    │
+                                                          └──────────────────────┘
 ```
 
-Try it yourself: book a test drive on any vehicle page — that's a real database row, visible on the dealer dashboard seconds later.
+Try it yourself: book a test drive on any vehicle page — that's a real database row, visible on the dealer dashboard and CRM board seconds later via server-sent events (no polling, no refresh).
 
 ## Built to a deliverable standard
 
 This is not a tutorial project. It's engineered the way client work ships:
 
-- **Accessibility is a build gate.** Every push runs per-page axe-core audits plus HTML validation in CI — WCAG failures fail the build. Every color pairing in the design system is contrast-verified (AA minimum, most exceed 7:1).
-- **A real design system.** OKLCH color tokens, spacing/type scales, and motion curves defined once in `css/style.css` and consumed by all nine pages — no one-off hex values, no drift between pages.
-- **Real data end to end.** The dashboard shows actual Postgres rows. The financing calculator computes real amortization against each car's actual price. Nothing a dealer or reviewer touches is faked.
-- **Deliberate architecture.** Hand-written HTML/CSS/JS for the storefront (fast, auditable, zero dependencies to rot) + Vercel serverless functions with Prisma/Neon Postgres for persistence. The dashboard is served from behind HTTP Basic Auth — its markup never reaches unauthenticated clients.
-- **Traceable history.** Four documented storefront sprints (`SPRINT-*-CHANGELOG.md`), feature-branch merges, and design docs (`docs/`) from wireframe to shipped page.
+- **Accessibility is a build gate.** Every push runs per-page axe-core audits plus HTML validation in CI, across all 18 pages — WCAG failures fail the build. Every color pairing in the design system is contrast-verified (AA minimum, most exceed 7:1).
+- **A real design system.** OKLCH color tokens, spacing/type scales, and motion curves defined once in `css/style.css`/`css/dashboard.css` and consumed by every page — no one-off hex values, no drift between the storefront and the dealer-OS.
+- **Real data end to end.** Both dashboards show actual Postgres rows. The financing calculator computes real amortization against each car's actual price. Nothing a dealer or reviewer touches is faked.
+- **Deliberate architecture.** Hand-written HTML/CSS/JS for the storefront (fast, auditable, zero dependencies to rot) + Vercel serverless functions with Prisma/Postgres (Neon) for persistence, SQLite locally so contributors need zero setup. The dealer-OS is served from behind HTTP Basic Auth.
+- **Real-time sync.** A single shared Server-Sent Events connection pushes lead/vehicle/appointment changes to every open dealer-OS tab — the CRM board, the dashboard KPIs, and the notification bell all update live, not on a timer.
 
 ## For dealers: the MVP today
 
 | You get | Status |
 |---|---|
-| Branded storefront: search, filter, compare, vehicle pages | ✅ Live |
+| Branded storefront: search, filter, compare, favorites, vehicle pages | ✅ Live |
 | Financing calculator + trade-in estimator on every listing | ✅ Live |
 | Test-drive booking, no customer account needed | ✅ Live |
-| Lead pipeline (Kanban + table), 7-stage status ladder | ✅ Live |
-| Live KPIs: total leads, new this week, most-requested vehicle | ✅ Live |
-| Inventory management, appointments, analytics, staff roles | 🔜 Next modules |
+| Lead pipeline (Kanban + table), 7-stage status ladder, keyboard-accessible | ✅ Live |
+| Inventory management: filters, bulk actions, quick edit, add vehicle | ✅ Live |
+| Appointments: week calendar, scheduling, status tracking | ✅ Live |
+| Analytics: sales funnel, inventory mix, lead sources | ✅ Live |
+| Customers, Staff Activity, Settings (notifications, team, dealership profile) | ✅ Live |
+| Command palette (⌘K), live notification bell, mobile bottom nav | ✅ Live |
+| AI-assisted follow-up workflows | 🔜 Roadmap |
 
 The roadmap follows the product design brief in `docs/` — the same sitemap, personas, and journey mapping the built pages came from.
 
@@ -54,7 +61,7 @@ The roadmap follows the product design brief in `docs/` — the same sitemap, pe
 
 ![Dealer dashboard with lead pipeline](docs/screenshots/dashboard.png)
 
-**Storefront inventory.** Search, brand filter, price slider, sort, and side-by-side compare — all client-side against real listings.
+**Storefront inventory.** Search, brand filter, price slider, sort, save-to-favorites, and side-by-side compare — all client-side against real listings.
 
 ![Inventory grid](docs/screenshots/inventory.png)
 
@@ -68,28 +75,49 @@ The roadmap follows the product design brief in `docs/` — the same sitemap, pe
 
 ## Stack
 
-`HTML/CSS/JS (storefront)` · `Vercel Serverless Functions` · `Prisma + Neon Postgres` · `Vitest` · `GitHub Actions (html-validate + axe-core)` · `Git LFS`
+`HTML/CSS/JS (storefront + dealer-OS)` · `Vercel Serverless Functions` · `Prisma` · `SQLite (local)` / `Postgres via Neon (production)` · `Server-Sent Events` · `Vitest` · `GitHub Actions (html-validate + axe-core)`
 
 ```
 ├── index.html              Storefront homepage
-├── pages/                  Inventory, vehicle detail, compare, platform, test-drive
-├── css/                    Design tokens + per-page stylesheets
-├── js/                     Inventory, financing, compare, dashboard client
+├── pages/                  Storefront: cars, vehicle detail, compare, favorites,
+│                           locations, financing calculator, trade-in estimator,
+│                           platform pitch
+│                           Dealer OS: dashboard, CRM, inventory, appointments,
+│                           customers, analytics, staff activity, settings
+├── css/                    Design tokens (style.css) + per-surface stylesheets
+│                           (dashboard.css for the dealer-OS shell, home.css,
+│                           cars.css, car.css, responsive.css, ...)
+├── js/                     dos-shell.js (shared dealer-OS shell: SSE, command
+│                           palette, notifications, modals, mobile nav),
+│                           favorites.js, cars-data.js, compare.js, script.js
 │   └── lib/                Pure logic (filtering/sorting, financing math) — no DOM,
 │                           shared between the browser and tests/
 ├── tests/                  Vitest unit tests for js/lib/
-├── api/                    Serverless: leads CRUD, auth, dashboard
-├── prisma/                 Lead schema (Postgres)
-└── .github/workflows/      Accessibility + validation CI
+├── api/                    Serverless functions: leads, vehicles, appointments
+│                           (each merges its collection + by-id routes into one
+│                           function via vercel.json rewrites), analytics,
+│                           customers, team, dealership, finance, trade-ins,
+│                           dashboard
+├── prisma/                 Schema (SQLite locally, Postgres in prod — see
+│                           scripts/prepare-prisma-schema.js) + seed scripts
+└── .github/workflows/      Accessibility + validation CI (18 pages gated)
 ```
 
 ## Development
 
 No build step for the storefront — open the HTML files directly, or serve the
-repo root with any static server. The CRM API (`api/`) needs `DATABASE_URL`
-set (see `.env.example`) and runs on Vercel.
+repo root with any static server. The API (`api/`) needs a `DATABASE_URL`
+(see `.env.example`) — locally this points at a zero-setup SQLite file, so
+no database installation is required to get started.
 
 ```
-npm install   # also runs `prisma generate`
-npm test      # unit tests for js/lib/ (filtering, sorting, financing math)
+npm install     # also runs `prisma generate`
+npm run dev     # starts the local server + API on http://localhost:3000
+npm test        # unit tests for js/lib/ (filtering, sorting, financing math)
+npm run db:seed # populate local SQLite with demo data
 ```
+
+Production (Vercel) runs against a real Postgres database (Neon) — the
+datasource provider is patched from `sqlite` to `postgresql` at build time
+only, so the same schema file serves both environments without contributors
+needing Postgres running locally.
