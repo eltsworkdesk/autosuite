@@ -8,7 +8,7 @@
     "dev": "node server.js",
     "db:seed": "node prisma/seed.js",
     "db:reset": "prisma migrate reset --force",
-    "build": "prisma db push --skip-generate --accept-data-loss && node prisma/clear-legacy-test-data-once.js && node prisma/seed-production-once.js",
+    "build": "prisma db push --skip-generate && node prisma/seed-production-once.js",
     "test": "vitest run"
   },
   "dependencies": {
