@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "AutoSuite dealership storefront + CRM API",
   "scripts": {
-    "postinstall": "prisma generate",
+    "postinstall": "node scripts/prepare-prisma-schema.js && prisma generate",
     "dev": "node server.js",
     "db:seed": "node prisma/seed.js",
     "db:reset": "prisma migrate reset --force",

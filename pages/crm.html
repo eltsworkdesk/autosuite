@@ -355,9 +355,9 @@
     const tbody = document.getElementById('tableBody');
     tbody.innerHTML = leads.map(lead => `
       <div onclick="selectLead('${lead.id}')" class="is-d91df727">
-        <div class="is-db117290">${lead.name}</div>
-        <div class="is-024dc74f">${lead.carName}</div>
-        <div class="is-024dc74f">${lead.source}</div>
+        <div class="is-db117290">${esc(lead.name)}</div>
+        <div class="is-024dc74f">${esc(lead.carName)}</div>
+        <div class="is-024dc74f">${esc(lead.source)}</div>
         <div><span class="is-93e08d6f">${lead.status || 'New'}</span></div>
         <div style="color: ${priorityColor(lead)};">${esc(lead.priority || 'Normal')}</div>
         <div class="is-bd9db1cb"><div class="is-94e51f7f"></div>Derek O.</div>
@@ -384,7 +384,7 @@
       <div class="is-800a82fa">
         <div class="is-65912071"></div>
         <div>
-          <div class="is-befe80c3">${lead.name} submitted a test drive request for ${lead.carName}</div>
+          <div class="is-befe80c3">${esc(lead.name)} submitted a test drive request for ${esc(lead.carName)}</div>
           <div class="is-749d71d0">${new Date(lead.createdAt).toLocaleString()}</div>
         </div>
       </div>
