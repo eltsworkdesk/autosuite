@@ -26,7 +26,8 @@ const handlers = {
   analytics: require('./api/analytics.js'),
   customers: require('./api/customers.js'),
   team: require('./api/team.js'),
-  dealership: require('./api/dealership.js')
+  dealership: require('./api/dealership.js'),
+  'admin/seed': require('./api/admin/seed.js')
 };
 
 const PORT = process.env.PORT || 3000;
