@@ -260,6 +260,25 @@ button {
   border-radius: var(--radius-pill);
 }
 
+/* Dashboard is the entry point into the dealer-OS side of the product —
+   set it apart from the plain content links (Home, Inventory, ...) with a
+   light pill outline instead of blending in as just another page. */
+.nav-links a.nav-link-dashboard {
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  border-radius: var(--radius-pill);
+  padding: 0.3rem 0.8rem;
+}
+
+.nav-links a.nav-link-dashboard:hover,
+.nav-links a.nav-link-dashboard:focus-visible {
+  border-color: var(--brand-blue-light);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.nav-links a.nav-link-dashboard[aria-current="page"]::after {
+  display: none;
+}
+
 .nav-links.active {
   display: flex;
 }
