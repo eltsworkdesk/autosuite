@@ -279,24 +279,24 @@
       focusSelector: '#naLead',
       bodyHtml: `
         <div style="margin-bottom: 14px;">
-          <label for="naLead" style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Lead</label>
-          <select id="naLead" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+          <label for="naLead" class="dos-field-label">Lead</label>
+          <select id="naLead" class="dos-field-input">
             ${leads.map(l => `<option value="${l.id}">${esc(l.name)} — ${esc(l.carName)}</option>`).join('')}
           </select>
         </div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
           <div>
-            <label for="naDate" style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Date</label>
-            <input id="naDate" type="date" value="${today}" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+            <label for="naDate" class="dos-field-label">Date</label>
+            <input id="naDate" type="date" value="${today}" class="dos-field-input">
           </div>
           <div>
-            <label for="naTime" style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Time</label>
-            <input id="naTime" type="time" value="10:00" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+            <label for="naTime" class="dos-field-label">Time</label>
+            <input id="naTime" type="time" value="10:00" class="dos-field-input">
           </div>
         </div>
         <div>
-          <label for="naType" style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Type</label>
-          <select id="naType" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+          <label for="naType" class="dos-field-label">Type</label>
+          <select id="naType" class="dos-field-input">
             <option value="test-drive">Test drive</option>
             <option value="consultation">Consultation</option>
             <option value="inspection">Inspection</option>

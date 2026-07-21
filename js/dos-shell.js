@@ -105,7 +105,10 @@
   }
 
   // ---------- Modal ----------
+  let openModalCount = 0;
+
   function openModal({ title, bodyHtml, confirmLabel = 'Save', cancelLabel = 'Cancel', onConfirm, focusSelector }) {
+    openModalCount++;
     return new Promise((resolve) => {
       const trigger = document.activeElement;
       const overlay = document.createElement('div');
@@ -128,6 +131,7 @@
       const trap = trapFocus(overlay, trigger);
 
       function close(result) {
+        openModalCount--;
         trap.release();
         document.removeEventListener('keydown', onKeydown);
         overlay.remove();
@@ -192,6 +196,10 @@
   }
 
   function openPalette() {
+    if (isPaletteOpen()) {
+      paletteInput.focus();
+      return;
+    }
     if (!paletteEl) buildPalette();
     paletteTrigger = document.activeElement;
     paletteEl.style.display = 'flex';
@@ -302,6 +310,7 @@
 
   document.addEventListener('keydown', (e) => {
     if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+      if (openModalCount > 0) return; // a modal's own focus trap owns keyboard input right now
       e.preventDefault();
       openPalette();
     }
@@ -450,11 +459,15 @@
     if (!document.querySelector('.dos-shell')) return; // only on dealer-OS pages
     const page = currentPage();
 
+    // Plain links, not an ARIA menu widget — role="menu"/"menuitem" would
+    // promise arrow-key/Home/End navigation this doesn't implement, which
+    // breaks assistive tech that switches into menu interaction mode. Native
+    // link semantics (Tab + Enter) already make these fully keyboard-usable.
     const sheet = document.createElement('div');
     sheet.className = 'dos-mobile-more-sheet';
-    sheet.setAttribute('role', 'menu');
+    sheet.setAttribute('aria-label', 'More pages');
     sheet.innerHTML = MOBILE_MORE_ITEMS.map((item) => `
-      <a class="dos-mobile-more-item" role="menuitem" href="${item.href}"><span class="glyph">${item.glyph}</span>${esc(item.label)}</a>
+      <a class="dos-mobile-more-item" href="${item.href}"><span class="glyph">${item.glyph}</span>${esc(item.label)}</a>
     `).join('');
     document.body.appendChild(sheet);
 

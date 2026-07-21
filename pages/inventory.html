@@ -312,8 +312,8 @@
       confirmLabel: 'Apply',
       focusSelector: '#bulkStatus',
       bodyHtml: `
-        <label for="bulkStatus" style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">New status</label>
-        <select id="bulkStatus" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+        <label for="bulkStatus" class="dos-field-label">New status</label>
+        <select id="bulkStatus" class="dos-field-input">
           <option value="active">Active</option>
           <option value="featured">Featured</option>
           <option value="draft">Draft</option>
@@ -393,8 +393,8 @@
   async function promptAddVehicle() {
     const field = (id, label, value = '', type = 'text') => `
       <div style="margin-bottom: 14px;">
-        <label for="${id}" style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">${label}</label>
-        <input id="${id}" type="${type}" value="${value}" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+        <label for="${id}" class="dos-field-label">${label}</label>
+        <input id="${id}" type="${type}" value="${value}" class="dos-field-input">
       </div>
     `;
     const result = await DosShell.openModal({
@@ -407,8 +407,8 @@
         ${field('avYear', 'Year', '2024', 'number')}
         ${field('avPrice', 'Price (₦)', '25000000', 'number')}
         <div style="margin-bottom: 14px;">
-          <label for="avBody" style="font: 500 12px 'IBM Plex Mono', monospace; text-transform: uppercase; color: oklch(50% 0.01 260); display: block; margin-bottom: 6px;">Body type</label>
-          <select id="avBody" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid oklch(88% 0.005 260); border-radius: 8px; font: 400 13px 'IBM Plex Sans', sans-serif;">
+          <label for="avBody" class="dos-field-label">Body type</label>
+          <select id="avBody" class="dos-field-input">
             <option>Sedan</option><option>SUV</option><option>Truck</option><option>Coupe</option>
           </select>
         </div>

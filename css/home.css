@@ -266,6 +266,10 @@
   font-size: 0.92rem;
 }
 
+.roadmap-card .btn {
+  margin-top: 0.9rem;
+}
+
 .roadmap-link {
   text-align: center;
   margin-top: var(--space-6);

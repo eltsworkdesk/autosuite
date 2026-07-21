@@ -108,6 +108,10 @@
     return '₦' + Math.round(n).toLocaleString('en-NG');
   }
 
+  function esc(s) {
+    return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
   function renderBarChart(containerId, dataObj, tableCaption) {
     const container = document.getElementById(containerId);
     const entries = Object.entries(dataObj);
@@ -118,16 +122,16 @@
     const max = Math.max(...entries.map(([, v]) => v));
     const bars = entries.map(([label, value]) => `
       <div class="chart-bar">
-        <div class="chart-label">${label}</div>
+        <div class="chart-label">${esc(label)}</div>
         <div class="chart-track"><div class="chart-fill" style="width: ${Math.max((value / max) * 100, 8)}%;"></div></div>
         <div class="chart-value">${value}</div>
       </div>
     `).join('');
     const table = `
       <table class="visually-hidden">
-        <caption>${tableCaption}</caption>
+        <caption>${esc(tableCaption)}</caption>
         <thead><tr><th scope="col">Category</th><th scope="col">Count</th></tr></thead>
-        <tbody>${entries.map(([label, value]) => `<tr><th scope="row">${label}</th><td>${value}</td></tr>`).join('')}</tbody>
+        <tbody>${entries.map(([label, value]) => `<tr><th scope="row">${esc(label)}</th><td>${value}</td></tr>`).join('')}</tbody>
       </table>
     `;
     container.innerHTML = bars + table;

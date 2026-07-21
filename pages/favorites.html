@@ -144,37 +144,51 @@
   <script src="../js/favorites.js" defer></script>
   <script src="../js/cars-data.js" defer></script>
   <script defer>
+    const EMPTY_STATE_HTML = '<p class="empty-state">No saved vehicles yet. Browse the <a href="cars.html">full inventory</a> and tap the heart on any car to save it here.</p>';
+
     async function renderFavorites() {
       const grid = document.getElementById('favoritesGrid');
       const countEl = document.getElementById('favCount');
       const favIds = window.AutoSuiteFavorites ? window.AutoSuiteFavorites.getFavorites() : [];
 
-      countEl.textContent = favIds.length;
-
       if (favIds.length === 0) {
-        grid.innerHTML = `
-          <p class="empty-state">
-            No saved vehicles yet. Browse the <a href="cars.html">full inventory</a> and tap the heart on any car to save it here.
-          </p>
-        `;
+        countEl.textContent = 0;
+        grid.innerHTML = EMPTY_STATE_HTML;
         return;
       }
 
       try {
         const cars = await fetchCars();
         const favCars = cars.filter((c) => favIds.includes(c.id));
+        countEl.textContent = favCars.length;
         if (favCars.length === 0) {
-          grid.innerHTML = '<p class="empty-state">No saved vehicles yet. Browse the <a href="cars.html">full inventory</a> to save some.</p>';
+          grid.innerHTML = EMPTY_STATE_HTML;
           return;
         }
         grid.innerHTML = favCars.map((car) => carCardHTML(car)).join('');
       } catch (err) {
+        countEl.textContent = favIds.length;
         grid.innerHTML = '<p class="empty-state">Could not load saved vehicles right now.</p>';
       }
     }
 
     document.addEventListener('DOMContentLoaded', renderFavorites);
-    document.addEventListener('autosuite:favorites-changed', renderFavorites);
+
+    // Every unfavorite on this page removes a card already on screen — drop
+    // just that card instead of refetching every car and rebuilding the grid.
+    document.addEventListener('autosuite:favorites-changed', (e) => {
+      const grid = document.getElementById('favoritesGrid');
+      const countEl = document.getElementById('favCount');
+      const toggle = e.detail && grid.querySelector(`[data-favorite-toggle="${CSS.escape(e.detail.id)}"]`);
+      if (!e.detail || e.detail.favorited || !toggle) {
+        renderFavorites();
+        return;
+      }
+      toggle.closest('.car-card').remove();
+      const remaining = window.AutoSuiteFavorites.getFavorites().length;
+      countEl.textContent = remaining;
+      if (remaining === 0) grid.innerHTML = EMPTY_STATE_HTML;
+    });
   </script>
 
 </body>

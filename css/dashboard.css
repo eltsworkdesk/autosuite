@@ -390,14 +390,30 @@
 }
 .dos-mobile-more-item:hover { background: var(--surface-sunken, oklch(97% 0.004 90)); }
 
+.dos-field-label {
+  font: 500 12px 'IBM Plex Mono', monospace;
+  text-transform: uppercase;
+  color: oklch(50% 0.01 260);
+  display: block;
+  margin-bottom: 6px;
+}
+.dos-field-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border: 1px solid oklch(88% 0.005 260);
+  border-radius: 8px;
+  font: 400 13px 'IBM Plex Sans', sans-serif;
+}
+
 @media (max-width: 900px) {
   .dos-shell { grid-template-columns: 1fr; }
   .dos-sidebar { flex-direction: row; align-items: center; flex-wrap: wrap; padding: var(--space-3) var(--space-4); }
-  .dos-search, .dos-sidebar-foot { display: none; }
+  .dos-sidebar [data-dos-search], .dos-sidebar .is-df55b60c { display: none; }
   .dos-brand { padding: 0 var(--space-3) 0 0; }
   /* Navigation moves to the bottom tab bar on mobile - the sidebar's own
      nav list would otherwise duplicate it. */
-  .dos-sidebar .dos-nav, .dos-sidebar > nav { display: none; }
+  .dos-sidebar .dos-nav { display: none; }
   .kpi-row { grid-template-columns: repeat(2, 1fr); }
   .dos-grid-2, .dos-grid-3 { grid-template-columns: 1fr; }
   .ld-layout { grid-template-columns: 1fr; }

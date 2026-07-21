@@ -218,6 +218,10 @@
     return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
 
+  function priorityColor(lead) {
+    return lead.priority === 'High' ? 'oklch(60% 0.14 55)' : 'oklch(70% 0.01 260)';
+  }
+
   // Render Kanban board with drag-and-drop
   function renderBoard() {
     console.log('renderBoard called, leads=' + leads.length + ', STAGES=' + STAGES.length);
@@ -226,6 +230,13 @@
       console.error('kanbanBoard element not found');
       return;
     }
+
+    // Rebuilding via innerHTML below destroys the focused element (e.g. a
+    // keyboard user mid-way through the "Move to stage" select) — remember
+    // which lead's select was focused so we can restore it after.
+    const focusedMoveSelect = document.activeElement.classList.contains('kanban-move')
+      ? document.activeElement.closest('.kanban-card').dataset.leadId
+      : null;
 
     const html = STAGES.map(stage => {
       const stageLeads = leads.filter(lead => {
@@ -248,7 +259,7 @@
               <div draggable="true" class="kanban-card is-b219fdf3" data-lead-id="${esc(lead.id)}" onclick="selectLead('${esc(lead.id)}')">
                 <div class="is-25ebd687">
                   <div class="is-ec940996">${esc(lead.name)}</div>
-                  <div style="width: 6px; height: 6px; border-radius: 50%; background: ${lead.priority === 'High' ? 'oklch(60% 0.14 55)' : 'oklch(70% 0.01 260)'};"></div>
+                  <div style="width: 6px; height: 6px; border-radius: 50%; background: ${priorityColor(lead)};"></div>
                 </div>
                 <div class="is-f6501b31">${esc(lead.carName)}</div>
                 <div class="is-948e6d6e">
@@ -268,6 +279,11 @@
     console.log('Setting board innerHTML, length=' + html.length);
     board.innerHTML = html;
     console.log('Board rendered, element count=' + board.children.length);
+
+    if (focusedMoveSelect) {
+      const restored = board.querySelector(`[data-lead-id="${CSS.escape(focusedMoveSelect)}"] .kanban-move`);
+      if (restored) restored.focus();
+    }
 
     // Wire up drag-and-drop
     setTimeout(() => {
@@ -321,7 +337,10 @@
         body: JSON.stringify({ status: newStatus })
       });
       if (res.ok) {
-        await fetchLeads();
+        const { lead } = await res.json();
+        const idx = leads.findIndex((l) => l.id === leadId);
+        if (idx !== -1) leads[idx] = lead;
+        render();
       } else {
         DosShell.toast('Could not move lead', 'error');
       }
@@ -340,7 +359,7 @@
         <div class="is-024dc74f">${lead.carName}</div>
         <div class="is-024dc74f">${lead.source}</div>
         <div><span class="is-93e08d6f">${lead.status || 'New'}</span></div>
-        <div style="color: ${lead.priority === 'High' ? 'oklch(60% 0.14 55)' : 'oklch(70% 0.01 260)'};">${lead.priority || 'Normal'}</div>
+        <div style="color: ${priorityColor(lead)};">${esc(lead.priority || 'Normal')}</div>
         <div class="is-bd9db1cb"><div class="is-94e51f7f"></div>Derek O.</div>
       </div>
     `).join('');
