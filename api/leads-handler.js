@@ -1,6 +1,6 @@
-const { prisma } = require('../_lib/db');
-const { requireAuth } = require('../_lib/auth');
-const { broadcast } = require('../_lib/events');
+const { prisma } = require('./_lib/db');
+const { requireAuth } = require('./_lib/auth');
+const { broadcast } = require('./_lib/events');
 
 const VALID_SOURCES = ['test-drive-modal', 'trade-in-estimator'];
 const VALID_STATUSES = ['NEW', 'CONTACTED', 'QUALIFIED', 'APPT_SCHEDULED', 'NEGOTIATING', 'SOLD', 'LOST'];

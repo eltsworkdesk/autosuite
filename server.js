@@ -14,13 +14,16 @@ const { emitter } = require('./api/_lib/events');
 
 // Simulated API handlers (normally Vercel functions). leads/appointments/
 // vehicles each merge their bare-collection and by-id routes into a single
-// '[[...id]]' optional-catch-all handler (mirroring the actual Vercel file
-// convention) to stay under Vercel's Hobby-plan serverless function limit.
+// flat handler file, matching vercel.json's explicit rewrites (both
+// /api/<collection> and /api/<collection>/:id route to the same function,
+// with :id passed through as a query param) — kept flat + explicit rather
+// than relying on Vercel bracket-folder conventions, to stay under the
+// Hobby plan's serverless function count limit.
 const handlers = {
-  'leads/[[...id]]': require('./api/leads/[[...id]].js'),
+  leads: require('./api/leads-handler.js'),
   dashboard: require('./api/dashboard.js'),
-  'vehicles/[[...id]]': require('./api/vehicles/[[...id]].js'),
-  'appointments/[[...id]]': require('./api/appointments/[[...id]].js'),
+  vehicles: require('./api/vehicles-handler.js'),
+  appointments: require('./api/appointments-handler.js'),
   'trade-ins': require('./api/trade-ins.js'),
   finance: require('./api/finance.js'),
   analytics: require('./api/analytics.js'),
@@ -28,6 +31,10 @@ const handlers = {
   team: require('./api/team.js'),
   dealership: require('./api/dealership.js')
 };
+
+// Collections whose /api/<name>/:id path routes to the bare handler above,
+// with :id passed as a query param — mirrors the vercel.json rewrites.
+const idRewriteCollections = new Set(['leads', 'vehicles', 'appointments']);
 
 const PORT = process.env.PORT || 3000;
 const HOST = 'localhost';
@@ -117,12 +124,10 @@ const server = http.createServer((req, res) => {
   if (pathname.startsWith('/api/')) {
     const apiPath = pathname.slice(5); // Remove '/api/'
     const segments = apiPath.split('/').filter(Boolean);
-    // Optional catch-all routes: /api/<collection> and /api/<collection>/<id>
-    // both dispatch to the '<collection>/[[...id]]' handler, mirroring
-    // Vercel's file-based routing convention for `[[...id]].js`.
-    const catchAllKey = segments.length >= 1 && segments.length <= 2 ? `${segments[0]}/[[...id]]` : null;
-    const isCatchAll = catchAllKey && !!handlers[catchAllKey];
-    const handler = handlers[apiPath] || (isCatchAll ? handlers[catchAllKey] : undefined);
+    // /api/<collection>/<id> rewrites to the bare '<collection>' handler
+    // with :id as a query param, mirroring the vercel.json rewrites.
+    const isIdRewrite = segments.length === 2 && idRewriteCollections.has(segments[0]);
+    const handler = handlers[apiPath] || (isIdRewrite ? handlers[segments[0]] : undefined);
 
     if (handler) {
       parseBody(req, (body) => {
@@ -134,10 +139,8 @@ const server = http.createServer((req, res) => {
           url: pathname
         };
 
-        // Extract [[...id]] from URL if present, as an array — exactly how
-        // Vercel provides an optional catch-all segment.
-        if (isCatchAll && segments.length === 2) {
-          mockReq.query.id = [segments[1]];
+        if (isIdRewrite) {
+          mockReq.query.id = segments[1];
         }
 
         let responseSent = false;

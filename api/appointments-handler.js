@@ -1,6 +1,6 @@
-const { prisma } = require('../_lib/db');
-const { requireAuth } = require('../_lib/auth');
-const { broadcast } = require('../_lib/events');
+const { prisma } = require('./_lib/db');
+const { requireAuth } = require('./_lib/auth');
+const { broadcast } = require('./_lib/events');
 
 const VALID_TYPES = ['test-drive', 'inspection', 'consultation', 'maintenance'];
 const VALID_STATUSES = ['scheduled', 'completed', 'no_show', 'cancelled'];

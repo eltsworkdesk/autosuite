@@ -2,6 +2,12 @@
   "framework": null,
   "outputDirectory": ".",
   "rewrites": [
-    { "source": "/dashboard", "destination": "/api/dashboard" }
+    { "source": "/dashboard", "destination": "/api/dashboard" },
+    { "source": "/api/leads", "destination": "/api/leads-handler" },
+    { "source": "/api/leads/:id", "destination": "/api/leads-handler?id=:id" },
+    { "source": "/api/appointments", "destination": "/api/appointments-handler" },
+    { "source": "/api/appointments/:id", "destination": "/api/appointments-handler?id=:id" },
+    { "source": "/api/vehicles", "destination": "/api/vehicles-handler" },
+    { "source": "/api/vehicles/:id", "destination": "/api/vehicles-handler?id=:id" }
   ]
 }
