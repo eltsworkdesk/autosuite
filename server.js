@@ -12,22 +12,21 @@ const path = require('path');
 const url = require('url');
 const { emitter } = require('./api/_lib/events');
 
-// Simulated API handlers (normally Vercel functions)
+// Simulated API handlers (normally Vercel functions). leads/appointments/
+// vehicles each merge their bare-collection and by-id routes into a single
+// '[[...id]]' optional-catch-all handler (mirroring the actual Vercel file
+// convention) to stay under Vercel's Hobby-plan serverless function limit.
 const handlers = {
-  leads: require('./api/leads.js'),
-  'leads/[id]': require('./api/leads/[id].js'),
+  'leads/[[...id]]': require('./api/leads/[[...id]].js'),
   dashboard: require('./api/dashboard.js'),
-  vehicles: require('./api/vehicles.js'),
-  'vehicles/[id]': require('./api/vehicles/[id].js'),
-  appointments: require('./api/appointments.js'),
-  'appointments/[id]': require('./api/appointments/[id].js'),
+  'vehicles/[[...id]]': require('./api/vehicles/[[...id]].js'),
+  'appointments/[[...id]]': require('./api/appointments/[[...id]].js'),
   'trade-ins': require('./api/trade-ins.js'),
   finance: require('./api/finance.js'),
   analytics: require('./api/analytics.js'),
   customers: require('./api/customers.js'),
   team: require('./api/team.js'),
-  dealership: require('./api/dealership.js'),
-  'admin/seed': require('./api/admin/seed.js')
+  dealership: require('./api/dealership.js')
 };
 
 const PORT = process.env.PORT || 3000;
@@ -118,10 +117,12 @@ const server = http.createServer((req, res) => {
   if (pathname.startsWith('/api/')) {
     const apiPath = pathname.slice(5); // Remove '/api/'
     const segments = apiPath.split('/').filter(Boolean);
-    // Dynamic routes look like /api/<collection>/<id> and dispatch to the
-    // '<collection>/[id]' handler, mirroring Vercel's file-based routing.
-    const isDynamic = segments.length === 2 && handlers[`${segments[0]}/[id]`];
-    const handler = handlers[apiPath] || (isDynamic ? handlers[`${segments[0]}/[id]`] : undefined);
+    // Optional catch-all routes: /api/<collection> and /api/<collection>/<id>
+    // both dispatch to the '<collection>/[[...id]]' handler, mirroring
+    // Vercel's file-based routing convention for `[[...id]].js`.
+    const catchAllKey = segments.length >= 1 && segments.length <= 2 ? `${segments[0]}/[[...id]]` : null;
+    const isCatchAll = catchAllKey && !!handlers[catchAllKey];
+    const handler = handlers[apiPath] || (isCatchAll ? handlers[catchAllKey] : undefined);
 
     if (handler) {
       parseBody(req, (body) => {
@@ -133,9 +134,10 @@ const server = http.createServer((req, res) => {
           url: pathname
         };
 
-        // Extract [id] from URL if present
-        if (isDynamic) {
-          mockReq.query.id = segments[1];
+        // Extract [[...id]] from URL if present, as an array — exactly how
+        // Vercel provides an optional catch-all segment.
+        if (isCatchAll && segments.length === 2) {
+          mockReq.query.id = [segments[1]];
         }
 
         let responseSent = false;
