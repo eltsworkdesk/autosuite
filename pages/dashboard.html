@@ -85,23 +85,23 @@
       <div class="is-2f8dc584">
         <div class="kpi-card">
           <div class="kpi-label">New Leads Today</div>
-          <div class="kpi-value" id="kpiNewLeads">18</div>
-          <div class="kpi-trend">↑ 24% vs yesterday</div>
+          <div class="kpi-value" id="kpiNewLeads">0</div>
+          <div class="kpi-trend">Live</div>
         </div>
         <div class="kpi-card">
           <div class="kpi-label">Test Drives Booked</div>
-          <div class="kpi-value" id="kpiTestDrives">7</div>
-          <div class="kpi-trend">↑ 12%</div>
+          <div class="kpi-value" id="kpiTestDrives">0</div>
+          <div class="kpi-trend">Upcoming</div>
         </div>
         <div class="kpi-card">
           <div class="kpi-label">Revenue MTD</div>
-          <div class="kpi-value" id="kpiRevenue">$412K</div>
-          <div class="kpi-trend">↑ 8%</div>
+          <div class="kpi-value" id="kpiRevenue">₦0</div>
+          <div class="kpi-trend">From sold inventory</div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-label">Avg. Response Time</div>
-          <div class="kpi-value" id="kpiResponseTime">6 min</div>
-          <div class="kpi-trend">↓ 2 min improved</div>
+          <div class="kpi-label">Open Leads</div>
+          <div class="kpi-value" id="kpiOpenLeads">0</div>
+          <div class="kpi-trend">Not yet sold or lost</div>
         </div>
       </div>
 
@@ -122,30 +122,7 @@
         <div class="kpi-card">
           <div class="is-00af1200">Upcoming Appointments</div>
           <div id="appointmentsContainer" class="is-f4b1613e">
-            <div class="is-8512dd41">
-              <div class="is-ddf2f4a7">9:00a</div>
-              <div class="is-49cdf874">
-                <div class="is-8fc07565">Maya Torres</div>
-                <div class="is-41b12b7b">2024 BMW X6</div>
-              </div>
-              <div class="is-fce65e5e">Test drive</div>
-            </div>
-            <div class="is-8512dd41">
-              <div class="is-ddf2f4a7">11:30a</div>
-              <div class="is-49cdf874">
-                <div class="is-8fc07565">James Lin</div>
-                <div class="is-41b12b7b">2023 Camry</div>
-              </div>
-              <div class="is-fce65e5e">Inspection</div>
-            </div>
-            <div class="is-8512dd41">
-              <div class="is-ddf2f4a7">1:00p</div>
-              <div class="is-49cdf874">
-                <div class="is-8fc07565">Priya Shah</div>
-                <div class="is-41b12b7b">E450 Sedan</div>
-              </div>
-              <div class="is-fce65e5e">Test drive</div>
-            </div>
+            <p class="empty-state">Loading…</p>
           </div>
         </div>
       </div>
@@ -155,54 +132,16 @@
         <!-- Recently Added Vehicles -->
         <div class="kpi-card">
           <div class="is-1d04847a">Recently Added Vehicles</div>
-          <div class="is-578b24de">
-            <div class="is-c6235d4d">
-              <div class="is-15d8b6b2"></div>
-              <div class="is-49cdf874">
-                <div class="is-8fc07565">2025 Cadillac Escalade</div>
-                <div class="is-41b12b7b">$84,000</div>
-              </div>
-              <div class="is-2c46940c"></div>
-            </div>
-            <div class="is-c6235d4d">
-              <div class="is-15d8b6b2"></div>
-              <div class="is-49cdf874">
-                <div class="is-8fc07565">2025 Porsche Cayenne</div>
-                <div class="is-41b12b7b">$79,500</div>
-              </div>
-              <div class="is-2c46940c"></div>
-            </div>
-            <div class="is-c6235d4d">
-              <div class="is-15d8b6b2"></div>
-              <div class="is-49cdf874">
-                <div class="is-8fc07565">2018 BMW 5 Series</div>
-                <div class="is-41b12b7b">$24,300</div>
-              </div>
-              <div class="is-2ee9a8c9"></div>
-            </div>
+          <div class="is-578b24de" id="recentVehiclesContainer">
+            <p class="empty-state">Loading…</p>
           </div>
         </div>
 
         <!-- Recent Customer Activity -->
         <div class="kpi-card">
           <div class="is-1d04847a">Recent Customer Activity</div>
-          <div class="is-f4b1613e">
-            <div class="is-a5035a9d">
-              <span class="is-db117290">Maya Torres</span> booked a test drive for the BMW X6
-              <div class="is-749d71d0">2 min ago</div>
-            </div>
-            <div class="is-a5035a9d">
-              <span class="is-db117290">James Lin</span> requested financing on 2023 Camry
-              <div class="is-749d71d0">18 min ago</div>
-            </div>
-            <div class="is-a5035a9d">
-              <span class="is-db117290">Priya Shah</span> favorited the Mercedes E450
-              <div class="is-749d71d0">41 min ago</div>
-            </div>
-            <div class="is-a5035a9d">
-              <span class="is-db117290">Cole Bennett</span> submitted a trade-in estimate
-              <div class="is-749d71d0">1 hr ago</div>
-            </div>
+          <div class="is-f4b1613e" id="activityContainer">
+            <p class="empty-state">Loading…</p>
           </div>
         </div>
 
@@ -212,19 +151,19 @@
           <div class="is-578b24de">
             <div class="is-3b72cfd2">
               <span class="is-024dc74f">Active listings</span>
-              <span class="is-db117290">86</span>
+              <span class="is-db117290" id="statActiveListings">0</span>
             </div>
             <div class="is-3b72cfd2">
               <span class="is-024dc74f">Avg. days on lot</span>
-              <span class="is-db117290">21</span>
+              <span class="is-db117290" id="statAvgDaysOnLot">0</span>
             </div>
             <div class="is-3b72cfd2">
               <span class="is-024dc74f">Draft listings</span>
-              <span class="is-db117290">4</span>
+              <span class="is-db117290" id="statDraftListings">0</span>
             </div>
             <div class="is-3b72cfd2">
               <span class="is-024dc74f">Sold this month</span>
-              <span class="is-43213dcc">19</span>
+              <span class="is-43213dcc" id="statSoldThisMonth">0</span>
             </div>
           </div>
         </div>
@@ -236,29 +175,133 @@
 
 <script src="../js/dos-shell.js"></script>
 <script>
+  function esc(s) {
+    return String(s || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  function fmtNairaShort(n) {
+    if (n >= 1000000) return '₦' + (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    if (n >= 1000) return '₦' + Math.round(n / 1000) + 'K';
+    return '₦' + Math.round(n);
+  }
+
+  function fmtTime(dateTime) {
+    const d = new Date(dateTime);
+    let h = d.getHours();
+    const m = String(d.getMinutes()).padStart(2, '0');
+    const ampm = h >= 12 ? 'p' : 'a';
+    h = h % 12 || 12;
+    return `${h}:${m}${ampm}`;
+  }
+
+  function fmtRelativeTime(dateTime) {
+    const diffMs = Date.now() - new Date(dateTime).getTime();
+    const mins = Math.round(diffMs / 60000);
+    if (mins < 1) return 'just now';
+    if (mins < 60) return `${mins} min ago`;
+    const hrs = Math.round(mins / 60);
+    if (hrs < 24) return `${hrs} hr ago`;
+    return `${Math.round(hrs / 24)}d ago`;
+  }
+
+  const APPT_TYPE_LABEL = { 'test-drive': 'Test drive', 'inspection': 'Inspection', 'consultation': 'Consultation', 'maintenance': 'Maintenance' };
+
   // Fetch real data from API with timeout
   async function loadDashboard() {
     try {
       const auth = btoa('admin:admin');
+      const authHeader = { Authorization: `Basic ${auth}` };
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout for DB init
 
-      const res = await fetch('/api/leads', {
-        headers: { 'Authorization': `Basic ${auth}` },
-        signal: controller.signal
-      });
+      const [leadsRes, vehiclesRes, appointmentsRes] = await Promise.all([
+        fetch('/api/leads', { headers: authHeader, signal: controller.signal }),
+        fetch('/api/vehicles', { signal: controller.signal }),
+        fetch('/api/appointments', { headers: authHeader, signal: controller.signal })
+      ]);
       clearTimeout(timeoutId);
 
-      if (!res.ok) throw new Error('Failed to fetch leads');
-      const data = await res.json();
-      const leads = data.leads || [];
+      if (!leadsRes.ok || !vehiclesRes.ok || !appointmentsRes.ok) throw new Error('Failed to fetch dashboard data');
 
-      const newLeadsToday = leads.filter(l => {
-        const date = new Date(l.createdAt);
-        const today = new Date();
-        return date.toDateString() === today.toDateString();
-      }).length;
+      const leads = (await leadsRes.json()).leads || [];
+      const vehicles = (await vehiclesRes.json()).vehicles || [];
+      const appointments = (await appointmentsRes.json()).appointments || [];
+
+      const now = new Date();
+      const isToday = (d) => new Date(d).toDateString() === now.toDateString();
+      const isThisMonth = (d) => { const dt = new Date(d); return dt.getMonth() === now.getMonth() && dt.getFullYear() === now.getFullYear(); };
+
+      const newLeadsToday = leads.filter(l => isToday(l.createdAt)).length;
       document.getElementById('kpiNewLeads').textContent = newLeadsToday;
+
+      const testDrivesBooked = appointments.filter(a => a.type === 'test-drive' && a.status === 'scheduled').length;
+      document.getElementById('kpiTestDrives').textContent = testDrivesBooked;
+
+      const revenueMTD = vehicles.filter(v => v.status === 'sold' && isThisMonth(v.updatedAt)).reduce((sum, v) => sum + v.price, 0);
+      document.getElementById('kpiRevenue').textContent = fmtNairaShort(revenueMTD);
+
+      const openLeads = leads.filter(l => !['SOLD', 'LOST'].includes(l.status || 'NEW')).length;
+      document.getElementById('kpiOpenLeads').textContent = openLeads;
+
+      // Upcoming appointments
+      const upcoming = appointments
+        .filter(a => a.status === 'scheduled' && new Date(a.dateTime) >= now)
+        .sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime))
+        .slice(0, 3);
+      const appointmentsContainer = document.getElementById('appointmentsContainer');
+      appointmentsContainer.innerHTML = upcoming.length === 0
+        ? '<p class="empty-state">No upcoming appointments.</p>'
+        : upcoming.map(a => `
+          <div class="is-8512dd41">
+            <div class="is-ddf2f4a7">${fmtTime(a.dateTime)}</div>
+            <div class="is-49cdf874">
+              <div class="is-8fc07565">${esc(a.lead ? a.lead.name : 'Unknown lead')}</div>
+              <div class="is-41b12b7b">${a.vehicle ? esc(`${a.vehicle.year} ${a.vehicle.make} ${a.vehicle.model}`) : ''}</div>
+            </div>
+            <div class="is-fce65e5e">${esc(APPT_TYPE_LABEL[a.type] || a.type)}</div>
+          </div>
+        `).join('');
+
+      // Recently added vehicles
+      const recentVehicles = [...vehicles].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 3);
+      const recentVehiclesContainer = document.getElementById('recentVehiclesContainer');
+      recentVehiclesContainer.innerHTML = recentVehicles.length === 0
+        ? '<p class="empty-state">No vehicles yet.</p>'
+        : recentVehicles.map(v => `
+          <div class="is-c6235d4d">
+            <div class="is-15d8b6b2"></div>
+            <div class="is-49cdf874">
+              <div class="is-8fc07565">${esc(`${v.year} ${v.make} ${v.model}`)}</div>
+              <div class="is-41b12b7b">${fmtNairaShort(v.price)}</div>
+            </div>
+            <div class="is-2c46940c"></div>
+          </div>
+        `).join('');
+
+      // Recent activity — derived from real leads + appointments, newest first
+      const activity = [
+        ...leads.map(l => ({ at: l.createdAt, name: l.name, text: `submitted an inquiry for the ${l.carName}` })),
+        ...appointments.map(a => ({ at: a.createdAt, name: a.lead ? a.lead.name : 'A customer', text: `booked a${a.type === 'inspection' ? 'n' : ''} ${APPT_TYPE_LABEL[a.type] ? APPT_TYPE_LABEL[a.type].toLowerCase() : a.type}${a.vehicle ? ` for the ${a.vehicle.make} ${a.vehicle.model}` : ''}` }))
+      ].sort((a, b) => new Date(b.at) - new Date(a.at)).slice(0, 4);
+      const activityContainer = document.getElementById('activityContainer');
+      activityContainer.innerHTML = activity.length === 0
+        ? '<p class="empty-state">No recent activity.</p>'
+        : activity.map(a => `
+          <div class="is-a5035a9d">
+            <span class="is-db117290">${esc(a.name)}</span> ${esc(a.text)}
+            <div class="is-749d71d0">${fmtRelativeTime(a.at)}</div>
+          </div>
+        `).join('');
+
+      // Inventory health
+      const activeVehicles = vehicles.filter(v => v.status === 'active' || v.status === 'featured');
+      document.getElementById('statActiveListings').textContent = activeVehicles.length;
+      document.getElementById('statDraftListings').textContent = vehicles.filter(v => v.status === 'draft').length;
+      document.getElementById('statSoldThisMonth').textContent = vehicles.filter(v => v.status === 'sold' && isThisMonth(v.updatedAt)).length;
+      const avgDaysOnLot = activeVehicles.length
+        ? Math.round(activeVehicles.reduce((sum, v) => sum + (now - new Date(v.createdAt)) / 86400000, 0) / activeVehicles.length)
+        : 0;
+      document.getElementById('statAvgDaysOnLot').textContent = avgDaysOnLot;
 
       const STAGES = [
         { name: 'New', key: 'NEW', color: 'oklch(45% 0.16 260)' },
@@ -300,7 +343,7 @@
   }
 
   loadDashboard();
-  DosShell.onEvent(['lead.created', 'lead.updated'], loadDashboard);
+  DosShell.onEvent(['lead.created', 'lead.updated', 'appointment.created', 'appointment.updated', 'vehicle.created', 'vehicle.updated', 'vehicle.deleted'], loadDashboard);
   setInterval(loadDashboard, 30000);
 </script>
 
