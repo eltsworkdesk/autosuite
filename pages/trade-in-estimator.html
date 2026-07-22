@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/responsive.css">
   <style>
     body { background: linear-gradient(135deg, oklch(97% 0.005 260) 0%, oklch(95% 0.008 300) 100%); min-height: 100vh; margin: 0; }
     .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
@@ -111,9 +112,42 @@
         </div>
       </div>
 
-      <button type="button" class="button" onclick="submitEstimate()">Get Appraisal &amp; Trade-in Offer</button>
+      <button type="button" class="button" id="submitEstimateBtn">Get Appraisal &amp; Trade-in Offer</button>
     </div>
   </main>
+
+  <!-- Trade-in Offer Modal -->
+  <div id="tradeInModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="tradeInModalTitle">
+    <div class="modal-content">
+      <button type="button" class="close" aria-label="Close">&times;</button>
+      <h2 id="tradeInModalTitle">Get Your Trade-in Offer</h2>
+      <p class="modal-sub">Share your contact info and a dealer will follow up to schedule an in-person appraisal.</p>
+      <form id="tradeInForm" novalidate>
+        <div class="field">
+          <label for="ti-email">Email<span class="required-mark" aria-hidden="true">*</span></label>
+          <input type="email" id="ti-email" name="email" placeholder="you@example.com" required>
+          <span class="field-error">Enter a valid email address.</span>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="ti-name">Your name<span class="required-mark" aria-hidden="true">*</span></label>
+            <input type="text" id="ti-name" name="name" placeholder="Full name" required>
+            <span class="field-error">Enter your name.</span>
+          </div>
+          <div class="field">
+            <label for="ti-phone">Phone number<span class="required-mark" aria-hidden="true">*</span></label>
+            <input type="tel" id="ti-phone" name="phone" placeholder="+234" inputmode="tel" required>
+            <span class="field-error">Enter a phone number.</span>
+          </div>
+        </div>
+        <button type="submit" class="button">Submit Request</button>
+        <p class="form-status" id="ti-status" role="status" aria-live="polite">
+          <span class="status-icon" aria-hidden="true">&check;</span>
+          <span class="status-text"></span>
+        </p>
+      </form>
+    </div>
+  </div>
 
   <script>
     function calculateEstimate() {
@@ -139,44 +173,155 @@
       document.getElementById('demandFactor').textContent = (demandBonus > 0 ? '+' : '') + '₦' + (demandBonus / 1000000).toFixed(1) + 'M';
     }
 
-    async function submitEstimate() {
-      const name = prompt('Your name:');
-      if (!name) return;
-      const email = prompt('Your email:');
-      if (!email) return;
-      const phone = prompt('Your phone:');
-      if (!phone) return;
+    calculateEstimate();
 
-      const year = document.getElementById('year').value;
-      const make = document.getElementById('make').value;
-      const model = document.getElementById('model').value;
-      const mileage = parseInt(document.getElementById('mileage').value);
-      const conditionValue = parseInt(document.getElementById('condition').value);
-      const conditionMap = { 1: 'poor', 2: 'poor', 3: 'fair', 4: 'good', 5: 'excellent' };
-      const estimateText = document.getElementById('estimateValue').textContent;
-      const estimate = parseInt(estimateText.replace('₦', '').replace(/,/g, ''));
+    /* ---------- Trade-in Offer Modal ---------- */
+    let lastFocusedBeforeModal = null;
 
-      try {
-        const res = await fetch('/api/trade-ins', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name, email, phone,
-            yearMakeModel: `${year} ${make} ${model}`,
-            mileage,
-            condition: conditionMap[conditionValue] || 'good',
-            estimateLow: Math.round(estimate * 0.92),
-            estimateHigh: Math.round(estimate * 1.08)
-          })
-        });
-        if (!res.ok) throw new Error((await res.json()).error || 'Submission failed');
-        alert(`Your trade-in value: ${estimateText}\n\nThanks ${name}! A dealer will contact you at ${email} to schedule an in-person appraisal.`);
-      } catch (err) {
-        alert('Could not submit your estimate right now: ' + err.message + '\n\nYour estimate: ' + estimateText);
+    function getFocusable(modal) {
+      return Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+        .filter((el) => !el.disabled && el.offsetParent !== null);
+    }
+
+    function trapFocus(event, modal) {
+      if (event.key !== 'Tab') return;
+      const focusable = getFocusable(modal);
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
       }
     }
 
-    calculateEstimate();
+    function openTradeInModal() {
+      const modal = document.getElementById('tradeInModal');
+      if (!modal) return;
+      lastFocusedBeforeModal = document.activeElement;
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('ti-email')?.focus();
+    }
+
+    function closeTradeInModal() {
+      const modal = document.getElementById('tradeInModal');
+      if (!modal) return;
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+      if (lastFocusedBeforeModal && typeof lastFocusedBeforeModal.focus === 'function') {
+        lastFocusedBeforeModal.focus();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('tradeInModal');
+      if (!modal) return;
+
+      document.getElementById('submitEstimateBtn')?.addEventListener('click', openTradeInModal);
+
+      modal.addEventListener('click', (event) => {
+        if (event.target === modal) closeTradeInModal();
+      });
+
+      modal.querySelectorAll('.close').forEach((btn) => {
+        btn.addEventListener('click', closeTradeInModal);
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (!modal.classList.contains('open')) return;
+        if (event.key === 'Escape') {
+          closeTradeInModal();
+        } else {
+          trapFocus(event, modal);
+        }
+      });
+
+      const form = document.getElementById('tradeInForm');
+      const status = document.getElementById('ti-status');
+      const statusText = status?.querySelector('.status-text');
+      const fields = Array.from(form.querySelectorAll('.field'));
+
+      function validateField(fieldEl) {
+        const input = fieldEl.querySelector('input');
+        if (!input) return true;
+        const valid = input.checkValidity();
+        fieldEl.classList.toggle('invalid', !valid);
+        return valid;
+      }
+
+      fields.forEach((fieldEl) => {
+        const input = fieldEl.querySelector('input');
+        input?.addEventListener('input', () => {
+          if (fieldEl.classList.contains('invalid')) validateField(fieldEl);
+        });
+      });
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        let firstInvalid = null;
+        fields.forEach((fieldEl) => {
+          const ok = validateField(fieldEl);
+          if (!ok && !firstInvalid) firstInvalid = fieldEl.querySelector('input');
+        });
+        if (firstInvalid) {
+          firstInvalid.focus();
+          return;
+        }
+
+        const name = form.querySelector('#ti-name').value;
+        const email = form.querySelector('#ti-email').value;
+        const phone = form.querySelector('#ti-phone').value;
+
+        const year = document.getElementById('year').value;
+        const make = document.getElementById('make').value;
+        const model = document.getElementById('model').value;
+        const mileage = parseInt(document.getElementById('mileage').value);
+        const conditionValue = parseInt(document.getElementById('condition').value);
+        const conditionMap = { 1: 'poor', 2: 'poor', 3: 'fair', 4: 'good', 5: 'excellent' };
+        const estimateText = document.getElementById('estimateValue').textContent;
+        const estimate = parseInt(estimateText.replace('₦', '').replace(/,/g, ''));
+
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        status?.classList.remove('visible', 'error');
+
+        try {
+          const res = await fetch('/api/trade-ins', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name, email, phone,
+              yearMakeModel: `${year} ${make} ${model}`,
+              mileage,
+              condition: conditionMap[conditionValue] || 'good',
+              estimateLow: Math.round(estimate * 0.92),
+              estimateHigh: Math.round(estimate * 1.08)
+            })
+          });
+          if (!res.ok) throw new Error((await res.json()).error || 'Submission failed');
+
+          if (statusText) statusText.textContent = `Your trade-in value: ${estimateText}. Thanks, ${name}! A dealer will contact you at ${email} to schedule an in-person appraisal.`;
+          status?.classList.add('visible');
+
+          setTimeout(() => {
+            form.reset();
+            fields.forEach((f) => f.classList.remove('invalid'));
+            submitBtn.disabled = false;
+            closeTradeInModal();
+            status?.classList.remove('visible');
+          }, 1800);
+        } catch (err) {
+          if (statusText) statusText.textContent = 'Could not submit your estimate right now: ' + err.message;
+          status?.classList.add('visible', 'error');
+          submitBtn.disabled = false;
+        }
+      });
+    });
   </script>
 </body>
 </html>

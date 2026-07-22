@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
   <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/responsive.css">
   <link rel="stylesheet" href="../css/dos-inline.css">
   <style>
     body {
@@ -311,9 +312,42 @@
       </div>
 
       <!-- CTA -->
-      <button type="button" class="cta-button" onclick="appliedForFinancing()">Apply for Financing</button>
+      <button type="button" class="cta-button" id="applyFinancingBtn">Apply for Financing</button>
     </div>
   </main>
+
+  <!-- Financing Application Modal -->
+  <div id="financingModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="financingModalTitle">
+    <div class="modal-content">
+      <button type="button" class="close" aria-label="Close">&times;</button>
+      <h2 id="financingModalTitle">Apply for Financing</h2>
+      <p class="modal-sub">Share your contact info and a finance specialist will follow up with next steps.</p>
+      <form id="financingForm" novalidate>
+        <div class="field">
+          <label for="fin-email">Email<span class="required-mark" aria-hidden="true">*</span></label>
+          <input type="email" id="fin-email" name="email" placeholder="you@example.com" required>
+          <span class="field-error">Enter a valid email address.</span>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="fin-name">Your name<span class="required-mark" aria-hidden="true">*</span></label>
+            <input type="text" id="fin-name" name="name" placeholder="Full name" required>
+            <span class="field-error">Enter your name.</span>
+          </div>
+          <div class="field">
+            <label for="fin-phone">Phone number<span class="required-mark" aria-hidden="true">*</span></label>
+            <input type="tel" id="fin-phone" name="phone" placeholder="+234" inputmode="tel" required>
+            <span class="field-error">Enter a phone number.</span>
+          </div>
+        </div>
+        <button type="submit" class="cta-button">Submit Application</button>
+        <p class="form-status" id="fin-status" role="status" aria-live="polite">
+          <span class="status-icon" aria-hidden="true">&check;</span>
+          <span class="status-text"></span>
+        </p>
+      </form>
+    </div>
+  </div>
 
   <script>
     const priceSlider = document.getElementById('priceSlider');
@@ -363,39 +397,6 @@
       document.getElementById('interestMonth').textContent = formatCurrency(interestPerMonth);
     }
 
-    async function appliedForFinancing() {
-      const name = prompt('Your name:');
-      if (!name) return;
-      const email = prompt('Your email:');
-      if (!email) return;
-      const phone = prompt('Your phone:');
-      if (!phone) return;
-
-      const price = parseFloat(priceSlider.value);
-      const downPayment = price * (parseFloat(downPaymentSlider.value) / 100);
-      const loanAmount = price - downPayment;
-      const term = parseFloat(termSlider.value);
-      const apr = parseFloat(aprSlider.value);
-      const monthlyPaymentText = document.getElementById('monthlyPayment').textContent;
-      const monthlyPayment = parseInt(monthlyPaymentText.replace('₦', '').replace(/,/g, ''));
-
-      try {
-        const res = await fetch('/api/finance', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name, email, phone,
-            carName: 'Financing Inquiry',
-            downPayment, loanTerm: term, apr, monthlyPayment
-          })
-        });
-        if (!res.ok) throw new Error((await res.json()).error || 'Submission failed');
-        alert(`Great, ${name}! Your financing application:\n\nVehicle Price: ${formatCurrency(price)}\nLoan Amount: ${formatCurrency(loanAmount)}\nMonthly Payment: ${monthlyPaymentText}\n\nA finance specialist will reach out to ${email} shortly.`);
-      } catch (err) {
-        alert('Could not submit your application right now: ' + err.message);
-      }
-    }
-
     // Add event listeners
     [priceSlider, downPaymentSlider, termSlider, aprSlider].forEach(slider => {
       slider.addEventListener('input', calculate);
@@ -403,6 +404,149 @@
 
     // Initial calculation
     calculate();
+
+    /* ---------- Financing Application Modal ---------- */
+    let lastFocusedBeforeModal = null;
+
+    function getFocusable(modal) {
+      return Array.from(modal.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'))
+        .filter((el) => !el.disabled && el.offsetParent !== null);
+    }
+
+    function trapFocus(event, modal) {
+      if (event.key !== 'Tab') return;
+      const focusable = getFocusable(modal);
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    function openFinancingModal() {
+      const modal = document.getElementById('financingModal');
+      if (!modal) return;
+      lastFocusedBeforeModal = document.activeElement;
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('fin-email')?.focus();
+    }
+
+    function closeFinancingModal() {
+      const modal = document.getElementById('financingModal');
+      if (!modal) return;
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+      if (lastFocusedBeforeModal && typeof lastFocusedBeforeModal.focus === 'function') {
+        lastFocusedBeforeModal.focus();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('financingModal');
+      if (!modal) return;
+
+      document.getElementById('applyFinancingBtn')?.addEventListener('click', openFinancingModal);
+
+      modal.addEventListener('click', (event) => {
+        if (event.target === modal) closeFinancingModal();
+      });
+
+      modal.querySelectorAll('.close').forEach((btn) => {
+        btn.addEventListener('click', closeFinancingModal);
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (!modal.classList.contains('open')) return;
+        if (event.key === 'Escape') {
+          closeFinancingModal();
+        } else {
+          trapFocus(event, modal);
+        }
+      });
+
+      const form = document.getElementById('financingForm');
+      const status = document.getElementById('fin-status');
+      const statusText = status?.querySelector('.status-text');
+      const fields = Array.from(form.querySelectorAll('.field'));
+
+      function validateField(fieldEl) {
+        const input = fieldEl.querySelector('input');
+        if (!input) return true;
+        const valid = input.checkValidity();
+        fieldEl.classList.toggle('invalid', !valid);
+        return valid;
+      }
+
+      fields.forEach((fieldEl) => {
+        const input = fieldEl.querySelector('input');
+        input?.addEventListener('input', () => {
+          if (fieldEl.classList.contains('invalid')) validateField(fieldEl);
+        });
+      });
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        let firstInvalid = null;
+        fields.forEach((fieldEl) => {
+          const ok = validateField(fieldEl);
+          if (!ok && !firstInvalid) firstInvalid = fieldEl.querySelector('input');
+        });
+        if (firstInvalid) {
+          firstInvalid.focus();
+          return;
+        }
+
+        const name = form.querySelector('#fin-name').value;
+        const email = form.querySelector('#fin-email').value;
+        const phone = form.querySelector('#fin-phone').value;
+
+        const price = parseFloat(priceSlider.value);
+        const downPayment = price * (parseFloat(downPaymentSlider.value) / 100);
+        const term = parseFloat(termSlider.value);
+        const apr = parseFloat(aprSlider.value);
+        const monthlyPaymentText = document.getElementById('monthlyPayment').textContent;
+        const monthlyPayment = parseInt(monthlyPaymentText.replace('₦', '').replace(/,/g, ''));
+
+        const submitBtn = form.querySelector('button[type="submit"]');
+        submitBtn.disabled = true;
+        status?.classList.remove('visible', 'error');
+
+        try {
+          const res = await fetch('/api/finance', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name, email, phone,
+              carName: 'Financing Inquiry',
+              downPayment, loanTerm: term, apr, monthlyPayment
+            })
+          });
+          if (!res.ok) throw new Error((await res.json()).error || 'Submission failed');
+
+          if (statusText) statusText.textContent = `Thanks, ${name}! A finance specialist will reach out to ${email} shortly.`;
+          status?.classList.add('visible');
+
+          setTimeout(() => {
+            form.reset();
+            fields.forEach((f) => f.classList.remove('invalid'));
+            submitBtn.disabled = false;
+            closeFinancingModal();
+            status?.classList.remove('visible');
+          }, 1800);
+        } catch (err) {
+          if (statusText) statusText.textContent = 'Could not submit your application right now: ' + err.message;
+          status?.classList.add('visible', 'error');
+          submitBtn.disabled = false;
+        }
+      });
+    });
   </script>
 </body>
 </html>
