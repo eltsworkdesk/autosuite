@@ -135,9 +135,13 @@
           <label for="acEmail" class="dos-field-label">Email</label>
           <input id="acEmail" type="email" class="dos-field-input">
         </div>
-        <div>
+        <div style="margin-bottom: 14px;">
           <label for="acPhone" class="dos-field-label">Phone (optional)</label>
           <input id="acPhone" type="text" class="dos-field-input">
+        </div>
+        <div>
+          <label for="acReferral" class="dos-field-label">Referral code (optional)</label>
+          <input id="acReferral" type="text" class="dos-field-input">
         </div>
       `,
       onConfirm: async (overlay) => {
@@ -147,7 +151,11 @@
         const res = await fetch('/api/customers', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': 'Basic ' + btoa('admin:admin') },
-          body: JSON.stringify({ name, email, phone: overlay.querySelector('#acPhone').value.trim() || undefined })
+          body: JSON.stringify({
+            name, email,
+            phone: overlay.querySelector('#acPhone').value.trim() || undefined,
+            referralCode: overlay.querySelector('#acReferral').value.trim() || undefined
+          })
         });
         if (!res.ok) throw new Error((await res.json()).error || 'Create failed');
         return true;

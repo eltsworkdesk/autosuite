@@ -17,6 +17,24 @@ function isValidTasks(tasks) {
   );
 }
 
+// Settings > Lead Routing lets a dealer pick round-robin/territory/skill-based,
+// but only round-robin has enough data modeled (no territory/skill fields
+// exist on TeamMember) to actually act on — leads route under the other
+// strategies stay unassigned rather than silently do the wrong thing.
+async function assignLeadRoundRobin() {
+  const dealership = await prisma.dealership.findFirst();
+  if (!dealership || dealership.leadRouting !== 'round-robin') return null;
+
+  const activeMembers = await prisma.teamMember.findMany({
+    where: { dealershipId: dealership.id, deactivatedAt: null },
+    orderBy: { joinedAt: 'asc' },
+  });
+  if (activeMembers.length === 0) return null;
+
+  const leadCount = await prisma.lead.count();
+  return activeMembers[leadCount % activeMembers.length].id;
+}
+
 // Handles both /api/leads and /api/leads/:id (Vercel optional catch-all) —
 // merged into one function to stay under the Hobby plan's serverless
 // function count limit.
@@ -32,6 +50,8 @@ module.exports = async (req, res) => {
           return res.status(400).json({ error: 'Missing required fields' });
         }
 
+        const assignedToId = await assignLeadRoundRobin();
+
         const lead = await prisma.lead.create({
           data: {
             carId: carId || null,
@@ -40,15 +60,16 @@ module.exports = async (req, res) => {
             email,
             phone,
             source: VALID_SOURCES.includes(source) ? source : 'test-drive-modal',
+            assignedToId,
           },
         });
-        broadcast('lead.created', { id: lead.id, name: lead.name, carName: lead.carName, status: lead.status });
+        broadcast('lead.created', { id: lead.id, name: lead.name, carName: lead.carName, status: lead.status, assignedToId: lead.assignedToId });
         return res.status(201).json({ id: lead.id });
       }
 
       if (req.method === 'GET') {
         if (!requireAuth(req, res)) return;
-        const leads = await prisma.lead.findMany({ orderBy: { createdAt: 'desc' } });
+        const leads = await prisma.lead.findMany({ orderBy: { createdAt: 'desc' }, include: { assignedTo: true } });
         return res.status(200).json({ leads });
       }
 
@@ -82,7 +103,7 @@ module.exports = async (req, res) => {
         return res.status(400).json({ error: 'No valid fields to update' });
       }
 
-      const lead = await prisma.lead.update({ where: { id }, data });
+      const lead = await prisma.lead.update({ where: { id }, data, include: { assignedTo: true } });
       broadcast('lead.updated', { id: lead.id, name: lead.name, status: lead.status, priority: lead.priority });
       return res.status(200).json({ lead });
     }

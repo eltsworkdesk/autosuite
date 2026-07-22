@@ -222,6 +222,12 @@
     return lead.priority === 'High' ? 'oklch(60% 0.14 55)' : 'oklch(70% 0.01 260)';
   }
 
+  function assigneeShortName(lead) {
+    if (!lead.assignedTo) return 'Unassigned';
+    const parts = lead.assignedTo.name.trim().split(/\s+/);
+    return parts.length > 1 ? `${parts[0]} ${parts[parts.length - 1][0]}.` : parts[0];
+  }
+
   // Render Kanban board with drag-and-drop
   function renderBoard() {
     console.log('renderBoard called, leads=' + leads.length + ', STAGES=' + STAGES.length);
@@ -360,7 +366,7 @@
         <div class="is-024dc74f">${esc(lead.source)}</div>
         <div><span class="is-93e08d6f">${lead.status || 'New'}</span></div>
         <div style="color: ${priorityColor(lead)};">${esc(lead.priority || 'Normal')}</div>
-        <div class="is-bd9db1cb"><div class="is-94e51f7f"></div>Derek O.</div>
+        <div class="is-bd9db1cb"><div class="is-94e51f7f"></div>${esc(assigneeShortName(lead))}</div>
       </div>
     `).join('');
   }
@@ -375,6 +381,7 @@
     document.getElementById('detailStatus').textContent = lead.status || 'New';
     document.getElementById('detailVehicle').textContent = lead.carName;
     document.getElementById('detailSource').textContent = lead.source;
+    document.getElementById('detailAssigned').textContent = lead.assignedTo ? lead.assignedTo.name : 'Unassigned';
     document.getElementById('detailCreated').textContent = new Date(lead.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     document.getElementById('detailPriority').textContent = lead.priority || 'Normal';
 
