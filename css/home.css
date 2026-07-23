@@ -414,6 +414,12 @@
   font-weight: 600;
 }
 
+.roadmap-link a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
 /* ---------- Contact ---------- */
 .contact {
   padding: 3rem 1.25rem;
@@ -439,4 +445,10 @@
   align-items: center;
   font-family: var(--font-mono);
   font-size: 0.92rem;
+}
+
+.contact-links a:not(.btn) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }

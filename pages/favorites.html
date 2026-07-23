@@ -31,10 +31,16 @@
       <a href="../index.html">Home</a>
       <a href="cars.html">Inventory</a>
       <a href="dashboard.html" class="nav-link-dashboard">Dashboard</a>
-      <a href="favorites.html" aria-current="page">Favorites</a>
-      <a href="../index.html#about">About</a>
-      <a href="locations.html">Locations</a>
-      <a href="../index.html#contact">Contact</a>
+      <div class="nav-more">
+        <button type="button" class="nav-more-trigger" aria-expanded="false" aria-controls="navMorePanel">More <span class="nav-more-caret" aria-hidden="true">⌄</span></button>
+        <div class="nav-more-panel" id="navMorePanel" hidden>
+          <a href="favorites.html" class="nav-more-item" aria-current="page"><span class="nav-more-icon nav-more-icon-danger" aria-hidden="true">♡</span>Favorites</a>
+          <a href="../index.html#about" class="nav-more-item"><span class="nav-more-icon nav-more-icon-blue" aria-hidden="true">ⓘ</span>About</a>
+          <a href="platform.html" class="nav-more-item"><span class="nav-more-icon nav-more-icon-amber" aria-hidden="true">◈</span>Platform</a>
+          <a href="locations.html" class="nav-more-item"><span class="nav-more-icon nav-more-icon-green" aria-hidden="true">📍</span>Locations</a>
+          <a href="../index.html#contact" class="nav-more-item"><span class="nav-more-icon nav-more-icon-blue" aria-hidden="true">✉</span>Contact</a>
+        </div>
+      </div>
       <button type="button" class="btn small" data-open-test-drive>Book a Test Drive</button>
     </nav>
     <button type="button" class="burger" aria-label="Toggle menu" aria-expanded="false" aria-controls="primaryNav">☰</button>
