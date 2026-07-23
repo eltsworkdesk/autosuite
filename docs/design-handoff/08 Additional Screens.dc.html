@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:oklch(97.5% 0.004 90);font-family:'IBM Plex Sans',sans-serif;color:oklch(20% 0.01 260)}
+  .navitem{display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:8px;font:500 13px;color:oklch(72% 0.008 260)}
+  .navitem.active{background:oklch(30% 0.02 260);color:#fff}
+  .card{background:#fff;border:1px solid oklch(91% 0.005 260);border-radius:12px}
+  .toggle{width:36px;height:20px;border-radius:999px;position:relative;flex:none}
+  .toggle .knob{width:16px;height:16px;border-radius:50%;background:#fff;position:absolute;top:2px}
+</style>
+</helmet>
+
+<div style="padding:0 0 80px">
+  <div style="max-width:1280px;margin:0 auto;padding:32px 48px 0">
+    <div style="font:600 12px 'IBM Plex Mono',monospace;color:oklch(45% 0.16 260);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Dealer OS — remaining screens</div>
+    <h1 style="font:600 30px 'Space Grotesk',sans-serif;margin:0 0 8px">Appointments · Analytics · Settings · Notifications · Command Palette</h1>
+    <p style="font:400 14px;color:oklch(45% 0.01 260);margin:0 0 32px;max-width:700px">Completes the Dealer OS IA from Foundations. Same sidebar/shell as Dashboard/CRM/Inventory for a consistent workspace.</p>
+  </div>
+
+  <!-- APPOINTMENT CALENDAR -->
+  <div style="max-width:1280px;margin:0 auto;padding:0 48px 56px">
+    <div style="font:600 13px 'IBM Plex Mono',monospace;color:oklch(45% 0.01 260);margin-bottom:12px">1 — Appointment Calendar</div>
+    <div class="card" style="display:grid;grid-template-columns:236px 1fr;overflow:hidden">
+      <div style="background:oklch(18% 0.012 260);padding:20px 14px;display:flex;flex-direction:column;gap:2px">
+        <div style="display:flex;align-items:center;gap:9px;padding:6px 10px 22px">
+          <div style="width:22px;height:22px;border-radius:6px;background:oklch(55% 0.16 260)"></div>
+          <div style="font:600 15px 'Space Grotesk',sans-serif;color:#fff">AutoSuite</div>
+        </div>
+        <div class="navitem">▦ Overview</div>
+        <div class="navitem">☎ CRM</div>
+        <div class="navitem">▤ Inventory</div>
+        <div class="navitem active">◔ Appointments</div>
+        <div class="navitem">✎ Customers</div>
+        <div class="navitem">▲ Analytics</div>
+        <div class="navitem">◫ Staff Activity</div>
+      </div>
+      <div>
+        <div style="display:flex;align-items:center;gap:14px;padding:18px 28px;border-bottom:1px solid oklch(91% 0.005 260)">
+          <div style="font:600 18px 'Space Grotesk',sans-serif">July 2026</div>
+          <div style="display:flex;gap:8px;font:500 13px;color:oklch(45% 0.01 260)"><span>‹</span><span>›</span></div>
+          <div style="margin-left:auto;display:flex;gap:4px;background:oklch(96% 0.004 260);padding:4px;border-radius:8px">
+            <div style="padding:7px 12px;border-radius:6px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.08);font:500 12px">Week</div>
+            <div style="padding:7px 12px;border-radius:6px;font:500 12px;color:oklch(50% 0.01 260)">Month</div>
+          </div>
+          <div style="font:500 13px;padding:8px 14px;background:oklch(20% 0.012 260);color:#fff;border-radius:8px">+ New appointment</div>
+        </div>
+        <div style="padding:20px 28px;display:grid;grid-template-columns:60px repeat(5,1fr);gap:1px;background:oklch(93% 0.005 260);border:1px solid oklch(93% 0.005 260);border-radius:10px;overflow:hidden">
+          <div style="background:oklch(97% 0.004 90)"></div>
+          <sc-for list="{{ days }}" as="d" hint-placeholder-count="5">
+            <div style="background:oklch(97% 0.004 90);padding:10px;text-align:center;font:600 12px">{{ d.label }}</div>
+          </sc-for>
+          <sc-for list="{{ rows }}" as="row" hint-placeholder-count="6">
+            <div style="background:#fff;padding:8px;font:500 11px 'IBM Plex Mono',monospace;color:oklch(55% 0.01 260)">{{ row.hour }}</div>
+            <sc-for list="{{ row.slots }}" as="s" hint-placeholder-count="5">
+              <div style="background:#fff;min-height:52px;padding:4px">
+                <sc-if value="{{ s.appt }}" hint-placeholder-val="{{ false }}">
+                  <div style="background:{{ s.color }};border-radius:6px;padding:6px 8px;font:500 11px;color:#fff;height:100%">
+                    <div style="font-weight:600">{{ s.name }}</div>
+                    <div style="opacity:.85">{{ s.vehicle }}</div>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANALYTICS DASHBOARD -->
+  <div style="max-width:1280px;margin:0 auto;padding:0 48px 56px">
+    <div style="font:600 13px 'IBM Plex Mono',monospace;color:oklch(45% 0.01 260);margin-bottom:12px">2 — Analytics Dashboard</div>
+    <div class="card" style="display:grid;grid-template-columns:236px 1fr;overflow:hidden">
+      <div style="background:oklch(18% 0.012 260);padding:20px 14px;display:flex;flex-direction:column;gap:2px">
+        <div style="display:flex;align-items:center;gap:9px;padding:6px 10px 22px">
+          <div style="width:22px;height:22px;border-radius:6px;background:oklch(55% 0.16 260)"></div>
+          <div style="font:600 15px 'Space Grotesk',sans-serif;color:#fff">AutoSuite</div>
+        </div>
+        <div class="navitem">▦ Overview</div>
+        <div class="navitem">☎ CRM</div>
+        <div class="navitem">▤ Inventory</div>
+        <div class="navitem">◔ Appointments</div>
+        <div class="navitem">✎ Customers</div>
+        <div class="navitem active">▲ Analytics</div>
+        <div class="navitem">◫ Staff Activity</div>
+      </div>
+      <div style="padding:24px 28px">
+        <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px">
+          <div style="font:600 18px 'Space Grotesk',sans-serif">Analytics</div>
+          <div style="margin-left:auto;font:500 13px;padding:8px 14px;border:1px solid oklch(88% 0.005 260);border-radius:8px;color:oklch(35% 0.01 260)">Last 30 days ▾</div>
+          <div style="font:500 13px;padding:8px 14px;border:1px solid oklch(88% 0.005 260);border-radius:8px;color:oklch(35% 0.01 260)">Export</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:20px">
+          <sc-for list="{{ analyticsKpis }}" as="k" hint-placeholder-count="4">
+            <div class="card" style="padding:18px">
+              <div style="font:500 11px 'IBM Plex Mono',monospace;color:oklch(50% 0.01 260);text-transform:uppercase;margin-bottom:8px">{{ k.label }}</div>
+              <div style="font:600 26px 'Space Grotesk',sans-serif">{{ k.value }}</div>
+              <div style="font:500 12px;color:{{ k.trendColor }};margin-top:4px">{{ k.trend }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:16px">
+          <div class="card" style="padding:20px">
+            <div style="font:600 14px 'Space Grotesk',sans-serif;margin-bottom:16px">Sales Funnel</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <sc-for list="{{ funnel }}" as="f" hint-placeholder-count="5">
+                <div style="display:flex;align-items:center;gap:12px">
+                  <div style="width:120px;font:500 12px;color:oklch(35% 0.01 260)">{{ f.name }}</div>
+                  <div style="height:22px;border-radius:5px;background:oklch(45% 0.16 260);width:{{ f.width }}"></div>
+                  <div style="font:600 12px">{{ f.count }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div class="card" style="padding:20px">
+            <div style="font:600 14px 'Space Grotesk',sans-serif;margin-bottom:16px">Revenue Trend</div>
+            <div style="display:flex;align-items:flex-end;gap:6px;height:120px">
+              <sc-for list="{{ revenueBars }}" as="r" hint-placeholder-count="12">
+                <div style="flex:1;background:oklch(45% 0.16 260 / 0.75);border-radius:3px;height:{{ r.h }}"></div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div style="max-width:1280px;margin:0 auto;padding:0 48px 56px">
+    <div style="font:600 13px 'IBM Plex Mono',monospace;color:oklch(45% 0.01 260);margin-bottom:12px">3 — Settings</div>
+    <div class="card" style="display:grid;grid-template-columns:236px 1fr;overflow:hidden">
+      <div style="background:oklch(18% 0.012 260);padding:20px 14px;display:flex;flex-direction:column;gap:2px">
+        <div style="display:flex;align-items:center;gap:9px;padding:6px 10px 22px">
+          <div style="width:22px;height:22px;border-radius:6px;background:oklch(55% 0.16 260)"></div>
+          <div style="font:600 15px 'Space Grotesk',sans-serif;color:#fff">AutoSuite</div>
+        </div>
+        <div class="navitem">▦ Overview</div>
+        <div class="navitem">☎ CRM</div>
+        <div class="navitem">▤ Inventory</div>
+        <div class="navitem">◔ Appointments</div>
+        <div class="navitem">✎ Customers</div>
+        <div class="navitem">▲ Analytics</div>
+        <div class="navitem">◫ Staff Activity</div>
+        <div class="navitem active" style="margin-top:auto">⚙ Settings</div>
+      </div>
+      <div style="display:grid;grid-template-columns:200px 1fr">
+        <div style="padding:24px 12px;border-right:1px solid oklch(93% 0.005 260);display:flex;flex-direction:column;gap:2px">
+          <div style="padding:9px 12px;border-radius:8px;background:oklch(95% 0.02 260);font:500 13px;color:oklch(30% 0.01 260)">Dealership Profile</div>
+          <div style="padding:9px 12px;font:500 13px;color:oklch(45% 0.01 260)">Staff &amp; Roles</div>
+          <div style="padding:9px 12px;font:500 13px;color:oklch(45% 0.01 260)">Lead Routing</div>
+          <div style="padding:9px 12px;font:500 13px;color:oklch(45% 0.01 260)">Notifications</div>
+          <div style="padding:9px 12px;font:500 13px;color:oklch(45% 0.01 260)">Billing &amp; Plan</div>
+          <div style="padding:9px 12px;font:500 13px;color:oklch(45% 0.01 260)">Integrations</div>
+        </div>
+        <div style="padding:28px 32px">
+          <div style="font:600 18px 'Space Grotesk',sans-serif;margin-bottom:20px">Dealership Profile</div>
+          <div style="display:flex;flex-direction:column;gap:16px;max-width:440px;margin-bottom:28px">
+            <div><div style="font:500 12px;color:oklch(45% 0.01 260);margin-bottom:6px">Dealership name</div><div style="padding:11px 14px;border:1px solid oklch(88% 0.005 260);border-radius:8px;font:400 14px">Overlook Motors</div></div>
+            <div><div style="font:500 12px;color:oklch(45% 0.01 260);margin-bottom:6px">Support phone</div><div style="padding:11px 14px;border:1px solid oklch(88% 0.005 260);border-radius:8px;font:400 14px">(312) 555-0100</div></div>
+          </div>
+          <div style="font:600 14px 'Space Grotesk',sans-serif;margin-bottom:14px">Preferences</div>
+          <div style="display:flex;flex-direction:column;gap:14px;max-width:440px">
+            <sc-for list="{{ toggles }}" as="t" hint-placeholder-count="3">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div style="font:400 14px;color:oklch(30% 0.01 260)">{{ t.label }}</div>
+                <div class="toggle" style="background:{{ t.bg }}"><div class="knob" style="left:{{ t.knobLeft }}"></div></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NOTIFICATIONS -->
+  <div style="max-width:1280px;margin:0 auto;padding:0 48px 56px">
+    <div style="font:600 13px 'IBM Plex Mono',monospace;color:oklch(45% 0.01 260);margin-bottom:12px">4 — Notifications</div>
+    <div class="card" style="max-width:420px;padding:0;overflow:hidden">
+      <div style="padding:16px 18px;border-bottom:1px solid oklch(93% 0.005 260);display:flex;justify-content:space-between;align-items:center">
+        <div style="font:600 15px 'Space Grotesk',sans-serif">Notifications</div>
+        <div style="font:500 12px;color:oklch(45% 0.16 260)">Mark all read</div>
+      </div>
+      <sc-for list="{{ notifs }}" as="n" hint-placeholder-count="5">
+        <div style="display:flex;gap:12px;padding:14px 18px;border-bottom:1px solid oklch(95% 0.004 260);background:{{ n.bg }}">
+          <div style="width:8px;height:8px;border-radius:50%;background:{{ n.color }};margin-top:6px;flex:none"></div>
+          <div>
+            <div style="font:400 13px;color:oklch(25% 0.01 260)">{{ n.text }}</div>
+            <div style="font:400 11px;color:oklch(55% 0.01 260);margin-top:2px">{{ n.when }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+
+  <!-- COMMAND PALETTE -->
+  <div style="max-width:1280px;margin:0 auto;padding:0 48px">
+    <div style="font:600 13px 'IBM Plex Mono',monospace;color:oklch(45% 0.01 260);margin-bottom:12px">5 — Global Command Palette (⌘K)</div>
+    <div style="background:oklch(15% 0.012 260 / 0.5);border-radius:16px;padding:60px;display:flex;justify-content:center">
+      <div style="width:560px;background:oklch(20% 0.012 260);border-radius:14px;box-shadow:0 30px 60px -20px rgba(0,0,0,.5);overflow:hidden">
+        <div style="padding:16px 20px;border-bottom:1px solid oklch(30% 0.01 260);display:flex;align-items:center;gap:10px">
+          <div style="color:oklch(55% 0.01 260)">⌘K</div>
+          <div style="color:#fff;font:400 15px">jump to Maya Torres lead</div>
+        </div>
+        <div style="padding:10px">
+          <div style="font:500 11px 'IBM Plex Mono',monospace;color:oklch(55% 0.01 260);text-transform:uppercase;padding:8px 10px">Leads</div>
+          <div style="display:flex;align-items:center;gap:10px;padding:10px 10px;background:oklch(28% 0.01 260);border-radius:8px">
+            <div style="width:22px;height:22px;border-radius:50%;background:oklch(60% 0.1 260)"></div>
+            <div style="color:#fff;font:500 13px">Maya Torres <span style="color:oklch(60% 0.01 260);font-weight:400">— BMW X6, Negotiating</span></div>
+          </div>
+          <div style="font:500 11px 'IBM Plex Mono',monospace;color:oklch(55% 0.01 260);text-transform:uppercase;padding:12px 10px 8px">Vehicles</div>
+          <div style="display:flex;align-items:center;gap:10px;padding:10px">
+            <div style="width:22px;height:16px;border-radius:4px;background:oklch(35% 0.01 260)"></div>
+            <div style="color:oklch(75% 0.01 260);font:500 13px">2024 BMW X6 xDrive40i</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const days = ["Mon 13","Tue 14","Wed 15","Thu 16","Fri 17"].map(l => ({label:l}));
+    const hours = ["9am","10am","11am","1pm","2pm","3pm"];
+    const rows = hours.map(hour => ({
+      hour,
+      slots: Array.from({length:5}, () => ({appt:false}))
+    }));
+    rows[0].slots[2] = {appt:true, name:"Maya Torres", vehicle:"BMW X6", color:"oklch(45% 0.16 260)"};
+    rows[2].slots[3] = {appt:true, name:"James Lin", vehicle:"Camry", color:"oklch(60% 0.12 155)"};
+    rows[4].slots[1] = {appt:true, name:"Priya Shah", vehicle:"E450", color:"oklch(65% 0.14 55)"};
+
+    return {
+      days, rows,
+      analyticsKpis: [
+        {label:"Total Leads", value:"342", trend:"↑ 14% MoM", trendColor:"oklch(55% 0.13 145)"},
+        {label:"Conversion Rate", value:"18.4%", trend:"↑ 2.1pt", trendColor:"oklch(55% 0.13 145)"},
+        {label:"Revenue", value:"$412K", trend:"↑ 8%", trendColor:"oklch(55% 0.13 145)"},
+        {label:"Avg. Days to Close", value:"11", trend:"↓ 3 days", trendColor:"oklch(55% 0.13 145)"}
+      ],
+      funnel: [
+        {name:"New", count:34, width:"95%"},
+        {name:"Contacted", count:28, width:"78%"},
+        {name:"Qualified", count:19, width:"53%"},
+        {name:"Negotiating", count:12, width:"33%"},
+        {name:"Sold", count:19, width:"53%"}
+      ],
+      revenueBars: [30,45,38,52,60,55,70,65,80,74,88,95].map(v => ({h:v+"%"})),
+      toggles: [
+        {label:"Email me new lead alerts", bg:"oklch(45% 0.16 260)", knobLeft:"18px"},
+        {label:"SMS test-drive reminders", bg:"oklch(45% 0.16 260)", knobLeft:"18px"},
+        {label:"Weekly performance digest", bg:"oklch(90% 0.005 260)", knobLeft:"2px"}
+      ],
+      notifs: [
+        {text:"New lead: Maya Torres booked a test drive", when:"2 min ago", color:"oklch(45% 0.16 260)", bg:"oklch(98% 0.01 260)"},
+        {text:"James Lin's appointment starts in 30 min", when:"18 min ago", color:"oklch(65% 0.14 55)", bg:"#fff"},
+        {text:"2024 BMW X6 marked Sold", when:"1 hr ago", color:"oklch(60% 0.14 145)", bg:"#fff"},
+        {text:"Priya Shah submitted a trade-in estimate", when:"3 hr ago", color:"oklch(45% 0.16 260)", bg:"#fff"},
+        {text:"Weekly analytics digest is ready", when:"Yesterday", color:"oklch(60% 0.01 260)", bg:"#fff"}
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>

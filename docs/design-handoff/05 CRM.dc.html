@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:oklch(97.5% 0.004 90);font-family:'IBM Plex Sans',sans-serif;color:oklch(20% 0.01 260)}
+  .navitem{display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:8px;font:500 13px;color:oklch(72% 0.008 260)}
+  .navitem.active{background:oklch(30% 0.02 260);color:#fff}
+  .card{background:#fff;border:1px solid oklch(91% 0.005 260);border-radius:12px}
+  .tab{padding:8px 16px;border-radius:8px;font:500 13px;cursor:pointer}
+</style>
+</helmet>
+
+<div style="display:grid;grid-template-columns:236px 1fr;min-height:100vh">
+  <div style="background:oklch(18% 0.012 260);padding:20px 14px;display:flex;flex-direction:column;gap:2px">
+    <div style="display:flex;align-items:center;gap:9px;padding:6px 10px 22px">
+      <div style="width:22px;height:22px;border-radius:6px;background:oklch(55% 0.16 260)"></div>
+      <div style="font:600 15px 'Space Grotesk',sans-serif;color:#fff">AutoSuite</div>
+    </div>
+    <div class="navitem">▦ Overview</div>
+    <div class="navitem active">☎ CRM</div>
+    <div class="navitem">▤ Inventory</div>
+    <div class="navitem">◔ Appointments</div>
+    <div class="navitem">✎ Customers</div>
+    <div class="navitem">▲ Analytics</div>
+    <div class="navitem">◫ Staff Activity</div>
+  </div>
+
+  <div>
+    <div style="display:flex;align-items:center;gap:16px;padding:18px 36px;border-bottom:1px solid oklch(91% 0.005 260);background:#fff">
+      <div style="font:600 20px 'Space Grotesk',sans-serif">Leads</div>
+      <div style="display:flex;gap:4px;background:oklch(96% 0.004 260);padding:4px;border-radius:9px;margin-left:20px">
+        <div class="tab" style="background:{{ boardActiveBg }};box-shadow:{{ boardActiveShadow }}" onclick="{{ showBoard }}">Board</div>
+        <div class="tab" style="background:{{ tableActiveBg }};box-shadow:{{ tableActiveShadow }}" onclick="{{ showTable }}">Table</div>
+        <div class="tab" style="background:{{ detailActiveBg }};box-shadow:{{ detailActiveShadow }}" onclick="{{ showDetail }}">Lead Detail</div>
+      </div>
+      <div style="margin-left:auto;font:500 13px;padding:8px 14px;border:1px solid oklch(88% 0.005 260);border-radius:8px">+ New lead</div>
+    </div>
+
+    <sc-if value="{{ isBoard }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:28px 36px;overflow-x:auto">
+        <div style="display:flex;gap:16px;min-width:1400px">
+          <sc-for list="{{ stages }}" as="stage" hint-placeholder-count="7">
+            <div style="width:230px;flex:none">
+              <div style="display:flex;align-items:center;gap:8px;padding:0 4px 12px">
+                <div style="width:7px;height:7px;border-radius:50%;background:{{ stage.color }}"></div>
+                <div style="font:600 13px">{{ stage.name }}</div>
+                <div style="font:500 12px;color:oklch(55% 0.01 260)">{{ stage.count }}</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <sc-for list="{{ stage.leads }}" as="lead" hint-placeholder-count="2">
+                  <div class="card" style="padding:14px;cursor:pointer">
+                    <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+                      <div style="font:600 13px">{{ lead.name }}</div>
+                      <div style="width:6px;height:6px;border-radius:50%;background:{{ lead.priorityColor }}"></div>
+                    </div>
+                    <div style="font:400 12px;color:oklch(45% 0.01 260);margin-bottom:10px">{{ lead.vehicle }}</div>
+                    <div style="display:flex;justify-content:space-between;align-items:center">
+                      <div style="font:500 11px;padding:3px 7px;border-radius:5px;background:oklch(95% 0.006 260);color:oklch(45% 0.01 260)">{{ lead.source }}</div>
+                      <div style="width:20px;height:20px;border-radius:50%;background:{{ lead.avatarColor }}"></div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isTable }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:28px 36px">
+        <div class="card" style="overflow:hidden">
+          <div style="display:grid;grid-template-columns:1.4fr 1.2fr 1fr 1fr 0.8fr 1fr;background:oklch(97% 0.004 90);padding:12px 20px;font:600 11px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.04em;color:oklch(50% 0.01 260)">
+            <div>Customer</div><div>Vehicle</div><div>Source</div><div>Status</div><div>Priority</div><div>Assigned</div>
+          </div>
+          <sc-for list="{{ allLeads }}" as="lead" hint-placeholder-count="8">
+            <div style="display:grid;grid-template-columns:1.4fr 1.2fr 1fr 1fr 0.8fr 1fr;padding:14px 20px;border-top:1px solid oklch(94% 0.005 260);align-items:center;font:400 13px">
+              <div style="font-weight:600">{{ lead.name }}</div>
+              <div style="color:oklch(45% 0.01 260)">{{ lead.vehicle }}</div>
+              <div style="color:oklch(45% 0.01 260)">{{ lead.source }}</div>
+              <div><span style="font:500 11px;padding:4px 9px;border-radius:999px;background:{{ lead.statusBg }};color:{{ lead.priorityColor }}">{{ lead.status }}</span></div>
+              <div style="color:{{ lead.priorityColor }}">{{ lead.priority }}</div>
+              <div style="display:flex;align-items:center;gap:8px"><div style="width:18px;height:18px;border-radius:50%;background:{{ lead.avatarColor }}"></div>{{ lead.assigned }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:28px 36px;display:grid;grid-template-columns:1fr 320px;gap:24px">
+        <div>
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px">
+            <div style="width:48px;height:48px;border-radius:50%;background:oklch(88% 0.05 260)"></div>
+            <div>
+              <div style="font:600 20px 'Space Grotesk',sans-serif">Maya Torres</div>
+              <div style="font:400 13px;color:oklch(50% 0.01 260)">maya.torres@email.com · (312) 555-0148</div>
+            </div>
+            <div style="margin-left:auto;font:500 12px;padding:6px 12px;border-radius:999px;background:oklch(95% 0.03 55);color:oklch(45% 0.13 55)">Negotiating</div>
+          </div>
+
+          <div class="card" style="padding:20px;margin-bottom:20px">
+            <div style="font:600 13px;text-transform:uppercase;letter-spacing:0.04em;color:oklch(50% 0.01 260);margin-bottom:14px">Interested In</div>
+            <div style="display:flex;gap:12px;align-items:center">
+              <div style="width:64px;height:44px;border-radius:8px;background:oklch(94% 0.006 260)"></div>
+              <div><div style="font:600 14px">2024 BMW X6 xDrive40i</div><div style="font:400 12px;color:oklch(50% 0.01 260)">$68,900 · 12.4k mi</div></div>
+            </div>
+          </div>
+
+          <div class="card" style="padding:20px">
+            <div style="font:600 13px;text-transform:uppercase;letter-spacing:0.04em;color:oklch(50% 0.01 260);margin-bottom:16px">Activity Timeline</div>
+            <div style="display:flex;flex-direction:column;gap:16px">
+              <sc-for list="{{ timeline }}" as="t" hint-placeholder-count="5">
+                <div style="display:flex;gap:12px">
+                  <div style="width:8px;height:8px;border-radius:50%;background:{{ t.color }};margin-top:5px;flex:none"></div>
+                  <div>
+                    <div style="font:400 13px;color:oklch(30% 0.01 260)">{{ t.text }}</div>
+                    <div style="font:400 11px;color:oklch(55% 0.01 260);margin-top:2px">{{ t.when }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <div class="card" style="padding:18px">
+            <div style="font:600 12px;text-transform:uppercase;letter-spacing:0.04em;color:oklch(50% 0.01 260);margin-bottom:12px">Details</div>
+            <div style="display:flex;flex-direction:column;gap:9px;font:400 13px">
+              <div style="display:flex;justify-content:space-between"><span style="color:oklch(50% 0.01 260)">Source</span><span>Website — test drive</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:oklch(50% 0.01 260)">Assigned to</span><span>Derek Owusu</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:oklch(50% 0.01 260)">Priority</span><span style="color:oklch(60% 0.14 55)">High</span></div>
+              <div style="display:flex;justify-content:space-between"><span style="color:oklch(50% 0.01 260)">Created</span><span>Jul 9, 2026</span></div>
+            </div>
+          </div>
+          <div class="card" style="padding:18px">
+            <div style="font:600 12px;text-transform:uppercase;letter-spacing:0.04em;color:oklch(50% 0.01 260);margin-bottom:12px">Tags</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap">
+              <div style="font:500 11px;padding:4px 9px;border-radius:999px;background:oklch(95% 0.02 260)">Financing interest</div>
+              <div style="font:500 11px;padding:4px 9px;border-radius:999px;background:oklch(95% 0.02 260)">Repeat visitor</div>
+            </div>
+          </div>
+          <div class="card" style="padding:18px">
+            <div style="font:600 12px;text-transform:uppercase;letter-spacing:0.04em;color:oklch(50% 0.01 260);margin-bottom:12px">Tasks</div>
+            <div style="display:flex;flex-direction:column;gap:10px;font:400 13px">
+              <div style="display:flex;gap:8px;align-items:center"><div style="width:14px;height:14px;border:1.5px solid oklch(80% 0.005 260);border-radius:4px"></div>Send financing options</div>
+              <div style="display:flex;gap:8px;align-items:center;color:oklch(55% 0.01 260);text-decoration:line-through"><div style="width:14px;height:14px;border-radius:4px;background:oklch(60% 0.14 145)"></div>Confirm test drive</div>
+            </div>
+          </div>
+          <div class="card" style="padding:18px">
+            <div style="font:600 12px;text-transform:uppercase;letter-spacing:0.04em;color:oklch(50% 0.01 260);margin-bottom:12px">Documents</div>
+            <div style="font:400 13px;color:oklch(45% 0.01 260)">📄 Trade-in_estimate.pdf</div>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { view: 'board' };
+
+  renderVals() {
+    const active = { background: '#fff', boxShadow: '0 1px 2px rgba(0,0,0,.08)' };
+    const inactive = { background: 'transparent', boxShadow: 'none' };
+    const st = this.state.view;
+
+    const stages = [
+      {name:"New", color:"oklch(45% 0.16 260)", count:6, leads:[
+        {name:"Priya Shah", vehicle:"Mercedes E450", priorityColor:"oklch(60% 0.14 55)", source:"Website", avatarColor:"oklch(85% 0.05 30)"},
+        {name:"Tom Rivera", vehicle:"Toyota Camry", priorityColor:"oklch(70% 0.01 260)", source:"Phone", avatarColor:"oklch(85% 0.05 200)"}
+      ]},
+      {name:"Contacted", color:"oklch(50% 0.1 220)", count:4, leads:[
+        {name:"Cole Bennett", vehicle:"Porsche Cayenne", priorityColor:"oklch(60% 0.14 55)", source:"Website", avatarColor:"oklch(85% 0.05 100)"}
+      ]},
+      {name:"Qualified", color:"oklch(55% 0.1 190)", count:3, leads:[
+        {name:"Alina Petrova", vehicle:"Lexus GX460", priorityColor:"oklch(70% 0.01 260)", source:"Walk-in", avatarColor:"oklch(85% 0.05 300)"}
+      ]},
+      {name:"Appt. Scheduled", color:"oklch(60% 0.12 155)", count:5, leads:[
+        {name:"James Lin", vehicle:"Toyota Camry", priorityColor:"oklch(60% 0.14 55)", source:"Website", avatarColor:"oklch(85% 0.05 160)"}
+      ]},
+      {name:"Negotiating", color:"oklch(65% 0.14 55)", count:2, leads:[
+        {name:"Maya Torres", vehicle:"BMW X6", priorityColor:"oklch(60% 0.14 55)", source:"Website", avatarColor:"oklch(88% 0.05 260)"}
+      ]},
+      {name:"Sold", color:"oklch(60% 0.14 145)", count:19, leads:[
+        {name:"Sofia Reyes", vehicle:"Cadillac Escalade", priorityColor:"oklch(70% 0.01 260)", source:"Referral", avatarColor:"oklch(85% 0.05 60)"}
+      ]},
+      {name:"Lost", color:"oklch(60% 0.01 260)", count:3, leads:[
+        {name:"Ben Carter", vehicle:"GLE 53", priorityColor:"oklch(70% 0.01 260)", source:"Website", avatarColor:"oklch(90% 0.005 260)"}
+      ]}
+    ];
+
+    const allLeads = [
+      {name:"Maya Torres", vehicle:"BMW X6", source:"Website", status:"Negotiating", statusBg:"oklch(95% 0.03 55)", priority:"High", priorityColor:"oklch(60% 0.14 55)", assigned:"Derek O.", avatarColor:"oklch(88% 0.05 260)"},
+      {name:"James Lin", vehicle:"Toyota Camry", source:"Website", status:"Appt. Scheduled", statusBg:"oklch(94% 0.03 155)", priority:"Medium", priorityColor:"oklch(55% 0.1 190)", assigned:"Sam K.", avatarColor:"oklch(85% 0.05 160)"},
+      {name:"Priya Shah", vehicle:"Mercedes E450", source:"Website", status:"New", statusBg:"oklch(94% 0.03 260)", priority:"Medium", priorityColor:"oklch(45% 0.16 260)", assigned:"Derek O.", avatarColor:"oklch(85% 0.05 30)"},
+      {name:"Cole Bennett", vehicle:"Porsche Cayenne", source:"Website", status:"Contacted", statusBg:"oklch(94% 0.02 220)", priority:"High", priorityColor:"oklch(60% 0.14 55)", assigned:"Sam K.", avatarColor:"oklch(85% 0.05 100)"},
+      {name:"Tom Rivera", vehicle:"Toyota Camry", source:"Phone", status:"New", statusBg:"oklch(94% 0.03 260)", priority:"Low", priorityColor:"oklch(70% 0.01 260)", assigned:"Unassigned", avatarColor:"oklch(85% 0.05 200)"},
+      {name:"Alina Petrova", vehicle:"Lexus GX460", source:"Walk-in", status:"Qualified", statusBg:"oklch(94% 0.02 190)", priority:"Medium", priorityColor:"oklch(55% 0.1 190)", assigned:"Derek O.", avatarColor:"oklch(85% 0.05 300)"},
+      {name:"Sofia Reyes", vehicle:"Cadillac Escalade", source:"Referral", status:"Sold", statusBg:"oklch(94% 0.03 145)", priority:"—", priorityColor:"oklch(60% 0.14 145)", assigned:"Sam K.", avatarColor:"oklch(85% 0.05 60)"},
+      {name:"Ben Carter", vehicle:"GLE 53", source:"Website", status:"Lost", statusBg:"oklch(95% 0.005 260)", priority:"—", priorityColor:"oklch(60% 0.01 260)", assigned:"Derek O.", avatarColor:"oklch(90% 0.005 260)"}
+    ];
+
+    const timeline = [
+      {text:"Maya submitted a test drive request for the BMW X6", when:"Jul 9, 9:12am", color:"oklch(45% 0.16 260)"},
+      {text:"Derek called to confirm the appointment", when:"Jul 9, 10:30am", color:"oklch(55% 0.1 190)"},
+      {text:"Test drive completed", when:"Jul 10, 2:00pm", color:"oklch(60% 0.12 155)"},
+      {text:"Note added: interested in extended warranty", when:"Jul 10, 2:45pm", color:"oklch(65% 0.14 55)"},
+      {text:"Financing options sent by email", when:"Jul 11, 9:00am", color:"oklch(65% 0.14 55)"}
+    ];
+
+    return {
+      stages, allLeads, timeline,
+      isBoard: st === 'board', isTable: st === 'table', isDetail: st === 'detail',
+      boardActiveBg: st === 'board' ? active.background : inactive.background,
+      boardActiveShadow: st === 'board' ? active.boxShadow : inactive.boxShadow,
+      tableActiveBg: st === 'table' ? active.background : inactive.background,
+      tableActiveShadow: st === 'table' ? active.boxShadow : inactive.boxShadow,
+      detailActiveBg: st === 'detail' ? active.background : inactive.background,
+      detailActiveShadow: st === 'detail' ? active.boxShadow : inactive.boxShadow,
+      showBoard: () => this.setState({ view: 'board' }),
+      showTable: () => this.setState({ view: 'table' }),
+      showDetail: () => this.setState({ view: 'detail' })
+    };
+  }
+}
+
+</script>
+</body>
+</html>

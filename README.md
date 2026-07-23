@@ -46,14 +46,21 @@ This is not a tutorial project. It's engineered the way client work ships:
 | Financing calculator + trade-in estimator on every listing | ✅ Live |
 | Test-drive booking, no customer account needed | ✅ Live |
 | Lead pipeline (Kanban + table), 7-stage status ladder, keyboard-accessible | ✅ Live |
+| Round-robin lead auto-assignment on intake | ✅ Live |
 | Inventory management: filters, bulk actions, quick edit, add vehicle | ✅ Live |
 | Appointments: week calendar, scheduling, status tracking | ✅ Live |
 | Analytics: sales funnel, inventory mix, lead sources | ✅ Live |
 | Customers, Staff Activity, Settings (notifications, team, dealership profile) | ✅ Live |
 | Command palette (⌘K), live notification bell, mobile bottom nav | ✅ Live |
+| Platform pitch: pricing tiers, testimonial, FAQ | ✅ Live |
+| VIN decode auto-fill, photo upload | 🔜 Needs a 3rd-party VIN/storage API |
+| Finance pre-qualification (soft credit pull) | 🔜 Needs a lending partner integration |
+| Deal paperwork / e-signature | 🔜 Needs an e-sign provider |
+| Role-based permissions (Owner/Manager/Sales/BDC) | 🔜 Roadmap — single shared login today |
+| Territory/skill-based lead routing | 🔜 Round-robin is live; the other two strategies need a territory/skill model that doesn't exist yet |
 | AI-assisted follow-up workflows | 🔜 Roadmap |
 
-The roadmap follows the product design brief in `docs/` — the same sitemap, personas, and journey mapping the built pages came from.
+The MVP follows the product design brief in [`docs/design-handoff/`](docs/design-handoff/) — 15 design docs covering foundations, every screen, information architecture, user flows, success metrics, states, and the accessibility checklist this build is gated against. The "Needs a 3rd-party integration" items are deliberately out of scope for a self-contained demo — they'd require real vendor accounts (VIN decoders, credit bureaus, e-signature) rather than more app code.
 
 ## Screens
 
@@ -100,6 +107,8 @@ The roadmap follows the product design brief in `docs/` — the same sitemap, pe
 │                           dashboard
 ├── prisma/                 Schema (SQLite locally, Postgres in prod — see
 │                           scripts/prepare-prisma-schema.js) + seed scripts
+├── docs/                   design-handoff/ (the 15-doc product design brief this
+│                           was built from), architecture.md, design-system.md
 └── .github/workflows/      Accessibility + validation CI (18 pages gated)
 ```
 

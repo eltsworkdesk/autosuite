@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#fff;font-family:'IBM Plex Sans',sans-serif;color:oklch(20% 0.01 260);-webkit-font-smoothing:antialiased}
+  a{color:oklch(45% 0.16 260);text-decoration:none}
+  .stripes{background-image:repeating-linear-gradient(135deg, oklch(94% 0.01 260) 0 10px, oklch(97% 0.006 260) 10px 20px)}
+  input[type=range]{accent-color:oklch(45% 0.16 260)}
+</style>
+</helmet>
+
+<!-- NAV -->
+<div style="border-bottom:1px solid oklch(92% 0.005 260)">
+  <div style="max-width:1280px;margin:0 auto;padding:16px 48px;display:flex;align-items:center;gap:32px">
+    <div style="display:flex;align-items:center;gap:9px">
+      <div style="width:22px;height:22px;border-radius:6px;background:oklch(45% 0.16 260)"></div>
+      <div style="font:600 15px 'Space Grotesk',sans-serif">AutoSuite</div>
+    </div>
+    <div style="font:400 14px;color:oklch(50% 0.01 260)">Inventory / Sedans / <span style="color:oklch(25% 0.01 260)">2024 BMW X6</span></div>
+    <div style="margin-left:auto;display:flex;gap:20px;font:500 14px;color:oklch(35% 0.01 260)">
+      <div>♡ Save</div>
+      <div>⇄ Compare</div>
+    </div>
+  </div>
+</div>
+
+<!-- INVENTORY STRIP (browse context) -->
+<div style="max-width:1280px;margin:0 auto;padding:20px 48px 0">
+  <div style="font:600 12px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;color:oklch(50% 0.01 260);margin-bottom:14px">Inventory — 128 vehicles</div>
+  <div style="display:flex;gap:16px;margin-bottom:8px">
+    <div style="display:flex;gap:10px;flex:1;flex-wrap:wrap">
+      <div style="padding:8px 14px;border:1px solid oklch(88% 0.005 260);border-radius:999px;font:500 13px">Body: SUV ✕</div>
+      <div style="padding:8px 14px;border:1px solid oklch(88% 0.005 260);border-radius:999px;font:500 13px">$40k–$70k ✕</div>
+      <div style="padding:8px 14px;border:1px solid oklch(88% 0.005 260);border-radius:999px;font:500 13px;color:oklch(50% 0.01 260)">+ Add filter</div>
+    </div>
+    <div style="font:500 13px;color:oklch(50% 0.01 260)">Sort: Best match ▾</div>
+  </div>
+</div>
+
+<!-- VEHICLE DETAIL -->
+<div style="max-width:1280px;margin:0 auto;padding:24px 48px 0;display:grid;grid-template-columns:1.4fr 1fr;gap:48px">
+  <div>
+    <div class="stripes" style="aspect-ratio:16/10;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;position:relative">
+      <div style="font:500 13px 'IBM Plex Mono',monospace;color:oklch(50% 0.01 260)">gallery — hero photo</div>
+      <div style="position:absolute;bottom:16px;right:16px;padding:8px 14px;background:rgba(255,255,255,.9);border-radius:8px;font:500 13px">360° View ↻</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px">
+      <div class="stripes" style="aspect-ratio:1;border-radius:8px"></div>
+      <div class="stripes" style="aspect-ratio:1;border-radius:8px"></div>
+      <div class="stripes" style="aspect-ratio:1;border-radius:8px"></div>
+      <div class="stripes" style="aspect-ratio:1;border-radius:8px"></div>
+      <div class="stripes" style="aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font:500 12px 'IBM Plex Mono',monospace;color:oklch(50% 0.01 260)">+18</div>
+    </div>
+  </div>
+
+  <div>
+    <h1 style="font:600 32px 'Space Grotesk',sans-serif;margin:0 0 6px">2024 BMW X6 xDrive40i</h1>
+    <div style="font:400 15px;color:oklch(45% 0.01 260);margin-bottom:18px">12,400 mi · Alpine White · AWD</div>
+    <div style="font:600 38px 'Space Grotesk',sans-serif;margin-bottom:4px">$68,900</div>
+    <div style="font:500 14px;color:oklch(45% 0.01 260);margin-bottom:24px">Est. $1,020/mo · see financing below</div>
+
+    <div style="display:flex;gap:12px;margin-bottom:28px">
+      <div style="flex:1;padding:14px;background:oklch(20% 0.012 260);color:#fff;border-radius:9px;text-align:center;font:600 14px">Book Test Drive</div>
+      <div style="flex:1;padding:14px;border:1px solid oklch(88% 0.005 260);border-radius:9px;text-align:center;font:600 14px">Contact Dealer</div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:10px;padding:14px;background:oklch(97% 0.01 145);border-radius:10px;margin-bottom:28px">
+      <div style="width:8px;height:8px;border-radius:50%;background:oklch(60% 0.14 145)"></div>
+      <div style="font:500 13px;color:oklch(30% 0.08 145)">Available now at Overlook Motors — 1 test drive slot open today</div>
+    </div>
+
+    <div style="font:600 12px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;color:oklch(50% 0.01 260);margin-bottom:12px">Specifications</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px 20px;font:400 14px;margin-bottom:28px">
+      <div style="display:flex;justify-content:space-between;border-bottom:1px solid oklch(94% 0.005 260);padding-bottom:8px"><span style="color:oklch(50% 0.01 260)">Engine</span><span>3.0L I6 Turbo</span></div>
+      <div style="display:flex;justify-content:space-between;border-bottom:1px solid oklch(94% 0.005 260);padding-bottom:8px"><span style="color:oklch(50% 0.01 260)">Transmission</span><span>8-spd Automatic</span></div>
+      <div style="display:flex;justify-content:space-between;border-bottom:1px solid oklch(94% 0.005 260);padding-bottom:8px"><span style="color:oklch(50% 0.01 260)">Drivetrain</span><span>AWD</span></div>
+      <div style="display:flex;justify-content:space-between;border-bottom:1px solid oklch(94% 0.005 260);padding-bottom:8px"><span style="color:oklch(50% 0.01 260)">MPG</span><span>21 city / 26 hwy</span></div>
+    </div>
+
+    <div style="font:600 12px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;color:oklch(50% 0.01 260);margin-bottom:12px">Vehicle History</div>
+    <div style="display:flex;gap:18px;margin-bottom:28px">
+      <div style="font:400 13px;color:oklch(35% 0.01 260)">✓ Clean title</div>
+      <div style="font:400 13px;color:oklch(35% 0.01 260)">✓ 1 owner</div>
+      <div style="font:400 13px;color:oklch(35% 0.01 260)">✓ No accidents reported</div>
+    </div>
+
+    <div style="font:600 12px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;color:oklch(50% 0.01 260);margin-bottom:12px">Dealer Notes</div>
+    <p style="font:400 14px/1.6;color:oklch(35% 0.01 260);margin:0">Single-owner lease return, garage kept, full service history at Overlook Motors. Fresh detail and 130-point inspection completed prior to listing.</p>
+  </div>
+</div>
+
+<!-- FINANCING + TRADE-IN + COMPARE -->
+<div style="max-width:1280px;margin:0 auto;padding:64px 48px 0">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+    <div style="background:oklch(98% 0.004 90);border:1px solid oklch(92% 0.005 260);border-radius:16px;padding:32px">
+      <div style="font:600 20px 'Space Grotesk',sans-serif;margin-bottom:6px">Financing Calculator</div>
+      <div style="font:400 13px;color:oklch(45% 0.01 260);margin-bottom:24px">Estimate only — final terms confirmed at the dealership</div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div>
+          <div style="display:flex;justify-content:space-between;font:500 13px;margin-bottom:6px"><span>Down payment</span><span>$6,890</span></div>
+          <input type="range" style="width:100%" value="10" min="0" max="50"/>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font:500 13px;margin-bottom:6px"><span>Loan term</span><span>60 months</span></div>
+          <input type="range" style="width:100%" value="60" min="24" max="84"/>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font:500 13px;margin-bottom:6px"><span>Est. APR</span><span>6.4%</span></div>
+          <input type="range" style="width:100%" value="6.4" min="2" max="12"/>
+        </div>
+      </div>
+      <div style="margin-top:24px;padding-top:20px;border-top:1px solid oklch(90% 0.005 260);display:flex;justify-content:space-between;align-items:baseline">
+        <div style="font:500 14px;color:oklch(45% 0.01 260)">Est. monthly payment</div>
+        <div style="font:600 32px 'Space Grotesk',sans-serif">$1,020</div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:24px">
+      <div style="background:oklch(98% 0.004 90);border:1px solid oklch(92% 0.005 260);border-radius:16px;padding:32px">
+        <div style="font:600 20px 'Space Grotesk',sans-serif;margin-bottom:6px">Trade-In Estimator</div>
+        <div style="font:400 13px;color:oklch(45% 0.01 260);margin-bottom:20px">Answer 3 quick questions for an instant range</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="padding:12px 14px;border:1px solid oklch(88% 0.005 260);border-radius:8px;font:400 14px;color:oklch(50% 0.01 260)">Year, make, model</div>
+          <div style="padding:12px 14px;border:1px solid oklch(88% 0.005 260);border-radius:8px;font:400 14px;color:oklch(50% 0.01 260)">Mileage</div>
+          <div style="padding:12px 14px;border:1px solid oklch(88% 0.005 260);border-radius:8px;font:400 14px;color:oklch(50% 0.01 260)">Condition</div>
+        </div>
+        <div style="margin-top:16px;padding:14px;background:#fff;border-radius:8px;text-align:center;font:600 14px">Get estimate</div>
+      </div>
+
+      <div style="background:oklch(98% 0.004 90);border:1px solid oklch(92% 0.005 260);border-radius:16px;padding:32px;flex:1">
+        <div style="font:600 20px 'Space Grotesk',sans-serif;margin-bottom:16px">Compare</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font:400 13px">
+          <div style="padding:14px;background:#fff;border:1px solid oklch(90% 0.005 260);border-radius:10px">
+            <div style="font:600 13px;margin-bottom:2px">2024 BMW X6</div>
+            <div style="color:oklch(50% 0.01 260)">$68,900 · 12.4k mi</div>
+          </div>
+          <div style="padding:14px;border:1px dashed oklch(85% 0.005 260);border-radius:10px;color:oklch(55% 0.01 260);display:flex;align-items:center;justify-content:center">+ Add vehicle</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RECOMMENDED -->
+<div style="max-width:1280px;margin:0 auto;padding:80px 48px">
+  <div style="font:600 20px 'Space Grotesk',sans-serif;margin-bottom:20px">Similar vehicles</div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+    <sc-for list="{{ similar }}" as="v" hint-placeholder-count="4">
+      <div>
+        <div class="stripes" style="aspect-ratio:4/3;border-radius:10px;margin-bottom:10px"></div>
+        <div style="font:600 14px">{{ v.name }}</div>
+        <div style="font:400 13px;color:oklch(50% 0.01 260)">{{ v.price }} · {{ v.miles }}</div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+
+<!-- TRUST / FAQ -->
+<div style="background:oklch(98% 0.004 90);padding:80px 48px">
+  <div style="max-width:900px;margin:0 auto">
+    <div style="display:flex;gap:40px;margin-bottom:56px;text-align:center">
+      <div style="flex:1"><div style="font:600 28px 'Space Grotesk',sans-serif">130-pt</div><div style="font:400 13px;color:oklch(50% 0.01 260)">Inspection on every vehicle</div></div>
+      <div style="flex:1"><div style="font:600 28px 'Space Grotesk',sans-serif">7-day</div><div style="font:400 13px;color:oklch(50% 0.01 260)">Money-back guarantee</div></div>
+      <div style="flex:1"><div style="font:600 28px 'Space Grotesk',sans-serif">1yr</div><div style="font:400 13px;color:oklch(50% 0.01 260)">Limited warranty included</div></div>
+    </div>
+    <div style="font:600 18px 'Space Grotesk',sans-serif;margin-bottom:20px">Warranty &amp; FAQ</div>
+    <div style="display:flex;flex-direction:column;gap:1px;background:oklch(90% 0.005 260);border:1px solid oklch(90% 0.005 260);border-radius:12px;overflow:hidden">
+      <div style="background:#fff;padding:18px 20px;font:500 14px">What's covered under the limited warranty? →</div>
+      <div style="background:#fff;padding:18px 20px;font:500 14px">Can I return the vehicle if I change my mind? →</div>
+      <div style="background:#fff;padding:18px 20px;font:500 14px">Is the test drive obligation-free? →</div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      similar: [
+        {name:"2023 Mercedes GLE 53", price:"$71,200", miles:"8.1k mi"},
+        {name:"2025 Porsche Cayenne", price:"$79,500", miles:"3.4k mi"},
+        {name:"2025 Cadillac Escalade", price:"$84,000", miles:"2.0k mi"},
+        {name:"2025 Lexus GX460", price:"$66,300", miles:"6.7k mi"}
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>

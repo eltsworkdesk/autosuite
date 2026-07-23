@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#fff;font-family:'IBM Plex Sans',sans-serif;color:oklch(20% 0.01 260)}
+  .sec{background:#fff;border:1px solid oklch(91% 0.005 260);border-radius:12px;padding:22px}
+  .node{padding:7px 0;font:400 13px}
+  .l1{font-weight:600;font-size:14px}
+  .l2{padding-left:16px;color:oklch(40% 0.01 260);border-left:2px solid oklch(92% 0.005 260);margin-left:2px}
+  .l3{padding-left:32px;color:oklch(52% 0.01 260);border-left:2px solid oklch(94% 0.005 260);margin-left:2px;font-size:12px}
+</style>
+</helmet>
+
+<div style="max-width:1180px;margin:0 auto;padding:64px 48px 120px">
+  <div style="font:600 12px 'IBM Plex Mono',monospace;color:oklch(45% 0.16 260);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Artifact — Information Architecture</div>
+  <h1 style="font:600 34px 'Space Grotesk',sans-serif;margin:0 0 8px">Complete IA</h1>
+  <p style="font:400 15px;color:oklch(45% 0.01 260);margin:0 0 40px;max-width:700px">Full section/sub-page map for both experiences, expanded with Finance, Trade-ins, Marketing, Reports, Team &amp; Permissions.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:32px">
+    <div class="sec">
+      <div style="font:600 13px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.05em;color:oklch(65% 0.14 55);margin-bottom:14px">Marketing Website</div>
+      <div class="node l1">Homepage</div>
+      <div class="node l2">Product overview / how it works</div>
+      <div class="node l2">Pricing</div>
+      <div class="node l2">FAQ</div>
+      <div class="node l2">Book demo / Request access</div>
+    </div>
+    <div class="sec">
+      <div style="font:600 13px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.05em;color:oklch(65% 0.14 55);margin-bottom:14px">Consumer — Discovery</div>
+      <div class="node l1">Inventory / Search</div>
+      <div class="node l2">Filters (body, price, mileage, make)</div>
+      <div class="node l1">Vehicle Detail</div>
+      <div class="node l2">Gallery / 360°</div>
+      <div class="node l2">Specs / history / dealer notes</div>
+      <div class="node l1">Comparison Tool</div>
+      <div class="node l1">Favorites / Saved</div>
+    </div>
+    <div class="sec">
+      <div style="font:600 13px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.05em;color:oklch(65% 0.14 55);margin-bottom:14px">Consumer — Finance &amp; Trade-in</div>
+      <div class="node l1">Finance</div>
+      <div class="node l2">Payment calculator</div>
+      <div class="node l2">Pre-qualification application</div>
+      <div class="node l2">Application status</div>
+      <div class="node l1">Trade-in</div>
+      <div class="node l2">Instant estimate (VIN/mileage/condition)</div>
+      <div class="node l2">Schedule inspection</div>
+    </div>
+    <div class="sec">
+      <div style="font:600 13px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.05em;color:oklch(65% 0.14 55);margin-bottom:14px">Consumer — Conversion</div>
+      <div class="node l1">Book Test Drive</div>
+      <div class="node l1">Book Inspection</div>
+      <div class="node l1">Contact Dealer</div>
+      <div class="node l1">Purchase Journey</div>
+      <div class="node l2">Deal summary → e-sign → confirmation</div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+    <div class="sec" style="background:oklch(18% 0.012 260);border-color:oklch(18% 0.012 260)">
+      <div style="font:600 13px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.05em;color:oklch(60% 0.1 260);margin-bottom:14px">Dealer OS — Sell</div>
+      <div class="node l1" style="color:#fff">Dashboard</div>
+      <div class="node l2" style="color:oklch(70% 0.01 260)">Today's Activity / Quick Actions</div>
+      <div class="node l1" style="color:#fff">CRM</div>
+      <div class="node l2" style="color:oklch(70% 0.01 260)">Leads (Board / Table)</div>
+      <div class="node l2" style="color:oklch(70% 0.01 260)">Lead Detail</div>
+      <div class="node l2" style="color:oklch(70% 0.01 260)">Sales Pipeline</div>
+      <div class="node l1" style="color:#fff">Customers</div>
+      <div class="node l2" style="color:oklch(70% 0.01 260)">Customer profile / purchase history</div>
+      <div class="node l1" style="color:#fff">Appointments</div>
+      <div class="node l2" style="color:oklch(70% 0.01 260)">Calendar / booking rules</div>
+    </div>
+    <div class="sec" style="background:oklch(18% 0.012 260);border-color:oklch(18% 0.012 260)">
+      <div style="font:600 13px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.05em;color:oklch(60% 0.1 260);margin-bottom:14px">Dealer OS — Operate</div>
+      <div class="node l1" style="color:#fff">Inventory Management</div>
+      <div class="node l2" style="color:oklch(70% 0.01 260)">Vehicle list / Draft / Sold / Featured</div>
+      <div class="node l2" style="color:oklch(70% 0.01 260)">Bulk actions / photo upload</div>
+      <div class="node l1" style="color:#fff">Trade-ins Queue</div>
+      <div class="node l2" style="color:oklch(70% 0.01 260)">Pending appraisals</div>
+      <div class="node l1" style="color:#fff">Finance</div>
+      <div class="node l2" style="color:oklch(70% 0.01 260)">Applications / lender status</div>
+      <div class="node l1" style="color:#fff">Marketing</div>
+      <div class="node l2" style="color:oklch(70% 0.01 260)">Listing syndication / promotions</div>
+    </div>
+    <div class="sec" style="background:oklch(18% 0.012 260);border-color:oklch(18% 0.012 260)">
+      <div style="font:600 13px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.05em;color:oklch(60% 0.1 260);margin-bottom:14px">Dealer OS — Understand</div>
+      <div class="node l1" style="color:#fff">Analytics</div>
+      <div class="node l2" style="color:oklch(70% 0.01 260)">Funnel / revenue / conversion</div>
+      <div class="node l1" style="color:#fff">Reports</div>
+      <div class="node l2" style="color:oklch(70% 0.01 260)">Scheduled / exportable reports</div>
+      <div class="node l1" style="color:#fff">Staff Activity</div>
+      <div class="node l2" style="color:oklch(70% 0.01 260)">Response times / leaderboard</div>
+    </div>
+    <div class="sec" style="background:oklch(18% 0.012 260);border-color:oklch(18% 0.012 260)">
+      <div style="font:600 13px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.05em;color:oklch(60% 0.1 260);margin-bottom:14px">Dealer OS — Configure</div>
+      <div class="node l1" style="color:#fff">Settings</div>
+      <div class="node l2" style="color:oklch(70% 0.01 260)">Dealership profile / lead routing / billing</div>
+      <div class="node l1" style="color:#fff">Team Management</div>
+      <div class="node l2" style="color:oklch(70% 0.01 260)">Staff list / roles / invites</div>
+      <div class="node l1" style="color:#fff">Permissions</div>
+      <div class="node l2" style="color:oklch(70% 0.01 260)">Role-based access (Owner/Manager/Sales/BDC)</div>
+      <div class="node l1" style="color:#fff">Notifications</div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+</body>
+</html>

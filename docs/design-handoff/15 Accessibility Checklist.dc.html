@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#fff;font-family:'IBM Plex Sans',sans-serif;color:oklch(20% 0.01 260)}
+  .card{border:1px solid oklch(91% 0.005 260);border-radius:12px;padding:22px}
+  .item{display:flex;gap:10px;padding:8px 0;font:400 14px;border-bottom:1px solid oklch(95% 0.004 260)}
+  .item:last-child{border-bottom:none}
+</style>
+</helmet>
+
+<div style="max-width:900px;margin:0 auto;padding:64px 48px 120px">
+  <div style="font:600 12px 'IBM Plex Mono',monospace;color:oklch(45% 0.16 260);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Artifact — Accessibility Checklist</div>
+  <h1 style="font:600 34px 'Space Grotesk',sans-serif;margin:0 0 8px">WCAG AA baseline</h1>
+  <p style="font:400 15px;color:oklch(45% 0.01 260);margin:0 0 32px">Applies to both the consumer site and the dealer OS.</p>
+
+  <div style="display:flex;flex-direction:column;gap:20px">
+    <div class="card">
+      <div style="font:600 15px 'Space Grotesk',sans-serif;margin-bottom:10px">Keyboard &amp; focus</div>
+      <div class="item">☐ Every interactive element reachable via Tab in logical order</div>
+      <div class="item">☐ Visible focus ring on all buttons, inputs, cards, table rows (not just outline:none)</div>
+      <div class="item">☐ Kanban drag-and-drop has a keyboard equivalent (move card via menu/shortcut)</div>
+      <div class="item">☐ Command palette (⌘K) fully keyboard-operable, Esc closes</div>
+      <div class="item">☐ Modals trap focus and return focus to trigger on close</div>
+    </div>
+    <div class="card">
+      <div style="font:600 15px 'Space Grotesk',sans-serif;margin-bottom:10px">Screen readers</div>
+      <div class="item">☐ Status pills (New/Sold/etc.) have text, not color alone, read by SR</div>
+      <div class="item">☐ Charts (funnel, revenue bars) have a text/table alternative</div>
+      <div class="item">☐ Form fields have associated &lt;label&gt;, errors announced via aria-live</div>
+      <div class="item">☐ Icon-only buttons (⚙ 🔔 ♡) have aria-label</div>
+      <div class="item">☐ Toasts use aria-live="polite" so updates are announced</div>
+    </div>
+    <div class="card">
+      <div style="font:600 15px 'Space Grotesk',sans-serif;margin-bottom:10px">Contrast</div>
+      <div class="item">☐ Body text ≥ 4.5:1 against background (verify oklch grays at final render)</div>
+      <div class="item">☐ Status pill text meets 4.5:1 against its tinted background, not just against white</div>
+      <div class="item">☐ Placeholder text is not the only indication of a field's purpose</div>
+      <div class="item">☐ Dark sidebar inactive nav text (currently ~60% opacity) meets 4.5:1 minimum</div>
+    </div>
+    <div class="card">
+      <div style="font:600 15px 'Space Grotesk',sans-serif;margin-bottom:10px">Touch &amp; responsive</div>
+      <div class="item">☐ All tap targets ≥ 44×44px on mobile (bottom tab bar, card actions)</div>
+      <div class="item">☐ Text reflows without horizontal scroll down to 320px width</div>
+      <div class="item">☐ Pinch-zoom never disabled</div>
+    </div>
+    <div class="card">
+      <div style="font:600 15px 'Space Grotesk',sans-serif;margin-bottom:10px">Forms</div>
+      <div class="item">☐ Financing/trade-in/test-drive forms show inline errors next to the field, not just at top</div>
+      <div class="item">☐ Required fields marked programmatically (aria-required), not color alone</div>
+      <div class="item">☐ Sliders (financing calculator) have accessible name + current value announced</div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+</body>
+</html>

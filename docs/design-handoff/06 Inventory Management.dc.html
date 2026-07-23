@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:oklch(97.5% 0.004 90);font-family:'IBM Plex Sans',sans-serif;color:oklch(20% 0.01 260)}
+  .navitem{display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:8px;font:500 13px;color:oklch(72% 0.008 260)}
+  .navitem.active{background:oklch(30% 0.02 260);color:#fff}
+  .card{background:#fff;border:1px solid oklch(91% 0.005 260);border-radius:12px}
+  .stripes{background-image:repeating-linear-gradient(135deg, oklch(94% 0.01 260) 0 8px, oklch(97% 0.006 260) 8px 16px)}
+</style>
+</helmet>
+
+<div style="display:grid;grid-template-columns:236px 1fr;min-height:100vh">
+  <div style="background:oklch(18% 0.012 260);padding:20px 14px;display:flex;flex-direction:column;gap:2px">
+    <div style="display:flex;align-items:center;gap:9px;padding:6px 10px 22px">
+      <div style="width:22px;height:22px;border-radius:6px;background:oklch(55% 0.16 260)"></div>
+      <div style="font:600 15px 'Space Grotesk',sans-serif;color:#fff">AutoSuite</div>
+    </div>
+    <div class="navitem">▦ Overview</div>
+    <div class="navitem">☎ CRM</div>
+    <div class="navitem active">▤ Inventory</div>
+    <div class="navitem">◔ Appointments</div>
+    <div class="navitem">✎ Customers</div>
+    <div class="navitem">▲ Analytics</div>
+    <div class="navitem">◫ Staff Activity</div>
+  </div>
+
+  <div>
+    <div style="display:flex;align-items:center;gap:16px;padding:18px 36px;border-bottom:1px solid oklch(91% 0.005 260);background:#fff">
+      <div style="font:600 20px 'Space Grotesk',sans-serif">Inventory</div>
+      <div style="font:400 13px;color:oklch(50% 0.01 260)">86 active · 4 draft · 19 sold this month</div>
+      <div style="margin-left:auto;display:flex;gap:10px">
+        <div style="font:500 13px;padding:8px 14px;border:1px solid oklch(88% 0.005 260);border-radius:8px">Bulk actions</div>
+        <div style="font:500 13px;padding:8px 14px;background:oklch(20% 0.012 260);color:#fff;border-radius:8px">+ Add vehicle</div>
+      </div>
+    </div>
+
+    <div style="padding:24px 36px 0;display:flex;gap:10px;align-items:center">
+      <div style="flex:1;padding:9px 14px;border:1px solid oklch(88% 0.005 260);border-radius:8px;font:400 13px;color:oklch(55% 0.01 260);background:#fff">Search inventory…</div>
+      <div style="padding:9px 14px;border:1px solid oklch(88% 0.005 260);border-radius:8px;font:500 13px;background:#fff">Status ▾</div>
+      <div style="padding:9px 14px;border:1px solid oklch(88% 0.005 260);border-radius:8px;font:500 13px;background:#fff">Body type ▾</div>
+      <div style="padding:9px 14px;border:1px solid oklch(88% 0.005 260);border-radius:8px;font:500 13px;background:#fff">Price ▾</div>
+      <div style="margin-left:auto;display:flex;gap:4px;background:oklch(94% 0.004 260);padding:4px;border-radius:8px">
+        <div style="padding:7px 12px;border-radius:6px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.08);font:500 12px">Table</div>
+        <div style="padding:7px 12px;border-radius:6px;font:500 12px;color:oklch(50% 0.01 260)">Cards</div>
+      </div>
+    </div>
+
+    <!-- Featured strip -->
+    <div style="padding:24px 36px 0">
+      <div style="font:600 12px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.05em;color:oklch(50% 0.01 260);margin-bottom:12px">Featured on homepage</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:8px">
+        <sc-for list="{{ featured }}" as="v" hint-placeholder-count="4">
+          <div class="card" style="padding:12px">
+            <div class="stripes" style="aspect-ratio:16/10;border-radius:8px;margin-bottom:10px"></div>
+            <div style="font:600 13px">{{ v.name }}</div>
+            <div style="font:400 12px;color:oklch(50% 0.01 260)">{{ v.price }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div style="padding:28px 36px 60px">
+      <div class="card" style="overflow:hidden">
+        <div style="display:grid;grid-template-columns:0.4fr 2fr 1fr 1fr 0.9fr 0.7fr 1fr;background:oklch(97% 0.004 90);padding:12px 20px;font:600 11px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.04em;color:oklch(50% 0.01 260)">
+          <div></div><div>Vehicle</div><div>Price</div><div>Mileage</div><div>Status</div><div>Days listed</div><div>Actions</div>
+        </div>
+        <sc-for list="{{ vehicles }}" as="v" hint-placeholder-count="9">
+          <div style="display:grid;grid-template-columns:0.4fr 2fr 1fr 1fr 0.9fr 0.7fr 1fr;padding:12px 20px;border-top:1px solid oklch(94% 0.005 260);align-items:center;font:400 13px">
+            <div class="stripes" style="width:48px;height:34px;border-radius:6px"></div>
+            <div>
+              <div style="font-weight:600">{{ v.name }}</div>
+              <div style="font:400 12px;color:oklch(50% 0.01 260)">{{ v.trim }}</div>
+            </div>
+            <div style="font-weight:600">{{ v.price }}</div>
+            <div style="color:oklch(45% 0.01 260)">{{ v.miles }}</div>
+            <div><span style="font:500 11px;padding:4px 9px;border-radius:999px;background:{{ v.statusBg }};color:{{ v.statusColor }}">{{ v.status }}</span></div>
+            <div style="color:oklch(45% 0.01 260)">{{ v.days }}</div>
+            <div style="color:oklch(45% 0.16 260);font-weight:500">Quick edit</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const featured = [
+      {name:"2025 Cadillac Escalade", price:"$84,000"},
+      {name:"2025 Porsche Cayenne", price:"$79,500"},
+      {name:"2024 BMW X6", price:"$68,900"},
+      {name:"2024 Mercedes E450", price:"$61,200"}
+    ];
+    const vehicles = [
+      {name:"2024 BMW X6 xDrive40i", trim:"AWD · Alpine White", price:"$68,900", miles:"12.4k", status:"Active", statusBg:"oklch(94% 0.03 145)", statusColor:"oklch(45% 0.13 145)", days:14},
+      {name:"2023 Toyota Camry XSE", trim:"FWD · Midnight Black", price:"$28,400", miles:"31.2k", status:"Active", statusBg:"oklch(94% 0.03 145)", statusColor:"oklch(45% 0.13 145)", days:22},
+      {name:"2025 Porsche Cayenne", trim:"AWD · Jet Black", price:"$79,500", miles:"3.4k", status:"Featured", statusBg:"oklch(94% 0.03 55)", statusColor:"oklch(45% 0.13 55)", days:6},
+      {name:"2024 Mercedes E450", trim:"AWD · Selenite Grey", price:"$61,200", miles:"9.8k", status:"Active", statusBg:"oklch(94% 0.03 145)", statusColor:"oklch(45% 0.13 145)", days:18},
+      {name:"2025 Cadillac Escalade", trim:"4WD · White Tricoat", price:"$84,000", miles:"2.0k", status:"Featured", statusBg:"oklch(94% 0.03 55)", statusColor:"oklch(45% 0.13 55)", days:4},
+      {name:"2025 Lexus GX460", trim:"4WD · Nori Green", price:"$66,300", miles:"6.7k", status:"Active", statusBg:"oklch(94% 0.03 145)", statusColor:"oklch(45% 0.13 145)", days:11},
+      {name:"2018 BMW 5 Series", trim:"RWD · Space Grey", price:"$24,300", miles:"58.1k", status:"Draft", statusBg:"oklch(95% 0.005 260)", statusColor:"oklch(45% 0.01 260)", days:0},
+      {name:"2020 Mercedes E-Class", trim:"AWD · Iridium Silver", price:"$36,700", miles:"44.0k", status:"Sold", statusBg:"oklch(95% 0.02 260)", statusColor:"oklch(45% 0.13 260)", days:31},
+      {name:"2018 Audi A7", trim:"AWD · Glacier White", price:"$27,900", miles:"52.3k", status:"Sold", statusBg:"oklch(95% 0.02 260)", statusColor:"oklch(45% 0.13 260)", days:40}
+    ];
+    return { featured, vehicles };
+  }
+}
+
+</script>
+</body>
+</html>

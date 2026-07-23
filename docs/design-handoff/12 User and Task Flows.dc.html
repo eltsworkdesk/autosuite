@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#fff;font-family:'IBM Plex Sans',sans-serif;color:oklch(20% 0.01 260)}
+  .step{background:#fff;border:1px solid oklch(90% 0.005 260);border-radius:10px;padding:14px 16px;font:500 13px;min-width:150px;text-align:center}
+  .arrow{color:oklch(70% 0.01 260);font:16px;padding:0 4px}
+  .flowrow{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-bottom:28px}
+  .decision{background:oklch(97% 0.02 55);border:1px solid oklch(85% 0.05 55)}
+</style>
+</helmet>
+
+<div style="max-width:1280px;margin:0 auto;padding:64px 48px 120px">
+  <div style="font:600 12px 'IBM Plex Mono',monospace;color:oklch(45% 0.16 260);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Artifact — User &amp; Task Flows</div>
+  <h1 style="font:600 34px 'Space Grotesk',sans-serif;margin:0 0 40px">Complete flows with decision points</h1>
+
+  <div style="font:600 16px 'Space Grotesk',sans-serif;margin-bottom:14px">Vehicle purchase (consumer)</div>
+  <div class="flowrow">
+    <div class="step">Land on homepage</div><div class="arrow">→</div>
+    <div class="step">Browse / filter inventory</div><div class="arrow">→</div>
+    <div class="step">Open vehicle detail</div><div class="arrow">→</div>
+    <div class="step decision">Compare another? </div><div class="arrow">→</div>
+    <div class="step">Run financing calc</div><div class="arrow">→</div>
+    <div class="step">Book test drive</div><div class="arrow">→</div>
+    <div class="step" style="background:oklch(20% 0.012 260);color:#fff;border-color:oklch(20% 0.012 260)">Lead created</div>
+  </div>
+
+  <div style="font:600 16px 'Space Grotesk',sans-serif;margin-bottom:14px">Lead generation → sale (dealer)</div>
+  <div class="flowrow">
+    <div class="step" style="background:oklch(20% 0.012 260);color:#fff;border-color:oklch(20% 0.012 260)">Lead appears in CRM</div><div class="arrow">→</div>
+    <div class="step">Auto-assigned to rep</div><div class="arrow">→</div>
+    <div class="step">Rep contacts customer</div><div class="arrow">→</div>
+    <div class="step decision">Qualified?</div><div class="arrow">→</div>
+    <div class="step">Appointment scheduled</div><div class="arrow">→</div>
+    <div class="step">Negotiation</div><div class="arrow">→</div>
+    <div class="step">Vehicle marked Sold</div>
+  </div>
+
+  <div style="font:600 16px 'Space Grotesk',sans-serif;margin-bottom:14px">Trade-in</div>
+  <div class="flowrow">
+    <div class="step">Enter year/make/model</div><div class="arrow">→</div>
+    <div class="step">Enter mileage + condition</div><div class="arrow">→</div>
+    <div class="step">Instant estimate range shown</div><div class="arrow">→</div>
+    <div class="step decision">Accept range?</div><div class="arrow">→</div>
+    <div class="step">Schedule in-person inspection</div><div class="arrow">→</div>
+    <div class="step" style="background:oklch(20% 0.012 260);color:#fff;border-color:oklch(20% 0.012 260)">Trade-in lead added to deal</div>
+  </div>
+
+  <div style="font:600 16px 'Space Grotesk',sans-serif;margin-bottom:14px">Finance application</div>
+  <div class="flowrow">
+    <div class="step">Adjust payment calculator</div><div class="arrow">→</div>
+    <div class="step">Click "Get pre-qualified"</div><div class="arrow">→</div>
+    <div class="step">Soft-pull application form</div><div class="arrow">→</div>
+    <div class="step decision">Approved?</div><div class="arrow">→</div>
+    <div class="step">Terms shown, sent to dealer</div><div class="arrow">→</div>
+    <div class="step" style="background:oklch(20% 0.012 260);color:#fff;border-color:oklch(20% 0.012 260)">Finance status visible in CRM</div>
+  </div>
+
+  <div style="font:600 16px 'Space Grotesk',sans-serif;margin-bottom:14px">Appointment booking</div>
+  <div class="flowrow">
+    <div class="step">Select test drive / inspection</div><div class="arrow">→</div>
+    <div class="step">Pick date + time slot</div><div class="arrow">→</div>
+    <div class="step">Confirm contact info</div><div class="arrow">→</div>
+    <div class="step" style="background:oklch(20% 0.012 260);color:#fff;border-color:oklch(20% 0.012 260)">Confirmed + added to rep's calendar</div>
+  </div>
+
+  <div style="font:600 16px 'Space Grotesk',sans-serif;margin-bottom:14px">Dealer inventory upload (task flow)</div>
+  <div class="flowrow">
+    <div class="step">Click + Add vehicle</div><div class="arrow">→</div>
+    <div class="step">Enter VIN</div><div class="arrow">→</div>
+    <div class="step decision">Duplicate VIN?</div><div class="arrow">→</div>
+    <div class="step">Auto-fill specs from VIN decode</div><div class="arrow">→</div>
+    <div class="step">Upload photos</div><div class="arrow">→</div>
+    <div class="step">Set price + status (Draft/Active/Featured)</div><div class="arrow">→</div>
+    <div class="step" style="background:oklch(20% 0.012 260);color:#fff;border-color:oklch(20% 0.012 260)">Live on site + inventory board</div>
+  </div>
+
+  <div style="font:600 16px 'Space Grotesk',sans-serif;margin-bottom:14px">Lead assignment (task flow — BDC/manager)</div>
+  <div class="flowrow">
+    <div class="step">New lead lands in queue</div><div class="arrow">→</div>
+    <div class="step decision">Routing rule matches rep?</div><div class="arrow">→</div>
+    <div class="step">Auto-assign (round robin / territory)</div><div class="arrow">→</div>
+    <div class="step">Notification sent to rep</div><div class="arrow">→</div>
+    <div class="step" style="background:oklch(20% 0.012 260);color:#fff;border-color:oklch(20% 0.012 260)">SLA timer starts</div>
+  </div>
+
+  <div style="font:600 16px 'Space Grotesk',sans-serif;margin-bottom:14px">Customer follow-up (task flow — salesperson)</div>
+  <div class="flowrow">
+    <div class="step">Open assigned leads list</div><div class="arrow">→</div>
+    <div class="step">Sort by last activity / priority</div><div class="arrow">→</div>
+    <div class="step">Log call / send message</div><div class="arrow">→</div>
+    <div class="step">Update status + add note</div><div class="arrow">→</div>
+    <div class="step">Set next task/reminder</div>
+  </div>
+
+  <div style="font:600 16px 'Space Grotesk',sans-serif;margin-bottom:14px">Closing a sale (task flow)</div>
+  <div class="flowrow">
+    <div class="step">Move lead card to Negotiating</div><div class="arrow">→</div>
+    <div class="step">Finalize price + finance terms</div><div class="arrow">→</div>
+    <div class="step">Generate paperwork</div><div class="arrow">→</div>
+    <div class="step">Mark lead Sold</div><div class="arrow">→</div>
+    <div class="step" style="background:oklch(20% 0.012 260);color:#fff;border-color:oklch(20% 0.012 260)">Vehicle status → Sold, analytics update</div>
+  </div>
+
+  <div style="font:600 16px 'Space Grotesk',sans-serif;margin-bottom:14px">Returning customer &amp; referral</div>
+  <div class="flowrow">
+    <div class="step">Post-sale check-in (automated)</div><div class="arrow">→</div>
+    <div class="step decision">Ready to sell/trade again?</div><div class="arrow">→</div>
+    <div class="step">Re-enters funnel as warm lead</div><div class="arrow">→</div>
+    <div class="step">Referral link shared</div><div class="arrow">→</div>
+    <div class="step" style="background:oklch(20% 0.012 260);color:#fff;border-color:oklch(20% 0.012 260)">New lead tagged "Referral"</div>
+  </div>
+</div>
+
+</x-dc>
+</body>
+</html>

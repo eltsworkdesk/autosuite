@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:oklch(95% 0.004 90);font-family:'IBM Plex Sans',sans-serif;color:oklch(20% 0.01 260)}
+  .phone{width:360px;height:760px;border-radius:36px;background:#fff;border:8px solid oklch(15% 0.01 260);overflow:hidden;position:relative;flex:none;display:flex;flex-direction:column}
+  .stripes{background-image:repeating-linear-gradient(135deg, oklch(94% 0.01 260) 0 8px, oklch(97% 0.006 260) 8px 16px)}
+  .navitem{display:flex;flex-direction:column;align-items:center;gap:3px;font:500 10px 'IBM Plex Sans',sans-serif;color:oklch(55% 0.01 260)}
+  .navitem.active{color:oklch(45% 0.16 260)}
+</style>
+</helmet>
+
+<div style="padding:56px;display:flex;gap:40px;flex-wrap:wrap;align-items:flex-start">
+
+  <!-- CONSUMER HOME -->
+  <div>
+    <div style="font:600 13px 'IBM Plex Mono',monospace;color:oklch(45% 0.01 260);margin-bottom:12px">Consumer — Home</div>
+    <div class="phone">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 18px 10px">
+        <div style="font:600 16px 'Space Grotesk',sans-serif">AutoSuite</div>
+        <div style="display:flex;gap:14px;font:16px">☰</div>
+      </div>
+      <div style="padding:0 18px 16px">
+        <div style="padding:12px 14px;border:1px solid oklch(88% 0.005 260);border-radius:10px;font:400 13px;color:oklch(55% 0.01 260)">Search vehicles…</div>
+      </div>
+      <div style="padding:0 18px 14px;display:flex;gap:8px;overflow-x:auto">
+        <div style="padding:7px 14px;background:oklch(20% 0.012 260);color:#fff;border-radius:999px;font:500 12px;flex:none">All</div>
+        <div style="padding:7px 14px;border:1px solid oklch(88% 0.005 260);border-radius:999px;font:500 12px;flex:none">SUV</div>
+        <div style="padding:7px 14px;border:1px solid oklch(88% 0.005 260);border-radius:999px;font:500 12px;flex:none">Sedan</div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:0 18px;display:flex;flex-direction:column;gap:14px">
+        <div>
+          <div class="stripes" style="aspect-ratio:16/10;border-radius:12px;margin-bottom:8px"></div>
+          <div style="font:600 14px">2024 BMW X6 xDrive40i</div>
+          <div style="font:400 12px;color:oklch(50% 0.01 260)">$68,900 · 12.4k mi</div>
+        </div>
+        <div>
+          <div class="stripes" style="aspect-ratio:16/10;border-radius:12px;margin-bottom:8px"></div>
+          <div style="font:600 14px">2023 Toyota Camry XSE</div>
+          <div style="font:400 12px;color:oklch(50% 0.01 260)">$28,400 · 31.2k mi</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-around;padding:14px 0;border-top:1px solid oklch(92% 0.005 260)">
+        <div class="navitem active">▤<span>Browse</span></div>
+        <div class="navitem">⇄<span>Compare</span></div>
+        <div class="navitem">♡<span>Saved</span></div>
+        <div class="navitem">☰<span>Menu</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VEHICLE DETAIL MOBILE -->
+  <div>
+    <div style="font:600 13px 'IBM Plex Mono',monospace;color:oklch(45% 0.01 260);margin-bottom:12px">Consumer — Vehicle Detail</div>
+    <div class="phone">
+      <div class="stripes" style="height:220px;position:relative;flex:none">
+        <div style="position:absolute;top:16px;left:16px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center">←</div>
+        <div style="position:absolute;top:16px;right:16px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.85);display:flex;align-items:center;justify-content:center">♡</div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:18px">
+        <div style="font:600 20px 'Space Grotesk',sans-serif;margin-bottom:4px">2024 BMW X6</div>
+        <div style="font:400 12px;color:oklch(50% 0.01 260);margin-bottom:10px">12,400 mi · AWD</div>
+        <div style="font:600 26px 'Space Grotesk',sans-serif;margin-bottom:14px">$68,900</div>
+        <div style="padding:12px 14px;background:oklch(98% 0.01 145);border-radius:10px;font:500 12px;color:oklch(35% 0.08 145);margin-bottom:16px">Est. $1,020/mo — tap to adjust</div>
+        <div style="font:600 12px;text-transform:uppercase;letter-spacing:0.05em;color:oklch(50% 0.01 260);margin-bottom:8px">Specs</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font:400 13px;margin-bottom:14px">
+          <div style="display:flex;justify-content:space-between;color:oklch(40% 0.01 260)"><span>Engine</span><span>3.0L I6 Turbo</span></div>
+          <div style="display:flex;justify-content:space-between;color:oklch(40% 0.01 260)"><span>Drivetrain</span><span>AWD</span></div>
+        </div>
+      </div>
+      <div style="padding:14px 18px;border-top:1px solid oklch(92% 0.005 260);display:flex;gap:10px">
+        <div style="flex:1;padding:13px;border:1px solid oklch(88% 0.005 260);border-radius:9px;text-align:center;font:600 13px">Contact</div>
+        <div style="flex:1;padding:13px;background:oklch(20% 0.012 260);color:#fff;border-radius:9px;text-align:center;font:600 13px">Book test drive</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DEALER DASHBOARD MOBILE -->
+  <div>
+    <div style="font:600 13px 'IBM Plex Mono',monospace;color:oklch(45% 0.01 260);margin-bottom:12px">Dealer — Dashboard</div>
+    <div class="phone">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 18px 10px">
+        <div style="font:600 16px 'Space Grotesk',sans-serif">Overview</div>
+        <div>🔔</div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:0 18px;display:flex;flex-direction:column;gap:12px">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="background:oklch(97% 0.004 90);border:1px solid oklch(91% 0.005 260);border-radius:10px;padding:14px">
+            <div style="font:500 11px;color:oklch(50% 0.01 260);margin-bottom:6px">Leads today</div>
+            <div style="font:600 22px 'Space Grotesk',sans-serif">18</div>
+          </div>
+          <div style="background:oklch(97% 0.004 90);border:1px solid oklch(91% 0.005 260);border-radius:10px;padding:14px">
+            <div style="font:500 11px;color:oklch(50% 0.01 260);margin-bottom:6px">Test drives</div>
+            <div style="font:600 22px 'Space Grotesk',sans-serif">7</div>
+          </div>
+        </div>
+        <div style="background:oklch(97% 0.004 90);border:1px solid oklch(91% 0.005 260);border-radius:10px;padding:14px">
+          <div style="font:600 13px;margin-bottom:10px">Upcoming appointments</div>
+          <div style="font:400 12px;color:oklch(40% 0.01 260);display:flex;justify-content:space-between;margin-bottom:6px"><span>Maya Torres — BMW X6</span><span>9:00a</span></div>
+          <div style="font:400 12px;color:oklch(40% 0.01 260);display:flex;justify-content:space-between"><span>James Lin — Camry</span><span>11:30a</span></div>
+        </div>
+        <div style="background:oklch(97% 0.004 90);border:1px solid oklch(91% 0.005 260);border-radius:10px;padding:14px">
+          <div style="font:600 13px;margin-bottom:8px">Recent activity</div>
+          <div style="font:400 12px;color:oklch(40% 0.01 260)">Maya T. booked a test drive · 2m ago</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-around;padding:14px 0;border-top:1px solid oklch(92% 0.005 260)">
+        <div class="navitem active">▦<span>Home</span></div>
+        <div class="navitem">☎<span>Leads</span></div>
+        <div class="navitem">▤<span>Inventory</span></div>
+        <div class="navitem">◔<span>Calendar</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CRM MOBILE -->
+  <div>
+    <div style="font:600 13px 'IBM Plex Mono',monospace;color:oklch(45% 0.01 260);margin-bottom:12px">Dealer — Lead Detail</div>
+    <div class="phone">
+      <div style="display:flex;align-items:center;gap:10px;padding:16px 18px 10px">
+        <div>←</div>
+        <div style="font:600 15px 'Space Grotesk',sans-serif">Maya Torres</div>
+        <div style="margin-left:auto;font:500 11px;padding:4px 10px;border-radius:999px;background:oklch(95% 0.03 55);color:oklch(45% 0.13 55)">Negotiating</div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:0 18px;display:flex;flex-direction:column;gap:12px">
+        <div style="background:oklch(97% 0.004 90);border:1px solid oklch(91% 0.005 260);border-radius:10px;padding:14px">
+          <div style="font:500 11px;color:oklch(50% 0.01 260);margin-bottom:6px">Interested in</div>
+          <div style="font:600 13px">2024 BMW X6 — $68,900</div>
+        </div>
+        <div style="background:oklch(97% 0.004 90);border:1px solid oklch(91% 0.005 260);border-radius:10px;padding:14px">
+          <div style="font:600 13px;margin-bottom:10px">Timeline</div>
+          <div style="font:400 12px;color:oklch(40% 0.01 260);margin-bottom:8px">Test drive requested — Jul 9</div>
+          <div style="font:400 12px;color:oklch(40% 0.01 260)">Financing sent — Jul 11</div>
+        </div>
+        <div style="background:oklch(97% 0.004 90);border:1px solid oklch(91% 0.005 260);border-radius:10px;padding:14px">
+          <div style="font:600 13px;margin-bottom:8px">Tasks</div>
+          <div style="font:400 12px;color:oklch(40% 0.01 260)">☐ Follow up Friday</div>
+        </div>
+      </div>
+      <div style="padding:14px 18px;border-top:1px solid oklch(92% 0.005 260);display:flex;gap:10px">
+        <div style="flex:1;padding:13px;border:1px solid oklch(88% 0.005 260);border-radius:9px;text-align:center;font:600 13px">Note</div>
+        <div style="flex:1;padding:13px;background:oklch(20% 0.012 260);color:#fff;border-radius:9px;text-align:center;font:600 13px">Call</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="padding:0 56px 56px;max-width:900px">
+  <div style="font:600 14px 'Space Grotesk',sans-serif;margin-bottom:10px">Navigation pattern notes</div>
+  <p style="font:400 13px/1.7;color:oklch(40% 0.01 260);margin:0">Consumer mobile uses a persistent bottom tab bar (Browse, Compare, Saved, Menu) — shopping is the primary loop, so navigation stays one tap away. Dealer OS mobile also uses a bottom tab bar (Home, Leads, Inventory, Calendar) scoped to the four things staff need on the floor; deeper tools (Analytics, Settings, Staff Activity) live behind the Home menu since they're desk-based tasks, not floor tasks.</p>
+</div>
+
+</x-dc>
+</body>
+</html>

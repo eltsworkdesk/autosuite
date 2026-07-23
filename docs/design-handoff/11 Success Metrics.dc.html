@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#fff;font-family:'IBM Plex Sans',sans-serif;color:oklch(20% 0.01 260)}
+</style>
+</helmet>
+
+<div style="max-width:1180px;margin:0 auto;padding:64px 48px 120px">
+  <div style="font:600 12px 'IBM Plex Mono',monospace;color:oklch(45% 0.16 260);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Artifact — Success Metrics</div>
+  <h1 style="font:600 34px 'Space Grotesk',sans-serif;margin:0 0 8px">Feature → Goal → Metric</h1>
+  <p style="font:400 15px;color:oklch(45% 0.01 260);margin:0 0 32px;max-width:700px">Every major feature tied to a business goal, a user goal, and the KPI that proves it worked.</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:1px;background:oklch(90% 0.005 260);border:1px solid oklch(90% 0.005 260);border-radius:10px;overflow:hidden">
+    <div style="background:oklch(97% 0.004 90);padding:12px 16px;font:600 11px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.04em;color:oklch(50% 0.01 260)">Feature</div>
+    <div style="background:oklch(97% 0.004 90);padding:12px 16px;font:600 11px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.04em;color:oklch(50% 0.01 260)">Business goal</div>
+    <div style="background:oklch(97% 0.004 90);padding:12px 16px;font:600 11px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.04em;color:oklch(50% 0.01 260)">User goal</div>
+    <div style="background:oklch(97% 0.004 90);padding:12px 16px;font:600 11px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.04em;color:oklch(50% 0.01 260)">Success metric</div>
+
+    <sc-for list="{{ rows }}" as="r" hint-placeholder-count="12">
+      <div style="background:#fff;padding:14px 16px;font:600 13px">{{ r.feature }}</div>
+      <div style="background:#fff;padding:14px 16px;font:400 13px;color:oklch(35% 0.01 260)">{{ r.biz }}</div>
+      <div style="background:#fff;padding:14px 16px;font:400 13px;color:oklch(35% 0.01 260)">{{ r.user }}</div>
+      <div style="background:#fff;padding:14px 16px;font:500 13px;color:oklch(45% 0.16 260)">{{ r.metric }}</div>
+    </sc-for>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const rows = [
+      {feature:"Financing calculator", biz:"Reduce sales-call friction; qualify buyers earlier", user:"Understand true monthly cost before contacting anyone", metric:"% of vehicle-detail sessions that open the calculator"},
+      {feature:"Lead auto-assignment", biz:"Cut response time, prevent dropped leads", user:"Get contacted by a real person fast", metric:"Avg. first-response time (target < 5 min)"},
+      {feature:"Test drive booking", biz:"Increase in-person visits, the strongest conversion signal", user:"Book a slot without calling", metric:"Booking completion rate; no-show rate"},
+      {feature:"Trade-in estimator", biz:"Surface trade equity earlier to increase deal size", user:"Know if trading in is worth it", metric:"% of leads with a trade-in attached"},
+      {feature:"CRM pipeline (Kanban)", biz:"Increase stage-to-stage conversion, shorten sales cycle", user:"See status of every deal at a glance", metric:"Avg. days per stage; overall days-to-close"},
+      {feature:"Command palette (⌘K)", biz:"Reduce staff time-on-task, increase daily active usage", user:"Find any lead/vehicle instantly", metric:"Time-to-find (seconds); searches per session"},
+      {feature:"Inventory bulk actions", biz:"Reduce admin overhead, keep listings accurate", user:"Update many vehicles without repetitive clicks", metric:"Avg. time to update N listings"},
+      {feature:"Analytics dashboard", biz:"Give management visibility to coach the team proactively", user:"Know where deals are stalling", metric:"Weekly active manager sessions"},
+      {feature:"Vehicle comparison", biz:"Keep shoppers in-platform instead of cross-shopping elsewhere", user:"Decide between two options confidently", metric:"Compare-to-test-drive conversion rate"},
+      {feature:"Notifications (real-time)", biz:"Ensure no lead goes unactioned", metric:"% of leads contacted within SLA", user:"Never miss a hot lead"},
+      {feature:"Staff activity tracking", biz:"Improve accountability without micromanagement", user:"Understand personal performance vs. team", metric:"Leads actioned per rep per day"},
+      {feature:"Customer retention/referral flow", biz:"Increase repeat purchase & referral revenue", user:"Feel remembered and valued post-sale", metric:"Repeat purchase rate; referral conversion rate"}
+    ];
+    return { rows };
+  }
+}
+
+</script>
+</body>
+</html>

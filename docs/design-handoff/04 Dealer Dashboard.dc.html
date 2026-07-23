@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:oklch(97.5% 0.004 90);font-family:'IBM Plex Sans',sans-serif;color:oklch(20% 0.01 260);-webkit-font-smoothing:antialiased}
+  .navitem{display:flex;align-items:center;gap:10px;padding:9px 14px;border-radius:8px;font:500 13px 'IBM Plex Sans',sans-serif;color:oklch(72% 0.008 260)}
+  .navitem.active{background:oklch(30% 0.02 260);color:#fff}
+  .card{background:#fff;border:1px solid oklch(91% 0.005 260);border-radius:12px}
+</style>
+</helmet>
+
+<div style="display:grid;grid-template-columns:236px 1fr;min-height:100vh">
+
+  <!-- SIDEBAR -->
+  <div style="background:oklch(18% 0.012 260);padding:20px 14px;display:flex;flex-direction:column;gap:2px">
+    <div style="display:flex;align-items:center;gap:9px;padding:6px 10px 22px">
+      <div style="width:22px;height:22px;border-radius:6px;background:oklch(55% 0.16 260)"></div>
+      <div style="font:600 15px 'Space Grotesk',sans-serif;color:#fff">AutoSuite</div>
+    </div>
+    <div style="padding:8px 10px 14px;font:400 13px;color:oklch(55% 0.01 260);border:1px solid oklch(30% 0.01 260);border-radius:8px;margin-bottom:16px;display:flex;justify-content:space-between">
+      <span>⌘K Search everything</span>
+    </div>
+    <div class="navitem active">▦ Overview</div>
+    <div class="navitem">☎ CRM</div>
+    <div class="navitem">▤ Inventory</div>
+    <div class="navitem">◔ Appointments</div>
+    <div class="navitem">✎ Customers</div>
+    <div class="navitem">▲ Analytics</div>
+    <div class="navitem">◫ Staff Activity</div>
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:2px;padding-top:14px;border-top:1px solid oklch(28% 0.01 260)">
+      <div class="navitem">⚙ Settings</div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 10px">
+        <div style="width:26px;height:26px;border-radius:50%;background:oklch(50% 0.1 200)"></div>
+        <div style="font:500 13px;color:#fff">Derek Owusu</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div>
+    <div style="display:flex;align-items:center;gap:16px;padding:18px 36px;border-bottom:1px solid oklch(91% 0.005 260);background:#fff">
+      <div style="font:600 20px 'Space Grotesk',sans-serif">Overview</div>
+      <div style="margin-left:auto;display:flex;align-items:center;gap:16px">
+        <div style="font:500 13px;padding:8px 14px;border:1px solid oklch(88% 0.005 260);border-radius:8px;color:oklch(35% 0.01 260)">+ Quick action</div>
+        <div style="position:relative">🔔<div style="position:absolute;top:-3px;right:-4px;width:7px;height:7px;border-radius:50%;background:oklch(65% 0.14 55)"></div></div>
+      </div>
+    </div>
+
+    <div style="padding:32px 36px;display:flex;flex-direction:column;gap:24px">
+
+      <!-- KPI row -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:18px">
+        <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="4">
+          <div class="card" style="padding:20px">
+            <div style="font:500 12px 'IBM Plex Mono',monospace;color:oklch(50% 0.01 260);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:10px">{{ k.label }}</div>
+            <div style="font:600 30px 'Space Grotesk',sans-serif;margin-bottom:4px">{{ k.value }}</div>
+            <div style="font:500 12px;color:{{ k.trendColor }}">{{ k.trend }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:20px">
+        <!-- Lead pipeline funnel -->
+        <div class="card" style="padding:24px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+            <div style="font:600 15px 'Space Grotesk',sans-serif">Lead Pipeline</div>
+            <div style="font:500 12px;color:oklch(50% 0.01 260)">This month ▾</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <sc-for list="{{ pipeline }}" as="p" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:12px">
+                <div style="width:110px;font:500 13px;color:oklch(35% 0.01 260)">{{ p.name }}</div>
+                <div style="flex:1;background:oklch(95% 0.005 260);border-radius:5px;height:20px;position:relative">
+                  <div style="height:100%;border-radius:5px;background:{{ p.color }};width:{{ p.width }}"></div>
+                </div>
+                <div style="width:34px;text-align:right;font:600 13px">{{ p.count }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- Appointments -->
+        <div class="card" style="padding:24px">
+          <div style="font:600 15px 'Space Grotesk',sans-serif;margin-bottom:18px">Upcoming Appointments</div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <sc-for list="{{ appts }}" as="a" hint-placeholder-count="4">
+              <div style="display:flex;gap:12px;align-items:center">
+                <div style="width:44px;text-align:center;font:600 12px 'IBM Plex Mono',monospace;color:oklch(45% 0.16 260)">{{ a.time }}</div>
+                <div style="flex:1">
+                  <div style="font:500 13px">{{ a.name }}</div>
+                  <div style="font:400 12px;color:oklch(50% 0.01 260)">{{ a.vehicle }}</div>
+                </div>
+                <div style="font:500 11px;padding:4px 8px;border-radius:6px;background:oklch(95% 0.01 260);color:oklch(40% 0.01 260)">{{ a.type }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px">
+        <!-- Recently added vehicles -->
+        <div class="card" style="padding:24px">
+          <div style="font:600 15px 'Space Grotesk',sans-serif;margin-bottom:16px">Recently Added Vehicles</div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <sc-for list="{{ vehicles }}" as="v" hint-placeholder-count="3">
+              <div style="display:flex;gap:10px;align-items:center">
+                <div style="width:44px;height:32px;border-radius:6px;background:oklch(94% 0.006 260)"></div>
+                <div style="flex:1">
+                  <div style="font:500 13px">{{ v.name }}</div>
+                  <div style="font:400 12px;color:oklch(50% 0.01 260)">{{ v.price }}</div>
+                </div>
+                <div style="width:7px;height:7px;border-radius:50%;background:{{ v.statusColor }}"></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- Recent customer activity -->
+        <div class="card" style="padding:24px">
+          <div style="font:600 15px 'Space Grotesk',sans-serif;margin-bottom:16px">Recent Customer Activity</div>
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <sc-for list="{{ activity }}" as="a" hint-placeholder-count="4">
+              <div style="font:400 13px;line-height:1.5">
+                <span style="font-weight:600">{{ a.who }}</span> {{ a.what }}
+                <div style="font:400 11px;color:oklch(55% 0.01 260);margin-top:2px">{{ a.when }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- Inventory health -->
+        <div class="card" style="padding:24px">
+          <div style="font:600 15px 'Space Grotesk',sans-serif;margin-bottom:16px">Inventory Health</div>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;justify-content:space-between;font:400 13px"><span style="color:oklch(45% 0.01 260)">Active listings</span><span style="font-weight:600">86</span></div>
+            <div style="display:flex;justify-content:space-between;font:400 13px"><span style="color:oklch(45% 0.01 260)">Avg. days on lot</span><span style="font-weight:600">21</span></div>
+            <div style="display:flex;justify-content:space-between;font:400 13px"><span style="color:oklch(45% 0.01 260)">Draft listings</span><span style="font-weight:600">4</span></div>
+            <div style="display:flex;justify-content:space-between;font:400 13px"><span style="color:oklch(45% 0.01 260)">Sold this month</span><span style="font-weight:600;color:oklch(55% 0.13 145)">19</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      kpis: [
+        {label:"New Leads Today", value:"18", trend:"↑ 24% vs yesterday", trendColor:"oklch(55% 0.13 145)"},
+        {label:"Test Drives Booked", value:"7", trend:"↑ 12%", trendColor:"oklch(55% 0.13 145)"},
+        {label:"Revenue MTD", value:"$412K", trend:"↑ 8%", trendColor:"oklch(55% 0.13 145)"},
+        {label:"Avg. Response Time", value:"6 min", trend:"↓ 2 min improved", trendColor:"oklch(55% 0.13 145)"}
+      ],
+      pipeline: [
+        {name:"New", count:34, width:"92%", color:"oklch(45% 0.16 260)"},
+        {name:"Contacted", count:28, width:"75%", color:"oklch(50% 0.12 235)"},
+        {name:"Qualified", count:19, width:"52%", color:"oklch(55% 0.1 190)"},
+        {name:"Appt. Scheduled", count:12, width:"34%", color:"oklch(60% 0.12 155)"},
+        {name:"Negotiating", count:8, width:"22%", color:"oklch(65% 0.14 55)"},
+        {name:"Sold", count:19, width:"52%", color:"oklch(60% 0.14 145)"}
+      ],
+      appts: [
+        {time:"9:00a", name:"Maya Torres", vehicle:"2024 BMW X6", type:"Test drive"},
+        {time:"11:30a", name:"James Lin", vehicle:"2023 Camry", type:"Inspection"},
+        {time:"1:00p", name:"Priya Shah", vehicle:"E450 Sedan", type:"Test drive"},
+        {time:"3:30p", name:"Cole Bennett", vehicle:"Cayenne", type:"Follow-up"}
+      ],
+      vehicles: [
+        {name:"2025 Cadillac Escalade", price:"$84,000", statusColor:"oklch(60% 0.14 145)"},
+        {name:"2025 Porsche Cayenne", price:"$79,500", statusColor:"oklch(60% 0.14 145)"},
+        {name:"2018 BMW 5 Series", price:"$24,300", statusColor:"oklch(65% 0.14 55)"}
+      ],
+      activity: [
+        {who:"Maya Torres", what:"booked a test drive for the BMW X6", when:"2 min ago"},
+        {who:"James Lin", what:"requested financing on 2023 Camry", when:"18 min ago"},
+        {who:"Priya Shah", what:"favorited the Mercedes E450", when:"41 min ago"},
+        {who:"Cole Bennett", what:"submitted a trade-in estimate", when:"1 hr ago"}
+      ]
+    };
+  }
+}
+
+</script>
+</body>
+</html>

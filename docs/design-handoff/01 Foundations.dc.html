@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:oklch(98% 0.004 90);font-family:'IBM Plex Sans',sans-serif;color:oklch(20% 0.01 260);-webkit-font-smoothing:antialiased}
+  a{color:oklch(45% 0.16 260)}
+  a:hover{color:oklch(38% 0.16 260)}
+  ::selection{background:oklch(85% 0.08 260)}
+</style>
+</helmet>
+
+<div style="max-width:1180px;margin:0 auto;padding:80px 48px 160px">
+
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:64px">
+    <div style="width:28px;height:28px;border-radius:7px;background:oklch(45% 0.16 260)"></div>
+    <div style="font:600 15px 'Space Grotesk',sans-serif;letter-spacing:0.02em">AutoSuite</div>
+    <div style="margin-left:auto;font:500 12px 'IBM Plex Mono',monospace;color:oklch(50% 0.01 260);letter-spacing:0.06em;text-transform:uppercase">Product Design Brief — Foundations</div>
+  </div>
+
+  <div style="margin-bottom:96px">
+    <div style="font:600 12px 'IBM Plex Mono',monospace;color:oklch(45% 0.16 260);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px">The Vision</div>
+    <h1 style="font:600 56px/1.12 'Space Grotesk',sans-serif;letter-spacing:-0.01em;margin:0 0 24px;max-width:820px">The dealership operating system, not another car marketplace.</h1>
+    <p style="font:400 19px/1.6 'IBM Plex Sans',sans-serif;color:oklch(38% 0.01 260);max-width:640px;margin:0">One connected product: a premium buying experience for shoppers, and the CRM, inventory and analytics engine that runs the dealership behind it. Every customer action lands in the dealer's dashboard instantly — nothing is disconnected.</p>
+  </div>
+
+  <!-- SITE MAP / IA -->
+  <section style="margin-bottom:96px">
+    <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:8px">
+      <h2 style="font:600 28px 'Space Grotesk',sans-serif;margin:0">Site Map &amp; Information Architecture</h2>
+    </div>
+    <p style="font:400 15px/1.6;color:oklch(45% 0.01 260);max-width:640px;margin:0 0 40px">Two experiences, one data layer. Everything under Dealer OS is gated behind staff login; everything under Consumer is public.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px">
+      <div style="background:#fff;border:1px solid oklch(90% 0.005 260);border-radius:12px;padding:28px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px">
+          <div style="width:8px;height:8px;border-radius:50%;background:oklch(65% 0.14 55)"></div>
+          <div style="font:600 13px 'IBM Plex Mono',monospace;letter-spacing:0.04em;text-transform:uppercase;color:oklch(30% 0.01 260)">Consumer Experience</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px;font:400 14px/1.5">
+          <div style="padding:8px 0;font-weight:600">Homepage</div>
+          <div style="padding:6px 0 6px 16px;color:oklch(40% 0.01 260);border-left:2px solid oklch(92% 0.005 260)">Inventory / Search &amp; Filter</div>
+          <div style="padding:6px 0 6px 16px;color:oklch(40% 0.01 260);border-left:2px solid oklch(92% 0.005 260)">Vehicle Detail Page</div>
+          <div style="padding:6px 0 6px 32px;color:oklch(50% 0.01 260);border-left:2px solid oklch(94% 0.005 260)">↳ Financing Calculator</div>
+          <div style="padding:6px 0 6px 32px;color:oklch(50% 0.01 260);border-left:2px solid oklch(94% 0.005 260)">↳ Trade-In Estimator</div>
+          <div style="padding:6px 0 6px 32px;color:oklch(50% 0.01 260);border-left:2px solid oklch(94% 0.005 260)">↳ Compare Vehicles</div>
+          <div style="padding:6px 0 6px 32px;color:oklch(50% 0.01 260);border-left:2px solid oklch(94% 0.005 260)">↳ Book Test Drive / Inspection</div>
+          <div style="padding:6px 0 6px 16px;color:oklch(40% 0.01 260);border-left:2px solid oklch(92% 0.005 260)">Favorites</div>
+          <div style="padding:6px 0 6px 16px;color:oklch(40% 0.01 260);border-left:2px solid oklch(92% 0.005 260)">Dealer Contact / Locations</div>
+          <div style="padding:8px 0;font-weight:600;margin-top:6px">Marketing (About, Pricing, Demo)</div>
+        </div>
+      </div>
+
+      <div style="background:oklch(20% 0.012 260);border-radius:12px;padding:28px;color:oklch(92% 0.005 260)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px">
+          <div style="width:8px;height:8px;border-radius:50%;background:oklch(45% 0.16 260)"></div>
+          <div style="font:600 13px 'IBM Plex Mono',monospace;letter-spacing:0.04em;text-transform:uppercase;color:oklch(80% 0.01 260)">Dealer Operating System</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px;font:400 14px/1.5">
+          <div style="padding:8px 0;font-weight:600">Dashboard (Overview)</div>
+          <div style="padding:6px 0 6px 16px;color:oklch(72% 0.01 260);border-left:2px solid oklch(32% 0.01 260)">CRM — Kanban / Table</div>
+          <div style="padding:6px 0 6px 32px;color:oklch(65% 0.01 260);border-left:2px solid oklch(30% 0.01 260)">↳ Lead Detail</div>
+          <div style="padding:6px 0 6px 16px;color:oklch(72% 0.01 260);border-left:2px solid oklch(32% 0.01 260)">Inventory Management</div>
+          <div style="padding:6px 0 6px 16px;color:oklch(72% 0.01 260);border-left:2px solid oklch(32% 0.01 260)">Appointments / Calendar</div>
+          <div style="padding:6px 0 6px 16px;color:oklch(72% 0.01 260);border-left:2px solid oklch(32% 0.01 260)">Analytics &amp; Reports</div>
+          <div style="padding:6px 0 6px 16px;color:oklch(72% 0.01 260);border-left:2px solid oklch(32% 0.01 260)">Customer Profiles</div>
+          <div style="padding:6px 0 6px 16px;color:oklch(72% 0.01 260);border-left:2px solid oklch(32% 0.01 260)">Staff Activity</div>
+          <div style="padding:8px 0;font-weight:600;margin-top:6px">Settings &amp; Notifications</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PERSONAS -->
+  <section style="margin-bottom:96px">
+    <h2 style="font:600 28px 'Space Grotesk',sans-serif;margin:0 0 8px">Personas</h2>
+    <p style="font:400 15px/1.6;color:oklch(45% 0.01 260);max-width:640px;margin:0 0 40px">Two people, two halves of the same product.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px">
+      <div style="background:#fff;border:1px solid oklch(90% 0.005 260);border-radius:12px;padding:32px">
+        <div style="width:48px;height:48px;border-radius:50%;background:oklch(90% 0.03 55);margin-bottom:20px"></div>
+        <div style="font:600 20px 'Space Grotesk',sans-serif;margin-bottom:2px">Maya Torres</div>
+        <div style="font:500 13px;color:oklch(50% 0.01 260);margin-bottom:18px">Car shopper, 34 · researching a family SUV</div>
+        <div style="display:flex;flex-direction:column;gap:10px;font:400 14px/1.5;color:oklch(35% 0.01 260)">
+          <div><strong>Goal:</strong> Find a trustworthy vehicle, understand true monthly cost, book a test drive without calling anyone.</div>
+          <div><strong>Frustration:</strong> Dealer sites feel like 2010; financing numbers are hidden until she calls.</div>
+          <div><strong>Moment of delight:</strong> Instant financing estimate + one-tap test drive booking, confirmed in seconds.</div>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid oklch(90% 0.005 260);border-radius:12px;padding:32px">
+        <div style="width:48px;height:48px;border-radius:50%;background:oklch(88% 0.05 260);margin-bottom:20px"></div>
+        <div style="font:600 20px 'Space Grotesk',sans-serif;margin-bottom:2px">Derek Owusu</div>
+        <div style="font:500 13px;color:oklch(50% 0.01 260);margin-bottom:18px">Sales manager, 41 · runs a 6-person floor team</div>
+        <div style="display:flex;flex-direction:column;gap:10px;font:400 14px/1.5;color:oklch(35% 0.01 260)">
+          <div><strong>Goal:</strong> Know which leads are hot, keep his team accountable, close more without extra admin.</div>
+          <div><strong>Frustration:</strong> Leads from the website, calls, and walk-ins live in three different tools that never sync.</div>
+          <div><strong>Moment of delight:</strong> A test drive booking appears in his pipeline the instant it's submitted — already assigned.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOURNEYS -->
+  <section style="margin-bottom:96px">
+    <h2 style="font:600 28px 'Space Grotesk',sans-serif;margin:0 0 8px">The Connected Journey</h2>
+    <p style="font:400 15px/1.6;color:oklch(45% 0.01 260);max-width:680px;margin:0 0 40px">Maya's actions on the left instantly become Derek's work on the right — the same event, two views.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:oklch(90% 0.005 260);border-radius:12px;overflow:hidden;border:1px solid oklch(90% 0.005 260)">
+      <!-- header row -->
+      <div style="background:oklch(96% 0.006 90);padding:14px 18px;font:600 11px 'IBM Plex Mono',monospace;letter-spacing:0.05em;text-transform:uppercase;color:oklch(50% 0.01 260)">Customer step</div>
+      <div style="background:oklch(96% 0.006 90);padding:14px 18px;font:600 11px 'IBM Plex Mono',monospace;letter-spacing:0.05em;text-transform:uppercase;color:oklch(50% 0.01 260)">Consumer UI</div>
+      <div style="background:oklch(96% 0.006 90);padding:14px 18px;font:600 11px 'IBM Plex Mono',monospace;letter-spacing:0.05em;text-transform:uppercase;color:oklch(50% 0.01 260)">System event</div>
+      <div style="background:oklch(96% 0.006 90);padding:14px 18px;font:600 11px 'IBM Plex Mono',monospace;letter-spacing:0.05em;text-transform:uppercase;color:oklch(50% 0.01 260)">Dealer OS response</div>
+
+      <div style="background:#fff;padding:16px 18px;font:600 14px">1. Discover</div>
+      <div style="background:#fff;padding:16px 18px;font:400 13px;color:oklch(40% 0.01 260)">Browses inventory, filters by body style / budget</div>
+      <div style="background:#fff;padding:16px 18px;font:400 13px;color:oklch(45% 0.01 260)">Page views logged</div>
+      <div style="background:#fff;padding:16px 18px;font:400 13px;color:oklch(45% 0.01 260)">Analytics: traffic by listing ↑</div>
+
+      <div style="background:#fff;padding:16px 18px;font:600 14px">2. Evaluate</div>
+      <div style="background:#fff;padding:16px 18px;font:400 13px;color:oklch(40% 0.01 260)">Opens vehicle detail, runs financing calc, compares 2 cars</div>
+      <div style="background:#fff;padding:16px 18px;font:400 13px;color:oklch(45% 0.01 260)">Session tagged "high intent"</div>
+      <div style="background:#fff;padding:16px 18px;font:400 13px;color:oklch(45% 0.01 260)">Vehicle marked "hot interest" on inventory board</div>
+
+      <div style="background:#fff;padding:16px 18px;font:600 14px">3. Convert</div>
+      <div style="background:#fff;padding:16px 18px;font:400 13px;color:oklch(40% 0.01 260)">Books a test drive for Saturday, 11am</div>
+      <div style="background:oklch(97% 0.02 55);padding:16px 18px;font:500 13px;color:oklch(45% 0.13 55)">Lead created → CRM, status "New"</div>
+      <div style="background:oklch(97% 0.02 55);padding:16px 18px;font:500 13px;color:oklch(45% 0.13 55)">Push notification + auto-assigned to Derek's team</div>
+
+      <div style="background:#fff;padding:16px 18px;font:600 14px">4. Close</div>
+      <div style="background:#fff;padding:16px 18px;font:400 13px;color:oklch(40% 0.01 260)">Test drive → in-person negotiation → signs</div>
+      <div style="background:oklch(96% 0.03 260);padding:16px 18px;font:500 13px;color:oklch(40% 0.13 260)">Salesperson moves card: Contacted → Qualified → Negotiating → Sold</div>
+      <div style="background:oklch(96% 0.03 260);padding:16px 18px;font:500 13px;color:oklch(40% 0.13 260)">Vehicle flips to "Sold"; revenue metrics update in real time</div>
+    </div>
+  </section>
+
+  <!-- DEALER JOURNEY -->
+  <section style="margin-bottom:96px">
+    <h2 style="font:600 28px 'Space Grotesk',sans-serif;margin:0 0 8px">Lead Lifecycle (CRM Pipeline)</h2>
+    <p style="font:400 15px/1.6;color:oklch(45% 0.01 260);max-width:640px;margin:0 0 32px">Every lead — from any source — moves through one status ladder.</p>
+    <div style="display:flex;flex-wrap:wrap;gap:10px">
+      <sc-for list="{{ stages }}" as="stage" hint-placeholder-count="7">
+        <div style="display:flex;align-items:center;gap:8px;padding:10px 18px;background:#fff;border:1px solid oklch(90% 0.005 260);border-radius:999px">
+          <div style="width:8px;height:8px;border-radius:50%;background:{{ stage.color }}"></div>
+          <div style="font:500 13px 'IBM Plex Sans',sans-serif;color:oklch(30% 0.01 260)">{{ stage.name }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- DESIGN SYSTEM FOUNDATIONS -->
+  <section>
+    <h2 style="font:600 28px 'Space Grotesk',sans-serif;margin:0 0 8px">Design System Foundations</h2>
+    <p style="font:400 15px/1.6;color:oklch(45% 0.01 260);max-width:640px;margin:0 0 40px">One system, two moods — light &amp; premium for the storefront, focused &amp; dark for the workspace.</p>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;margin-bottom:40px">
+      <div>
+        <div style="font:600 12px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;color:oklch(50% 0.01 260);margin-bottom:12px">Typography</div>
+        <div style="background:#fff;border:1px solid oklch(90% 0.005 260);border-radius:12px;padding:24px">
+          <div style="font:600 32px 'Space Grotesk',sans-serif;margin-bottom:6px">Space Grotesk</div>
+          <div style="font:400 13px;color:oklch(50% 0.01 260);margin-bottom:18px">Display &amp; headings — technical, confident</div>
+          <div style="font:400 20px 'IBM Plex Sans',sans-serif;margin-bottom:6px">IBM Plex Sans</div>
+          <div style="font:400 13px;color:oklch(50% 0.01 260);margin-bottom:18px">Body &amp; UI text — legible, neutral</div>
+          <div style="font:500 15px 'IBM Plex Mono',monospace;color:oklch(40% 0.01 260)">IBM Plex Mono — data, labels, timestamps</div>
+        </div>
+      </div>
+      <div>
+        <div style="font:600 12px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.06em;color:oklch(50% 0.01 260);margin-bottom:12px">Color</div>
+        <div style="background:#fff;border:1px solid oklch(90% 0.005 260);border-radius:12px;padding:24px;display:grid;grid-template-columns:repeat(5,1fr);gap:12px">
+          <div><div style="height:44px;border-radius:8px;background:oklch(45% 0.16 260)"></div><div style="font:500 11px 'IBM Plex Mono',monospace;margin-top:6px;color:oklch(45% 0.01 260)">Primary</div></div>
+          <div><div style="height:44px;border-radius:8px;background:oklch(65% 0.14 55)"></div><div style="font:500 11px 'IBM Plex Mono',monospace;margin-top:6px;color:oklch(45% 0.01 260)">Accent</div></div>
+          <div><div style="height:44px;border-radius:8px;background:oklch(20% 0.012 260)"></div><div style="font:500 11px 'IBM Plex Mono',monospace;margin-top:6px;color:oklch(45% 0.01 260)">Ink</div></div>
+          <div><div style="height:44px;border-radius:8px;background:oklch(60% 0.14 145)"></div><div style="font:500 11px 'IBM Plex Mono',monospace;margin-top:6px;color:oklch(45% 0.01 260)">Success</div></div>
+          <div><div style="height:44px;border-radius:8px;background:oklch(55% 0.18 25)"></div><div style="font:500 11px 'IBM Plex Mono',monospace;margin-top:6px;color:oklch(45% 0.01 260)">Danger</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="font:400 13px;color:oklch(50% 0.01 260)">8px spacing scale · 10px corner radius (12px cards) · shadows limited to a single subtle elevation on hover/menus</div>
+  </section>
+
+  <div style="margin-top:80px;padding-top:24px;border-top:1px solid oklch(90% 0.005 260);font:400 13px;color:oklch(55% 0.01 260)">
+    Next: <a href="02 Marketing Homepage.dc.html">Marketing Homepage</a> · <a href="03 Vehicle Experience.dc.html">Vehicle Experience</a> · <a href="04 Dealer Dashboard.dc.html">Dealer Dashboard</a> · <a href="05 CRM.dc.html">CRM</a> · <a href="06 Inventory Management.dc.html">Inventory Management</a> · <a href="07 Mobile.dc.html">Mobile</a> · <a href="08 Additional Screens.dc.html">Appointments / Analytics / Settings / Notifications / Command Palette</a> · <a href="09 Consumer Pages.dc.html">Consumer Pages (Inventory / Vehicle Detail / Financing / Compare)</a> · <a href="10 Information Architecture.dc.html">IA</a> · <a href="11 Success Metrics.dc.html">Success Metrics</a> · <a href="12 User and Task Flows.dc.html">Flows</a> · <a href="13 States.dc.html">States</a> · <a href="14 Component Inventory.dc.html">Components</a> · <a href="15 Accessibility Checklist.dc.html">Accessibility</a>
+  </div>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    const stages = [
+      {name:"New", color:"oklch(45% 0.16 260)"},
+      {name:"Contacted", color:"oklch(50% 0.1 220)"},
+      {name:"Qualified", color:"oklch(55% 0.1 190)"},
+      {name:"Appt. Scheduled", color:"oklch(60% 0.12 155)"},
+      {name:"Negotiating", color:"oklch(65% 0.14 55)"},
+      {name:"Sold", color:"oklch(60% 0.14 145)"},
+      {name:"Lost", color:"oklch(60% 0.01 260)"}
+    ];
+    return { stages };
+  }
+}
+
+</script>
+</body>
+</html>

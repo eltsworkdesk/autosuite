@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body{margin:0;background:#fff;font-family:'IBM Plex Sans',sans-serif;color:oklch(20% 0.01 260)}
+  .sec{margin-bottom:44px}
+  .lbl{font:600 12px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:0.05em;color:oklch(50% 0.01 260);margin-bottom:16px}
+  .swrap{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+</style>
+</helmet>
+
+<div style="max-width:1180px;margin:0 auto;padding:64px 48px 120px">
+  <div style="font:600 12px 'IBM Plex Mono',monospace;color:oklch(45% 0.16 260);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Artifact — Component Inventory</div>
+  <h1 style="font:600 34px 'Space Grotesk',sans-serif;margin:0 0 40px">Reusable components</h1>
+
+  <div class="sec"><div class="lbl">Buttons</div><div class="swrap">
+    <div style="padding:12px 22px;background:oklch(20% 0.012 260);color:#fff;border-radius:9px;font:600 14px">Primary</div>
+    <div style="padding:12px 22px;border:1px solid oklch(88% 0.005 260);border-radius:9px;font:600 14px">Secondary</div>
+    <div style="padding:12px 22px;border-radius:9px;font:600 14px;color:oklch(45% 0.16 260)">Ghost</div>
+    <div style="padding:12px 22px;background:oklch(85% 0.01 260);color:oklch(60% 0.01 260);border-radius:9px;font:600 14px">Disabled</div>
+    <div style="padding:12px 22px;background:oklch(55% 0.18 25);color:#fff;border-radius:9px;font:600 14px">Destructive</div>
+  </div></div>
+
+  <div class="sec"><div class="lbl">Inputs</div><div style="display:flex;flex-direction:column;gap:10px;max-width:360px">
+    <div style="padding:11px 14px;border:1px solid oklch(88% 0.005 260);border-radius:8px;font:400 14px;color:oklch(55% 0.01 260)">Placeholder text</div>
+    <div style="padding:11px 14px;border:2px solid oklch(45% 0.16 260);border-radius:8px;font:400 14px">Focused state</div>
+    <div style="padding:11px 14px;border:1px solid oklch(55% 0.18 25);border-radius:8px;font:400 14px;color:oklch(30% 0.01 260)">Invalid input</div>
+    <div style="font:400 12px;color:oklch(55% 0.18 25)">This field is required</div>
+  </div></div>
+
+  <div class="sec"><div class="lbl">Badges / Status pills</div><div class="swrap">
+    <div style="font:500 12px;padding:5px 12px;border-radius:999px;background:oklch(94% 0.03 260);color:oklch(45% 0.16 260)">New</div>
+    <div style="font:500 12px;padding:5px 12px;border-radius:999px;background:oklch(94% 0.03 55);color:oklch(45% 0.13 55)">Negotiating</div>
+    <div style="font:500 12px;padding:5px 12px;border-radius:999px;background:oklch(94% 0.03 145);color:oklch(45% 0.13 145)">Sold / Active</div>
+    <div style="font:500 12px;padding:5px 12px;border-radius:999px;background:oklch(95% 0.005 260);color:oklch(50% 0.01 260)">Lost / Draft</div>
+  </div></div>
+
+  <div class="sec"><div class="lbl">Cards</div><div class="swrap">
+    <div style="width:220px;border:1px solid oklch(91% 0.005 260);border-radius:12px;padding:18px">
+      <div style="font:500 12px;color:oklch(50% 0.01 260);margin-bottom:6px">KPI Card</div>
+      <div style="font:600 26px 'Space Grotesk',sans-serif">18</div>
+    </div>
+    <div style="width:220px;border:1px solid oklch(91% 0.005 260);border-radius:12px;padding:18px">
+      <div style="font:600 13px;margin-bottom:8px">Kanban Card</div>
+      <div style="font:400 12px;color:oklch(50% 0.01 260)">Vehicle · source · avatar</div>
+    </div>
+  </div></div>
+
+  <div class="sec"><div class="lbl">Tables</div>
+    <div style="border:1px solid oklch(91% 0.005 260);border-radius:10px;overflow:hidden;max-width:500px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;background:oklch(97% 0.004 90);padding:10px 16px;font:600 11px 'IBM Plex Mono',monospace;text-transform:uppercase;color:oklch(50% 0.01 260)"><div>Header</div><div>Header</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;padding:12px 16px;border-top:1px solid oklch(94% 0.005 260);font:400 13px"><div>Row value</div><div>Row value</div></div>
+    </div>
+  </div>
+
+  <div class="sec"><div class="lbl">Charts</div><div class="swrap" style="align-items:flex-end;gap:6px;height:70px">
+    <div style="width:14px;height:40%;background:oklch(45% 0.16 260);border-radius:3px"></div>
+    <div style="width:14px;height:65%;background:oklch(45% 0.16 260);border-radius:3px"></div>
+    <div style="width:14px;height:52%;background:oklch(45% 0.16 260);border-radius:3px"></div>
+    <div style="width:14px;height:80%;background:oklch(45% 0.16 260);border-radius:3px"></div>
+    <div style="font:400 12px;color:oklch(50% 0.01 260);margin-left:12px;align-self:center">Bar chart — trends, revenue</div>
+  </div></div>
+
+  <div class="sec"><div class="lbl">Modal / Drawer</div>
+    <div style="width:340px;border:1px solid oklch(90% 0.005 260);border-radius:12px;box-shadow:0 20px 40px -12px rgba(0,0,0,.2)">
+      <div style="padding:16px 18px;border-bottom:1px solid oklch(93% 0.005 260);font:600 14px">Modal title</div>
+      <div style="padding:18px;font:400 13px;color:oklch(45% 0.01 260)">Modal body content goes here.</div>
+      <div style="padding:14px 18px;border-top:1px solid oklch(93% 0.005 260);display:flex;justify-content:flex-end;gap:8px">
+        <div style="padding:9px 16px;border:1px solid oklch(88% 0.005 260);border-radius:8px;font:600 13px">Cancel</div>
+        <div style="padding:9px 16px;background:oklch(20% 0.012 260);color:#fff;border-radius:8px;font:600 13px">Confirm</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec"><div class="lbl">Dropdown</div>
+    <div style="width:200px;border:1px solid oklch(90% 0.005 260);border-radius:8px;box-shadow:0 8px 20px -8px rgba(0,0,0,.15)">
+      <div style="padding:10px 14px;font:400 13px;border-bottom:1px solid oklch(95% 0.004 260)">Option one</div>
+      <div style="padding:10px 14px;font:400 13px;background:oklch(96% 0.006 260)">Option two (hover)</div>
+      <div style="padding:10px 14px;font:400 13px">Option three</div>
+    </div>
+  </div>
+
+  <div class="sec"><div class="lbl">Navigation</div><div class="swrap">
+    <div style="padding:9px 14px;background:oklch(30% 0.02 260);color:#fff;border-radius:8px;font:500 13px">Active nav item</div>
+    <div style="padding:9px 14px;color:oklch(50% 0.01 260);font:500 13px">Inactive nav item</div>
+  </div></div>
+
+  <div class="sec"><div class="lbl">Toast notification</div>
+    <div style="display:inline-flex;align-items:center;gap:10px;padding:12px 16px;background:oklch(20% 0.012 260);border-radius:9px">
+      <div style="color:oklch(60% 0.14 145)">✓</div>
+      <div style="font:500 13px;color:#fff">Saved successfully</div>
+    </div>
+  </div>
+
+  <div class="sec"><div class="lbl">Command palette trigger</div>
+    <div style="width:260px;padding:9px 14px;border:1px solid oklch(88% 0.005 260);border-radius:8px;font:400 13px;color:oklch(55% 0.01 260);display:flex;justify-content:space-between">
+      <span>Search everything…</span><span style="font:500 11px 'IBM Plex Mono',monospace">⌘K</span>
+    </div>
+  </div>
+</div>
+
+</x-dc>
+</body>
+</html>
