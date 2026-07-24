@@ -234,6 +234,111 @@
   background: rgba(255, 255, 255, 0.14);
 }
 
+.hero-proof {
+  margin-top: var(--space-4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.hero-proof-avatars {
+  display: flex;
+}
+
+.hero-proof-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid var(--navy-900);
+  margin-left: -8px;
+  background: var(--gradient-brand);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+}
+
+.hero-proof-avatar:first-child {
+  margin-left: 0;
+}
+
+.hero-proof p {
+  font-size: var(--text-xs);
+  color: var(--on-dark-faint);
+  max-width: none;
+}
+
+.hero-float-stat {
+  position: absolute;
+  left: -6%;
+  bottom: 8%;
+  z-index: 2;
+  background: var(--surface);
+  color: var(--ink);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-mono);
+  animation: float-bob 5s ease-in-out infinite;
+}
+
+.hero-float-stat .hero-metric-num {
+  color: var(--brand-blue-deep);
+}
+
+.hero-float-stat .hero-metric-label {
+  color: var(--ink-soft);
+}
+
+@keyframes float-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+/* ---------- Trust strip ---------- */
+.trust-strip {
+  padding: var(--space-6) var(--space-4);
+  max-width: 1180px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.trust-strip p {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-bottom: var(--space-5);
+}
+
+.trust-logos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3) var(--space-6);
+  align-items: center;
+  justify-content: center;
+}
+
+.trust-logo {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--text-md);
+  color: var(--ink-soft);
+  white-space: nowrap;
+  transition: color var(--transition-fast);
+}
+
+.trust-logo:hover {
+  color: var(--ink);
+}
+
 /* ---------- Intro / About ---------- */
 .intro {
   padding: var(--space-8) var(--space-4);
