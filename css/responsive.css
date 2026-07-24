@@ -88,10 +88,6 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .why-us-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   .footer-grid {
     grid-template-columns: repeat(3, 1fr);
     text-align: left;
@@ -167,10 +163,6 @@
 
 @media (min-width: 1024px) {
   .roadmap-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  .why-us-grid {
     grid-template-columns: repeat(4, 1fr);
   }
 
