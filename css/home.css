@@ -725,11 +725,41 @@
 }
 
 .roadmap-card {
+  position: relative;
+  overflow: hidden;
   background: var(--surface);
   border-radius: var(--radius-md);
   padding: 1.4rem;
   box-shadow: var(--shadow-sm);
   border-top: 3px solid var(--brand-blue);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.roadmap-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.roadmap-card-bg {
+  position: absolute;
+  right: -18px;
+  bottom: -18px;
+  width: 108px;
+  height: 108px;
+  color: var(--brand-blue);
+  opacity: 0.07;
+  pointer-events: none;
+  transition: opacity var(--transition-base), transform var(--transition-base);
+}
+
+.roadmap-card:hover .roadmap-card-bg {
+  opacity: 0.12;
+  transform: scale(1.08);
+}
+
+.roadmap-card > * {
+  position: relative;
+  z-index: 1;
 }
 
 .roadmap-card .data-chip {
@@ -749,6 +779,17 @@
 .roadmap-card .btn {
   margin-top: 0.9rem;
 }
+
+/* Staggered scroll-reveal — cards cascade in rather than popping at once */
+.roadmap-grid .roadmap-card:nth-child(1).reveal-pending { transition-delay: 0s; }
+.roadmap-grid .roadmap-card:nth-child(2).reveal-pending { transition-delay: 0.05s; }
+.roadmap-grid .roadmap-card:nth-child(3).reveal-pending { transition-delay: 0.1s; }
+.roadmap-grid .roadmap-card:nth-child(4).reveal-pending { transition-delay: 0.15s; }
+.roadmap-grid .roadmap-card:nth-child(5).reveal-pending { transition-delay: 0.2s; }
+.roadmap-grid .roadmap-card:nth-child(6).reveal-pending { transition-delay: 0.25s; }
+.roadmap-grid .roadmap-card:nth-child(7).reveal-pending { transition-delay: 0.3s; }
+
+.funnel-grid .funnel-card:nth-child(2).reveal-pending { transition-delay: 0.12s; }
 
 .roadmap-link {
   text-align: center;
