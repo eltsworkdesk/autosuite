@@ -727,12 +727,29 @@
 .roadmap-card {
   position: relative;
   overflow: hidden;
-  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  min-height: 320px;
+  padding: 1.1rem;
   border-radius: var(--radius-md);
-  padding: 1.4rem;
   box-shadow: var(--shadow-sm);
-  border-top: 3px solid var(--brand-blue);
+  background-size: cover;
+  background-position: center;
   transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.roadmap-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    oklch(17% 0.012 260 / 8%) 0%,
+    oklch(17% 0.012 260 / 45%) 42%,
+    oklch(17% 0.012 260 / 94%) 68%,
+    var(--navy-950) 100%
+  );
+  pointer-events: none;
 }
 
 .roadmap-card:hover {
@@ -740,22 +757,13 @@
   box-shadow: var(--shadow-md);
 }
 
-.roadmap-card-bg {
-  position: absolute;
-  right: -18px;
-  bottom: -18px;
-  width: 108px;
-  height: 108px;
-  color: var(--brand-blue);
-  opacity: 0.07;
-  pointer-events: none;
-  transition: opacity var(--transition-base), transform var(--transition-base);
-}
-
-.roadmap-card:hover .roadmap-card-bg {
-  opacity: 0.12;
-  transform: scale(1.08);
-}
+.roadmap-card--dashboard { background-image: url("../assets/web/card-bg-dashboard.jpg"); }
+.roadmap-card--crm { background-image: url("../assets/web/card-bg-crm.jpg"); }
+.roadmap-card--financing { background-image: url("../assets/web/card-bg-financing.jpg"); }
+.roadmap-card--tradein { background-image: url("../assets/web/card-bg-tradein.jpg"); }
+.roadmap-card--appointments { background-image: url("../assets/web/card-bg-appointments.jpg"); }
+.roadmap-card--analytics { background-image: url("../assets/web/card-bg-analytics.jpg"); }
+.roadmap-card--team { background-image: url("../assets/web/card-bg-team.jpg"); }
 
 .roadmap-card > * {
   position: relative;
@@ -763,16 +771,21 @@
 }
 
 .roadmap-card .data-chip {
-  margin-bottom: 0.8rem;
+  align-self: flex-start;
+}
+
+.roadmap-card-body {
+  margin-top: auto;
 }
 
 .roadmap-card h3 {
   font-size: 1.05rem;
-  margin-bottom: 0.4rem;
+  color: #fff;
+  margin: 0.7rem 0 0.4rem;
 }
 
 .roadmap-card p {
-  color: var(--ink-soft);
+  color: var(--on-dark-soft);
   font-size: 0.92rem;
 }
 
