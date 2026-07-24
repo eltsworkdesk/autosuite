@@ -435,6 +435,13 @@ button {
   box-shadow: 0 0 8px var(--brand-blue);
 }
 
+.data-chip .chip-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--brand-blue-light);
+  flex-shrink: 0;
+}
+
 /* ---------- Footer ---------- */
 .footer {
   background: var(--navy-950);
