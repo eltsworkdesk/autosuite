@@ -497,7 +497,7 @@
 
 /* ---------- Site footer (detail page variant) ---------- */
 .site-footer {
-  background: linear-gradient(120deg, var(--navy-950), var(--navy-800));
+  background: var(--navy-950);
   color: var(--on-dark-soft);
   text-align: center;
   padding: var(--space-5) var(--space-3);

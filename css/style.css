@@ -12,13 +12,13 @@
    scanner, which loads noticeably faster. */
 
 :root {
-  /* Brand gradient — OKLCH palette from the product design brief */
+  /* Brand palette — OKLCH, matches the dealer-OS dashboard exactly */
   --brand-blue: oklch(48% 0.16 260);
   --brand-blue-deep: oklch(38% 0.17 260); /* darker text-safe variant — used for eyebrow/price text, re-verified for AA via axe-core */
   --brand-blue-light: oklch(78% 0.1 260); /* blue accent text on dark surfaces — brand tags, highlights */
   --brand-accent: oklch(58% 0.15 55); /* amber — hot-lead indicators, notification dots, pricing highlights */
   --brand-accent-deep: oklch(44% 0.15 55); /* 7.64:1 against --bg — use this, not --brand-accent, for text */
-  --gradient-brand: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-accent) 100%);
+  --gradient-brand: var(--brand-blue); /* flattened to a solid — the dashboard's UI is entirely flat OKLCH fills, no gradients */
 
   /* Ink / neutrals */
   --navy-950: oklch(17% 0.012 260); /* darkest — dealer-OS sidebar */
@@ -176,7 +176,7 @@ button {
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  background: linear-gradient(120deg, var(--navy-950), var(--navy-800));
+  background: var(--navy-950);
   color: #fff;
   padding: 0.85rem 1.25rem;
   position: sticky;
@@ -314,7 +314,7 @@ button {
 /* ---------- Buttons ----------
    Three roles, kept under the existing class names so every page
    that already uses .btn / .btn.outline / .btn.ghost keeps working:
-     .btn            → Primary   (brand gradient, highest emphasis)
+     .btn            → Primary   (flat brand blue, highest emphasis)
      .btn.outline    → Secondary (for use on dark surfaces, e.g. the hero)
      .btn.ghost      → Tertiary  (quiet, for "view all" style actions)
      .btn.small       → compact size modifier, stacks with any of the above
@@ -380,7 +380,7 @@ button {
 /* Accent variant — used for the hero's highest-emphasis CTA, per the design reference */
 .btn.accent {
   background: var(--brand-accent);
-  color: #1a1200;
+  color: #000;
   box-shadow: 0 8px 20px oklch(58% 0.15 55 / 30%);
 }
 
@@ -421,7 +421,7 @@ button {
 
 /* ---------- Footer ---------- */
 .footer {
-  background: linear-gradient(120deg, var(--navy-950), var(--navy-800));
+  background: var(--navy-950);
   color: var(--on-dark-soft);
   padding: var(--space-7) var(--space-4) var(--space-5);
   margin-top: var(--space-8);
