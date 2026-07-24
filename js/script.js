@@ -53,45 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', toggleMenu);
   });
 
-  // "More" nav dropdown — a plain disclosure button/panel, not an ARIA menu:
-  // the revealed links are just tabbable <a> elements, no arrow-key handling
-  // needed or promised.
-  document.querySelectorAll('.nav-more').forEach((wrap) => {
-    const trigger = wrap.querySelector('.nav-more-trigger');
-    const panel = wrap.querySelector('.nav-more-panel');
-    if (!trigger || !panel) return;
-
-    function closeNavMore() {
-      panel.hidden = true;
-      trigger.setAttribute('aria-expanded', 'false');
-    }
-
-    function openNavMore() {
-      panel.hidden = false;
-      trigger.setAttribute('aria-expanded', 'true');
-    }
-
-    trigger.addEventListener('click', () => {
-      if (panel.hidden) openNavMore();
-      else closeNavMore();
-    });
-
-    document.addEventListener('click', (event) => {
-      if (!panel.hidden && !wrap.contains(event.target)) closeNavMore();
-    });
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && !panel.hidden) {
-        closeNavMore();
-        trigger.focus();
-      }
-    });
-
-    panel.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', closeNavMore);
-    });
-  });
-
   // Close modal when clicking the backdrop
   const modal = document.getElementById('testDriveModal');
   if (modal) {

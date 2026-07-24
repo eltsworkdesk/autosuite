@@ -311,114 +311,6 @@ button {
   background: rgba(255, 255, 255, 0.08);
 }
 
-/* ---------- Nav "More" dropdown ---------- */
-.nav-more {
-  position: relative;
-}
-
-.nav-more-trigger {
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  min-height: 44px;
-  padding: 0 0.4rem;
-  background: none;
-  border: none;
-  border-radius: var(--radius-sm);
-  color: #fff;
-  font-family: inherit;
-  font-size: 0.95rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: color var(--transition-base), background var(--transition-base);
-}
-
-.nav-more-trigger:hover,
-.nav-more-trigger:focus-visible {
-  color: var(--brand-blue-light);
-  background: rgba(255, 255, 255, 0.08);
-}
-
-.nav-more-caret {
-  font-size: 0.7em;
-  transition: transform var(--transition-base);
-}
-
-.nav-more-trigger[aria-expanded="true"] .nav-more-caret {
-  transform: rotate(180deg);
-}
-
-.nav-more-panel {
-  /* Mobile: .nav-links is itself an absolute-positioned stacked overlay —
-     a second absolute, fixed-min-width panel nested inside it would overflow
-     past the viewport edge, so it renders in-flow here and only becomes a
-     floating dropdown at the desktop breakpoint below. */
-  position: static;
-  width: 100%;
-  margin-top: 4px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
-  padding: 0.4rem;
-  z-index: 50;
-  animation: nav-more-in 0.16s var(--ease) both;
-}
-
-@keyframes nav-more-in {
-  from { opacity: 0; transform: translateY(-6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.nav-more-item {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  min-height: 44px;
-  padding: 0 0.5rem;
-  border-radius: var(--radius-sm);
-  color: var(--ink);
-  text-decoration: none;
-  font-size: 0.92rem;
-  font-weight: 500;
-  transition: background var(--transition-fast);
-}
-
-.nav-more-item:hover,
-.nav-more-item:focus-visible {
-  background: var(--surface-sunken);
-}
-
-.nav-more-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  font-size: 0.9rem;
-  flex: none;
-}
-
-.nav-more-icon-blue { background: oklch(94% 0.03 260); color: var(--brand-blue-deep); }
-.nav-more-icon-amber { background: oklch(94% 0.04 55); color: var(--brand-accent-deep); }
-.nav-more-icon-green { background: oklch(94% 0.04 145); color: var(--success); }
-.nav-more-icon-danger { background: oklch(95% 0.03 25); color: var(--danger); }
-
-/* Desktop: panel anchors left-aligned under the trigger, same as mobile —
-   only the trigger's row context changes (inline vs stacked). */
-@media (min-width: 768px) {
-  .nav-more-panel {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: auto;
-    right: 0;
-    width: auto;
-    min-width: 230px;
-    margin-top: 0;
-  }
-}
-
 /* ---------- Buttons ----------
    Three roles, kept under the existing class names so every page
    that already uses .btn / .btn.outline / .btn.ghost keeps working:
@@ -483,6 +375,17 @@ button {
 
 .btn.ghost:hover {
   background: var(--line);
+}
+
+/* Accent variant — used for the hero's highest-emphasis CTA, per the design reference */
+.btn.accent {
+  background: var(--brand-accent);
+  color: #1a1200;
+  box-shadow: 0 8px 20px oklch(58% 0.15 55 / 30%);
+}
+
+.btn.accent:hover {
+  box-shadow: 0 12px 26px oklch(58% 0.15 55 / 38%);
 }
 
 .btn.small {

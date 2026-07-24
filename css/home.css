@@ -201,21 +201,6 @@
   color: transparent;
 }
 
-.hero-metrics {
-  margin-top: var(--space-6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-4);
-  font-family: var(--font-mono);
-}
-
-.hero-metric {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
 .hero-metric-num {
   font-size: var(--text-lg);
   font-weight: 600;
@@ -226,12 +211,6 @@
   font-size: var(--text-xs);
   color: var(--on-dark-faint);
   letter-spacing: 0.03em;
-}
-
-.hero-metric-divider {
-  width: 1px;
-  height: 28px;
-  background: rgba(255, 255, 255, 0.14);
 }
 
 .hero-proof {
