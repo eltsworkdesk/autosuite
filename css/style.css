@@ -41,6 +41,7 @@
 
   /* Feedback */
   --success: oklch(44% 0.14 145); /* 7.31:1 against white — darkened from the design brief's 58% so it's safe as text, not just fills */
+  --success-on-dark: oklch(70% 0.16 145); /* 7.23:1 against navy-900 — --success itself is too dark to read on dark surfaces */
   --danger: oklch(52% 0.18 25);
 
   /* Type */

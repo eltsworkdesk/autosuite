@@ -56,22 +56,6 @@
     justify-content: flex-start;
   }
 
-  /* Intro / About — unify into a row layout */
-  .intro-card {
-    flex-direction: row;
-    align-items: center;
-    padding: var(--space-7);
-  }
-
-  .intro-text {
-    flex: 1;
-  }
-
-  .intro-media {
-    flex: 1;
-    max-width: 440px;
-  }
-
   /* Featured + listing grids */
   .car-grid,
   .cars-grid {

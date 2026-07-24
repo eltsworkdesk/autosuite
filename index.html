@@ -82,12 +82,68 @@
     </div>
     <div class="hero-media">
       <div class="hero-frame">
-        <img src="assets/web/e450-hero.jpg" alt="Mercedes-Benz E450 on the showroom floor" width="1400" height="788" fetchpriority="high">
-        <span class="data-chip"><span class="dot"></span>Available Now</span>
-      </div>
-      <div class="hero-float-stat">
-        <span class="hero-metric-num">18</span>
-        <span class="hero-metric-label">Leads today</span>
+        <div class="hero-dash" aria-hidden="true">
+          <div class="hero-dash-side">
+            <div class="hero-dash-brand"><span class="hero-dash-dot"></span>AutoSuite</div>
+            <div class="hero-dash-nav">
+              <span class="active">▦ Dashboard</span>
+              <span>▤ Inventory</span>
+              <span>☎ CRM &amp; Leads</span>
+              <span>◔ Appointments</span>
+              <span>◆ Financing</span>
+              <span>▲ Analytics</span>
+            </div>
+          </div>
+          <div class="hero-dash-main">
+            <div class="hero-dash-head">
+              <div>
+                <h3>Good morning, Dana</h3>
+                <p>Tuesday, July 21 · Midtown Motors</p>
+              </div>
+              <span class="hero-dash-live"><span class="pulse-dot pulse-dot-sm"></span>Live sync</span>
+            </div>
+            <div class="hero-dash-stats">
+              <div class="hero-dash-stat">
+                <span class="hero-dash-stat-label">Leads today</span>
+                <span class="hero-dash-stat-value">18</span>
+                <span class="hero-dash-stat-trend">▲ 12%</span>
+              </div>
+              <div class="hero-dash-stat">
+                <span class="hero-dash-stat-label">Test drives</span>
+                <span class="hero-dash-stat-value">7</span>
+                <span class="hero-dash-stat-trend">▲ 4%</span>
+              </div>
+              <div class="hero-dash-stat">
+                <span class="hero-dash-stat-label">Units sold (MTD)</span>
+                <span class="hero-dash-stat-value">42</span>
+                <span class="hero-dash-stat-trend">▲ 9%</span>
+              </div>
+              <div class="hero-dash-stat">
+                <span class="hero-dash-stat-label">Revenue (MTD)</span>
+                <span class="hero-dash-stat-value">₦1.86M</span>
+                <span class="hero-dash-stat-trend">▲ 15%</span>
+              </div>
+            </div>
+            <div class="hero-dash-panels">
+              <div class="hero-dash-chart">
+                <h4>Sales funnel — 14 days</h4>
+                <div class="hero-dash-bars">
+                  <span></span><span></span><span></span><span></span>
+                  <span></span><span></span><span></span><span></span>
+                  <span></span><span></span><span></span><span></span>
+                </div>
+              </div>
+              <div class="hero-dash-leads">
+                <h4>New leads</h4>
+                <ul>
+                  <li><span class="hero-dash-avatar"></span><span class="hero-dash-lead-text"><strong>Marcus T.</strong><small>Financing review</small></span><time>2m</time></li>
+                  <li><span class="hero-dash-avatar"></span><span class="hero-dash-lead-text"><strong>Priya S.</strong><small>Test drive booked</small></span><time>14m</time></li>
+                  <li><span class="hero-dash-avatar"></span><span class="hero-dash-lead-text"><strong>Wes H.</strong><small>Trade-in estimate</small></span><time>31m</time></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="hero-pop">
         <img src="assets/web/porsche-cayenne-exterior1.jpg" alt="2025 Porsche Cayenne" loading="lazy">
@@ -110,17 +166,72 @@
 
   <!-- How it works -->
   <section id="about" class="intro" aria-labelledby="about-heading">
-    <div class="intro-card">
-      <div class="intro-media">
-        <img src="assets/web/about-handover.jpg" alt="Customer receiving car keys at handover" width="700" height="525" loading="lazy">
+    <div class="section-heading">
+      <span class="data-chip eyebrow">How it works</span>
+      <h2 id="about-heading">Every stage of the funnel, captured automatically</h2>
+      <p>AutoSuite turns anonymous traffic into assigned leads and closed deals — no stage falls through the cracks, and every drop-off is visible so your team can act on it.</p>
+    </div>
+    <div class="funnel-grid">
+      <div class="funnel-card">
+        <h3>Site-to-sale funnel</h3>
+        <p class="funnel-sub">Last 30 days · all connected stores</p>
+        <div class="funnel-rows">
+          <div class="funnel-row">
+            <span class="funnel-label">Visitors</span>
+            <div class="funnel-bar-track"><div class="funnel-bar funnel-w-100">4,820</div></div>
+          </div>
+          <p class="funnel-drop">↓ 62% run a financing estimate</p>
+          <div class="funnel-row">
+            <span class="funnel-label">Financing estimates</span>
+            <div class="funnel-bar-track"><div class="funnel-bar funnel-w-62">2,980</div></div>
+          </div>
+          <p class="funnel-drop">↓ 55% book a test drive</p>
+          <div class="funnel-row">
+            <span class="funnel-label">Test drives</span>
+            <div class="funnel-bar-track"><div class="funnel-bar funnel-w-34">1,640</div></div>
+          </div>
+          <p class="funnel-drop">↓ 100% captured as CRM leads</p>
+          <div class="funnel-row">
+            <span class="funnel-label">Leads assigned</span>
+            <div class="funnel-bar-track"><div class="funnel-bar funnel-w-34">1,640</div></div>
+          </div>
+          <p class="funnel-drop">↓ 56% close</p>
+        </div>
       </div>
-      <div class="intro-text">
-        <span class="data-chip eyebrow">How it works</span>
-        <h2 id="about-heading">The customer never sees the complexity</h2>
-        <p>
-          A visitor browses inventory, runs a financing estimate, and books a test drive — and that single action
-          becomes a lead in your CRM before they've left the page, already assigned to the right salesperson.
-        </p>
+
+      <div class="funnel-card">
+        <h3>Site-to-sale conversion</h3>
+        <p class="funnel-sub">Before vs. after AutoSuite · 6 months</p>
+        <svg class="conversion-chart" viewBox="0 0 440 240" role="img" aria-label="Line chart: site-to-sale conversion rate was flat around 7% before AutoSuite, then rose steadily to 19% over the six months after launch">
+          <line class="cv-grid" x1="40" y1="20" x2="420" y2="20"></line>
+          <line class="cv-grid" x1="40" y1="70" x2="420" y2="70"></line>
+          <line class="cv-grid" x1="40" y1="120" x2="420" y2="120"></line>
+          <line class="cv-grid" x1="40" y1="170" x2="420" y2="170"></line>
+          <text class="cv-axis-y" x="32" y="24" text-anchor="end">20%</text>
+          <text class="cv-axis-y" x="32" y="74" text-anchor="end">15%</text>
+          <text class="cv-axis-y" x="32" y="124" text-anchor="end">10%</text>
+          <text class="cv-axis-y" x="32" y="174" text-anchor="end">5%</text>
+          <text class="cv-axis-x" x="40" y="212" text-anchor="middle">Feb</text>
+          <text class="cv-axis-x" x="116" y="212" text-anchor="middle">Mar</text>
+          <text class="cv-axis-x" x="192" y="212" text-anchor="middle">Apr</text>
+          <text class="cv-axis-x" x="268" y="212" text-anchor="middle">May</text>
+          <text class="cv-axis-x" x="344" y="212" text-anchor="middle">Jun</text>
+          <text class="cv-axis-x" x="420" y="212" text-anchor="middle">Jul</text>
+          <line class="cv-marker" x1="192" y1="10" x2="192" y2="190"></line>
+          <text class="cv-marker-label" x="198" y="24" text-anchor="start">AutoSuite live</text>
+          <defs>
+            <linearGradient id="cvAreaFill" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="var(--brand-blue)" stop-opacity="0.22"></stop>
+              <stop offset="100%" stop-color="var(--brand-blue)" stop-opacity="0"></stop>
+            </linearGradient>
+          </defs>
+          <path class="cv-area" d="M192,150 L268,110 L344,70 L420,30 L420,190 L192,190 Z" fill="url(#cvAreaFill)"></path>
+          <polyline class="cv-line-before" points="40,150 116,150 192,150"></polyline>
+          <polyline class="cv-line-after" points="192,150 268,110 344,70 420,30"></polyline>
+          <circle class="cv-dot" cx="420" cy="30" r="5"></circle>
+          <text class="cv-label-start" x="40" y="138" text-anchor="middle">7%</text>
+          <text class="cv-label-end" x="420" y="18" text-anchor="end">19%</text>
+        </svg>
       </div>
     </div>
   </section>
