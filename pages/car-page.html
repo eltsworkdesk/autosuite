@@ -48,14 +48,10 @@
         <span class="logo-wordmark">Auto<span>Suite</span></span>
       </a>
     </div>
-    <nav class="nav-links" id="primaryNav" aria-label="Primary">
-      <a href="dashboard.html">Dashboard</a>
-      <a href="cars.html">Inventory</a>
-      <a href="financing-calculator.html">Financing</a>
-      <a href="appointments.html">Appointments</a>
-      <button type="button" class="btn small" data-open-test-drive>Book a Test Drive</button>
-    </nav>
-    <button type="button" class="burger" aria-label="Toggle menu" aria-expanded="false" aria-controls="primaryNav">☰</button>
+    <div class="nav-icons">
+      <a href="favorites.html" class="nav-icon-link"><span aria-hidden="true">♡</span> Saved (<span class="nav-saved-count">0</span>)</a>
+      <a href="compare.html" class="nav-icon-link"><span aria-hidden="true">⇄</span> Compare (<span class="nav-compare-count">0</span>)</a>
+    </div>
   </header>
 
   <!-- Breadcrumb (hydrated per-vehicle from ?id=) -->
@@ -410,6 +406,7 @@
   <script src="../js/lib/inventory.js" defer></script>
   <script src="../js/favorites.js" defer></script>
   <script src="../js/cars-data.js" defer></script>
+  <script src="../js/compare.js" defer></script>
   <script src="../js/lib/finance.js" defer></script>
   <script src="../js/financing.js" defer></script>
   <script src="../js/lightbox.js" defer></script>

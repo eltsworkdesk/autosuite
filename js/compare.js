@@ -21,7 +21,14 @@
 
   function setCompareIds(ids) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(ids));
+    document.dispatchEvent(new CustomEvent('autosuite:compare-changed', { detail: { ids } }));
   }
+
+  // Nav-badge access, same pattern as window.AutoSuiteFavorites.
+  window.AutoSuiteCompare = {
+    getIds: getCompareIds,
+    count: () => getCompareIds().length,
+  };
 
   /* ---------- Listing page: checkbox selection + floating bar ---------- */
   function initListingCompare() {

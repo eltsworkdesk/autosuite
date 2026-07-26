@@ -308,6 +308,53 @@ button {
   background: rgba(255, 255, 255, 0.08);
 }
 
+/* ---------- Nav icon-links (Saved / Compare) ----------
+   Consumer shopping pages (inventory, vehicle detail) — quick access to the
+   saved list and compare tray, always visible (not folded into the mobile
+   burger panel, unlike the marketing nav-links). */
+.nav-icons {
+  display: flex;
+  align-items: center;
+  gap: 1.1rem;
+  margin-left: auto;
+}
+
+.nav-icon-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 44px;
+  padding: 0 0.3rem;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: color var(--transition-base);
+}
+
+.nav-icon-link:hover,
+.nav-icon-link:focus-visible {
+  color: var(--brand-blue-light);
+}
+
+.nav-backlink {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-left: auto;
+  color: var(--on-dark-soft);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: color var(--transition-base);
+}
+
+.nav-backlink:hover,
+.nav-backlink:focus-visible {
+  color: #fff;
+}
+
 /* ---------- Buttons ----------
    Three roles, kept under the existing class names so every page
    that already uses .btn / .btn.outline / .btn.ghost keeps working:

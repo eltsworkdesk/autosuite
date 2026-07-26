@@ -53,6 +53,23 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', toggleMenu);
   });
 
+  // Nav Saved/Compare counts — present on the consumer shopping pages
+  // (inventory, vehicle detail). Reacts live to favorites.js/compare.js
+  // events so the badge never goes stale after a toggle on the same page.
+  function updateNavCounts() {
+    document.querySelectorAll('.nav-saved-count').forEach((el) => {
+      el.textContent = window.AutoSuiteFavorites ? window.AutoSuiteFavorites.count() : 0;
+    });
+    document.querySelectorAll('.nav-compare-count').forEach((el) => {
+      el.textContent = window.AutoSuiteCompare ? window.AutoSuiteCompare.count() : 0;
+    });
+  }
+  if (document.querySelector('.nav-saved-count, .nav-compare-count')) {
+    updateNavCounts();
+    document.addEventListener('autosuite:favorites-changed', updateNavCounts);
+    document.addEventListener('autosuite:compare-changed', updateNavCounts);
+  }
+
   // Scroll reveal — [data-reveal] elements only ever get hidden here, right
   // before we start observing them, so a JS failure never leaves content
   // permanently invisible. Skipped entirely under reduced-motion.
