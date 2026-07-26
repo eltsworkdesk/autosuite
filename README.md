@@ -4,6 +4,8 @@
 
 **Live:** [dealerstack.vercel.app](https://dealerstack.vercel.app) · **Dealer dashboard:** [/pages/dashboard.html](https://dealerstack.vercel.app/pages/dashboard.html) · **Platform pitch:** [/pages/platform.html](https://dealerstack.vercel.app/pages/platform.html)
 
+**New to this repo?** Read [`docs/ONBOARDING.md`](docs/ONBOARDING.md) first — it's the current, accurate orientation. The other root-level docs (`PHASE_1_STATUS.md`, `SPRINT-*-CHANGELOG.md`, `ROADMAP.md`, etc.) are historical development logs, not current state.
+
 ![AutoSuite storefront homepage](docs/screenshots/home.png)
 
 ---
