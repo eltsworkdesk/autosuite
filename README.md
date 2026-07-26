@@ -4,7 +4,7 @@
 
 **Live:** [dealerstack.vercel.app](https://dealerstack.vercel.app) · **Dealer dashboard:** [/pages/dashboard.html](https://dealerstack.vercel.app/pages/dashboard.html) · **Platform pitch:** [/pages/platform.html](https://dealerstack.vercel.app/pages/platform.html)
 
-**New to this repo?** Read [`docs/ONBOARDING.md`](docs/ONBOARDING.md) first — it's the current, accurate orientation. The other root-level docs (`PHASE_1_STATUS.md`, `SPRINT-*-CHANGELOG.md`, `ROADMAP.md`, etc.) are historical development logs, not current state.
+**New to this repo?** Read [`docs/ONBOARDING.md`](docs/ONBOARDING.md) first — it's the current, accurate orientation. Historical sprint/phase logs live in [`docs/archive/`](docs/archive/) if you're curious how we got here, but they're not current state.
 
 ![AutoSuite storefront homepage](docs/screenshots/home.png)
 
@@ -110,7 +110,8 @@ The MVP follows the product design brief in [`docs/design-handoff/`](docs/design
 ├── prisma/                 Schema (SQLite locally, Postgres in prod — see
 │                           scripts/prepare-prisma-schema.js) + seed scripts
 ├── docs/                   design-handoff/ (the 15-doc product design brief this
-│                           was built from), architecture.md, design-system.md
+│                           was built from), design-system.md, ONBOARDING.md,
+│                           archive/ (historical sprint/phase logs)
 └── .github/workflows/      Accessibility + validation CI (18 pages gated)
 ```
 

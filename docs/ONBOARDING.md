@@ -2,13 +2,12 @@
 
 This doc exists so you're not piecing the project together from a dozen
 scattered files on your first day. Read this, skim the README, and you're
-oriented. Everything else in the repo root (`PHASE_1_STATUS.md`,
-`SPRINT-*-CHANGELOG.md`, `ROADMAP.md`, etc.) is historical — development-log
-snapshots from earlier milestones, several of which are now inaccurate (the
-root `ROADMAP.md` still lists the CRM and dashboard as unbuilt "Phase 3" —
-they've been live for a while). Don't build your mental model from them.
-**`README.md` is the one source of truth for current state.** This doc is
-the narrative version of it.
+oriented. `docs/archive/` holds old sprint/phase logs — development-log
+snapshots from earlier milestones, several of which are now inaccurate (one
+of them still lists the CRM and dashboard as unbuilt "Phase 3" — they've
+been live for a while). They're kept for history, not for orientation —
+don't build your mental model from them. **`README.md` is the one source of
+truth for current state.** This doc is the narrative version of it.
 
 ## What we're building, in one sentence
 
