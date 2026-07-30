@@ -78,10 +78,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (revealEls.length) {
       const io = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
+          if (!entry.isIntersecting) return;
+          // Optional data-delay (ms) staggers siblings so grids cascade in
+          // rather than all landing at once.
+          const delay = parseInt(entry.target.dataset.delay || '0', 10) || 0;
+          if (delay > 0) {
+            setTimeout(() => entry.target.classList.add('reveal-in'), delay);
+          } else {
             entry.target.classList.add('reveal-in');
-            io.unobserve(entry.target);
           }
+          io.unobserve(entry.target);
         });
       }, { threshold: 0.15, rootMargin: '0px 0px -60px 0px' });
       revealEls.forEach((el) => {

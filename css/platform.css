@@ -1,213 +1,39 @@
 /* =========================================================
-   AutoSuite — Platform (dealer-facing marketing) page styles
+   AutoSuite — Platform pitch page
+   Implements docs/design-handoff's platform-pitch spec.
+
+   Everything here is namespaced `pf-` on purpose: this page loads
+   responsive.css, which carries a global `.hero` rule (and others) meant
+   for the storefront. Unprefixed design class names like .hero / .chip /
+   .status would silently inherit those.
+
+   Colors, type, spacing, radii and easing all come from the tokens in
+   style.css — the design spec ships its own private :root block, but
+   introducing a second token system next to the repo's is exactly the
+   drift the design system exists to prevent. The two page-local values
+   below are light tints of brand hues 260/55 for fills that need dark
+   text on top; they are not new global tokens.
 ========================================================= */
 
-.pf-hero {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: var(--space-8) var(--space-4) var(--space-6);
-  text-align: center;
+.pf-page {
+  --pf-blue-soft: oklch(94% 0.03 260);
+  --pf-accent-bright: oklch(80% 0.14 55);
 }
 
-.pf-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-4);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-pill);
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  color: var(--brand-blue-deep);
-  margin-bottom: var(--space-5);
-}
-
-.pf-pill .dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--brand-accent);
-}
-
-.pf-hero h1 {
-  font-family: var(--font-display);
-  font-size: var(--text-2xl);
-  line-height: 1.1;
-  margin-bottom: var(--space-4);
-}
-
-.pf-hero p {
-  color: var(--ink-soft);
-  font-size: var(--text-md);
-  max-width: 50ch;
-  margin: 0 auto var(--space-6);
-}
-
-.pf-hero-ctas {
-  display: flex;
-  gap: var(--space-3);
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: var(--space-7);
-}
-
-.pf-btn-dark {
-  color: var(--ink) !important;
-  border-color: var(--line) !important;
-}
-
-.pf-btn-dark:hover {
-  background: var(--surface-sunken) !important;
-}
-
-.pf-btn-light {
-  color: var(--ink) !important;
-  border-color: var(--line) !important;
-}
-
-.pf-btn-white {
-  background: #fff !important;
-  color: var(--navy-950) !important;
-}
-
-/* ---------- Hero product preview ---------- */
-.pf-preview {
-  max-width: 960px;
-  margin: 0 auto;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow-lg);
-  overflow: hidden;
-  background: var(--navy-950);
-  text-align: left;
-}
-
-.pf-preview-dots {
-  display: flex;
-  gap: 7px;
-  padding: var(--space-3) var(--space-4);
-  border-bottom: 1px solid var(--navy-800);
-}
-
-.pf-preview-dots span {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--navy-800);
-}
-
-.pf-preview-body {
-  display: grid;
-  grid-template-columns: 200px 1fr;
-}
-
-.pf-preview-nav {
-  background: var(--navy-900);
-  padding: var(--space-5) var(--space-3);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  border-right: 1px solid var(--navy-800);
-}
-
-.pf-preview-label {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--on-dark-faint);
-  margin-bottom: var(--space-2);
-}
-
-.pf-preview-navitem {
-  padding: var(--space-2) var(--space-3);
-  border-radius: var(--radius-sm);
-  font-size: var(--text-sm);
-  color: var(--on-dark-soft);
-}
-
-.pf-preview-navitem.active {
-  background: var(--brand-blue);
-  color: #fff;
-}
-
-.pf-preview-main {
-  padding: var(--space-5);
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-3);
-}
-
-.pf-kpi,
-.pf-pipeline,
-.pf-activity {
-  background: var(--navy-800);
-  border-radius: var(--radius-md);
-  padding: var(--space-4);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.pf-kpi-label {
-  font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--on-dark-faint);
-}
-
-.pf-kpi-value {
-  font-family: var(--font-display);
-  font-size: var(--text-lg);
-  color: #fff;
-}
-
-.pf-kpi-trend {
-  font-size: 0.7rem;
-  color: oklch(70% 0.14 145);
-}
-
-.pf-pipeline {
-  grid-column: span 2;
-}
-
-.pf-pipeline-bars {
-  display: flex;
-  align-items: flex-end;
-  gap: var(--space-2);
-  height: 50px;
-  margin-top: var(--space-2);
-}
-
-.pf-pipeline-bars span {
-  flex: 1;
-  background: var(--brand-blue);
-  border-radius: 3px;
-}
-
-.pf-bar-1 { height: 70%; }
-.pf-bar-2 { height: 50%; }
-.pf-bar-3 { height: 38%; }
-.pf-bar-4 { height: 22%; }
-.pf-bar-5 { height: 16%; }
-
-.pf-activity p {
-  font-size: 0.75rem;
-  color: var(--on-dark-soft);
-}
-
-/* ---------- Sections ---------- */
+/* ---------- Section scaffolding ---------- */
 .pf-section {
   max-width: 1100px;
   margin: 0 auto;
   padding: var(--space-8) var(--space-4);
 }
 
-.pf-section-sunken {
+/* Full-bleed white band; inner content stays on the same measure. */
+.pf-surface {
   max-width: none;
-  background: var(--surface-sunken);
+  background: var(--surface);
 }
 
-.pf-section-sunken > * {
+.pf-surface > * {
   max-width: 1100px;
   margin-left: auto;
   margin-right: auto;
@@ -222,187 +48,1187 @@
 .pf-section-head h2 {
   font-family: var(--font-display);
   font-size: var(--text-xl);
-  margin-bottom: var(--space-2);
+  margin: var(--space-3) 0 var(--space-3);
 }
 
 .pf-section-head p {
   color: var(--ink-soft);
 }
 
-/* ---------- How it works flow ---------- */
-.pf-flow {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: var(--space-4);
+/* The spec draws a short rule before each eyebrow. */
+.pf-section-head .eyebrow {
+  display: inline-flex;
   align-items: center;
-  max-width: 900px;
+  gap: var(--space-2);
+}
+
+.pf-section-head .eyebrow::before {
+  content: '';
+  width: 20px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--brand-blue);
+}
+
+.pf-mark {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  flex: none;
+}
+
+.pf-mark-x {
+  background: oklch(95% 0.03 25);
+  color: var(--danger);
+}
+
+.pf-mark-ok {
+  background: oklch(94% 0.04 145);
+  color: var(--success);
+}
+
+/* ---------- 1. Hero: pipeline carousel ---------- */
+.pf-hero {
+  background: var(--navy-950);
+  color: #fff;
+  overflow: hidden;
+  position: relative;
+}
+
+.pf-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-5) 0;
+}
+
+.pf-hero-copy {
+  text-align: center;
+  max-width: 720px;
+  margin: var(--space-7) auto 0;
+  padding: 0 var(--space-4);
+  position: relative;
+  z-index: 1;
+}
+
+.pf-hero-copy .eyebrow {
+  color: var(--brand-blue-light);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.pf-hero-copy .eyebrow::before {
+  content: '';
+  width: 20px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--pf-accent-bright);
+}
+
+.pf-hero-copy h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  margin: var(--space-3) 0 var(--space-3);
+  letter-spacing: -0.02em;
+  min-height: 2.3em;
+  transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
+}
+
+.pf-hero-copy p {
+  color: var(--on-dark-soft);
+  font-size: var(--text-md);
+  min-height: 1.6em;
+  transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
+}
+
+.pf-stage {
+  position: relative;
+  max-width: 1180px;
+  margin: var(--space-6) auto 0;
+  height: 460px;
+}
+
+/* Soft brand glow + dot grid behind the mockup cards. */
+.pf-stage::before {
+  content: '';
+  position: absolute;
+  inset: -70px -60px;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(420px 300px at 16% 22%, oklch(48% 0.16 260 / 40%), transparent 72%),
+    radial-gradient(380px 280px at 84% 74%, oklch(58% 0.15 55 / 26%), transparent 72%);
+  filter: blur(46px);
+}
+
+.pf-stage::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 68% 62% at 50% 46%, #000 45%, transparent 88%);
+  -webkit-mask-image: radial-gradient(ellipse 68% 62% at 50% 46%, #000 45%, transparent 88%);
+}
+
+.pf-livestat {
+  position: absolute;
+  left: 0;
+  bottom: 6px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-pill);
+  padding: var(--space-2) var(--space-4);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--on-dark);
+}
+
+.pf-livestat b {
+  color: var(--success-on-dark);
+}
+
+.pf-livestat-count {
+  color: #fff;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.pf-livestat-count.is-bumped {
+  animation: pf-bump 0.5s var(--ease);
+}
+
+@keyframes pf-bump {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.3); color: var(--pf-accent-bright); }
+  100% { transform: scale(1); }
+}
+
+.pf-slide {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.6s var(--ease);
+}
+
+.pf-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.pf-lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.pf-lines path {
+  fill: none;
+  stroke: var(--pf-accent-bright);
+  stroke-width: 10;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 14px oklch(80% 0.14 55 / 35%));
+  stroke-dasharray: 320;
+  stroke-dashoffset: 320;
+}
+
+.pf-slide.is-active .pf-lines path {
+  animation: pf-draw 1.5s var(--ease) forwards;
+}
+
+@keyframes pf-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+.pf-node,
+.pf-chip,
+.pf-card,
+.pf-bubble,
+.pf-kanban {
+  opacity: 0;
+  transform: translateY(16px) scale(0.94);
+  z-index: 1;
+}
+
+.pf-slide.is-active .pf-node,
+.pf-slide.is-active .pf-chip,
+.pf-slide.is-active .pf-card,
+.pf-slide.is-active .pf-bubble,
+.pf-slide.is-active .pf-kanban {
+  animation: pf-pop 1s var(--ease) forwards, pf-float 5.5s ease-in-out infinite;
+}
+
+@keyframes pf-pop {
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes pf-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+.pf-node {
+  position: absolute;
+  background: var(--pf-accent-bright);
+  color: oklch(28% 0.06 55);
+  font-weight: 700;
+  font-size: 13px;
+  border-radius: var(--radius-sm);
+  padding: 12px 18px;
+  box-shadow: var(--shadow-lg);
+}
+
+.pf-card {
+  position: absolute;
+  background: var(--surface);
+  color: var(--ink);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 14px 16px;
+  width: 220px;
+}
+
+.pf-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Not a heading: these mockup cards are an illustration, so keeping them out
+   of the document outline avoids an h1 -> h4 jump before the first real h2. */
+.pf-card-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 14px;
+  margin: 6px 0 2px;
+}
+
+.pf-card-meta {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--ink-faint);
+}
+
+.pf-card-btn {
+  display: inline-block;
+  margin-top: 10px;
+  background: var(--brand-blue);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: var(--radius-pill);
+  padding: 5px 12px;
+}
+
+.pf-receipt {
+  margin: 8px 0 2px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--line);
+}
+
+.pf-receipt li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11.5px;
+  color: var(--ink-soft);
+  padding: 3px 0;
+}
+
+.pf-receipt li b {
+  color: var(--ink);
+  font-family: var(--font-mono);
+}
+
+.pf-chip {
+  position: absolute;
+  background: var(--surface);
+  color: var(--ink);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  padding: 9px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.pf-chip svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.pf-bubble {
+  position: absolute;
+  background: var(--surface);
+  color: var(--ink);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 12px 15px;
+  width: 230px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.pf-avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  flex: none;
+  background: var(--brand-blue);
+}
+
+.pf-avatar-sm {
+  width: 18px;
+  height: 18px;
+}
+
+.pf-bubble strong {
+  font-size: 12.5px;
+  display: block;
+}
+
+.pf-bubble-time {
+  font-weight: 400;
+  color: var(--ink-faint);
+  font-size: 10.5px;
+  margin-left: 4px;
+}
+
+.pf-bubble p {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-top: 2px;
+  min-height: 2.6em;
+}
+
+.pf-kanban {
+  position: absolute;
+  width: 260px;
+  color: #fff;
+}
+
+.pf-kanban-tag {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--brand-blue-light);
+  margin-bottom: 6px;
+}
+
+.pf-kanban-label {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  min-height: 1.3em;
+}
+
+.pf-kanban-track {
+  position: relative;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 2px;
+  margin: 0 6px;
+}
+
+.pf-kanban-dot {
+  position: absolute;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: background var(--transition-base), box-shadow var(--transition-base), transform var(--transition-base);
+}
+
+.pf-kanban-dot:nth-child(1) { left: 0%; }
+.pf-kanban-dot:nth-child(2) { left: 20%; }
+.pf-kanban-dot:nth-child(3) { left: 40%; }
+.pf-kanban-dot:nth-child(4) { left: 60%; }
+.pf-kanban-dot:nth-child(5) { left: 80%; }
+.pf-kanban-dot:nth-child(6) { left: 100%; }
+
+.pf-kanban-dot.is-active {
+  background: var(--pf-accent-bright);
+  box-shadow: 0 0 10px oklch(80% 0.14 55 / 70%);
+  transform: translate(-50%, -50%) scale(1.3);
+}
+
+.pf-kanban-puck {
+  position: absolute;
+  top: 50%;
+  left: 0%;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--pf-accent-bright);
+  box-shadow: 0 0 16px oklch(80% 0.14 55 / 70%), 0 3px 10px rgba(0, 0, 0, 0.35);
+  transform: translate(-50%, -50%);
+  transition: left 0.55s var(--ease);
+}
+
+.pf-kanban.is-sold .pf-kanban-puck {
+  background: var(--success-on-dark);
+  box-shadow: 0 0 18px oklch(70% 0.16 145 / 70%);
+}
+
+.pf-kanban.is-sold .pf-kanban-label {
+  color: var(--success-on-dark);
+}
+
+/* Hero slide element positions. Kept as classes rather than inline style
+   attributes — html-validate's recommended preset bans inline styles. */
+.pf-s0-node { left: 2%; top: 46%; animation-delay: 0s, 1s; }
+.pf-s0-c1 { left: 25%; top: 16%; animation-delay: 0.5s, 1.5s; }
+.pf-s0-c2 { left: 25%; top: 45%; animation-delay: 0.58s, 1.58s; }
+.pf-s0-c3 { left: 25%; top: 74%; animation-delay: 0.66s, 1.66s; }
+.pf-s0-card { left: 64%; top: 10%; animation-delay: 1.3s, 2.3s; }
+
+.pf-s1-card { left: 2%; top: 30%; animation-delay: 0s, 1s; }
+.pf-s1-bubble { left: 37%; top: 8%; animation-delay: 0.75s, 1.75s; }
+.pf-s1-lead { left: 66%; top: 46%; animation-delay: 4.1s, 5.1s; }
+
+.pf-s2-card { left: 6%; top: 8%; animation-delay: 0s, 1s; }
+.pf-s2-c1 { left: 6%; top: 56%; animation-delay: 1.1s, 2.1s; }
+.pf-s2-c2 { left: 40%; top: 56%; animation-delay: 0.75s, 1.75s; }
+.pf-s2-kanban { left: 56%; top: 14%; animation-delay: 1.5s, 2.5s; }
+
+.pf-slide[data-slide="0"] .pf-lines path:nth-of-type(-n + 3) { animation-delay: 0.15s; }
+.pf-slide[data-slide="0"] .pf-lines path:nth-of-type(4) { animation-delay: 0.9s; }
+.pf-slide[data-slide="1"] .pf-lines path:nth-of-type(1) { animation-delay: 0.4s; }
+.pf-slide[data-slide="1"] .pf-lines path:nth-of-type(2) { animation-delay: 3.7s; }
+.pf-slide[data-slide="2"] .pf-lines path:nth-of-type(1) { animation-delay: 0.4s; }
+.pf-slide[data-slide="2"] .pf-lines path:nth-of-type(2) { animation-delay: 1.15s; }
+
+.pf-bottombar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: var(--space-4) var(--space-5) var(--space-7);
+  position: relative;
+  z-index: 1;
+}
+
+.pf-arrow {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: none;
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color var(--transition-base), transform var(--transition-base);
+}
+
+.pf-arrow:hover {
+  border-color: #fff;
+  transform: translateY(2px);
+}
+
+.pf-arrow svg {
+  width: 18px;
+  height: 18px;
+  stroke: #fff;
+  fill: none;
+}
+
+.pf-count {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--on-dark-faint);
+  text-align: right;
+}
+
+.pf-count b {
+  color: #fff;
+  font-size: var(--text-md);
+}
+
+.pf-count-bar {
+  width: 60px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.18);
+  margin-left: auto;
+  margin-bottom: 6px;
+  position: relative;
+  overflow: hidden;
+}
+
+.pf-count-bar span {
+  position: absolute;
+  inset: 0;
+  background: var(--pf-accent-bright);
+  transform-origin: left;
+}
+
+/* ---------- 2. Before / after ---------- */
+.pf-ba-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+  max-width: 1000px;
   margin: 0 auto;
 }
 
-.pf-flow-card {
-  background: var(--bg);
-  border: 1px solid var(--line);
+.pf-ba-panel {
   border-radius: var(--radius-lg);
-  padding: var(--space-5);
+  padding: var(--space-6);
+  position: relative;
+  overflow: hidden;
 }
 
-.pf-flow-card-dark {
+.pf-ba-old {
+  background: var(--surface-sunken);
+  border: 1.5px dashed var(--line);
+}
+
+.pf-ba-new {
   background: var(--navy-950);
   color: #fff;
-  border-color: var(--navy-950);
+  box-shadow: var(--shadow-md);
 }
 
-.pf-flow-card h3 {
+.pf-ba-panel h3 {
   font-family: var(--font-display);
   font-size: var(--text-md);
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-5);
 }
 
-.pf-flow-card p {
+.pf-ba-new .pf-mark-ok {
+  background: oklch(70% 0.16 145 / 25%);
+  color: var(--success-on-dark);
+}
+
+.pf-chaos,
+.pf-order {
+  position: relative;
+  height: 130px;
+  margin-bottom: var(--space-4);
+}
+
+.pf-chaos-chip {
+  position: absolute;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  font-size: 11.5px;
+  padding: 7px 11px;
+  color: var(--ink-soft);
+  box-shadow: var(--shadow-sm);
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.pf-chaos-1 { left: 4%; top: 8%; transform: rotate(-5deg); }
+.pf-chaos-2 { left: 48%; top: 2%; transform: rotate(3deg); }
+.pf-chaos-3 { left: 14%; top: 48%; transform: rotate(2deg); }
+.pf-chaos-4 { left: 56%; top: 56%; transform: rotate(-4deg); }
+
+.pf-order svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.pf-order-node {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius-sm);
+  font-size: 11.5px;
+  padding: 7px 11px;
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.pf-order-1 { left: 2%; top: 10%; }
+.pf-order-2 { left: 38%; top: 38%; }
+.pf-order-3 { left: 66%; top: 64%; }
+
+.pf-chain li {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  padding: 7px 0;
   font-size: var(--text-sm);
+}
+
+.pf-ba-old .pf-chain li {
   color: var(--ink-soft);
 }
 
-.pf-flow-card-dark p {
-  color: var(--on-dark-soft);
+.pf-chain-fail {
+  color: var(--danger);
+  font-weight: 600;
 }
 
-.pf-flow-tag {
-  display: inline-block;
+.pf-chain-win {
+  color: var(--success-on-dark);
+  font-weight: 600;
+}
+
+/* ---------- 3. Live funnel ---------- */
+.pf-funnel {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.pf-frow {
+  display: grid;
+  grid-template-columns: 150px 1fr 64px;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.pf-frow-label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--ink-soft);
+  text-align: right;
+}
+
+.pf-ftrack {
+  background: var(--surface-sunken);
+  border-radius: var(--radius-pill);
+  height: 34px;
+  overflow: hidden;
+}
+
+/* Solid fill, not the spec's two-stop gradient — flat brand fills are the
+   established rule for bars and buttons in this build. */
+.pf-fbar {
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--brand-blue);
+  width: 0;
+  transition: width 1.1s var(--ease);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: var(--space-3);
+}
+
+/* The spec highlights the final bar in gold. Bright gold + dark label keeps
+   the intended emphasis and clears AA; white-on-gold would not. */
+.pf-fbar-accent {
+  background: var(--pf-accent-bright);
+}
+
+.pf-fbar strong {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: var(--space-3);
+  font-size: var(--text-xs);
+  color: #fff;
 }
 
-.pf-flow-tag-consumer {
+.pf-fbar-accent strong {
+  color: oklch(28% 0.06 55);
+}
+
+.pf-fpct {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--brand-blue-deep);
+}
+
+.pf-fstep {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--ink-faint);
+  text-align: center;
+  padding: 2px 0;
+}
+
+.pf-fstep b {
   color: var(--brand-accent-deep);
 }
 
-.pf-flow-tag-dealer {
-  color: var(--brand-blue-light);
-}
-
-.pf-flow-arrow {
-  font-size: var(--text-xl);
-  color: var(--ink-faint);
-  text-align: center;
-}
-
-/* ---------- Feature pillars ---------- */
-.pf-pillar-grid {
+/* ---------- 4. Feature grid ---------- */
+.pf-features {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--space-4);
 }
 
-.pf-pillar {
+.pf-feat {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  padding: var(--space-5);
+  padding: var(--space-6);
+  transition: transform var(--transition-base), box-shadow var(--transition-base), border-color var(--transition-base);
 }
 
-.pf-pillar-icon {
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-sm);
-  margin-bottom: var(--space-4);
+.pf-feat:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+  border-color: oklch(80% 0.06 260);
 }
 
-.pf-pillar-icon-blue { background: oklch(90% 0.05 260); }
-.pf-pillar-icon-amber { background: oklch(90% 0.06 55); }
-.pf-pillar-icon-green { background: oklch(90% 0.05 145); }
-
-.pf-pillar h3 {
-  font-family: var(--font-display);
-  font-size: var(--text-base);
-  margin-bottom: var(--space-2);
-}
-
-.pf-pillar p {
-  font-size: var(--text-sm);
-  color: var(--ink-soft);
-}
-
-.pf-pillar-note {
-  margin-top: var(--space-6);
-  text-align: center;
-  font-size: var(--text-sm);
-  color: var(--ink-faint);
-}
-
-/* ---------- Dealer section ---------- */
-.pf-dealer-section {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-6);
-  align-items: center;
-}
-
-.pf-dealer-section h2 {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  margin: var(--space-2) 0 var(--space-3);
-}
-
-.pf-dealer-section p {
-  color: var(--ink-soft);
-  margin-bottom: var(--space-5);
-}
-
-.pf-dealer-visual {
-  aspect-ratio: 4/3;
-  border-radius: var(--radius-lg);
-  background-image: repeating-linear-gradient(135deg, var(--surface-sunken) 0 10px, var(--surface) 10px 20px);
+.pf-feat-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: var(--radius-md);
+  background: var(--pf-blue-soft);
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: var(--space-4);
+}
+
+.pf-feat-icon svg {
+  width: 24px;
+  height: 24px;
+  stroke: var(--brand-blue-deep);
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pf-feat h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  margin-bottom: 7px;
+}
+
+.pf-feat p {
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+
+/* ---------- 4.5 Real product shots ---------- */
+.pf-shots {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.pf-shot {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.pf-shot-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 12px;
+  background: var(--surface-sunken);
+  border-bottom: 1px solid var(--line);
+}
+
+.pf-shot-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--line);
+}
+
+.pf-shot-dot:nth-child(1) { background: oklch(70% 0.15 25); }
+.pf-shot-dot:nth-child(2) { background: oklch(75% 0.14 85); }
+.pf-shot-dot:nth-child(3) { background: oklch(65% 0.15 150); }
+
+.pf-shot-url {
+  margin-left: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+
+/* No aspect-ratio/object-fit here on purpose: these are real screenshots in a
+   browser-chrome frame, so any forced ratio crops the sidebar off. The
+   width/height attributes on the <img> reserve the space instead. */
+.pf-shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* ---------- 5. Live inventory ---------- */
+.pf-inv {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.pf-inv-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  position: relative;
+}
+
+.pf-live-tag {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid var(--line);
+  color: var(--success);
+  border-radius: var(--radius-pill);
+  padding: 3px 9px;
+}
+
+.pf-inv-art {
+  background: var(--surface-sunken);
+  padding: 18px 26px;
+}
+
+.pf-inv-art svg {
+  width: 100%;
+  max-height: 110px;
+  display: block;
+}
+
+.pf-inv-body {
+  padding: var(--space-4) var(--space-4) var(--space-5);
+}
+
+.pf-inv-body h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  margin: var(--space-2) 0 3px;
+}
+
+.pf-inv-meta {
   font-family: var(--font-mono);
   font-size: var(--text-xs);
   color: var(--ink-faint);
 }
 
-/* ---------- Testimonial ---------- */
-.pf-testimonial {
-  background: var(--navy-950);
+.pf-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11.5px;
+  font-weight: 700;
+  border-radius: var(--radius-pill);
+  padding: 3px 11px;
+}
+
+.pf-status-avail {
+  background: oklch(94% 0.04 145);
+  color: var(--success);
+}
+
+.pf-status-booked {
+  background: oklch(95% 0.05 85);
+  color: var(--brand-accent-deep);
+}
+
+.pf-status-sold {
+  background: oklch(95% 0.03 25);
+  color: var(--danger);
+}
+
+.pf-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--brand-accent);
+  animation: pf-pulse 2s infinite;
+}
+
+@keyframes pf-pulse {
+  0% { box-shadow: 0 0 0 0 oklch(44% 0.14 145 / 55%); }
+  70% { box-shadow: 0 0 0 7px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+.pf-inv-card.is-sold .pf-inv-art {
+  filter: grayscale(0.75);
+  opacity: 0.8;
+}
+
+/* ---------- 6. Trust ---------- */
+.pf-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3);
+}
+
+.pf-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  padding: 9px 18px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--brand-blue-deep);
+}
+
+.pf-badge svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+}
+
+.pf-quote {
+  max-width: 620px;
+  margin: var(--space-6) auto 0;
+  text-align: center;
+}
+
+.pf-quote p {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: 600;
+}
+
+.pf-quote cite {
+  display: block;
+  margin-top: var(--space-3);
+  font-style: normal;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--ink-faint);
+}
+
+.pf-logos {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-3) var(--space-7);
+  margin-top: var(--space-6);
+  align-items: center;
+}
+
+.pf-logo {
+  font-family: var(--font-display);
+  font-size: var(--text-md);
+  font-weight: 700;
+  color: var(--ink-faint);
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.pf-logo svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+}
+
+/* ---------- 7. No-code promise ---------- */
+.pf-nc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.pf-nc-panel {
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+}
+
+.pf-nc-old {
+  background: var(--surface-sunken);
+  border: 1.5px dashed var(--line);
+}
+
+.pf-nc-new {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+}
+
+.pf-nc-panel h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: var(--space-4);
+}
+
+.pf-code {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  background: oklch(93% 0.005 260);
+  border-radius: var(--radius-sm);
+  padding: 13px;
+  line-height: 1.8;
+  overflow: hidden;
+}
+
+.pf-code i {
+  font-style: normal;
+  color: var(--danger);
+}
+
+.pf-toggles {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.pf-toggle-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 13.5px;
+}
+
+.pf-tog {
+  width: 40px;
+  height: 22px;
+  border-radius: var(--radius-pill);
+  background: oklch(88% 0.01 260);
+  position: relative;
+  cursor: pointer;
+  border: none;
+  transition: background var(--transition-base);
+  flex: none;
+}
+
+.pf-tog::after {
+  content: '';
+  position: absolute;
+  top: 2.5px;
+  left: 3px;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-base);
+}
+
+.pf-tog[aria-checked="true"] {
+  background: var(--success);
+}
+
+.pf-tog[aria-checked="true"]::after {
+  transform: translateX(17px);
+}
+
+/* ---------- 8. Final CTA ---------- */
+.pf-cta {
+  background: linear-gradient(180deg, var(--navy-950), var(--navy-800));
   color: #fff;
   padding: var(--space-8) var(--space-4);
   text-align: center;
 }
 
-.pf-testimonial blockquote {
-  max-width: 760px;
-  margin: 0 auto var(--space-5);
+.pf-cta h2 {
   font-family: var(--font-display);
-  font-size: var(--text-lg);
-  line-height: 1.5;
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-3);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.pf-testimonial-author {
+.pf-cta p {
+  color: var(--on-dark-soft);
+  margin-bottom: var(--space-6);
+}
+
+.pf-cta-buttons {
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: var(--space-3);
+  gap: var(--space-4);
+  flex-wrap: wrap;
 }
 
-.pf-testimonial-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--brand-blue);
-  flex: none;
+/* Sits on .btn.accent — the crown + sparkle are the only additions. */
+.pf-crown {
+  position: relative;
+  overflow: visible;
 }
 
-.pf-testimonial-name {
-  font-weight: 600;
-  font-size: var(--text-sm);
+.pf-crown svg {
+  width: 21px;
+  height: 21px;
 }
 
-.pf-testimonial-role {
-  font-size: var(--text-xs);
-  color: var(--on-dark-faint);
+.pf-crown:hover .pf-crown-icon {
+  animation: pf-crown-shake 0.55s var(--ease) infinite;
+  transform-origin: 50% 80%;
+}
+
+@keyframes pf-crown-shake {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(-11deg) translateY(-1px); }
+  50% { transform: rotate(9deg); }
+  75% { transform: rotate(-5deg); }
+}
+
+.pf-sparkle {
+  position: absolute;
+  pointer-events: none;
+  font-size: 0;
+  animation: pf-sparkle-pop 0.75s ease-out forwards;
+}
+
+.pf-sparkle svg {
+  width: 11px;
+  height: 11px;
+}
+
+@keyframes pf-sparkle-pop {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.3); }
+  25% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--pf-sx), var(--pf-sy)) scale(1.15) rotate(50deg); }
 }
 
 /* ---------- Pricing ---------- */
@@ -420,6 +1246,7 @@
   padding: var(--space-6);
   text-align: center;
   position: relative;
+  background: var(--surface);
 }
 
 .pf-price-card-featured {
@@ -471,19 +1298,29 @@
   width: 100%;
 }
 
-/* ---------- FAQ ---------- */
-.pf-faq {
-  max-width: 760px;
+.pf-btn-light {
+  background: var(--surface-sunken);
+  color: var(--ink);
+  border-color: var(--line);
 }
 
+/* ---------- FAQ ----------
+   Constrain the content, not the section: .pf-faq sits on .pf-surface, and a
+   max-width here would shrink that full-bleed band down with it. */
 .pf-faq h2 {
   font-family: var(--font-display);
   font-size: var(--text-xl);
   text-align: center;
   margin-bottom: var(--space-6);
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .pf-faq-list {
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
   display: flex;
   flex-direction: column;
   gap: 1px;
@@ -511,50 +1348,156 @@
   line-height: 1.6;
 }
 
-/* ---------- Footer CTA ---------- */
-.pf-cta {
+/* ---------- Footer ---------- */
+.pf-foot {
   background: var(--navy-950);
-  color: #fff;
-  padding: var(--space-8) var(--space-4);
-  text-align: center;
+  color: var(--on-dark-soft);
+  padding: var(--space-5) var(--space-4) var(--space-7);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.pf-cta h2 {
-  font-family: var(--font-display);
-  font-size: var(--text-xl);
-  margin-bottom: var(--space-5);
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+.pf-foot-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  font-size: var(--text-sm);
+}
+
+.pf-foot-inner nav {
+  display: flex;
+  gap: var(--space-5);
+}
+
+.pf-foot-inner a {
+  color: var(--on-dark-soft);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+
+.pf-foot-inner a:hover,
+.pf-foot-inner a:focus-visible {
+  color: #fff;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .pf-shots {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 860px) {
-  .pf-preview-body {
-    grid-template-columns: 1fr;
+  .pf-section {
+    padding: var(--space-7) var(--space-4);
   }
 
-  .pf-preview-nav {
-    display: none;
-  }
-
-  .pf-preview-main {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .pf-flow {
-    grid-template-columns: 1fr;
-  }
-
-  .pf-flow-arrow {
-    transform: rotate(90deg);
-  }
-
-  .pf-pillar-grid,
+  .pf-ba-grid,
+  .pf-nc-grid,
   .pf-pricing-grid {
     grid-template-columns: 1fr;
   }
 
-  .pf-dealer-section {
+  .pf-features {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pf-inv {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 78%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding-bottom: var(--space-3);
+  }
+
+  .pf-inv-card {
+    scroll-snap-align: center;
+  }
+
+  .pf-frow {
+    grid-template-columns: 96px 1fr 52px;
+    gap: var(--space-3);
+  }
+
+  .pf-frow-label {
+    font-size: 11.5px;
+  }
+}
+
+@media (max-width: 760px) {
+  .pf-stage {
+    height: 620px;
+  }
+
+  .pf-card,
+  .pf-bubble {
+    width: 180px;
+  }
+
+  .pf-kanban {
+    width: 200px;
+  }
+
+  /* The spec narrows these cards for small screens but keeps their desktop
+     percentage offsets, so at 375px they collide with each other and get
+     clipped mid-card by the hero's overflow:hidden. There isn't room for
+     node + chip + card side by side at this width, so the mockup becomes a
+     vertical stack. The connector lines are dropped with it — they describe a
+     left-to-right flow that no longer exists (they're decorative and already
+     aria-hidden, so nothing is lost semantically). */
+  .pf-lines {
+    display: none;
+  }
+
+  .pf-slide {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-4);
+  }
+
+  .pf-slide > .pf-node,
+  .pf-slide > .pf-chip,
+  .pf-slide > .pf-card,
+  .pf-slide > .pf-bubble,
+  .pf-slide > .pf-kanban {
+    position: static;
+    width: auto;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 560px) {
+  .pf-features {
     grid-template-columns: 1fr;
+  }
+}
+
+/* The shared reveal in js/script.js handles [data-reveal]; the hero's own
+   entrance animations are the only motion this page needs to stand down
+   explicitly under reduced-motion. */
+@media (prefers-reduced-motion: reduce) {
+  .pf-slide.is-active .pf-lines path,
+  .pf-slide.is-active .pf-node,
+  .pf-slide.is-active .pf-chip,
+  .pf-slide.is-active .pf-card,
+  .pf-slide.is-active .pf-bubble,
+  .pf-slide.is-active .pf-kanban {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    stroke-dashoffset: 0;
+  }
+
+  .pf-status-dot,
+  .pf-livestat-count.is-bumped {
+    animation: none;
   }
 }

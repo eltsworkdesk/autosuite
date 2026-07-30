@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<!--
+  AutoSuite — Platform Pitch (single-file, zero external assets)
+  Integration: drop this file anywhere; everything (styles, JS, SVGs) is inline.
+  Sections: 1 Hero "Flecto-style pipeline carousel" · 2 Before/After · 3 Live Funnel · 4 Feature Grid
+            5 Live Inventory · 6 Trust · 7 No-Code Promise · 8 CTA + Footer
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AutoSuite — The Dealership Operating System</title>
+<style>
+:root {
+  --primary: oklch(0.6 0.2 260);
+  --primary-deep: oklch(0.45 0.18 260);
+  --primary-soft: oklch(0.93 0.04 260);
+  --success: oklch(0.65 0.2 150);
+  --success-soft: oklch(0.93 0.06 150);
+  --danger: oklch(0.6 0.2 20);
+  --danger-soft: oklch(0.94 0.05 20);
+  --accent: oklch(0.8 0.16 85);
+  --bg: oklch(0.98 0.01 260);
+  --surface: oklch(1 0 0);
+  --ink: oklch(0.25 0.02 260);
+  --ink-soft: oklch(0.45 0.02 260);
+  --ink-faint: oklch(0.6 0.02 260);
+  --navy: oklch(0.22 0.04 260);
+  --navy-2: oklch(0.28 0.05 260);
+  --line: oklch(0.9 0.01 260);
+  --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 14px 44px rgba(10, 15, 40, 0.16);
+  --shadow-xl: 0 26px 64px -14px rgba(8, 12, 32, 0.5), 0 8px 22px rgba(8, 12, 32, 0.28);
+  --r-sm: 8px; --r-md: 12px; --r-lg: 18px; --r-pill: 999px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  background: var(--bg); color: var(--ink); line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--primary-deep); }
+a:hover { color: var(--primary); }
+h1, h2, h3 { line-height: 1.15; text-wrap: pretty; }
+section { padding: 88px 24px; }
+.wrap { max-width: 1120px; margin: 0 auto; }
+.eyebrow {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--primary-deep);
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.eyebrow::before { content: ''; width: 20px; height: 2px; background: var(--primary); border-radius: 2px; }
+.section-head { max-width: 640px; margin: 0 auto 48px; text-align: center; }
+.section-head h2 { font-size: clamp(26px, 4vw, 38px); margin: 12px 0 14px; }
+.section-head p { color: var(--ink-soft); }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px; border: none; cursor: pointer;
+  font: 600 15px system-ui, sans-serif; border-radius: var(--r-pill);
+  padding: 13px 26px; text-decoration: none; transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+.btn:hover { transform: translateY(-2px); }
+.btn-primary { background: var(--primary); color: #fff; box-shadow: 0 6px 18px oklch(0.6 0.2 260 / 35%); }
+.btn-primary:hover { color: #fff; box-shadow: 0 10px 26px oklch(0.6 0.2 260 / 45%); }
+.btn-ghost { background: transparent; color: var(--ink); border: 1.5px solid var(--line); }
+.btn-ghost:hover { border-color: var(--ink-faint); color: var(--ink); }
+
+/* Scroll reveal */
+[data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+[data-reveal].in { opacity: 1; transform: none; }
+
+/* ========== 1. HERO — THE FLECTO-STYLE PIPELINE ========== */
+.hero { background: var(--navy); color: #fff; overflow: hidden; position: relative; }
+.hero-nav { display: flex; align-items: center; justify-content: space-between; max-width: 1280px; margin: 0 auto; padding: 22px 28px 0; }
+.hero-nav .wordmark { font-size: 18px; }
+.hero-nav-right { display: flex; align-items: center; gap: 14px; }
+.hero-nav-right a.btn-ghost { color: #fff; border-color: oklch(1 0 0 / 25%); padding: 9px 20px; font-size: 13px; }
+.hero-burger { width: 38px; height: 38px; border-radius: 50%; border: 1px solid oklch(1 0 0 / 22%); background: none; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+.hero-burger svg { width: 16px; height: 16px; stroke: #fff; }
+.hero-copy { text-align: center; max-width: 720px; margin: 44px auto 0; padding: 0 20px; }
+.hero-copy .eyebrow { color: oklch(0.78 0.1 260); justify-content: center; }
+.hero-copy .eyebrow::before { background: var(--accent); }
+.hero-copy h1 { font-size: clamp(32px, 5vw, 52px); margin: 14px 0 12px; letter-spacing: -0.02em; min-height: 2.3em; transition: opacity 0.45s var(--ease), transform 0.45s var(--ease); }
+.hero-copy p { color: oklch(0.78 0.02 260); font-size: 17px; min-height: 1.6em; transition: opacity 0.45s var(--ease), transform 0.45s var(--ease); }
+
+.hero-stage { position: relative; max-width: 1180px; margin: 40px auto 0; height: 460px; }
+.hero-livestat { position: absolute; left: 0; bottom: 6px; z-index: 2; display: inline-flex; align-items: center; gap: 8px; background: oklch(1 0 0 / 8%); border: 1px solid oklch(1 0 0 / 16%); border-radius: var(--r-pill); padding: 8px 16px; font-family: var(--mono); font-size: 12px; color: oklch(0.85 0.02 260); }
+.hls-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); animation: pulse 2s infinite; flex: none; }
+.hero-livestat b { color: oklch(0.85 0.14 150); }
+#heroLeadCount { color: #fff; font-weight: 700; display: inline-block; }
+#heroLeadCount.hls-bump { animation: hls-bump 0.5s var(--ease); }
+@keyframes hls-bump { 0% { transform: scale(1); } 30% { transform: scale(1.3); color: var(--accent); } 100% { transform: scale(1); } }
+.hero-stage::before {
+  content: ''; position: absolute; inset: -70px -60px; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(420px 300px at 16% 22%, oklch(0.6 0.2 260 / 40%), transparent 72%),
+    radial-gradient(380px 280px at 84% 74%, oklch(0.8 0.16 85 / 26%), transparent 72%);
+  filter: blur(46px);
+}
+.hero-stage::after {
+  content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background-image: radial-gradient(oklch(1 0 0 / 7%) 1.5px, transparent 1.5px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 68% 62% at 50% 46%, #000 45%, transparent 88%);
+}
+.hero-slide { position: absolute; inset: 0; z-index: 1; opacity: 0; visibility: hidden; transition: opacity 0.6s var(--ease); }
+.hero-slide.active { opacity: 1; visibility: visible; }
+.hero-slide svg.hlines { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.hlines path { fill: none; stroke: var(--accent); stroke-width: 10; stroke-linejoin: round; stroke-linecap: round; opacity: 0.9; filter: drop-shadow(0 0 14px oklch(0.8 0.16 85 / 35%)); stroke-dasharray: 320; stroke-dashoffset: 320; }
+.hero-slide.active .hlines path { animation: hdraw 1.5s var(--ease) forwards; }
+@keyframes hdraw { to { stroke-dashoffset: 0; } }
+.hnode, .hchip, .hcard, .hbubble, .hkanban { opacity: 0; transform: translateY(16px) scale(0.94); z-index: 1; }
+.hero-slide.active .hnode, .hero-slide.active .hchip, .hero-slide.active .hcard, .hero-slide.active .hbubble, .hero-slide.active .hkanban { animation: hpop 1s var(--ease) forwards, hfloat 5.5s ease-in-out infinite; }
+@keyframes hpop { to { opacity: 1; transform: none; } }
+@keyframes hfloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+.hkanban { position: absolute; width: 260px; color: #fff; }
+.hkanban .hk-tag { display: block; font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: oklch(0.78 0.1 260); margin-bottom: 6px; }
+.hkanban .hk-label { font-size: 16px; font-weight: 700; margin-bottom: 16px; min-height: 1.3em; }
+.hkanban-track { position: relative; height: 4px; background: oklch(1 0 0 / 16%); border-radius: 2px; margin: 0 6px; }
+.hk-dot { position: absolute; top: 50%; width: 9px; height: 9px; border-radius: 50%; background: oklch(1 0 0 / 30%); transform: translate(-50%, -50%); transition: background 0.3s, box-shadow 0.3s, transform 0.3s; }
+.hk-dot:nth-child(1) { left: 0%; }
+.hk-dot:nth-child(2) { left: 20%; }
+.hk-dot:nth-child(3) { left: 40%; }
+.hk-dot:nth-child(4) { left: 60%; }
+.hk-dot:nth-child(5) { left: 80%; }
+.hk-dot:nth-child(6) { left: 100%; }
+.hk-dot.active { background: var(--accent); box-shadow: 0 0 10px oklch(0.8 0.16 85 / 70%); transform: translate(-50%, -50%) scale(1.3); }
+.hk-puck { position: absolute; top: 50%; left: 0%; width: 15px; height: 15px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 16px oklch(0.8 0.16 85 / 70%), 0 3px 10px rgba(0, 0, 0, 0.35); transform: translate(-50%, -50%); transition: left 0.55s var(--ease); }
+.hkanban.sold .hk-puck { background: oklch(0.68 0.2 150); box-shadow: 0 0 18px oklch(0.68 0.2 150 / 70%); }
+.hkanban.sold .hk-label { color: oklch(0.75 0.16 150); }
+.hnode {
+  position: absolute; background: var(--accent); color: oklch(0.25 0.05 85); font: 700 13px system-ui, sans-serif;
+  border-radius: var(--r-sm); padding: 12px 18px; box-shadow: var(--shadow-xl);
+}
+.hcard {
+  position: absolute; background: var(--surface); color: var(--ink); border-radius: var(--r-md);
+  box-shadow: var(--shadow-xl); padding: 14px 16px; width: 220px;
+}
+.hcard .htag { font-family: var(--mono); font-size: 10px; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.05em; }
+.hcard h4 { font-size: 14px; margin: 6px 0 2px; }
+.hcard .hmeta { font-family: var(--mono); font-size: 11.5px; color: var(--ink-faint); }
+.hcard .hbtn { display: inline-block; margin-top: 10px; background: var(--primary); color: #fff; font-size: 11px; font-weight: 700; border-radius: var(--r-pill); padding: 5px 12px; }
+.hreceipt { list-style: none; margin: 8px 0 2px; padding-top: 8px; border-top: 1px dashed var(--line); }
+.hreceipt li { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--ink-soft); padding: 3px 0; }
+.hreceipt li b { color: var(--ink); font-family: var(--mono); font-weight: 700; }
+.hchip {
+  position: absolute; background: var(--surface); color: var(--ink); border-radius: var(--r-sm);
+  box-shadow: var(--shadow-xl); padding: 9px 14px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;
+}
+.hchip svg { width: 16px; height: 16px; flex: none; }
+.hpulse { width: 6px; height: 6px; border-radius: 50%; background: var(--success); animation: pulse 2s infinite; flex: none; }
+.hbubble {
+  position: absolute; background: var(--surface); color: var(--ink); border-radius: var(--r-md);
+  box-shadow: var(--shadow-xl); padding: 12px 15px; width: 230px; display: flex; gap: 10px; align-items: flex-start;
+}
+.havatar { width: 30px; height: 30px; border-radius: 50%; flex: none; background: linear-gradient(135deg, var(--primary), var(--accent)); }
+.hbubble strong { font-size: 12.5px; display: block; }
+.hbubble .htime { font-weight: 400; color: var(--ink-faint); font-size: 10.5px; margin-left: 4px; }
+.hbubble p { font-size: 12px; color: var(--ink-soft); margin-top: 2px; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 oklch(0.65 0.2 150 / 55%); } 70% { box-shadow: 0 0 0 7px transparent; } 100% { box-shadow: 0 0 0 0 transparent; } }
+
+.hero-bottombar { display: flex; align-items: center; justify-content: space-between; max-width: 1180px; margin: 0 auto; padding: 20px 28px 40px; }
+.hero-arrow { width: 46px; height: 46px; border-radius: 50%; border: 1px solid oklch(1 0 0 / 25%); background: none; color: #fff; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: border-color 0.2s, transform 0.2s; }
+.hero-arrow:hover { border-color: #fff; transform: translateY(2px); }
+.hero-arrow svg { width: 18px; height: 18px; stroke: #fff; }
+.hero-count { font-family: var(--mono); font-size: 14px; color: oklch(0.65 0.02 260); text-align: right; }
+.hero-count b { color: #fff; font-size: 20px; }
+.hero-count-bar { width: 60px; height: 2px; background: oklch(1 0 0 / 18%); margin-left: auto; margin-bottom: 6px; position: relative; overflow: hidden; }
+.hero-count-bar span { position: absolute; inset: 0; background: var(--accent); transform-origin: left; }
+
+@media (max-width: 760px) {
+  .hero-stage { height: 620px; }
+  .hcard, .hbubble { width: 180px; }
+}
+
+/* ========== 2. BEFORE / AFTER ========== */
+.ba-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; max-width: 1000px; margin: 0 auto; }
+.ba-panel { border-radius: var(--r-lg); padding: 30px; position: relative; overflow: hidden; }
+.ba-old { background: oklch(0.955 0.005 260); border: 1.5px dashed var(--line); }
+.ba-new { background: var(--navy); color: #fff; box-shadow: var(--shadow-lg); }
+.ba-panel h3 { font-size: 18px; margin-bottom: 20px; }
+.chaos { position: relative; height: 130px; margin-bottom: 18px; }
+.chaos .chip {
+  position: absolute; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-sm);
+  font-size: 11.5px; padding: 7px 11px; color: var(--ink-soft); box-shadow: var(--shadow);
+  display: inline-flex; gap: 6px; align-items: center;
+}
+.x-mark, .check-mark { width: 16px; height: 16px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex: none; }
+.x-mark { background: var(--danger-soft); color: var(--danger); }
+.check-mark { background: var(--success-soft); color: oklch(0.45 0.15 150); }
+.ba-new .check-mark { background: oklch(0.65 0.2 150 / 25%); color: oklch(0.85 0.1 150); }
+.order { position: relative; height: 130px; margin-bottom: 18px; }
+.order svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.order .node {
+  position: absolute; background: oklch(1 0 0 / 8%); border: 1px solid oklch(1 0 0 / 18%);
+  border-radius: var(--r-sm); font-size: 11.5px; padding: 7px 11px; display: inline-flex; gap: 6px; align-items: center;
+}
+.ba-chain { list-style: none; }
+.ba-chain li { display: flex; gap: 10px; align-items: center; padding: 7px 0; font-size: 14px; }
+.ba-old .ba-chain li { color: var(--ink-soft); }
+.ba-fail { color: var(--danger) !important; font-weight: 600; }
+.ba-win { color: oklch(0.85 0.1 150) !important; font-weight: 600; }
+
+/* ========== 3. LIVE FUNNEL ========== */
+.funnel-rows { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
+.frow { display: grid; grid-template-columns: 150px 1fr 64px; align-items: center; gap: 14px; }
+.frow .lbl { font-size: 13px; font-weight: 600; color: var(--ink-soft); text-align: right; }
+.ftrack { background: oklch(0.94 0.01 260); border-radius: var(--r-pill); height: 34px; overflow: hidden; }
+.fbar {
+  height: 100%; border-radius: var(--r-pill); background: linear-gradient(90deg, var(--primary-deep), var(--primary));
+  width: 0; transition: width 1.1s var(--ease); display: flex; align-items: center; justify-content: flex-end; padding-right: 12px;
+}
+.fbar.gold { background: linear-gradient(90deg, var(--primary), var(--accent)); }
+.fbar strong { font-family: var(--mono); font-size: 12px; color: #fff; }
+.frow .pct { font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--primary-deep); }
+.fstep { font-family: var(--mono); font-size: 11.5px; color: var(--ink-faint); text-align: center; padding: 2px 0; }
+.fstep b { color: oklch(0.55 0.13 85); }
+
+/* ========== 4. FEATURE GRID ========== */
+.features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.feat {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: 26px;
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease), border-color 0.25s;
+}
+.feat:hover { transform: translateY(-5px); box-shadow: 0 12px 34px oklch(0.6 0.2 260 / 14%); border-color: oklch(0.8 0.06 260); }
+.feat .icon {
+  width: 46px; height: 46px; border-radius: 12px; background: var(--primary-soft);
+  display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
+}
+.feat .icon svg { width: 24px; height: 24px; stroke: var(--primary-deep); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.feat h3 { font-size: 16px; margin-bottom: 7px; }
+.feat p { font-size: 13.5px; color: var(--ink-soft); }
+
+/* ========== 4.5 REAL PRODUCT SHOTS ========== */
+.product-shots { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; max-width: 1100px; margin: 0 auto; }
+.pshot { border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-lg); border: 1px solid var(--line); background: var(--surface); }
+.pshot-bar { display: flex; align-items: center; gap: 6px; padding: 10px 12px; background: oklch(0.95 0.005 260); border-bottom: 1px solid var(--line); }
+.pdotr { width: 9px; height: 9px; border-radius: 50%; background: oklch(0.85 0.02 260); }
+.pdotr:nth-child(1) { background: oklch(0.75 0.15 25); }
+.pdotr:nth-child(2) { background: oklch(0.8 0.14 85); }
+.pdotr:nth-child(3) { background: oklch(0.7 0.15 150); }
+.purl { margin-left: 8px; font-family: var(--mono); font-size: 11px; color: var(--ink-faint); }
+.pshot img { display: block; width: 100%; height: auto; aspect-ratio: 909 / 541; object-fit: cover; }
+@media (max-width: 860px) { .product-shots { grid-template-columns: 1fr; } }
+
+/* ========== 5. LIVE INVENTORY ========== */
+.inv-scroll { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; max-width: 1000px; margin: 0 auto; }
+.inv-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); overflow: hidden; position: relative; }
+.inv-card .live-tag {
+  position: absolute; top: 12px; right: 12px; z-index: 2; font-family: var(--mono); font-size: 9.5px;
+  background: oklch(1 0 0 / 92%); border: 1px solid var(--line); color: oklch(0.5 0.15 150);
+  border-radius: var(--r-pill); padding: 3px 9px;
+}
+.inv-art { background: linear-gradient(180deg, oklch(0.95 0.015 260), oklch(0.9 0.02 260)); padding: 18px 26px; }
+.inv-art svg { width: 100%; max-height: 110px; display: block; }
+.inv-body { padding: 16px 18px 18px; }
+.inv-body h3 { font-size: 15px; margin: 8px 0 3px; }
+.inv-body .meta { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); }
+.status { display: inline-flex; align-items: center; gap: 7px; font-size: 11.5px; font-weight: 700; border-radius: var(--r-pill); padding: 3px 11px; }
+.status.avail { background: var(--success-soft); color: oklch(0.42 0.13 150); }
+.status.booked { background: oklch(0.95 0.05 85); color: oklch(0.5 0.12 70); }
+.status.sold { background: var(--danger-soft); color: oklch(0.45 0.15 20); }
+.status .pdot { width: 7px; height: 7px; border-radius: 50%; background: oklch(0.7 0.14 70); animation: pulse 2s infinite; }
+.inv-card.is-sold .inv-art { filter: grayscale(0.75); opacity: 0.8; }
+
+/* ========== 6. TRUST ========== */
+.trust-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.tbadge {
+  display: inline-flex; align-items: center; gap: 8px; background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r-pill); padding: 9px 18px; font-family: var(--mono); font-size: 12px; color: var(--primary-deep);
+}
+.tbadge svg { width: 15px; height: 15px; }
+.tquote { max-width: 620px; margin: 40px auto 0; text-align: center; }
+.tquote p { font-size: clamp(19px, 2.6vw, 24px); font-weight: 650; }
+.tquote cite { display: block; margin-top: 12px; font-style: normal; font-family: var(--mono); font-size: 12px; color: var(--ink-faint); }
+.tlogos { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 34px; margin-top: 40px; align-items: center; }
+.tlogo { font-family: Georgia, serif; font-size: 17px; font-weight: 700; color: oklch(0.62 0.02 260); opacity: 0.85; display: inline-flex; align-items: center; gap: 7px; }
+.tlogo svg { width: 18px; height: 18px; }
+
+/* ========== 7. NO-CODE PROMISE ========== */
+.nc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; max-width: 900px; margin: 0 auto; }
+.nc-panel { border-radius: var(--r-lg); padding: 26px; }
+.nc-old { background: oklch(0.955 0.005 260); border: 1.5px dashed var(--line); }
+.nc-new { background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); }
+.nc-panel h3 { font-size: 15px; display: flex; align-items: center; gap: 9px; margin-bottom: 16px; }
+.code-mess { font-family: var(--mono); font-size: 11px; color: var(--ink-faint); background: oklch(0.93 0.005 260); border-radius: var(--r-sm); padding: 13px; line-height: 1.8; overflow: hidden; }
+.code-mess i { font-style: normal; color: var(--danger); }
+.toggles { display: flex; flex-direction: column; gap: 13px; }
+.toggle-row { display: flex; justify-content: space-between; align-items: center; font-size: 13.5px; }
+.tog { width: 40px; height: 22px; border-radius: var(--r-pill); background: oklch(0.88 0.01 260); position: relative; cursor: pointer; border: none; transition: background 0.25s; flex: none; }
+.tog::after { content: ''; position: absolute; top: 2.5px; left: 3px; width: 17px; height: 17px; border-radius: 50%; background: #fff; box-shadow: var(--shadow); transition: transform 0.25s var(--ease); }
+.tog[aria-checked="true"] { background: var(--success); }
+.tog[aria-checked="true"]::after { transform: translateX(17px); }
+
+/* ========== 8. FINAL CTA + FOOTER ========== */
+.cta { background: linear-gradient(180deg, var(--navy), var(--navy-2)); color: #fff; text-align: center; }
+.cta h2 { font-size: clamp(28px, 4.4vw, 42px); margin-bottom: 12px; }
+.cta p { color: oklch(0.78 0.02 260); margin-bottom: 34px; }
+.cta-buttons { display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+.crown-btn {
+  position: relative; display: inline-flex; align-items: center; gap: 11px; cursor: pointer; border: none;
+  font: 700 16px system-ui, sans-serif; color: oklch(0.25 0.05 85); text-decoration: none;
+  background: linear-gradient(120deg, var(--accent), oklch(0.87 0.13 85));
+  border-radius: var(--r-pill); padding: 15px 32px;
+  box-shadow: 0 6px 24px oklch(0.8 0.16 85 / 40%); overflow: visible;
+  transition: transform 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+.crown-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 34px oklch(0.8 0.16 85 / 55%); color: oklch(0.25 0.05 85); }
+.crown-btn svg { width: 21px; height: 21px; }
+.crown-btn:hover .crown { animation: crown-shake 0.55s var(--ease) infinite; transform-origin: 50% 80%; }
+@keyframes crown-shake {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(-11deg) translateY(-1px); }
+  50% { transform: rotate(9deg); }
+  75% { transform: rotate(-5deg); }
+}
+.sparkle { position: absolute; pointer-events: none; font-size: 0; animation: sparkle-pop 0.75s ease-out forwards; }
+.sparkle svg { width: 11px; height: 11px; }
+@keyframes sparkle-pop {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.3); }
+  25% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--sx), var(--sy)) scale(1.15) rotate(50deg); }
+}
+.cta .btn-ghost { color: #fff; border-color: oklch(1 0 0 / 30%); }
+.cta .btn-ghost:hover { border-color: #fff; color: #fff; }
+footer { background: var(--navy); color: oklch(0.68 0.02 260); padding: 26px 24px 40px; border-top: 1px solid oklch(1 0 0 / 10%); }
+.foot { max-width: 1120px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; font-size: 13px; }
+.foot nav { display: flex; gap: 22px; }
+.foot a { color: oklch(0.78 0.02 260); text-decoration: none; }
+.foot a:hover { color: #fff; }
+.wordmark { font-weight: 800; font-size: 16px; color: #fff; letter-spacing: -0.01em; }
+.wordmark b { color: var(--accent); }
+
+/* Responsive */
+@media (max-width: 860px) {
+  section { padding: 60px 18px; }
+  .stage { grid-template-columns: 1fr; }
+  .wire svg { height: 46px; transform: rotate(90deg) scaleY(2.4); transform-origin: center; margin: 6px 0; }
+  .wire-label { margin-top: 12px; }
+  .ba-grid, .nc-grid { grid-template-columns: 1fr; }
+  .features { grid-template-columns: 1fr 1fr; }
+  .inv-scroll { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 78%; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 10px; }
+  .inv-card { scroll-snap-align: center; }
+  .frow { grid-template-columns: 96px 1fr 52px; }
+  .frow .lbl { font-size: 11.5px; }
+}
+@media (max-width: 560px) { .features { grid-template-columns: 1fr; } }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  [data-reveal] { opacity: 1; transform: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ========== 1. HERO: FLECTO-STYLE PIPELINE CAROUSEL ========== -->
+<section class="hero" id="hero">
+  <div class="hero-nav">
+    <span class="wordmark">Auto<b>Suite</b></span>
+    <div class="hero-nav-right">
+      <a href="#cta" class="btn btn-ghost">Book a Demo</a>
+      <button class="hero-burger" type="button" aria-label="Menu"><svg viewBox="0 0 16 16" fill="none"><line x1="2" y1="4" x2="14" y2="4" stroke-width="1.6"/><line x1="2" y1="8" x2="14" y2="8" stroke-width="1.6"/><line x1="2" y1="12" x2="14" y2="12" stroke-width="1.6"/></svg></button>
+    </div>
+  </div>
+
+  <div class="hero-copy">
+    <span class="eyebrow">AutoSuite · Dealership OS</span>
+    <h1 id="heroTitle">The dealership operating system.</h1>
+    <p id="heroSub">One platform connecting every customer touchpoint straight to your team.</p>
+  </div>
+
+  <div class="hero-stage" id="heroStage" aria-label="AutoSuite platform overview, 3 slides">
+    <div class="hero-livestat" aria-hidden="true">
+      <span class="hls-dot"></span>
+      <span id="heroLeadCount">128</span> leads captured this week · <b>zero</b> lost
+    </div>
+    <div class="hero-slide active" data-slide="0">
+      <svg class="hlines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <path vector-effect="non-scaling-stroke" d="M13 50 L20 50 L20 22 L25 22" style="animation-delay:0.15s"/>
+        <path vector-effect="non-scaling-stroke" d="M13 50 L25 50" style="animation-delay:0.15s"/>
+        <path vector-effect="non-scaling-stroke" d="M13 50 L20 50 L20 76 L25 76" style="animation-delay:0.15s"/>
+        <path vector-effect="non-scaling-stroke" d="M40 50 L48 50 L48 12 L62 12" style="animation-delay:0.9s"/>
+      </svg>
+      <div class="hnode" style="left:2%;top:46%;animation-delay:0s,1s">Your Dealership</div>
+      <div class="hchip" style="left:25%;top:16%;animation-delay:0.5s,1.5s"><svg viewBox="0 0 16 16" fill="none" stroke="var(--primary-deep)" stroke-width="1.4"><circle cx="8" cy="8" r="6.5"/><path d="M1.5 8 h13 M8 1.5 c2.5 2 2.5 11 0 13 M8 1.5 c-2.5 2 -2.5 11 0 13"/></svg>Website</div>
+      <div class="hchip" style="left:25%;top:45%;animation-delay:0.58s,1.58s"><svg viewBox="0 0 16 16" fill="none" stroke="var(--primary-deep)" stroke-width="1.4"><path d="M8 1.5 L8 8 L11.5 8" stroke-linecap="round"/><circle cx="8" cy="8" r="6.5"/></svg>Financing</div>
+      <div class="hchip" style="left:25%;top:74%;animation-delay:0.66s,1.66s"><svg viewBox="0 0 16 16" fill="none" stroke="var(--primary-deep)" stroke-width="1.4"><rect x="1.5" y="2.5" width="13" height="9" rx="1.5"/><path d="M5 14.5 l2-3 h2 l2 3"/></svg>CRM inquiry</div>
+      <div class="hcard" style="left:64%;top:10%;animation-delay:1.3s,2.3s">
+        <span class="htag">Available online</span>
+        <h4>2024 BMW X6 xDrive40i</h4>
+        <span class="hmeta">$612/mo est.</span>
+        <span class="hbtn">View listing</span>
+      </div>
+    </div>
+
+    <div class="hero-slide" data-slide="1">
+      <svg class="hlines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <path vector-effect="non-scaling-stroke" d="M25 40 L31 40 L31 18 L37 18" style="animation-delay:0.4s"/>
+        <path vector-effect="non-scaling-stroke" d="M51 18 L58 18 L58 46 L66 46" style="animation-delay:3.7s"/>
+      </svg>
+      <div class="hcard" style="left:2%;top:30%;animation-delay:0s,1s">
+        <span class="htag">Storefront</span>
+        <h4>2024 BMW X6 xDrive40i</h4>
+        <span class="hmeta">$72,900 · $612/mo</span>
+        <span class="hbtn">Book Test Drive</span>
+      </div>
+      <div class="hbubble" style="left:37%;top:8%;animation-delay:0.75s,1.75s">
+        <span class="havatar" aria-hidden="true"></span>
+        <div><strong>David M. <span class="htime">2m ago</span></strong><p>Hi! I'd like to test drive the X6 this Saturday.</p></div>
+      </div>
+      <div class="hcard" style="left:66%;top:46%;animation-delay:4.1s,5.1s">
+        <span class="htag">New lead</span>
+        <h4>David M.</h4>
+        <span class="hmeta">Test drive · Sat 10:30</span>
+        <span class="hbtn">Assign to Sarah</span>
+      </div>
+    </div>
+
+    <div class="hero-slide" data-slide="2">
+      <svg class="hlines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <path vector-effect="non-scaling-stroke" d="M30 30 L34 30 L34 62 L40 62" style="animation-delay:0.4s"/>
+        <path vector-effect="non-scaling-stroke" d="M42 56 L48 56 L48 14 L56 14" style="animation-delay:1.15s"/>
+      </svg>
+      <div class="hcard" style="left:6%;top:8%;animation-delay:0s,1s">
+        <span class="htag">Booking summary</span>
+        <h4>2024 BMW X6 xDrive40i</h4>
+        <ul class="hreceipt">
+          <li><span>Test drive</span><b>Free</b></li>
+          <li><span>Financing pre-qual</span><b>Included</b></li>
+          <li><span>Est. trade-in</span><b>$4,200</b></li>
+        </ul>
+        <span class="hbtn">David M. · Sat 10:30</span>
+      </div>
+      <div class="hchip" style="left:6%;top:56%;animation-delay:1.1s,2.1s"><svg viewBox="0 0 16 16" fill="none" stroke="var(--primary-deep)" stroke-width="1.4"><rect x="1.5" y="4" width="13" height="9" rx="1.5"/><path d="M1.5 7 h13"/></svg>3 financing partners ready</div>
+      <div class="hchip" style="left:40%;top:56%;animation-delay:0.75s,1.75s"><span class="havatar" style="width:18px;height:18px" aria-hidden="true"></span>Assigned: Sarah</div>
+      <div class="hkanban" style="left:56%;top:14%;animation-delay:1.5s,2.5s">
+        <span class="hk-tag">Deal: BMW X6 · CRM Board</span>
+        <div class="hk-label" id="hkLabel">New Lead</div>
+        <div class="hkanban-track">
+          <span class="hk-dot"></span><span class="hk-dot"></span><span class="hk-dot"></span>
+          <span class="hk-dot"></span><span class="hk-dot"></span><span class="hk-dot"></span>
+          <span class="hk-puck" id="hkPuck"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-bottombar">
+    <button class="hero-arrow" id="heroArrow" type="button" aria-label="Next slide"><svg viewBox="0 0 16 16" fill="none"><path d="M8 2 v11 M3 9 l5 5 5-5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    <div class="hero-count">
+      <div class="hero-count-bar"><span id="heroCountBar"></span></div>
+      <b id="heroCountNow">01</b>/<span id="heroCountTotal">03</span>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 2. BEFORE / AFTER ========== -->
+<section id="contrast">
+  <div class="section-head" data-reveal>
+    <span class="eyebrow">Why it matters</span>
+    <h2>The old way loses the lead. One system doesn't.</h2>
+  </div>
+  <div class="ba-grid">
+    <div class="ba-panel ba-old" data-reveal aria-label="The old way: disconnected tools losing the lead">
+      <h3>Disconnected vendors</h3>
+      <div class="chaos" aria-hidden="true">
+        <span class="chip" style="left:4%;top:8%;transform:rotate(-5deg)"><span class="x-mark">✕</span>Website form</span>
+        <span class="chip" style="left:48%;top:2%;transform:rotate(3deg)"><span class="x-mark">✕</span>Email inbox</span>
+        <span class="chip" style="left:14%;top:48%;transform:rotate(2deg)"><span class="x-mark">✕</span>Spreadsheet</span>
+        <span class="chip" style="left:56%;top:56%;transform:rotate(-4deg)"><span class="x-mark">✕</span>Sticky note</span>
+      </div>
+      <ol class="ba-chain">
+        <li><span class="x-mark">✕</span>Website → Email → Spreadsheet</li>
+        <li><span class="x-mark">✕</span>4 hours before anyone sees it</li>
+        <li class="ba-fail"><span class="x-mark">✕</span>Missed lead. Bought elsewhere.</li>
+      </ol>
+    </div>
+    <div class="ba-panel ba-new" data-reveal data-delay="140" aria-label="AutoSuite: one connected system closing the deal">
+      <h3>AutoSuite</h3>
+      <div class="order" aria-hidden="true">
+        <svg viewBox="0 0 400 130" preserveAspectRatio="none">
+          <path d="M70 34 C 140 34, 180 66, 240 66 C 290 66, 310 98, 350 98" fill="none" stroke="oklch(0.8 0.16 85)" stroke-width="2" stroke-dasharray="4 5"/>
+        </svg>
+        <span class="node" style="left:2%;top:10%"><span class="check-mark">✓</span>Car card</span>
+        <span class="node" style="left:38%;top:38%"><span class="check-mark">✓</span>Real-time sync</span>
+        <span class="node" style="left:66%;top:64%"><span class="check-mark">✓</span>CRM board</span>
+      </div>
+      <ol class="ba-chain">
+        <li><span class="check-mark">✓</span>One system. One database.</li>
+        <li><span class="check-mark">✓</span>Lead on the board in &lt;3 seconds</li>
+        <li class="ba-win"><span class="check-mark">✓</span>Zero friction. Closed deal.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 3. LIVE FUNNEL ========== -->
+<section id="funnel" style="background:var(--surface)">
+  <div class="section-head" data-reveal>
+    <span class="eyebrow">The proof</span>
+    <h2>Every step captured. Every drop-off visible.</h2>
+    <p>62% book financing → 55% schedule test drives → <strong>100% captured instantly.</strong></p>
+  </div>
+  <div class="funnel-rows" id="funnelRows">
+    <div class="frow"><span class="lbl">Site visitors</span><div class="ftrack"><div class="fbar" data-w="100"><strong>4,820</strong></div></div><span class="pct"><span class="cnt" data-t="100">0</span>%</span></div>
+    <div class="fstep">↓ <b>62%</b> book financing</div>
+    <div class="frow"><span class="lbl">Financing booked</span><div class="ftrack"><div class="fbar" data-w="62"><strong>2,980</strong></div></div><span class="pct"><span class="cnt" data-t="62">0</span>%</span></div>
+    <div class="fstep">↓ <b>55%</b> schedule a test drive</div>
+    <div class="frow"><span class="lbl">Test drives</span><div class="ftrack"><div class="fbar" data-w="34"><strong>1,640</strong></div></div><span class="pct"><span class="cnt" data-t="34">0</span>%</span></div>
+    <div class="fstep">↓ <b>100%</b> captured as CRM leads — zero lost</div>
+    <div class="frow"><span class="lbl">Leads captured</span><div class="ftrack"><div class="fbar gold" data-w="34"><strong>1,640</strong></div></div><span class="pct"><span class="cnt" data-t="100">0</span>%</span></div>
+  </div>
+</section>
+
+<!-- ========== 4. FEATURE GRID ========== -->
+<section id="platform">
+  <div class="section-head" data-reveal>
+    <span class="eyebrow">The solution</span>
+    <h2>One OS. Every department.</h2>
+  </div>
+  <div class="features wrap">
+    <div class="feat" data-reveal>
+      <div class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="9" x2="9" y2="20"/></svg></div>
+      <h3>CRM board</h3><p>Kanban pipeline with instant lead routing and follow-up timers.</p>
+    </div>
+    <div class="feat" data-reveal data-delay="80">
+      <div class="icon"><svg viewBox="0 0 24 24"><path d="M5 16 L7 9 Q8 6 11 6 L13 6 Q16 6 17 9 L19 16"/><rect x="3" y="16" width="18" height="4" rx="2"/><circle cx="8" cy="20" r="1.6"/><circle cx="16" cy="20" r="1.6"/></svg></div>
+      <h3>Inventory</h3><p>Stock, pricing and status synced to every storefront card, live.</p>
+    </div>
+    <div class="feat" data-reveal data-delay="160">
+      <div class="icon"><svg viewBox="0 0 24 24"><line x1="4" y1="20" x2="4" y2="12"/><line x1="10" y1="20" x2="10" y2="7"/><line x1="16" y1="20" x2="16" y2="10"/><line x1="22" y1="20" x2="22" y2="4"/></svg></div>
+      <h3>Analytics</h3><p>Funnel, response time and close-rate metrics without a data team.</p>
+    </div>
+    <div class="feat" data-reveal>
+      <div class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="15" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/></svg></div>
+      <h3>Appointments</h3><p>Test drives book straight onto the right rep's calendar.</p>
+    </div>
+    <div class="feat" data-reveal data-delay="80">
+      <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3 L12 13"/><path d="M8 9 L12 13 L16 9"/><rect x="4" y="15" width="16" height="6" rx="2"/></svg></div>
+      <h3>Financing</h3><p>Live-rate estimates that pre-qualify buyers before the handshake.</p>
+    </div>
+    <div class="feat" data-reveal data-delay="160">
+      <div class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7 L12 12 L16 14"/></svg></div>
+      <h3>Real-time sync</h3><p>Server-sent events push every change in under 3 seconds. No refresh.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 4.5 REAL PRODUCT SHOTS ========== -->
+<section id="product">
+  <div class="section-head" data-reveal>
+    <span class="eyebrow">See it live</span>
+    <h2>Not a mockup. The real dashboard.</h2>
+    <p>Every feature above runs inside this exact interface — no separate demo environment.</p>
+  </div>
+  <div class="product-shots">
+    <div class="pshot" data-reveal>
+      <div class="pshot-bar"><span class="pdotr"></span><span class="pdotr"></span><span class="pdotr"></span><span class="purl">app.autosuite.dev/dashboard</span></div>
+      <img src="screenshots/dealer-dashboard.png" alt="AutoSuite dealer dashboard overview">
+    </div>
+    <div class="pshot" data-reveal data-delay="140">
+      <div class="pshot-bar"><span class="pdotr"></span><span class="pdotr"></span><span class="pdotr"></span><span class="purl">app.autosuite.dev/crm</span></div>
+      <img src="screenshots/crm-board.png" alt="AutoSuite CRM lead board">
+    </div>
+  </div>
+</section>
+
+<!-- ========== 5. LIVE INVENTORY ========== -->
+<section id="inventory" style="background:var(--surface)">
+  <div class="section-head" data-reveal>
+    <span class="eyebrow">Live inventory</span>
+    <h2>Cards that tell the truth, in real time</h2>
+    <p>Status comes straight from the Dealer OS — never a stale listing.</p>
+  </div>
+  <div class="inv-scroll">
+    <article class="inv-card" data-reveal>
+      <span class="live-tag">● Live from Dealer OS</span>
+      <div class="inv-art" aria-hidden="true">
+        <svg viewBox="0 0 220 96"><path d="M22 74 Q27 46 55 41 L74 22 Q84 14 106 14 L138 22 Q152 26 164 44 L198 74 Z" fill="oklch(0.6 0.2 260)"/><path d="M80 40 L90 25 Q97 19 108 19 L134 25 Q141 29 146 40 Z" fill="oklch(0.93 0.02 260)"/><rect x="18" y="68" width="186" height="14" rx="7" fill="oklch(0.45 0.18 260)"/><circle cx="62" cy="80" r="13" fill="oklch(0.22 0.04 260)"/><circle cx="62" cy="80" r="5.5" fill="oklch(0.7 0.02 260)"/><circle cx="160" cy="80" r="13" fill="oklch(0.22 0.04 260)"/><circle cx="160" cy="80" r="5.5" fill="oklch(0.7 0.02 260)"/></svg>
+      </div>
+      <div class="inv-body">
+        <span class="status avail">Available</span>
+        <h3>2024 BMW X6 xDrive40i</h3>
+        <p class="meta">$72,900 · 12,400 mi</p>
+      </div>
+    </article>
+    <article class="inv-card" data-reveal data-delay="120">
+      <span class="live-tag">● Live from Dealer OS</span>
+      <div class="inv-art" aria-hidden="true">
+        <svg viewBox="0 0 220 96"><path d="M22 74 Q27 46 55 41 L74 22 Q84 14 106 14 L138 22 Q152 26 164 44 L198 74 Z" fill="oklch(0.65 0.02 260)"/><path d="M80 40 L90 25 Q97 19 108 19 L134 25 Q141 29 146 40 Z" fill="oklch(0.93 0.02 260)"/><rect x="18" y="68" width="186" height="14" rx="7" fill="oklch(0.45 0.02 260)"/><circle cx="62" cy="80" r="13" fill="oklch(0.22 0.04 260)"/><circle cx="62" cy="80" r="5.5" fill="oklch(0.7 0.02 260)"/><circle cx="160" cy="80" r="13" fill="oklch(0.22 0.04 260)"/><circle cx="160" cy="80" r="5.5" fill="oklch(0.7 0.02 260)"/></svg>
+      </div>
+      <div class="inv-body">
+        <span class="status booked"><span class="pdot"></span>Test Drive Booked</span>
+        <h3>2023 Toyota Camry XSE</h3>
+        <p class="meta">$28,400 · 31,200 mi</p>
+      </div>
+    </article>
+    <article class="inv-card is-sold" data-reveal data-delay="240">
+      <span class="live-tag">● Live from Dealer OS</span>
+      <div class="inv-art" aria-hidden="true">
+        <svg viewBox="0 0 220 96"><path d="M22 74 Q27 46 55 41 L74 22 Q84 14 106 14 L138 22 Q152 26 164 44 L198 74 Z" fill="oklch(0.3 0.03 260)"/><path d="M80 40 L90 25 Q97 19 108 19 L134 25 Q141 29 146 40 Z" fill="oklch(0.85 0.02 260)"/><rect x="18" y="68" width="186" height="14" rx="7" fill="oklch(0.2 0.02 260)"/><circle cx="62" cy="80" r="13" fill="oklch(0.22 0.04 260)"/><circle cx="62" cy="80" r="5.5" fill="oklch(0.7 0.02 260)"/><circle cx="160" cy="80" r="13" fill="oklch(0.22 0.04 260)"/><circle cx="160" cy="80" r="5.5" fill="oklch(0.7 0.02 260)"/></svg>
+      </div>
+      <div class="inv-body">
+        <span class="status sold">Sold</span>
+        <h3>2025 Porsche Cayenne</h3>
+        <p class="meta">$79,500 · 2,100 mi</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ========== 6. TRUST ========== -->
+<section id="trust">
+  <div class="section-head" data-reveal>
+    <span class="eyebrow">Trusted by sales teams nationwide</span>
+    <h2>Engineered, accessible, honest</h2>
+  </div>
+  <div class="trust-badges" data-reveal>
+    <span class="tbadge"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M5 8 L7 10 L11 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>WCAG AA Compliant</span>
+    <span class="tbadge"><svg viewBox="0 0 16 16" fill="none"><path d="M8 1 L9.8 6 L15 6.2 L10.9 9.4 L12.4 14.5 L8 11.5 L3.6 14.5 L5.1 9.4 L1 6.2 L6.2 6 Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>Real-Time Data Sync</span>
+    <span class="tbadge"><svg viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="3" stroke="currentColor" stroke-width="1.5"/><path d="M5.5 8 L7.5 10 L10.5 6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>No Third-Party Bloat</span>
+  </div>
+  <blockquote class="tquote" data-reveal data-delay="140">
+    <p>“AutoSuite cut our lead response time from 2 hours to 15 minutes.”</p>
+    <cite>— John D., Sales Manager, Midtown Motors</cite>
+  </blockquote>
+  <div class="tlogos" data-reveal data-delay="260" aria-label="Dealership groups using AutoSuite">
+    <span class="tlogo"><svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7.5" stroke="currentColor" stroke-width="1.6"/><path d="M4 9 H14" stroke="currentColor" stroke-width="1.6"/></svg>Midtown Motors</span>
+    <span class="tlogo"><svg viewBox="0 0 18 18" fill="none"><path d="M2 14 L9 3 L16 14 Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>Harbor Auto</span>
+    <span class="tlogo"><svg viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="12" height="12" rx="2.5" stroke="currentColor" stroke-width="1.6"/></svg>Vista Motors</span>
+    <span class="tlogo"><svg viewBox="0 0 18 18" fill="none"><path d="M2 12 L6 6 L10 10 L16 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Summit Dealers</span>
+    <span class="tlogo"><svg viewBox="0 0 18 18" fill="none"><circle cx="6" cy="9" r="4" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="9" r="4" stroke="currentColor" stroke-width="1.6"/></svg>Crestline Auto</span>
+  </div>
+</section>
+
+<!-- ========== 7. NO-CODE PROMISE ========== -->
+<section id="nocode" style="background:var(--surface)">
+  <div class="section-head" data-reveal>
+    <span class="eyebrow">The no-code promise</span>
+    <h2>Customize your flow in minutes. No developer needed.</h2>
+  </div>
+  <div class="nc-grid">
+    <div class="nc-panel nc-old" data-reveal>
+      <h3><span class="x-mark">✕</span>Complex settings</h3>
+      <div class="code-mess" aria-label="Example of complex vendor configuration">
+        &lt;lead_router priority="???"&gt;<br>
+        &nbsp;&nbsp;config.xml → <i>ERR_SYNC_FAILED</i><br>
+        &nbsp;&nbsp;vendor_api_key = <i>expired</i><br>
+        &nbsp;&nbsp;crm_webhook: <i>timeout (4h)</i><br>
+        &nbsp;&nbsp;// TODO: call support…<br>
+        &lt;/lead_router&gt;
+      </div>
+    </div>
+    <div class="nc-panel nc-new" data-reveal data-delay="140">
+      <h3><span class="check-mark">✓</span>Simple toggles</h3>
+      <div class="toggles">
+        <div class="toggle-row"><span>Auto-assign new leads</span><button class="tog" role="switch" aria-checked="true" aria-label="Auto-assign new leads"></button></div>
+        <div class="toggle-row"><span>Instant test-drive booking</span><button class="tog" role="switch" aria-checked="true" aria-label="Instant test-drive booking"></button></div>
+        <div class="toggle-row"><span>Financing pre-qualification</span><button class="tog" role="switch" aria-checked="true" aria-label="Financing pre-qualification"></button></div>
+        <div class="toggle-row"><span>SMS follow-up reminders</span><button class="tog" role="switch" aria-checked="false" aria-label="SMS follow-up reminders"></button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 8. FINAL CTA + FOOTER ========== -->
+<section class="cta" id="cta">
+  <div data-reveal>
+    <h2>Ready to stop losing leads?<br>Start closing.</h2>
+    <p>Join the dealerships closing more deals with AutoSuite.</p>
+    <div class="cta-buttons">
+      <a href="mailto:hello@autosuite.dev" class="crown-btn" id="crownBtn">
+        <svg class="crown" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 8 L7 12 L12 5 L17 12 L21 8 L19.5 17 Q19.3 18.5 17.8 18.5 L6.2 18.5 Q4.7 18.5 4.5 17 Z" fill="oklch(0.35 0.07 85)"/>
+          <circle cx="3" cy="7" r="1.6" fill="oklch(0.35 0.07 85)"/><circle cx="12" cy="4" r="1.6" fill="oklch(0.35 0.07 85)"/><circle cx="21" cy="7" r="1.6" fill="oklch(0.35 0.07 85)"/>
+        </svg>
+        Get Early Access
+      </a>
+      <a href="mailto:hello@autosuite.dev" class="btn btn-ghost">Book a Demo</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot">
+    <span class="wordmark">Auto<b>Suite</b></span>
+    <nav aria-label="Footer">
+      <a href="#hero">About</a>
+      <a href="#platform">Docs</a>
+      <a href="#trust">Privacy</a>
+    </nav>
+    <span>© 2026 AutoSuite. The dealership operating system.</span>
+  </div>
+</footer>
+
+<script>
+window.addEventListener('DOMContentLoaded', function () {
+  'use strict';
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- Scroll reveal ---------- */
+  var revealEls = document.querySelectorAll('[data-reveal]');
+  if (reduced || !('IntersectionObserver' in window)) {
+    revealEls.forEach(function (el) { el.classList.add('in'); });
+  } else {
+    var ro = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var el = e.target, d = parseInt(el.getAttribute('data-delay') || '0', 10);
+        setTimeout(function () { el.classList.add('in'); }, d);
+        ro.unobserve(el);
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(function (el) { ro.observe(el); });
+  }
+
+  /* ---------- 1. Hero pipeline carousel ---------- */
+  var heroStage = document.getElementById('heroStage');
+  var heroArrow = document.getElementById('heroArrow');
+  var heroTitle = document.getElementById('heroTitle');
+  var heroSub = document.getElementById('heroSub');
+  var heroCountNow = document.getElementById('heroCountNow');
+  var heroCountBar = document.getElementById('heroCountBar');
+  var slides = heroStage.querySelectorAll('.hero-slide');
+  var slideData = [
+    { title: 'The dealership operating system.', sub: 'One platform connecting every customer touchpoint straight to your team.' },
+    { title: 'From click to closed deal, instantly.', sub: 'The moment David books a test drive, the lead is already on your board.' },
+    { title: 'One board. Every department.', sub: 'Watch a single lead move from New to SOLD — automatically, with nothing to configure.' }
+  ];
+  var heroBubbleMsg = heroStage.querySelector('[data-slide="1"] .hbubble p');
+  var heroBubbleFull = heroBubbleMsg ? heroBubbleMsg.textContent : '';
+  function typeBubble() {
+    if (!heroBubbleMsg || reduced) return;
+    heroBubbleMsg.textContent = '';
+    var i = 0;
+    var iv = setInterval(function () {
+      heroBubbleMsg.textContent = heroBubbleFull.slice(0, ++i);
+      if (i >= heroBubbleFull.length) clearInterval(iv);
+    }, 40);
+  }
+  var heroKanban = heroStage.querySelector('[data-slide="2"] .hkanban');
+  var hkPuck = heroKanban ? heroKanban.querySelector('.hk-puck') : null;
+  var hkLabel = heroKanban ? heroKanban.querySelector('.hk-label') : null;
+  var hkDots = heroKanban ? heroKanban.querySelectorAll('.hk-dot') : [];
+  var hkStages = ['New Lead', 'Assigned: Sarah', 'Contacted', 'Qualified', 'Appointment Set', 'SOLD 🎉'];
+  function burst(el, count) {
+    if (reduced || !el) return;
+    for (var k = 0; k < count; k++) {
+      var s = document.createElement('span');
+      s.className = 'sparkle';
+      s.innerHTML = '<svg viewBox="0 0 12 12"><path d="M6 0 L7.2 4.8 L12 6 L7.2 7.2 L6 12 L4.8 7.2 L0 6 L4.8 4.8 Z" fill="#fff"/></svg>';
+      s.style.left = (10 + Math.random() * 80) + '%';
+      s.style.top = (Math.random() * 60 - 10) + '%';
+      s.style.setProperty('--sx', (Math.random() * 44 - 22) + 'px');
+      s.style.setProperty('--sy', (-16 - Math.random() * 26) + 'px');
+      el.appendChild(s);
+      (function (sp) { setTimeout(function () { sp.remove(); }, 800); })(s);
+    }
+  }
+  var hkTimer = null;
+  function resetKanban() {
+    if (!heroKanban) return;
+    clearTimeout(hkTimer);
+    heroKanban.classList.remove('sold');
+    hkDots.forEach(function (d) { d.classList.remove('active'); });
+    if (hkPuck) hkPuck.style.left = '0%';
+    if (hkLabel) hkLabel.textContent = hkStages[0];
+  }
+  function runKanban() {
+    if (!heroKanban) return;
+    if (reduced) {
+      hkDots.forEach(function (d) { d.classList.add('active'); });
+      if (hkPuck) hkPuck.style.left = '100%';
+      if (hkLabel) hkLabel.textContent = hkStages[hkStages.length - 1];
+      heroKanban.classList.add('sold');
+      return;
+    }
+    var i = 0;
+    (function step() {
+      hkDots.forEach(function (d, n) { d.classList.toggle('active', n <= i); });
+      if (hkPuck) hkPuck.style.left = (i / (hkStages.length - 1) * 100) + '%';
+      if (hkLabel) hkLabel.textContent = hkStages[i];
+      if (i === hkStages.length - 1) { heroKanban.classList.add('sold'); burst(heroKanban, 5); return; }
+      i++;
+      hkTimer = setTimeout(step, 620);
+    })();
+  }
+  var heroLeadCountEl = document.getElementById('heroLeadCount');
+  var heroLeadCount = parseInt(heroLeadCountEl.textContent, 10);
+  if (!reduced) {
+    setInterval(function () {
+      heroLeadCount += Math.floor(Math.random() * 3) + 1;
+      heroLeadCountEl.textContent = heroLeadCount;
+      heroLeadCountEl.classList.remove('hls-bump');
+      void heroLeadCountEl.offsetWidth;
+      heroLeadCountEl.classList.add('hls-bump');
+    }, 5200);
+  }
+  var heroIdx = 0, heroTimer = null, heroStarted = false;
+  function showHeroSlide(i) {
+    heroIdx = i;
+    slides.forEach(function (s, n) { s.classList.toggle('active', n === i); });
+    heroCountNow.textContent = String(i + 1).padStart(2, '0');
+    heroCountBar.style.transform = 'scaleX(' + ((i + 1) / slideData.length) + ')';
+    function applyText() {
+      heroTitle.textContent = slideData[i].title;
+      heroSub.textContent = slideData[i].sub;
+      heroTitle.style.opacity = '1'; heroTitle.style.transform = 'none';
+      heroSub.style.opacity = '1'; heroSub.style.transform = 'none';
+    }
+    if (reduced || !heroStarted) { applyText(); }
+    else {
+      heroTitle.style.opacity = '0'; heroTitle.style.transform = 'translateY(10px)';
+      heroSub.style.opacity = '0'; heroSub.style.transform = 'translateY(10px)';
+      setTimeout(applyText, 280);
+    }
+    heroStarted = true;
+    if (i === 1) { if (heroBubbleMsg) heroBubbleMsg.textContent = reduced ? heroBubbleFull : ''; setTimeout(typeBubble, reduced ? 0 : 1650); }
+    if (i === 2) { resetKanban(); setTimeout(runKanban, reduced ? 0 : 1800); } else { resetKanban(); }
+  }
+  function nextHeroSlide() {
+    if (heroIdx === slideData.length - 1) {
+      document.getElementById('contrast').scrollIntoView({ behavior: reduced ? 'auto' : 'smooth' });
+      return;
+    }
+    showHeroSlide((heroIdx + 1) % slideData.length);
+  }
+  heroArrow.addEventListener('click', nextHeroSlide);
+  showHeroSlide(0);
+  if (!reduced) {
+    heroTimer = setInterval(function () { showHeroSlide((heroIdx + 1) % slideData.length); }, 11000);
+    heroStage.addEventListener('mouseenter', function () { clearInterval(heroTimer); });
+    heroStage.addEventListener('mouseleave', function () { heroTimer = setInterval(function () { showHeroSlide((heroIdx + 1) % slideData.length); }, 11000); });
+  }
+
+  /* ---------- 3. Live funnel ---------- */
+  var funnelRows = document.getElementById('funnelRows');
+  function runFunnel() {
+    funnelRows.querySelectorAll('.fbar').forEach(function (b) { b.style.width = b.getAttribute('data-w') + '%'; });
+    funnelRows.querySelectorAll('.cnt').forEach(function (el) {
+      var target = parseInt(el.getAttribute('data-t'), 10);
+      if (reduced) { el.textContent = target; return; }
+      var t0 = null, dur = 1100;
+      function tick(ts) {
+        if (!t0) t0 = ts;
+        var p = Math.min((ts - t0) / dur, 1);
+        el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * target);
+        if (p < 1) requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    });
+  }
+  if (reduced) { runFunnel(); }
+  else if ('IntersectionObserver' in window) {
+    var fDone = false;
+    var fo = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting && !fDone) { fDone = true; runFunnel(); fo.disconnect(); } });
+    }, { threshold: 0.35 });
+    fo.observe(funnelRows);
+  } else { runFunnel(); }
+
+  /* ---------- 7. No-code toggles ---------- */
+  document.querySelectorAll('.tog').forEach(function (t) {
+    t.addEventListener('click', function () {
+      t.setAttribute('aria-checked', t.getAttribute('aria-checked') === 'true' ? 'false' : 'true');
+    });
+  });
+
+  /* ---------- 8. Crown button glitter ---------- */
+  var crown = document.getElementById('crownBtn');
+  var glitterTimer = null;
+  function sparkle() {
+    var s = document.createElement('span');
+    s.className = 'sparkle';
+    s.innerHTML = '<svg viewBox="0 0 12 12"><path d="M6 0 L7.2 4.8 L12 6 L7.2 7.2 L6 12 L4.8 7.2 L0 6 L4.8 4.8 Z" fill="#fff"/></svg>';
+    s.style.left = (10 + Math.random() * 80) + '%';
+    s.style.top = (Math.random() * 60 - 10) + '%';
+    s.style.setProperty('--sx', (Math.random() * 44 - 22) + 'px');
+    s.style.setProperty('--sy', (-16 - Math.random() * 26) + 'px');
+    crown.appendChild(s);
+    setTimeout(function () { s.remove(); }, 800);
+  }
+  crown.addEventListener('mouseenter', function () {
+    if (reduced) return;
+    sparkle(); sparkle();
+    glitterTimer = setInterval(sparkle, 160);
+  });
+  crown.addEventListener('mouseleave', function () { clearInterval(glitterTimer); });
+  crown.addEventListener('focus', function () { if (!reduced) { sparkle(); sparkle(); sparkle(); } });
+});
+</script>
+</body>
+</html>
