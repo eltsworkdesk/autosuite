@@ -938,7 +938,10 @@
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
   background-size: cover;
-  background-position: center;
+  /* Anchored to the top because the overlay below fades to solid navy over the
+     lower two-thirds — the app header and KPI row are the only part that stays
+     visible, and they're the most legible part of a UI shot at this size. */
+  background-position: center top;
   transition: transform var(--transition-base), box-shadow var(--transition-base);
 }
 
