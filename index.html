@@ -81,6 +81,7 @@
       </div>
     </div>
     <div class="hero-media">
+      <div class="hero-stage">
       <div class="hero-frame">
         <div class="hero-dash" aria-hidden="true">
           <div class="hero-dash-side">
@@ -103,9 +104,9 @@
               <span class="hero-dash-live"><span class="pulse-dot pulse-dot-sm"></span>Live sync</span>
             </div>
             <div class="hero-dash-stats">
-              <div class="hero-dash-stat">
+              <div class="hero-dash-stat" id="heroLeadsStat">
                 <span class="hero-dash-stat-label">Leads today</span>
-                <span class="hero-dash-stat-value">18</span>
+                <span class="hero-dash-stat-value" id="heroLeadsToday">18</span>
                 <span class="hero-dash-stat-trend">▲ 12%</span>
               </div>
               <div class="hero-dash-stat">
@@ -133,9 +134,9 @@
                   <span></span><span></span><span></span><span></span>
                 </div>
               </div>
-              <div class="hero-dash-leads">
+              <div class="hero-dash-leads" id="heroLeadsPanel">
                 <h4>New leads</h4>
-                <ul>
+                <ul id="heroLeadsList">
                   <li><span class="hero-dash-avatar"></span><span class="hero-dash-lead-text"><strong>Marcus T.</strong><small>Financing review</small></span><time>2m</time></li>
                   <li><span class="hero-dash-avatar"></span><span class="hero-dash-lead-text"><strong>Priya S.</strong><small>Test drive booked</small></span><time>14m</time></li>
                   <li><span class="hero-dash-avatar"></span><span class="hero-dash-lead-text"><strong>Wes H.</strong><small>Trade-in estimate</small></span><time>31m</time></li>
@@ -145,10 +146,30 @@
           </div>
         </div>
       </div>
-      <div class="hero-pop">
-        <img src="assets/web/porsche-cayenne-exterior1.jpg" alt="2025 Porsche Cayenne" loading="lazy">
-        <span class="data-chip hero-pop-chip">2025 Porsche Cayenne · ₦68,000,000</span>
+      <!-- The wire runs through a channel below the dashboard so the travel is
+           actually visible; only its last leg goes behind the frame, which is
+           the moment the booking lands "inside" the system. -->
+      <svg class="hero-wire" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M29 92 L62 92 L62 80 L84 80"></path>
+      </svg>
+      <span class="hero-packet" id="heroPacket" aria-hidden="true"></span>
+
+      <div class="hero-source" aria-hidden="true">
+        <img src="assets/web/porsche-cayenne-exterior1.jpg" alt="" loading="lazy">
+        <div class="hero-source-body">
+          <span class="hero-source-tag">Storefront</span>
+          <strong>2025 Porsche Cayenne</strong>
+          <span class="hero-source-btn" id="heroSourceBtn">Book Test Drive</span>
+        </div>
       </div>
+      </div>
+
+      <p class="hero-flowline">
+        <button type="button" class="hero-replay" id="heroReplay">
+          <span aria-hidden="true">↻</span> Replay
+        </button>
+        <span class="hero-flowline-text">A booking on the storefront is on your team's board in under 3 seconds &mdash; nothing waits in an inbox.</span>
+      </p>
     </div>
   </section>
 
@@ -414,5 +435,6 @@
   <script src="js/lib/inventory.js" defer></script>
   <script src="js/favorites.js" defer></script>
   <script src="js/cars-data.js" defer></script>
+  <script src="js/home-hero.js" defer></script>
 </body>
 </html>
