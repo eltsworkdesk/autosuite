@@ -211,4 +211,40 @@ document.addEventListener('DOMContentLoaded', () => {
       document.querySelector('.burger')?.setAttribute('aria-expanded', 'false');
     });
   });
+
+  /* ---------- Crown CTA sparkles ----------
+     Any [data-crown] button gets glitter on hover/focus. Purely decorative, so
+     it's skipped entirely under prefers-reduced-motion. */
+  const crownReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!crownReduced) {
+    document.querySelectorAll('[data-crown]').forEach((crown) => {
+      let glitter = null;
+
+      const sparkle = () => {
+        const s = document.createElement('span');
+        s.className = 'sparkle';
+        s.innerHTML =
+          '<svg viewBox="0 0 12 12" aria-hidden="true">' +
+          '<path d="M6 0 L7.2 4.8 L12 6 L7.2 7.2 L6 12 L4.8 7.2 L0 6 L4.8 4.8 Z" fill="#fff"/></svg>';
+        s.style.left = 10 + Math.random() * 80 + '%';
+        s.style.top = Math.random() * 60 - 10 + '%';
+        s.style.setProperty('--sx', Math.random() * 44 - 22 + 'px');
+        s.style.setProperty('--sy', -16 - Math.random() * 26 + 'px');
+        crown.appendChild(s);
+        setTimeout(() => s.remove(), 800);
+      };
+
+      crown.addEventListener('mouseenter', () => {
+        sparkle();
+        sparkle();
+        glitter = setInterval(sparkle, 160);
+      });
+      crown.addEventListener('mouseleave', () => clearInterval(glitter));
+      crown.addEventListener('focus', () => {
+        sparkle();
+        sparkle();
+        sparkle();
+      });
+    });
+  }
 });

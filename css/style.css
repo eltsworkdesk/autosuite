@@ -81,6 +81,9 @@
 
   /* Motion */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Overshoots past its target and settles back — gives entering elements
+     weight, so a card reads as landing rather than fading in. */
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --transition-fast: 0.15s var(--ease);
   --transition-base: 0.22s var(--ease);
   --transition-slow: 0.4s var(--ease);
@@ -430,6 +433,49 @@ button {
 
 .btn.accent:hover {
   box-shadow: 0 12px 26px oklch(58% 0.15 55 / 38%);
+}
+
+/* Crown variant — the single highest-intent CTA on a page. Layers on .accent;
+   the crown wobbles on hover and js/script.js throws sparkles off it. Shared
+   rather than page-local so the homepage and the pitch page can't drift. */
+.btn.crown {
+  position: relative;
+  overflow: visible;
+}
+
+.btn.crown svg {
+  width: 21px;
+  height: 21px;
+}
+
+.btn.crown:hover .crown-icon {
+  animation: crown-shake 0.55s var(--ease) infinite;
+  transform-origin: 50% 80%;
+}
+
+@keyframes crown-shake {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(-11deg) translateY(-1px); }
+  50% { transform: rotate(9deg); }
+  75% { transform: rotate(-5deg); }
+}
+
+.sparkle {
+  position: absolute;
+  pointer-events: none;
+  font-size: 0;
+  animation: sparkle-pop 0.75s ease-out forwards;
+}
+
+.sparkle svg {
+  width: 11px;
+  height: 11px;
+}
+
+@keyframes sparkle-pop {
+  0% { opacity: 0; transform: translate(0, 0) scale(0.3); }
+  25% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--sx), var(--sy)) scale(1.15) rotate(50deg); }
 }
 
 .btn.small {

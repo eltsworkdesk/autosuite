@@ -17,13 +17,13 @@
 }
 
 .hero-content,
-.hero-media {
+.sim {
   position: relative;
   z-index: 1;
   animation: hero-rise 0.6s var(--ease) both;
 }
 
-.hero-media {
+.sim {
   animation-delay: 0.08s;
 }
 
@@ -47,7 +47,10 @@
   margin: var(--space-3) 0 var(--space-4);
 }
 
-.hero-content p {
+/* Direct child only — the social-proof line further down is also a <p> inside
+   .hero-content, and inheriting this measure stretched it wide enough to push
+   the avatars beside it off centre. */
+.hero-content > p {
   font-size: var(--text-base);
   color: var(--on-dark-soft);
   max-width: 30ch;
@@ -62,445 +65,455 @@
   justify-content: center;
 }
 
-.hero-media {
+/* ---------- Hero simulation: customer -> sync line -> dealer OS ----------
+   A working demo of the product claim, not a picture of one. Everything is
+   drawn in CSS/SVG so it scales, themes off the tokens, and ships no bytes of
+   raster art. The two sides sit on a grid; the middle column is the wire the
+   booking travels along.
+-------------------------------------------------------------------------- */
+.sim {
   width: 100%;
-  max-width: 680px;
+  max-width: 1060px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  align-items: center;
+  text-align: left;
 }
 
-.hero-frame {
-  position: relative;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-lg);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-/* ---------- Hero dashboard preview (decorative mockup, not live data) ---------- */
-.hero-dash {
-  display: flex;
-  background: var(--navy-900);
-  min-height: 380px;
-}
-
-.hero-dash-side {
-  width: clamp(64px, 20%, 132px);
-  flex: none;
-  background: var(--navy-950);
-  padding: var(--space-4) var(--space-2);
+.sim-side {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-3);
+  min-width: 0;
 }
 
-.hero-dash-brand {
+.sim-cap {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--on-dark-faint);
+}
+
+.sim-who {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 0.8rem;
-  color: #fff;
-  white-space: nowrap;
-  overflow: hidden;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--on-dark-faint);
+  max-width: none;
+  margin: 0;
 }
 
-.hero-dash-dot {
-  width: 8px;
-  height: 8px;
+.sim-avatar {
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
-  background: var(--brand-accent);
-  flex: none;
+  background: var(--gradient-brand);
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  flex-shrink: 0;
 }
 
-.hero-dash-nav {
+.sim-avatar-alt {
+  background: var(--brand-accent);
+  color: #1a1200;
+}
+
+/* ---------- Customer device ---------- */
+.sim-device {
+  background: var(--navy-800);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 22px;
+  padding: var(--space-3);
+  box-shadow: var(--shadow-lg);
+}
+
+.sim-device-bar {
+  display: flex;
+  gap: 5px;
+  padding: 0 0.2rem var(--space-3);
+}
+
+.sim-device-bar span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.sim-listing {
+  background: oklch(15% 0.012 260);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+
+.sim-car {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: var(--space-3);
+}
+
+/* Flat, in-palette illustration — one hue family, no gradients or shading. */
+.sim-car .c-body { fill: var(--brand-blue); }
+.sim-car .c-glass { fill: var(--brand-blue-light); }
+.sim-car .c-sill { fill: oklch(30% 0.03 260); }
+.sim-car .c-tyre { fill: oklch(20% 0.02 260); }
+
+.sim-listing-meta {
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.hero-dash-nav span {
-  font-size: 0.68rem;
-  font-weight: 500;
-  color: var(--on-dark-faint);
-  padding: 6px 8px;
-  border-radius: 6px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.sim-listing-meta strong {
+  font-size: var(--text-sm);
+  color: var(--on-dark);
 }
 
-.hero-dash-nav span.active {
-  background: rgba(255, 255, 255, 0.09);
-  color: #fff;
-}
-
-.hero-dash-main {
-  flex: 1;
-  min-width: 0;
-  padding: var(--space-4) var(--space-4);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-3);
-}
-
-.hero-dash-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--space-2);
-}
-
-.hero-dash-head h3 {
-  font-size: 0.9rem;
-  color: #fff;
-  margin: 0;
-}
-
-.hero-dash-head p {
-  font-size: 0.66rem;
-  color: var(--on-dark-faint);
-  margin: 2px 0 0;
-}
-
-.hero-dash-live {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
+.sim-listing-meta span {
   font-family: var(--font-mono);
-  font-size: 0.62rem;
-  font-weight: 500;
-  color: var(--success-on-dark);
-  background: oklch(44% 0.14 145 / 15%);
-  padding: 4px 9px;
-  border-radius: var(--radius-pill);
-  white-space: nowrap;
-  flex: none;
-}
-
-.hero-dash-stats {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-2);
-}
-
-.hero-dash-stat {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
-  padding: 8px 10px;
-}
-
-.hero-dash-stat-label {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 0.56rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  font-size: var(--text-xs);
   color: var(--on-dark-faint);
-  margin-bottom: 4px;
 }
 
-/* inline-block so the box hugs the digits: as a full-width block, the bump
-   animation's scale() would push its edges out past the card's padding. */
-.hero-dash-stat-value {
-  display: inline-block;
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.05rem;
-  color: #fff;
-}
-
-.hero-dash-stat-trend {
-  display: block;
-  font-size: 0.62rem;
-  font-weight: 500;
-  color: var(--success-on-dark);
-  margin-top: 2px;
-}
-
-.hero-dash-panels {
-  display: flex;
-  gap: var(--space-2);
-  flex: 1;
-}
-
-.hero-dash-chart,
-.hero-dash-leads {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
-  padding: var(--space-2) var(--space-3);
-  min-width: 0;
-}
-
-.hero-dash-chart {
-  flex: 1.3;
-  display: flex;
-  flex-direction: column;
-}
-
-.hero-dash-leads {
-  flex: 1;
-}
-
-.hero-dash-chart h4,
-.hero-dash-leads h4 {
-  font-size: 0.62rem;
-  font-weight: 600;
-  color: var(--on-dark-soft);
-  margin: 0 0 var(--space-2);
-}
-
-.hero-dash-bars {
-  display: flex;
-  align-items: flex-end;
-  gap: 3px;
-  flex: 1;
-  min-height: 60px;
-}
-
-.hero-dash-bars span {
-  flex: 1;
-  background: var(--brand-blue-light);
-  border-radius: 2px 2px 0 0;
-}
-
-.hero-dash-bars span:nth-child(1) { height: 34%; }
-.hero-dash-bars span:nth-child(2) { height: 46%; }
-.hero-dash-bars span:nth-child(3) { height: 40%; }
-.hero-dash-bars span:nth-child(4) { height: 58%; }
-.hero-dash-bars span:nth-child(5) { height: 52%; }
-.hero-dash-bars span:nth-child(6) { height: 66%; }
-.hero-dash-bars span:nth-child(7) { height: 60%; }
-.hero-dash-bars span:nth-child(8) { height: 76%; }
-.hero-dash-bars span:nth-child(9) { height: 70%; }
-.hero-dash-bars span:nth-child(10) { height: 86%; }
-.hero-dash-bars span:nth-child(11) { height: 80%; }
-.hero-dash-bars span:nth-child(12) { height: 100%; }
-
-.hero-dash-leads ul {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-}
-
-.hero-dash-leads li {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.hero-dash-avatar {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--brand-accent);
-  flex: none;
-}
-
-.hero-dash-lead-text {
-  min-width: 0;
-  overflow: hidden;
-}
-
-.hero-dash-lead-text strong {
-  display: block;
-  font-size: 0.66rem;
-  font-weight: 600;
-  color: #fff;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.hero-dash-lead-text small {
-  display: block;
-  font-size: 0.6rem;
-  color: var(--on-dark-faint);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.hero-dash-leads li time {
-  margin-left: auto;
-  font-family: var(--font-mono);
-  font-size: 0.56rem;
-  color: var(--on-dark-faint);
-  flex: none;
-}
-
-@media (max-width: 480px) {
-  .hero-dash-panels {
-    flex-direction: column;
-  }
-}
-
-/* ---------- Hero flow: storefront -> wire -> dealer OS ----------
-   The claim this page makes is that a customer action reaches the team
-   instantly, so the hero demonstrates it rather than illustrating it: the
-   source card fires, a packet travels the wire, and the dashboard reacts.
-   js/home-hero.js drives the sequence. */
-/* Reserve a channel under the dashboard for the wire and source card. */
-.hero-stage {
-  position: relative;
-  padding-bottom: 104px;
-}
-
-/* The frame must sit above the wire so the packet's last leg disappears
-   behind the dashboard rather than riding over its face. */
-.hero-stage .hero-frame {
-  z-index: 1;
-}
-
-.hero-wire {
-  position: absolute;
-  inset: 0;
+.sim-book {
   width: 100%;
-  height: 100%;
-  z-index: 0;
-  overflow: visible;
-  pointer-events: none;
+  min-height: 44px;
+  border: 0;
+  border-radius: var(--radius-md);
+  background: var(--brand-blue);
+  color: #fff;
+  font-family: inherit;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.12s var(--ease), background var(--transition-fast);
 }
 
-.hero-wire path {
-  fill: none;
-  stroke: var(--brand-blue);
-  stroke-width: 10;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  vector-effect: non-scaling-stroke;
-  opacity: 0.32;
+.sim-book:hover,
+.sim-book:focus-visible {
+  background: var(--brand-blue-light);
+  color: var(--navy-950);
 }
 
-.hero-packet {
+/* Slam on press: the click is the story's trigger, so it should land hard. */
+.sim-book.is-pressed {
+  transform: scale(0.94);
+  background: var(--brand-blue-light);
+  color: var(--navy-950);
+}
+
+/* ---------- Sync line ---------- */
+.sim-link {
+  position: relative;
+  height: 56px;
+  min-width: 0;
+}
+
+/* A gradient rather than an SVG stroke: the dashes have to run down the page
+   when the pipeline stacks and across it when it doesn't, and a background
+   direction flips per breakpoint where a path's `d` cannot. */
+.sim-wire {
   position: absolute;
-  z-index: 0;
-  width: 14px;
-  height: 14px;
-  margin: -7px 0 0 -7px;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;
+  margin-left: -1.5px;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.3) 0 3px,
+    transparent 3px 12px
+  );
+}
+
+/* The packet travels on a CSS transition, not a rAF loop: the script only
+   flips .is-arrived and the stylesheet decides which axis that means. That
+   keeps the JS ignorant of layout, and — unlike a rAF animation — the trip
+   still completes if frames are throttled, so the story can never stall
+   half-way with an empty board. */
+.sim-packet {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 13px;
+  height: 13px;
+  margin: -6.5px 0 0 -6.5px;
   border-radius: 50%;
   background: var(--brand-accent);
-  box-shadow: 0 0 0 4px oklch(58% 0.15 55 / 22%), 0 0 20px oklch(58% 0.15 55 / 75%);
+  box-shadow: 0 0 0 4px oklch(72% 0.17 60 / 22%), 0 0 18px 4px oklch(72% 0.17 60 / 45%);
   opacity: 0;
-  pointer-events: none;
+  transition: opacity 0.2s linear, top 1.1s cubic-bezier(0.45, 0, 0.35, 1);
 }
 
-.hero-packet.is-travelling {
+.sim-packet.is-live {
   opacity: 1;
 }
 
-.hero-source {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  z-index: 2;
-  width: 190px;
+.sim-packet.is-arrived {
+  top: 100%;
+}
+
+/* Snap back to the start without playing the trip in reverse. */
+.sim-packet.no-anim {
+  transition: none;
+}
+
+/* ---------- Dealer board ---------- */
+.sim-board {
+  background: var(--navy-800);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 22px;
+  padding: var(--space-4);
+  box-shadow: var(--shadow-lg);
+}
+
+.sim-board-head {
   display: flex;
   align-items: center;
-  gap: 0.55rem;
-  padding: 0.5rem 0.6rem;
-  background: var(--surface);
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--on-dark-faint);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sim-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--success-on-dark);
+  /* Breathes rather than sits still — a static "Live" badge reads as a label,
+     a moving one reads as a connection. */
+  animation: sim-breathe 2.8s ease-in-out infinite;
+}
+
+@keyframes sim-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+}
+
+.sim-slot {
+  position: relative;
+  min-height: 178px;
+  padding-top: var(--space-4);
+}
+
+.sim-empty {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--on-dark-faint);
+  max-width: none;
+  margin: 0;
+  transition: opacity 0.25s linear;
+}
+
+.sim-empty.is-gone {
+  opacity: 0;
+}
+
+.sim-lead {
+  background: oklch(15% 0.012 260);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 3px solid var(--brand-accent);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg), 0 0 30px oklch(48% 0.16 260 / 30%);
+  padding: var(--space-3);
 }
 
-.hero-source img {
-  display: block;
-  width: 52px;
-  height: 52px;
-  flex: none;
-  object-fit: cover;
-  border-radius: var(--radius-sm);
+.sim-lead[hidden] {
+  display: none;
 }
 
-.hero-source-body {
-  min-width: 0;
+/* --spring overshoots and settles, so the card reads as landing on the board
+   rather than fading onto it. */
+.sim-lead.is-landing {
+  animation: sim-land 0.62s var(--spring) both;
+}
+
+@keyframes sim-land {
+  from { opacity: 0; transform: translateX(26px) scale(0.94); }
+  to { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+.sim-lead-top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.sim-lead-top > div {
   display: flex;
   flex-direction: column;
-  gap: 1px;
+  min-width: 0;
 }
 
-.hero-source-tag {
+.sim-lead-top strong {
+  font-size: var(--text-sm);
+  color: var(--on-dark);
+}
+
+.sim-lead-car {
   font-family: var(--font-mono);
-  font-size: 0.56rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--ink-faint);
+  font-size: var(--text-xs);
+  color: var(--on-dark-faint);
 }
 
-.hero-source-body strong {
-  font-family: var(--font-display);
-  font-size: 0.72rem;
-  color: var(--ink);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.hero-source-btn {
-  margin-top: 0.3rem;
-  align-self: flex-start;
-  background: var(--brand-blue);
-  color: #fff;
-  font-size: 0.64rem;
-  font-weight: 700;
+.sim-badge {
+  margin-left: auto;
+  flex-shrink: 0;
+  padding: 3px 0.6rem;
   border-radius: var(--radius-pill);
-  padding: 5px 12px;
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: oklch(72% 0.17 60 / 18%);
+  color: var(--brand-accent);
+  transition: background var(--transition-base), color var(--transition-base);
 }
 
-.hero-source-btn.is-pressed {
-  transform: scale(0.9);
-  box-shadow: 0 0 0 6px oklch(48% 0.16 260 / 28%);
+.sim-badge.is-assigned,
+.sim-badge.is-contacted {
+  background: oklch(70% 0.13 260 / 18%);
+  color: var(--brand-blue-light);
 }
 
-/* Dashboard reactions on packet arrival. */
-.hero-dash-stat.is-hit {
-  animation: hero-stat-hit 0.9s var(--ease);
+.sim-badge.is-sold {
+  background: oklch(70% 0.16 145 / 18%);
+  color: var(--success-on-dark);
 }
 
-@keyframes hero-stat-hit {
-  0% { box-shadow: 0 0 0 0 oklch(58% 0.15 55 / 55%); }
-  35% { box-shadow: 0 0 0 7px oklch(58% 0.15 55 / 0%); }
-  100% { box-shadow: 0 0 0 0 oklch(58% 0.15 55 / 0%); }
+/* Each state change punches the badge so the transition is felt, not just read. */
+.sim-badge.is-flipping {
+  animation: sim-badge-pop 0.42s var(--spring);
 }
 
-.hero-dash-stat-value.is-bumped {
-  transform-origin: left center;
-  animation: hero-value-bump 0.6s var(--ease);
-}
-
-@keyframes hero-value-bump {
+@keyframes sim-badge-pop {
   0% { transform: scale(1); }
-  35% { transform: scale(1.28); color: var(--brand-accent); }
+  40% { transform: scale(1.22); }
   100% { transform: scale(1); }
 }
 
-.hero-dash-leads li.is-new {
-  animation: hero-lead-in 0.55s var(--ease) both;
+.sim-log {
+  list-style: none;
+  margin: var(--space-3) 0 0;
+  padding: var(--space-3) 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
-@keyframes hero-lead-in {
-  from { opacity: 0; transform: translateX(-10px); }
-  to { opacity: 1; transform: none; }
+.sim-log li {
+  display: flex;
+  gap: var(--space-3);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--on-dark-soft);
+  animation: sim-log-in 0.4s var(--ease) both;
 }
 
-.hero-dash-leads li.is-new .hero-dash-avatar {
-  background: var(--brand-accent);
+.sim-log time {
+  color: var(--on-dark-faint);
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
 }
 
-.hero-dash-live.is-flashing {
-  animation: hero-live-flash 0.9s var(--ease);
+@keyframes sim-log-in {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes hero-live-flash {
-  0%, 100% { background: oklch(44% 0.14 145 / 15%); }
-  40% { background: oklch(58% 0.15 55 / 32%); }
+/* Confetti on Sold — spans appended by the script, each given its own vector. */
+.sim-confetti {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  border-radius: 1px;
+  pointer-events: none;
+  animation: sim-confetti 900ms var(--ease) forwards;
 }
 
-/* Caption + replay control under the stage. */
+@keyframes sim-confetti {
+  from { opacity: 1; transform: translate(0, 0) rotate(0deg); }
+  to { opacity: 0; transform: translate(var(--cx), var(--cy)) rotate(var(--cr)); }
+}
+
+/* Wide enough for the pipeline to read left-to-right: customer on one side,
+   dealer on the other, the wire literally between them. */
+@media (min-width: 880px) {
+  .sim {
+    /* Fixed customer column: it's a phone, and letting it grow to a full
+       fraction of 1060px turned it into a tablet. The board takes the slack. */
+    grid-template-columns: 320px 110px minmax(0, 560px);
+    justify-content: center;
+    /* Top-aligned so the two "Customer" / "Dealer OS" captions read as one
+       row; centring them drifted apart because the columns differ in height. */
+    align-items: start;
+    gap: var(--space-2);
+  }
+
+  .sim-link {
+    align-self: center;
+    height: 100%;
+    min-height: 120px;
+  }
+
+  .sim-wire {
+    top: 50%;
+    bottom: auto;
+    left: 0;
+    right: 0;
+    width: auto;
+    height: 3px;
+    margin: -1.5px 0 0;
+    background-image: repeating-linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.3) 0 3px,
+      transparent 3px 12px
+    );
+  }
+
+  .sim-packet {
+    left: 0;
+    top: 50%;
+    transition: opacity 0.2s linear, left 1.1s cubic-bezier(0.45, 0, 0.35, 1);
+  }
+
+  .sim-packet.is-arrived {
+    left: 100%;
+    top: 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sim-live,
+  .sim-lead.is-landing,
+  .sim-badge.is-flipping,
+  .sim-log li {
+    animation: none;
+  }
+
+  .sim-packet {
+    display: none;
+  }
+}
+
 .hero-flowline {
   position: relative;
   z-index: 2;
@@ -541,28 +554,11 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Narrow screens don't have the horizontal room for the wire: the source card
-   alone is wider than the path's start offset, so the packet would spawn
-   behind the card instead of leaving its edge. Drop the wire and packet and
-   let the button-press -> dashboard-reaction carry the story instead. */
-@media (max-width: 760px) {
-  .hero-wire,
-  .hero-packet {
-    display: none;
-  }
-
-  .hero-stage {
-    padding-bottom: 84px;
-  }
-}
-
-/* Nothing to replay when the sequence never animates. */
+/* Nothing to replay: the simulation renders straight to its finished state.
+   Declared here rather than up with the rest of the reduced-motion rules so it
+   comes after .hero-replay's own display and actually wins. */
 @media (prefers-reduced-motion: reduce) {
   .hero-replay {
-    display: none;
-  }
-
-  .hero-packet {
     display: none;
   }
 }
@@ -1066,17 +1062,16 @@
   flex-direction: column;
   gap: 0.5rem;
   align-items: center;
-  font-family: var(--font-mono);
-  font-size: 0.92rem;
 }
 
+/* Mono belongs to the raw email/phone, not the container — inherited, it was
+   also restyling the CTA button sitting alongside them. */
 .contact-links a:not(.btn) {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-}
-
-.contact-links a:not(.btn) {
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
   color: var(--on-dark-soft);
 }
 

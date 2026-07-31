@@ -1190,47 +1190,6 @@
   flex-wrap: wrap;
 }
 
-/* Sits on .btn.accent — the crown + sparkle are the only additions. */
-.pf-crown {
-  position: relative;
-  overflow: visible;
-}
-
-.pf-crown svg {
-  width: 21px;
-  height: 21px;
-}
-
-.pf-crown:hover .pf-crown-icon {
-  animation: pf-crown-shake 0.55s var(--ease) infinite;
-  transform-origin: 50% 80%;
-}
-
-@keyframes pf-crown-shake {
-  0%, 100% { transform: rotate(0deg); }
-  20% { transform: rotate(-11deg) translateY(-1px); }
-  50% { transform: rotate(9deg); }
-  75% { transform: rotate(-5deg); }
-}
-
-.pf-sparkle {
-  position: absolute;
-  pointer-events: none;
-  font-size: 0;
-  animation: pf-sparkle-pop 0.75s ease-out forwards;
-}
-
-.pf-sparkle svg {
-  width: 11px;
-  height: 11px;
-}
-
-@keyframes pf-sparkle-pop {
-  0% { opacity: 0; transform: translate(0, 0) scale(0.3); }
-  25% { opacity: 1; }
-  100% { opacity: 0; transform: translate(var(--pf-sx), var(--pf-sy)) scale(1.15) rotate(50deg); }
-}
-
 /* ---------- Pricing ---------- */
 .pf-pricing-grid {
   display: grid;

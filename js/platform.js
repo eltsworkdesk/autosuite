@@ -229,33 +229,4 @@
     });
   });
 
-  /* ---------- 4. CTA sparkles ---------- */
-  const crown = document.getElementById('pfCrown');
-  if (crown && !reduced) {
-    let glitter = null;
-
-    function sparkle() {
-      const s = document.createElement('span');
-      s.className = 'pf-sparkle';
-      s.innerHTML = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 0 L7.2 4.8 L12 6 L7.2 7.2 L6 12 L4.8 7.2 L0 6 L4.8 4.8 Z" fill="#fff"/></svg>';
-      s.style.left = 10 + Math.random() * 80 + '%';
-      s.style.top = Math.random() * 60 - 10 + '%';
-      s.style.setProperty('--pf-sx', Math.random() * 44 - 22 + 'px');
-      s.style.setProperty('--pf-sy', -16 - Math.random() * 26 + 'px');
-      crown.appendChild(s);
-      setTimeout(() => s.remove(), 800);
-    }
-
-    crown.addEventListener('mouseenter', () => {
-      sparkle();
-      sparkle();
-      glitter = setInterval(sparkle, 160);
-    });
-    crown.addEventListener('mouseleave', () => clearInterval(glitter));
-    crown.addEventListener('focus', () => {
-      sparkle();
-      sparkle();
-      sparkle();
-    });
-  }
 })();

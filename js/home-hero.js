@@ -1,97 +1,53 @@
 /**
- * AutoSuite — homepage hero sequence.
+ * AutoSuite — homepage hero simulation.
  *
- * Demonstrates the product's core claim instead of illustrating it: a booking
- * fires on the storefront card, a packet travels the wire, and on arrival the
- * dashboard mockup actually reacts (counter increments, a new lead row lands,
- * the live-sync pill flashes). Then it resets and loops.
+ * The hero doesn't illustrate the product claim, it runs it. Pressing "Book
+ * Test Drive" on the customer device spawns a packet that travels the sync
+ * line, lands on the dealer board as a real lead card, then walks that card
+ * through the pipeline — New -> Assigned -> Contacted -> Sold — stamping a
+ * timestamped log line at each step.
  *
- * The waypoints below are percentages that mirror the SVG path in index.html.
- * Both live in the same stretched coordinate space (the wire uses
- * preserveAspectRatio="none"), so animating the packet with left/top
- * percentages keeps it glued to the line at any container size — no
- * getPointAtLength/viewBox conversion needed.
+ * The whole thing is a small state machine over STEPS below. Nothing here
+ * knows about layout: the script only toggles .is-arrived on the packet and
+ * the stylesheet decides whether "arrived" means the far right (desktop,
+ * side-by-side) or the bottom (mobile, stacked).
  *
- * Under prefers-reduced-motion nothing animates: the hero renders the finished
- * state (19 leads, new row present) so the story still reads, statically.
+ * Under prefers-reduced-motion the sequence is rendered in its finished state
+ * on load — same story, no movement.
  */
 (function () {
   'use strict';
 
-  const stage = document.querySelector('.hero-media');
-  if (!stage) return;
+  const sim = document.getElementById('heroSim');
+  if (!sim) return;
 
-  const packet = document.getElementById('heroPacket');
-  const sourceBtn = document.getElementById('heroSourceBtn');
-  const leadsStat = document.getElementById('heroLeadsStat');
-  const leadsValue = document.getElementById('heroLeadsToday');
-  const leadsList = document.getElementById('heroLeadsList');
-  const livePill = document.querySelector('.hero-dash-live');
+  const book = document.getElementById('simBook');
+  const packet = document.getElementById('simPacket');
+  const slot = document.getElementById('simSlot');
+  const empty = document.getElementById('simEmpty');
+  const lead = document.getElementById('simLead');
+  const badge = document.getElementById('simBadge');
+  const log = document.getElementById('simLog');
   const replay = document.getElementById('heroReplay');
-  if (!packet || !leadsValue || !leadsList) return;
+  if (!book || !packet || !lead || !badge || !log) return;
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const WAYPOINTS = [[26, 88], [52, 88], [52, 74], [78, 74]];
-  const TRAVEL_MS = 1500;
-  const BASE_LEADS = parseInt(leadsValue.textContent, 10) || 18;
+  const TRAVEL_MS = 1100;
 
-  const NEW_LEAD = {
-    name: 'Dana R.',
-    detail: 'Test drive booked',
-    time: 'now',
-  };
+  // Real names and clock times, because "Lead #4821 / +1" is a database row and
+  // this is meant to read as a person moving through a dealership.
+  const STEPS = [
+    { badge: 'New', cls: '', time: '10:42 AM', text: 'Booked by David M.', after: 0 },
+    { badge: 'Assigned', cls: 'is-assigned', time: '10:45 AM', text: 'Assigned to Sarah O.', after: 1500 },
+    { badge: 'Contacted', cls: 'is-contacted', time: '11:07 AM', text: 'Sarah called — confirmed', after: 1500 },
+    { badge: 'Sold', cls: 'is-sold', time: 'Day 4', text: 'Closed — ₦52,000,000', after: 1800 },
+  ];
 
-  // Precompute segment lengths so the packet moves at a constant speed
-  // rather than spending equal time on unequal segments.
-  const segments = [];
-  let total = 0;
-  for (let i = 0; i < WAYPOINTS.length - 1; i++) {
-    const [x1, y1] = WAYPOINTS[i];
-    const [x2, y2] = WAYPOINTS[i + 1];
-    const len = Math.hypot(x2 - x1, y2 - y1);
-    segments.push({ x1, y1, x2, y2, len });
-    total += len;
-  }
+  const BADGE_CLASSES = ['is-assigned', 'is-contacted', 'is-sold'];
 
-  function positionAt(progress) {
-    let travelled = progress * total;
-    for (const s of segments) {
-      if (travelled <= s.len || s === segments[segments.length - 1]) {
-        const t = s.len === 0 ? 0 : Math.min(travelled / s.len, 1);
-        return [s.x1 + (s.x2 - s.x1) * t, s.y1 + (s.y2 - s.y1) * t];
-      }
-      travelled -= s.len;
-    }
-    return WAYPOINTS[WAYPOINTS.length - 1];
-  }
-
-  function buildLeadRow() {
-    const li = document.createElement('li');
-    li.className = 'is-new';
-    li.innerHTML =
-      '<span class="hero-dash-avatar"></span>' +
-      '<span class="hero-dash-lead-text"><strong></strong><small></small></span>' +
-      '<time></time>';
-    li.querySelector('strong').textContent = NEW_LEAD.name;
-    li.querySelector('small').textContent = NEW_LEAD.detail;
-    li.querySelector('time').textContent = NEW_LEAD.time;
-    return li;
-  }
-
-  /* ---------- Static end state for reduced motion ---------- */
-  if (reduced) {
-    leadsValue.textContent = BASE_LEADS + 1;
-    const row = buildLeadRow();
-    row.classList.remove('is-new');
-    leadsList.insertBefore(row, leadsList.firstChild);
-    if (leadsList.children.length > 4) leadsList.lastElementChild.remove();
-    return;
-  }
-
-  let rafId = null;
   let timers = [];
-  let addedRow = null;
+  let running = false;
 
   function later(fn, ms) {
     timers.push(setTimeout(fn, ms));
@@ -100,93 +56,140 @@
   function clearAll() {
     timers.forEach(clearTimeout);
     timers = [];
-    if (rafId) cancelAnimationFrame(rafId);
-    rafId = null;
+  }
+
+  function applyStep(step) {
+    badge.textContent = step.badge;
+    badge.classList.remove.apply(badge.classList, BADGE_CLASSES);
+    if (step.cls) badge.classList.add(step.cls);
+
+    const li = document.createElement('li');
+    const time = document.createElement('time');
+    time.textContent = step.time;
+    const span = document.createElement('span');
+    span.textContent = step.text;
+    li.appendChild(time);
+    li.appendChild(span);
+    log.appendChild(li);
+  }
+
+  function flip(step) {
+    badge.classList.remove('is-flipping');
+    // Force a reflow so re-adding the class restarts the animation rather than
+    // being coalesced into a no-op.
+    void badge.offsetWidth;
+    badge.classList.add('is-flipping');
+    applyStep(step);
+  }
+
+  function celebrate() {
+    if (!slot) return;
+    const colors = ['var(--brand-accent)', 'var(--brand-blue-light)', 'var(--success-on-dark)'];
+    for (let i = 0; i < 14; i++) {
+      const bit = document.createElement('span');
+      bit.className = 'sim-confetti';
+      bit.setAttribute('aria-hidden', 'true');
+      const angle = (Math.PI * 2 * i) / 14 + Math.random() * 0.4;
+      const dist = 48 + Math.random() * 46;
+      bit.style.setProperty('--cx', Math.cos(angle) * dist + 'px');
+      bit.style.setProperty('--cy', Math.sin(angle) * dist + 40 + 'px');
+      bit.style.setProperty('--cr', Math.round(Math.random() * 540 - 270) + 'deg');
+      bit.style.background = colors[i % colors.length];
+      slot.appendChild(bit);
+      later(function () { bit.remove(); }, 1000);
+    }
   }
 
   function reset() {
-    packet.classList.remove('is-travelling');
-    if (sourceBtn) sourceBtn.classList.remove('is-pressed');
-    if (leadsStat) leadsStat.classList.remove('is-hit');
-    leadsValue.classList.remove('is-bumped');
-    if (livePill) livePill.classList.remove('is-flashing');
-    leadsValue.textContent = BASE_LEADS;
-    if (addedRow && addedRow.parentNode) addedRow.remove();
-    addedRow = null;
+    clearAll();
+    packet.classList.remove('is-live');
+    // Kill the transition for one frame so the packet jumps home instead of
+    // gliding backwards along the wire.
+    packet.classList.add('no-anim');
+    packet.classList.remove('is-arrived');
+    void packet.offsetWidth;
+    packet.classList.remove('no-anim');
+    book.classList.remove('is-pressed');
+    lead.hidden = true;
+    lead.classList.remove('is-landing');
+    badge.classList.remove.apply(badge.classList, BADGE_CLASSES);
+    badge.classList.remove('is-flipping');
+    badge.textContent = 'New';
+    log.textContent = '';
+    if (empty) empty.classList.remove('is-gone');
+    if (slot) {
+      slot.querySelectorAll('.sim-confetti').forEach(function (n) { n.remove(); });
+    }
+  }
+
+  /* ---------- Static finished state for reduced motion ---------- */
+  if (reduced) {
+    if (empty) empty.remove();
+    lead.hidden = false;
+    STEPS.forEach(applyStep);
+    return;
   }
 
   function travel(onArrive) {
-    const start = performance.now();
-    packet.classList.add('is-travelling');
-    (function step(now) {
-      const p = Math.min((now - start) / TRAVEL_MS, 1);
-      // Ease-in-out so the packet leaves and lands softly.
-      const eased = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
-      const [x, y] = positionAt(eased);
-      packet.style.left = x + '%';
-      packet.style.top = y + '%';
-      if (p < 1) {
-        rafId = requestAnimationFrame(step);
-      } else {
-        packet.classList.remove('is-travelling');
-        onArrive();
-      }
-    })(start);
+    packet.classList.add('is-live');
+    // One tick of breathing room so the browser has the start position
+    // committed before the end position is set — otherwise both land in the
+    // same style recalc and there is nothing to transition between.
+    later(function () { packet.classList.add('is-arrived'); }, 30);
+    later(function () {
+      packet.classList.remove('is-live');
+      onArrive();
+    }, TRAVEL_MS + 60);
   }
 
-  function runCycle() {
-    clearAll();
+  function run() {
     reset();
+    running = true;
 
-    // 1. The customer taps Book Test Drive.
-    later(function () {
-      if (sourceBtn) sourceBtn.classList.add('is-pressed');
-      later(function () {
-        if (sourceBtn) sourceBtn.classList.remove('is-pressed');
-      }, 220);
-    }, 500);
+    book.classList.add('is-pressed');
+    later(function () { book.classList.remove('is-pressed'); }, 200);
 
-    // 2. The booking travels to the dealer OS.
     later(function () {
+      if (empty) empty.classList.add('is-gone');
       travel(function () {
-        // 3. The board reacts.
-        leadsValue.textContent = BASE_LEADS + 1;
-        leadsValue.classList.add('is-bumped');
-        if (leadsStat) leadsStat.classList.add('is-hit');
-        if (livePill) livePill.classList.add('is-flashing');
+        lead.hidden = false;
+        lead.classList.add('is-landing');
+        applyStep(STEPS[0]);
 
-        addedRow = buildLeadRow();
-        leadsList.insertBefore(addedRow, leadsList.firstChild);
-        if (leadsList.children.length > 4) leadsList.lastElementChild.remove();
+        let t = 0;
+        for (let i = 1; i < STEPS.length; i++) {
+          const step = STEPS[i];
+          t += step.after;
+          later(function () {
+            flip(step);
+            if (step.cls === 'is-sold') celebrate();
+          }, t);
+        }
+
+        // Hold the finished board long enough to read, then loop.
+        later(run, t + 4200);
       });
-    }, 900);
-
-    // 4. Hold the result, then loop.
-    later(runCycle, 7600);
+    }, 260);
   }
 
-  if (replay) {
-    replay.addEventListener('click', runCycle);
-  }
+  book.addEventListener('click', run);
+  if (replay) replay.addEventListener('click', run);
 
-  // Only run while the hero is actually on screen — no point burning frames
-  // on a loop nobody is looking at.
+  // Only burn frames while the hero is actually on screen.
   if ('IntersectionObserver' in window) {
-    let running = false;
     const io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting && !running) {
-          running = true;
-          runCycle();
+          run();
         } else if (!entry.isIntersecting && running) {
           running = false;
           clearAll();
           reset();
         }
       });
-    }, { threshold: 0.2 });
-    io.observe(stage);
+    }, { threshold: 0.25 });
+    io.observe(sim);
   } else {
-    runCycle();
+    run();
   }
 })();

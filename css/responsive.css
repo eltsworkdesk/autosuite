@@ -42,25 +42,20 @@
     display: none;
   }
 
-  /* Home hero */
+  /* Home hero — deliberately still a centred stack at desktop. The old layout
+     put copy and a static mockup side by side; the simulation that replaced
+     that mockup is a horizontal customer -> wire -> dealer pipeline, so it
+     needs the full row to read left-to-right. */
   .hero {
-    flex-direction: row;
-    justify-content: space-between;
-    text-align: left;
-    padding: 4.5rem 2.5rem;
-    gap: 3rem;
+    padding: 4.5rem 2.5rem 5rem;
   }
 
   .hero-content {
-    max-width: 460px;
+    max-width: 760px;
   }
 
-  .hero-content p {
-    margin: 0;
-  }
-
-  .hero-ctas {
-    justify-content: flex-start;
+  .hero-content > p {
+    max-width: 58ch;
   }
 
   /* Featured + listing grids */

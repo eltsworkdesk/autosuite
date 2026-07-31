@@ -80,97 +80,68 @@
         <p>Trusted by sales teams at dealership groups nationwide</p>
       </div>
     </div>
-    <div class="hero-media">
-      <div class="hero-stage">
-      <div class="hero-frame">
-        <div class="hero-dash" aria-hidden="true">
-          <div class="hero-dash-side">
-            <div class="hero-dash-brand"><span class="hero-dash-dot"></span>AutoSuite</div>
-            <div class="hero-dash-nav">
-              <span class="active">▦ Dashboard</span>
-              <span>▤ Inventory</span>
-              <span>☎ CRM &amp; Leads</span>
-              <span>◔ Appointments</span>
-              <span>◆ Financing</span>
-              <span>▲ Analytics</span>
+    <!-- Customer -> sync line -> dealer. Everything here is code-generated:
+         CSS device frames, inline SVG art, CSS avatars. No raster assets. -->
+    <div class="sim" id="heroSim">
+      <div class="sim-side sim-customer">
+        <span class="sim-cap">Customer</span>
+        <div class="sim-device">
+          <div class="sim-device-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div class="sim-listing">
+            <svg class="sim-car" viewBox="0 0 120 54" aria-hidden="true">
+              <path class="c-body" d="M10 40 Q13 22 32 19 L46 8 Q54 3 70 3 L92 8 Q102 12 110 24 L114 40 Z"/>
+              <path class="c-glass" d="M50 18 L58 9 Q64 5 72 5 L88 9 Q94 12 98 18 Z"/>
+              <rect class="c-sill" x="6" y="36" width="110" height="8" rx="4"/>
+              <circle class="c-tyre" cx="34" cy="43" r="8"/>
+              <circle class="c-tyre" cx="92" cy="43" r="8"/>
+            </svg>
+            <div class="sim-listing-meta">
+              <strong>2024 BMW X6</strong>
+              <span>&#8358;52,000,000 &middot; 6,200 km</span>
             </div>
           </div>
-          <div class="hero-dash-main">
-            <div class="hero-dash-head">
-              <div>
-                <h3>Good morning, Dana</h3>
-                <p>Tuesday, July 21 · Midtown Motors</p>
-              </div>
-              <span class="hero-dash-live"><span class="pulse-dot pulse-dot-sm"></span>Live sync</span>
-            </div>
-            <div class="hero-dash-stats">
-              <div class="hero-dash-stat" id="heroLeadsStat">
-                <span class="hero-dash-stat-label">Leads today</span>
-                <span class="hero-dash-stat-value" id="heroLeadsToday">18</span>
-                <span class="hero-dash-stat-trend">▲ 12%</span>
-              </div>
-              <div class="hero-dash-stat">
-                <span class="hero-dash-stat-label">Test drives</span>
-                <span class="hero-dash-stat-value">7</span>
-                <span class="hero-dash-stat-trend">▲ 4%</span>
-              </div>
-              <div class="hero-dash-stat">
-                <span class="hero-dash-stat-label">Units sold (MTD)</span>
-                <span class="hero-dash-stat-value">42</span>
-                <span class="hero-dash-stat-trend">▲ 9%</span>
-              </div>
-              <div class="hero-dash-stat">
-                <span class="hero-dash-stat-label">Revenue (MTD)</span>
-                <span class="hero-dash-stat-value">₦1.86M</span>
-                <span class="hero-dash-stat-trend">▲ 15%</span>
-              </div>
-            </div>
-            <div class="hero-dash-panels">
-              <div class="hero-dash-chart">
-                <h4>Sales funnel — 14 days</h4>
-                <div class="hero-dash-bars">
-                  <span></span><span></span><span></span><span></span>
-                  <span></span><span></span><span></span><span></span>
-                  <span></span><span></span><span></span><span></span>
+          <button type="button" class="sim-book" id="simBook">Book Test Drive</button>
+        </div>
+        <p class="sim-who"><span class="sim-avatar" aria-hidden="true">D</span>David is browsing</p>
+      </div>
+
+      <div class="sim-link" aria-hidden="true">
+        <span class="sim-wire"></span>
+        <span class="sim-packet" id="simPacket"></span>
+      </div>
+
+      <div class="sim-side sim-dealer">
+        <span class="sim-cap">Dealer OS</span>
+        <div class="sim-board">
+          <div class="sim-board-head">
+            <span>Lead pipeline</span>
+            <span class="sim-live"><span class="pulse-dot pulse-dot-sm"></span>Live</span>
+          </div>
+          <div class="sim-slot" id="simSlot">
+            <p class="sim-empty" id="simEmpty">Waiting for a booking&hellip;</p>
+            <article class="sim-lead" id="simLead" hidden>
+              <div class="sim-lead-top">
+                <span class="sim-avatar" aria-hidden="true">D</span>
+                <div>
+                  <strong>David M.</strong>
+                  <span class="sim-lead-car">2024 BMW X6</span>
                 </div>
+                <span class="sim-badge" id="simBadge">New</span>
               </div>
-              <div class="hero-dash-leads" id="heroLeadsPanel">
-                <h4>New leads</h4>
-                <ul id="heroLeadsList">
-                  <li><span class="hero-dash-avatar"></span><span class="hero-dash-lead-text"><strong>Marcus T.</strong><small>Financing review</small></span><time>2m</time></li>
-                  <li><span class="hero-dash-avatar"></span><span class="hero-dash-lead-text"><strong>Priya S.</strong><small>Test drive booked</small></span><time>14m</time></li>
-                  <li><span class="hero-dash-avatar"></span><span class="hero-dash-lead-text"><strong>Wes H.</strong><small>Trade-in estimate</small></span><time>31m</time></li>
-                </ul>
-              </div>
-            </div>
+              <ol class="sim-log" id="simLog"></ol>
+            </article>
           </div>
         </div>
+        <p class="sim-who"><span class="sim-avatar sim-avatar-alt" aria-hidden="true">S</span>Sarah picks it up</p>
       </div>
-      <!-- The wire runs through a channel below the dashboard so the travel is
-           actually visible; only its last leg goes behind the frame, which is
-           the moment the booking lands "inside" the system. -->
-      <svg class="hero-wire" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M29 92 L62 92 L62 80 L84 80"></path>
-      </svg>
-      <span class="hero-packet" id="heroPacket" aria-hidden="true"></span>
-
-      <div class="hero-source" aria-hidden="true">
-        <img src="assets/web/porsche-cayenne-exterior1.jpg" alt="" loading="lazy">
-        <div class="hero-source-body">
-          <span class="hero-source-tag">Storefront</span>
-          <strong>2025 Porsche Cayenne</strong>
-          <span class="hero-source-btn" id="heroSourceBtn">Book Test Drive</span>
-        </div>
-      </div>
-      </div>
-
-      <p class="hero-flowline">
-        <button type="button" class="hero-replay" id="heroReplay">
-          <span aria-hidden="true">↻</span> Replay
-        </button>
-        <span class="hero-flowline-text">A booking on the storefront is on your team's board in under 3 seconds &mdash; nothing waits in an inbox.</span>
-      </p>
     </div>
+
+    <p class="hero-flowline">
+      <button type="button" class="hero-replay" id="heroReplay">
+        <span aria-hidden="true">&#8635;</span> Replay
+      </button>
+      <span class="hero-flowline-text">Watch David go from browsing to <strong>Sold</strong> in 4 days &mdash; every step landing on Sarah&rsquo;s board as it happens.</span>
+    </p>
   </section>
 
   <!-- Trust strip -->
@@ -369,7 +340,13 @@
       <h2 id="contact-heading">Run your dealership on software that keeps up.</h2>
       <p>Request access or book a walkthrough with your team.</p>
       <div class="contact-links">
-        <a href="mailto:hello@autosuite.ng" class="btn">Book a demo</a>
+        <a href="mailto:hello@autosuite.ng" class="btn accent crown" data-crown>
+          <svg class="crown-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 8 L7 12 L12 5 L17 12 L21 8 L19.5 17 Q19.3 18.5 17.8 18.5 L6.2 18.5 Q4.7 18.5 4.5 17 Z" fill="oklch(30% 0.06 55)"></path>
+            <circle cx="3" cy="7" r="1.6" fill="oklch(30% 0.06 55)"></circle><circle cx="12" cy="4" r="1.6" fill="oklch(30% 0.06 55)"></circle><circle cx="21" cy="7" r="1.6" fill="oklch(30% 0.06 55)"></circle>
+          </svg>
+          Get Early Access
+        </a>
         <a href="mailto:hello@autosuite.ng">hello@autosuite.ng</a>
         <a href="tel:+2348001234567">+234 800 123 4567</a>
       </div>
