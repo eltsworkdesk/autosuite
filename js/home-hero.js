@@ -150,7 +150,10 @@
     later(function () { book.classList.remove('is-pressed'); }, 200);
 
     later(function () {
-      if (empty) empty.classList.add('is-gone');
+      // Fade the waiting state out just before the packet lands, not when it
+      // sets off — otherwise the board sits blank for the whole trip and reads
+      // as broken rather than expectant.
+      if (empty) later(function () { empty.classList.add('is-gone'); }, TRAVEL_MS - 260);
       travel(function () {
         lead.hidden = false;
         lead.classList.add('is-landing');
