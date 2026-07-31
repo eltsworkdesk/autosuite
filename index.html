@@ -60,7 +60,7 @@
   <main id="main-content">
 
   <!-- Hero Section -->
-  <section class="hero">
+  <section class="hero panel panel-dark panel-flush-top">
     <div class="hero-grid" aria-hidden="true"></div>
     <div class="hero-scanline" aria-hidden="true"></div>
     <div class="hero-content">
@@ -186,7 +186,7 @@
   </section>
 
   <!-- How it works -->
-  <section id="about" class="intro" aria-labelledby="about-heading">
+  <section id="about" class="intro panel panel-light" aria-labelledby="about-heading">
     <div class="section-heading">
       <span class="data-chip eyebrow">How it works</span>
       <h2 id="about-heading">Every stage of the funnel, captured automatically</h2>
@@ -273,14 +273,17 @@
   </section>
 
   <!-- Core Features -->
-  <section id="roadmap" class="roadmap" aria-labelledby="roadmap-heading">
+  <section id="roadmap" class="roadmap panel panel-dark" aria-labelledby="roadmap-heading">
     <div class="roadmap-inner">
       <div class="section-heading">
         <span class="data-chip eyebrow">Core features</span>
         <h2 id="roadmap-heading">Everything a dealership needs, connected</h2>
       </div>
       <div class="roadmap-grid">
-        <div class="roadmap-card roadmap-card--dashboard" data-reveal>
+        <div class="roadmap-card" data-reveal>
+          <div class="roadmap-card-art" aria-hidden="true">
+            <svg class="rc-art" viewBox="0 0 120 64"><rect class="b2" x="4" y="6" width="52" height="24" rx="4"/><rect class="b1" x="64" y="6" width="52" height="24" rx="4"/><rect class="b1" x="4" y="36" width="52" height="22" rx="4"/><rect class="ac" x="64" y="36" width="52" height="22" rx="4"/></svg>
+          </div>
           <span class="data-chip"><svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect></svg>Dashboard</span>
           <div class="roadmap-card-body">
             <h3>Dealer Dashboard</h3>
@@ -288,7 +291,10 @@
             <a href="pages/dashboard.html" class="btn outline small">Open Dashboard &rarr;</a>
           </div>
         </div>
-        <div class="roadmap-card roadmap-card--crm" data-reveal>
+        <div class="roadmap-card" data-reveal>
+          <div class="roadmap-card-art" aria-hidden="true">
+            <svg class="rc-art" viewBox="0 0 120 64"><rect class="b2" x="4" y="6" width="32" height="13" rx="4"/><rect class="b1" x="4" y="24" width="32" height="13" rx="4"/><rect class="b1" x="4" y="42" width="32" height="13" rx="4"/><rect class="b1" x="44" y="6" width="32" height="13" rx="4"/><rect class="ac" x="44" y="24" width="32" height="13" rx="4"/><rect class="b1" x="44" y="42" width="32" height="13" rx="4"/><rect class="b1" x="84" y="6" width="32" height="13" rx="4"/><rect class="b1" x="84" y="24" width="32" height="13" rx="4"/></svg>
+          </div>
           <span class="data-chip"><svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c0-4 3-6.5 6.5-6.5s6.5 2.5 6.5 6.5"></path><circle cx="18" cy="9" r="2.5"></circle><path d="M15 13.5c2.8 0.3 5 2.5 5.5 6"></path></svg>CRM</span>
           <div class="roadmap-card-body">
             <h3>CRM &amp; Leads</h3>
@@ -296,7 +302,10 @@
             <a href="pages/crm.html" class="btn outline small">Open CRM &rarr;</a>
           </div>
         </div>
-        <div class="roadmap-card roadmap-card--financing" data-reveal>
+        <div class="roadmap-card" data-reveal>
+          <div class="roadmap-card-art" aria-hidden="true">
+            <svg class="rc-art" viewBox="0 0 120 64"><rect class="b2" x="4" y="10" width="62" height="11" rx="4"/><rect class="b1" x="4" y="27" width="46" height="11" rx="4"/><rect class="b1" x="4" y="44" width="30" height="11" rx="4"/><circle class="ln" cx="94" cy="32" r="18"/><path class="ln ln-ac" d="M94 14 a18 18 0 0 1 15.6 27"/></svg>
+          </div>
           <span class="data-chip"><svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"></rect><rect x="7.5" y="4.5" width="9" height="4" rx="0.5"></rect><path d="M7.5 12.5h1M12 12.5h1M16.5 12.5h1M7.5 16.5h1M12 16.5h1M16.5 16.5h1"></path></svg>Finance</span>
           <div class="roadmap-card-body">
             <h3>Financing Calculator</h3>
@@ -304,7 +313,10 @@
             <a href="pages/financing-calculator.html" class="btn outline small">Calculate Now &rarr;</a>
           </div>
         </div>
-        <div class="roadmap-card roadmap-card--tradein" data-reveal>
+        <div class="roadmap-card" data-reveal>
+          <div class="roadmap-card-art" aria-hidden="true">
+            <svg class="rc-art" viewBox="0 0 120 64"><path class="ln" d="M12 21 H98 l-13 -11"/><path class="ln ln-ac" d="M108 43 H22 l13 11"/></svg>
+          </div>
           <span class="data-chip"><svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 7h12l-4-4M19 17H7l4 4"></path></svg>Trade-in</span>
           <div class="roadmap-card-body">
             <h3>Trade-in Estimator</h3>
@@ -312,7 +324,10 @@
             <a href="pages/trade-in-estimator.html" class="btn outline small">Get Estimate &rarr;</a>
           </div>
         </div>
-        <div class="roadmap-card roadmap-card--appointments" data-reveal>
+        <div class="roadmap-card" data-reveal>
+          <div class="roadmap-card-art" aria-hidden="true">
+            <svg class="rc-art" viewBox="0 0 120 64"><rect class="b2" x="4" y="5" width="112" height="12" rx="4"/><rect class="b1" x="4" y="23" width="24" height="14" rx="4"/><rect class="b1" x="34" y="23" width="24" height="14" rx="4"/><rect class="ac" x="64" y="23" width="24" height="14" rx="4"/><rect class="b1" x="94" y="23" width="22" height="14" rx="4"/><rect class="b1" x="4" y="43" width="24" height="14" rx="4"/><rect class="b1" x="34" y="43" width="24" height="14" rx="4"/><rect class="b1" x="64" y="43" width="24" height="14" rx="4"/><rect class="b1" x="94" y="43" width="22" height="14" rx="4"/></svg>
+          </div>
           <span class="data-chip"><svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>Scheduling</span>
           <div class="roadmap-card-body">
             <h3>Appointments</h3>
@@ -320,7 +335,10 @@
             <a href="pages/appointments.html" class="btn outline small">View Schedule &rarr;</a>
           </div>
         </div>
-        <div class="roadmap-card roadmap-card--analytics" data-reveal>
+        <div class="roadmap-card" data-reveal>
+          <div class="roadmap-card-art" aria-hidden="true">
+            <svg class="rc-art" viewBox="0 0 120 64"><rect class="b1" x="6" y="38" width="16" height="20" rx="4"/><rect class="b1" x="28" y="30" width="16" height="28" rx="4"/><rect class="b2" x="50" y="34" width="16" height="24" rx="4"/><rect class="b2" x="72" y="22" width="16" height="36" rx="4"/><rect class="ac" x="94" y="12" width="16" height="46" rx="4"/><path class="ln" d="M14 24 L36 18 L58 21 L80 10"/></svg>
+          </div>
           <span class="data-chip"><svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19V9M11 19V5M18 19v-7"></path></svg>Analytics</span>
           <div class="roadmap-card-body">
             <h3>Analytics</h3>
@@ -328,7 +346,10 @@
             <a href="pages/analytics.html" class="btn outline small">View Stats &rarr;</a>
           </div>
         </div>
-        <div class="roadmap-card roadmap-card--team" data-reveal>
+        <div class="roadmap-card" data-reveal>
+          <div class="roadmap-card-art" aria-hidden="true">
+            <svg class="rc-art" viewBox="0 0 120 64"><circle class="b2" cx="22" cy="22" r="14"/><circle class="b1" cx="60" cy="22" r="14"/><circle class="ac" cx="98" cy="22" r="14"/><rect class="b1" x="6" y="46" width="32" height="11" rx="4"/><rect class="b1" x="44" y="46" width="32" height="11" rx="4"/><rect class="b1" x="82" y="46" width="32" height="11" rx="4"/></svg>
+          </div>
           <span class="data-chip"><svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4 3.5-6 8-6s8 2 8 6"></path></svg>Team</span>
           <div class="roadmap-card-body">
             <h3>Team Performance</h3>
@@ -342,14 +363,16 @@
   </section>
 
   <!-- Contact -->
-  <section id="contact" class="contact" aria-labelledby="contact-heading" data-reveal>
-    <span class="data-chip eyebrow">Get started</span>
-    <h2 id="contact-heading">Run your dealership on software that keeps up.</h2>
-    <p>Request access or book a walkthrough with your team.</p>
-    <div class="contact-links">
-      <a href="mailto:hello@autosuite.ng" class="btn">Book a demo</a>
-      <a href="mailto:hello@autosuite.ng">hello@autosuite.ng</a>
-      <a href="tel:+2348001234567">+234 800 123 4567</a>
+  <section id="contact" class="contact panel panel-dark" aria-labelledby="contact-heading" data-reveal>
+    <div class="contact-inner">
+      <span class="eyebrow">Get started</span>
+      <h2 id="contact-heading">Run your dealership on software that keeps up.</h2>
+      <p>Request access or book a walkthrough with your team.</p>
+      <div class="contact-links">
+        <a href="mailto:hello@autosuite.ng" class="btn">Book a demo</a>
+        <a href="mailto:hello@autosuite.ng">hello@autosuite.ng</a>
+        <a href="tel:+2348001234567">+234 800 123 4567</a>
+      </div>
     </div>
   </section>
 

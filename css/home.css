@@ -732,11 +732,11 @@
   gap: var(--space-5);
 }
 
+/* Sunken, borderless: these sit inside a light panel now, so a white card with
+   its own border and shadow was a box drawn on top of an identical box. */
 .funnel-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
+  background: var(--surface-sunken);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
   padding: var(--space-6);
 }
 
@@ -782,7 +782,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  height: 34px;
+  height: 42px;
   padding: 0 var(--space-3);
   border-radius: var(--radius-pill);
   background: var(--brand-blue);
@@ -824,7 +824,7 @@
 
 .cv-marker {
   stroke: var(--brand-accent-deep);
-  stroke-width: 1.5;
+  stroke-width: 3;
   stroke-dasharray: 3 3;
 }
 
@@ -838,15 +838,15 @@
 .cv-line-before {
   fill: none;
   stroke: var(--ink-faint);
-  stroke-width: 2;
-  stroke-dasharray: 5 4;
+  stroke-width: 5;
+  stroke-dasharray: 2 9;
   stroke-linecap: round;
 }
 
 .cv-line-after {
   fill: none;
   stroke: var(--brand-blue);
-  stroke-width: 2.5;
+  stroke-width: 5;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -854,7 +854,7 @@
 .cv-dot {
   fill: var(--brand-blue);
   stroke: var(--surface);
-  stroke-width: 2;
+  stroke-width: 3;
 }
 
 .cv-label-start {
@@ -912,8 +912,7 @@
 
 /* ---------- Roadmap (platform teaser) ---------- */
 .roadmap {
-  background: var(--surface-sunken);
-  padding: 3rem 1.25rem;
+  padding: var(--space-8) var(--space-5);
 }
 
 .roadmap-inner {
@@ -924,10 +923,13 @@
 .roadmap-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1rem;
-  margin-top: 2rem;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
 }
 
+/* Flat panel, no photography: the card art is in-palette vector geometry so
+   all seven read as one set. Photographic backgrounds put a different colour
+   temperature on every card and broke the monochrome. */
 .roadmap-card {
   position: relative;
   overflow: hidden;
@@ -935,42 +937,48 @@
   flex-direction: column;
   min-height: 320px;
   padding: 1.1rem;
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
-  background-size: cover;
-  /* Anchored to the top because the overlay below fades to solid navy over the
-     lower two-thirds — the app header and KPI row are the only part that stays
-     visible, and they're the most legible part of a UI shot at this size. */
-  background-position: center top;
-  transition: transform var(--transition-base), box-shadow var(--transition-base);
-}
-
-.roadmap-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    oklch(17% 0.012 260 / 8%) 0%,
-    oklch(17% 0.012 260 / 45%) 42%,
-    oklch(17% 0.012 260 / 94%) 68%,
-    var(--navy-950) 100%
-  );
-  pointer-events: none;
+  border-radius: var(--radius-lg);
+  background: var(--navy-800);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: transform var(--transition-base), border-color var(--transition-base);
 }
 
 .roadmap-card:hover {
   transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
+  border-color: var(--brand-blue);
 }
 
-.roadmap-card--dashboard { background-image: url("../assets/web/card-bg-dashboard.jpg"); }
-.roadmap-card--crm { background-image: url("../assets/web/card-bg-crm.jpg"); }
-.roadmap-card--financing { background-image: url("../assets/web/card-bg-financing.jpg"); }
-.roadmap-card--tradein { background-image: url("../assets/web/card-bg-tradein.jpg"); }
-.roadmap-card--appointments { background-image: url("../assets/web/card-bg-appointments.jpg"); }
-.roadmap-card--analytics { background-image: url("../assets/web/card-bg-analytics.jpg"); }
-.roadmap-card--team { background-image: url("../assets/web/card-bg-team.jpg"); }
+.roadmap-card-art {
+  background: oklch(15% 0.012 260);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-5);
+  margin-bottom: var(--space-4);
+}
+
+.rc-art {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* One shared four-step ramp for every illustration — the whole point is that
+   no card can drift off-palette. Amber appears at most once per card. */
+.rc-art .b1 { fill: oklch(30% 0.03 260); }
+.rc-art .b2 { fill: var(--brand-blue); }
+.rc-art .b3 { fill: var(--brand-blue-light); }
+.rc-art .ac { fill: var(--brand-accent); }
+
+.rc-art .ln {
+  fill: none;
+  stroke: var(--brand-blue-light);
+  stroke-width: 6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.rc-art .ln-ac {
+  stroke: var(--brand-accent);
+}
 
 .roadmap-card > * {
   position: relative;
@@ -991,9 +999,13 @@
   margin: 0.7rem 0 0.4rem;
 }
 
+/* Two-line floor so the bottom-aligned bodies are equal height and every
+   heading in a row shares a baseline — Trade-in's one-line copy was otherwise
+   dropping its title ~23px below its neighbours'. */
 .roadmap-card p {
   color: var(--on-dark-soft);
   font-size: 0.92rem;
+  min-height: 2.9em;
 }
 
 .roadmap-card .btn {
@@ -1025,20 +1037,28 @@
 
 /* ---------- Contact ---------- */
 .contact {
-  padding: 3rem 1.25rem;
-  max-width: 720px;
-  margin: 0 auto;
+  padding: var(--space-8) var(--space-5);
   text-align: center;
 }
 
+.contact-inner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
 .contact h2 {
-  font-size: 1.5rem;
-  margin: 0.4rem 0 0.6rem;
+  font-size: var(--text-2xl);
+  color: #fff;
+  margin: var(--space-3) 0 var(--space-3);
 }
 
 .contact p {
-  color: var(--ink-soft);
-  margin-bottom: 1.2rem;
+  color: var(--on-dark-soft);
+  margin-bottom: var(--space-5);
+}
+
+.contact .eyebrow {
+  color: var(--brand-blue-light);
 }
 
 .contact-links {
@@ -1054,4 +1074,67 @@
   display: inline-flex;
   align-items: center;
   min-height: 44px;
+}
+
+.contact-links a:not(.btn) {
+  color: var(--on-dark-soft);
+}
+
+.contact-links a:not(.btn):hover,
+.contact-links a:not(.btn):focus-visible {
+  color: #fff;
+}
+
+/* ---------- Flecto-style section panels ----------
+   Each major section is a large-radius panel inset from the page edges, with
+   the page background showing through between them, alternating dark navy and
+   light surface. The hero is flush to the top and rounds only at the bottom so
+   the sticky navbar sits on it without a seam. */
+.panel {
+  max-width: 1320px;
+  margin: 0 auto var(--space-5);
+  border-radius: 28px;
+  overflow: hidden;
+}
+
+.panel-dark {
+  background: var(--navy-950);
+  color: #fff;
+}
+
+.panel-light {
+  background: var(--surface);
+}
+
+/* Flush to the navbar so there's no seam above it; same width as every other
+   panel so the left/right edges line up down the page. */
+.panel-flush-top {
+  border-radius: 0 0 28px 28px;
+}
+
+/* Below the desktop max-width the panels would span edge to edge and their
+   rounding would land against the viewport, which stops them reading as
+   panels. The hero keeps its full-bleed top so it still meets the navbar. */
+@media (max-width: 1380px) {
+  .panel:not(.panel-flush-top) {
+    width: calc(100% - var(--space-6));
+  }
+}
+
+/* The eyebrow chip is navy-950 — the same colour as a dark panel, so it would
+   vanish into it. On dark it drops the pill and just reads as tinted mono. */
+.panel-dark .data-chip.eyebrow {
+  background: none;
+  padding: 0;
+  color: var(--brand-blue-light);
+}
+
+/* Inside a dark panel the funnel/section headings invert. */
+.panel-dark .section-heading h2,
+.panel-dark .section-heading p {
+  color: #fff;
+}
+
+.panel-dark .section-heading p {
+  color: var(--on-dark-soft);
 }
